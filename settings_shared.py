@@ -68,6 +68,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'pageblocks',
     'pagetree',
+    'carr_main',
     'quiz',
     'smartif',
     'sorl.thumbnail',
@@ -90,3 +91,12 @@ WIND_PROFILE_HANDLERS = ['djangowind.auth.CDAPProfileHandler']
 WIND_AFFIL_HANDLERS = ['djangowind.auth.AffilGroupMapper','djangowind.auth.StaffMapper','djangowind.auth.SuperuserMapper']
 WIND_STAFF_MAPPER_GROUPS = ['tlc.cunix.local:columbia.edu']
 WIND_SUPERUSER_MAPPER_GROUPS = ['anp8','jb2410','zm4','sbd12','egr2107','kmh2124','sld2131','amm8','mar227','ed2198']
+
+# Pageblocks/Pagetree settings 
+PAGEBLOCKS = ['pageblocks.HTMLBlock', 
+              'pageblocks.ImageBlock',
+              'quiz.Quiz',
+              #'activity_treatment_choice.Block',
+              #'activity_prescription_writing.Block',
+              #'tobaccocessation_main.FlashVideoBlock'
+              ] 

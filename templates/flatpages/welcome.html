@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
-{% block css %}{% endblock %}
+{% block css %}
 
-{% block title %}{% endblock %}
+{% endblock %}
+
+{% block title %}Welcome{% endblock %}
 
 {% block standardnav %}
    {% include "project_standard_nav.html" %}
@@ -10,13 +12,20 @@
 
 {% block primarynavtabs %}
    <ul>
-      <li><a href="/welcome/">Welcome</a></li>
+  
+      <li class="selected"><span class="selected">Welcome</span></li>
       <li><a href="/resources/">Resources</a></li>
       <li><a href="/assist/">Assist</a></li>
+  
    </ul>
 {% endblock %}
 
 {% block content %}
-   <h2 class="title">Title</h2>
+
+	<h2 class="title">Welcome to CARR!</h2>
+	
+   <p>Lorem ipsum.</p>  
+	
+
 {% endblock %}
          
