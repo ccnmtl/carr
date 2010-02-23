@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import simplejson
 from django.contrib.contenttypes import generic
-from pagetree.models import PageBlock
+from django.contrib.sites.models import Site
+from pagetree.models import PageBlock, Section
 from django import forms
 
 class SiteState(models.Model):
@@ -34,6 +35,12 @@ class SiteState(models.Model):
         self.last_location = path
         self.visited = simplejson.dumps(self.state_object)
         self.save()    
+        
+        
+        
+class SiteSection(Section):
+    sites = models.ManyToManyField(Site)
+    
         
 class FlashVideoBlock(models.Model):
     pageblocks = generic.GenericRelation(PageBlock)

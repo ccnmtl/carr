@@ -32,6 +32,12 @@ def page(request,path):
     #this tells us whether a page belongs on both sites, or just on one.
     #sites = models.ManyToManyField(Site)
 
+    #import pdb
+    #pdb.set_trace()
+    
+    #if 1 == 0:
+    #    from carr_main.models import SiteSection
+    
     
     
     # Skip to the first leaf, make sure to mark these sections as visited
