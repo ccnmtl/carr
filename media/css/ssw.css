@@ -1,0 +1,10 @@
+/*Please keep these files as small as possible. Anything that can go in main.css, put there. Only override properties that are actually different from school to school.*/
+body
+{
+	background-color: #FFF;
+}
+
+#header #logo_school
+{
+	background: transparent url('../img/logo_cussw.gif') left top no-repeat;
+}

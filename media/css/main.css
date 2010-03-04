@@ -129,17 +129,17 @@ li
 
 a
 {
-	color: #84240a;
+	color: #673692;
 }
 
 a:hover
 {
-	color: #c00;
+	color: #673692;
 }
 
 a:visited
 {
-	color: #5b1a00;
+	color: #673692;
 }
 
 img, img a
@@ -254,7 +254,7 @@ display: block;
 	margin-right: 10px;
 }
 
-#header #logo_dental
+#header #logo_school
 {
 	display: block;
 	float: right;
@@ -264,9 +264,9 @@ display: block;
 	/* margin: 34px 10px 0 0;*/
 	margin: 0;
 	padding: 0;
-		border: none;
-	background: transparent url('../img/logo_ccnmtl.gif') left top no-repeat;
+    border: none;	
 }
+
 
 #header #logo_ccnmtl a
 {
@@ -851,7 +851,14 @@ ul.tabbernav li.tabberactive a:hover
 }
 
 
+/*
+Purply colors:
+673692
+a587c0
+ae79dd
+d4c9dd
 
+*/
 
 /* ########## FOR FLUID WIDTH CSS ############### */
 /* ########## Blocks style definitions ########## */
@@ -1009,9 +1016,9 @@ float: left;
    margin: 0;
    padding: 0;
    border: 0;
-   border-top: 4px solid #eaa141;
+   border-top: 4px solid #673692;
    font-size: 84%;
-   background-color: #efc48d;
+   background-color: #ae79dd;
    
 }
 
@@ -1048,7 +1055,7 @@ float: left;
 	margin: 0 ;
 	padding: 3px .5em 2px .5em;
 	border: none;
-	border-right: 1px solid #eaa141;
+	border-right: 1px solid #673692;
 	line-height: 24px;
 	text-align: center;
 	border-collapse: collapse;
@@ -1092,7 +1099,7 @@ float: left;
 
 #subnav a:hover
 {
-   color: #c00;
+   color: #fff;
    text-decoration: none;
 }
 
@@ -1119,7 +1126,7 @@ float: left;
 
 #content .content-nav a
 {
-	background: #ca812e url('../img/bottom_button_bg.jpg') repeat-x;
+	background: #d4c9dd url('../img/bottom_button_bg.jpg') repeat-x;
 	padding: 3px 7px;
 	text-decoration: none;
 	color: #333;

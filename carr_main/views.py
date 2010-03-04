@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from pagetree.models import Hierarchy
 from django.contrib.auth.decorators import login_required
 from carr_main.models import SiteState
+from django.contrib.sites.models import Site, RequestSite
 
 class rendered_with(object):
     def __init__(self, template_name):
@@ -28,17 +29,7 @@ def page(request,path):
     section = h.get_first_leaf(current_root)
     ancestors = section.get_ancestors()
     ss = SiteState.objects.get_or_create(user=request.user)[0]
-    
-    #this tells us whether a page belongs on both sites, or just on one.
-    #sites = models.ManyToManyField(Site)
-
-    #import pdb
-    #pdb.set_trace()
-    
-    #if 1 == 0:
-    #    from carr_main.models import SiteSection
-    
-    
+    current_site = Site.objects.get_current()
     
     # Skip to the first leaf, make sure to mark these sections as visited
     if (current_root != section):
@@ -46,8 +37,12 @@ def page(request,path):
         return HttpResponseRedirect(section.get_absolute_url())
     
     # the previous node is the last leaf, if one exists.
-    prev = section.get_previous_leaf()
-    next = section.get_next()
+    if 1 == 0:
+        prev = section.get_previous_leaf()
+        next = section.get_next()
+    else:
+        prev = section.get_previous_site_section()
+        next = section.get_next_site_section()  
     
     # Is this section unlocked now?
     can_access = _unlocked(section, request.user, prev, ss)
@@ -78,6 +73,7 @@ def page(request,path):
                 next=next,
                 subnav=subnav,
                 depth=depth,
+                site_name=current_site.name,
                 leftnav=leftnav)
     
 @login_required
@@ -95,7 +91,10 @@ def index(request):
     
 def _construct_menu(request, parent, section, ss):
     menu = []
-    for s in parent.get_children():
+    current_site = Site.objects.get_current()
+    siblings = [ a for a in parent.get_children() if current_site in a.sites()]
+    
+    for s in siblings:
         entry = {'section': s, 'selected': False, 'descended': False, 'accessible': False}
         if s.id == section.id:
             entry['selected'] = True

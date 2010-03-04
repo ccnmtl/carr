@@ -1,9 +1,17 @@
+{% load smartif %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>CARR: {% block title %}{% endblock %}</title>
 	<link rel="stylesheet" href="/site_media/css/main.css" media="screen" />
+	{% if "cdm" in site_name%}
+    	<link rel="stylesheet" href="/site_media/css/cdm.css" media="screen" />
+	{%endif%}
+	{% if "ssw" in site_name%}
+    	<link rel="stylesheet" href="/site_media/css/ssw.css" media="screen" />
+	{%endif%}
+	
 	<link rel="stylesheet" href="/site_media/css/print.css" media="print" />
 	<!--[if IE 6]>
 	<link rel="stylesheet" href="/site_media/css/main_ie6_2coll.css" media="screen" />
@@ -36,7 +44,16 @@
 			<li><a href="#">Contact</a></li>
 		</ul>
 		{% endblock %}
-		<!-- CCNMTL title/logo --><h4><a id="logo_ccnmtl"href="http://ccnmtl.columbia.edu" target="_blank" title="Columbia Center for New Media Teaching and Learning"><span>Produced by the Columbia Center for New Media Teaching and Learning</span></a><a id="logo_dental" href="http://dental.columbia.edu" target="_blank" title="Columbia University College of Dental Medicine"><span>Produced for the Columbia University School of Dental Medicine</span></a></h4>
+		<!-- CCNMTL title/logo --><h4><a id="logo_ccnmtl"href="http://ccnmtl.columbia.edu" target="_blank" title="Columbia Center for New Media Teaching and Learning"><span>Produced by the Columbia Center for New Media Teaching and Learning</span></a>
+{% if "cdm" in site_name%}
+    	<a id="logo_school" href="http://dental.columbia.edu" target="_blank" title="Columbia University College of Dental Medicine"></a>
+		
+	{%endif%}
+	{% if "ssw" in site_name%}
+    	<a id="logo_school" href="http://socialwork.columbia.edu" target="_blank" title="Columbia University School of Social Work"></a>
+	{%endif%}
+		
+		</h4>
 	</div><!-- id="header" -->
 {% endblock %}
 
@@ -72,8 +89,6 @@
 
 	<!-- ###### Page: Sidebars and Content ###### -->
 	<div id="pagebody">
-
-
 		<!-- ###### Left Sidebar ###### -->
 		<div id="sidebar_left">
 			{% block sidebarleft %}{% endblock %}

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import simplejson
@@ -5,6 +6,9 @@ from django.contrib.contenttypes import generic
 from django.contrib.sites.models import Site
 from pagetree.models import PageBlock, Section
 from django import forms
+from django.db.models.signals import post_save
+from django.contrib.sites.models import Site
+
 
 class SiteState(models.Model):
     user = models.ForeignKey(User, related_name="application_user")
@@ -39,9 +43,50 @@ class SiteState(models.Model):
         
         
 class SiteSection(Section):
+    
     sites = models.ManyToManyField(Site)
     
+    def __unicode__(self):
+        return self.label
         
+    @classmethod
+    def in_current_site(self):
+        return Site.objects.get(id=settings.SITE_ID) in x.sites.all()
+        
+    def site_section_nav (self, traversal_function):
+        """ traverse the tree until you can return a page that visible on the current site"""
+        x = self
+        while traversal_function(x):
+             x = traversal_function(x).section_site()
+             if x.in_current_site:
+                return x
+        return None
+        
+    def get_next_site_section(self):
+        return self.site_section_nav (lambda x: x.get_next())
+    
+    def get_previous_site_section(self):
+        return self.site_section_nav (lambda x: x.get_previous_leaf())
+        
+Section.section_site =                  lambda x : SiteSection.objects.get(section_ptr=x)
+Section.sites =                         lambda x : x.section_site().sites.all()
+Section.get_previous_site_section =     lambda x : x.section_site().get_previous_site_section()
+Section.get_next_site_section =         lambda x : x.section_site().get_next_site_section()
+            
+def find_or_add_site_section(**kwargs):
+    new_section = kwargs['instance']
+    if len(SiteSection.objects.filter(section_ptr=new_section)) == 0:
+    
+        new_site_section = SiteSection (section_ptr=new_section)
+        new_site_section.__dict__.update(new_section.__dict__)
+        
+        #pages are visible on all sites by default:
+        new_site_section.sites = Site.objects.all()            
+        new_site_section.save()
+        
+post_save.connect(find_or_add_site_section, Section)
+
+
 class FlashVideoBlock(models.Model):
     pageblocks = generic.GenericRelation(PageBlock)
     file_url = models.CharField(max_length=512)

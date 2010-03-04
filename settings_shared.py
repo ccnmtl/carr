@@ -19,7 +19,6 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
-SITE_ID = 1
 USE_I18N = False
 MEDIA_ROOT = "/var/www/carr/uploads/"
 MEDIA_URL = '/uploads/'
