@@ -92,10 +92,15 @@ WIND_STAFF_MAPPER_GROUPS = ['tlc.cunix.local:columbia.edu']
 WIND_SUPERUSER_MAPPER_GROUPS = ['anp8','jb2410','zm4','sbd12','egr2107','kmh2124','sld2131','amm8','mar227','ed2198']
 
 # Pageblocks/Pagetree settings 
-PAGEBLOCKS = ['pageblocks.HTMLBlock', 
+PAGEBLOCKS = ['pageblocks.HTMLBlock',
+              'pageblocks.PullQuoteBlock',
+              'pageblocks.PullQuoteBlock_2',
+              'pageblocks.PullQuoteBlock_3',
               'pageblocks.ImageBlock',
+              'carr_main.FlashVideoBlock',
               'quiz.Quiz',
               #'activity_treatment_choice.Block',
               #'activity_prescription_writing.Block',
-              #'tobaccocessation_main.FlashVideoBlock'
+              #this appears to be breaking stuff:
+              #'carr_main.FlashVideoBlock'
               ] 
