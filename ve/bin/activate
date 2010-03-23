@@ -31,7 +31,7 @@ deactivate () {
 # unset irrelavent variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/usr/local/share/sandbox/tobaccocessation/ve"
+VIRTUAL_ENV="/usr/local/share/sandboxes/sdreher/tobaccocessation/ve"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
