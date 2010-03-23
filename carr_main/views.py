@@ -73,7 +73,7 @@ def page(request,path):
                 next=next,
                 subnav=subnav,
                 depth=depth,
-                site_name=current_site.name,
+                site_domain=current_site.domain,
                 leftnav=leftnav)
     
 @login_required
