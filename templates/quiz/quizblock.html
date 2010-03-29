@@ -8,30 +8,31 @@
 
 <input type="hidden" id="question_count" value="{{block.question_set.all|length}}"/>
 
+<!-- Once sorted, the questions will go here:.-->
+<span id="sorted_questions">
+</span>
+
+
 {% for question in block.question_set.all %}
-<div class="cases">
+<div class="cases" id = "case_{{question.ordinality}}" >
      {{question.intro_text|markdown}}
 
-     <div class="casetitle"> Question {{question.ordinality}}:</div>
+     <div class="casetitle"> Question <span class = "question_order">x</span>:</div>
      
      <div class="casecontent">
            <div class="casequestion">
                  {{question.text|markdown}}
-		 {% if block.rhetorical %}
                  <form id="form-{{question.id}}" method="post">
-		 {% endif %}
                        <ol type="A">
-			 {% for answer in question.answer_set.all %}
-			 {% if block.rhetorical %}
-                         <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" onclick="onChooseAnswer(this)"/>{{answer.label}}</li>
-			 {% else %}
-                         <li><input name="pageblock-{{block.pageblock.id}}-question{{question.id}}" value="{{answer.value}}" type="radio" />{{answer.label}}</li>
-			 {% endif %}
-			 {% endfor %}
+	                     {% for answer in question.answer_set.all %}
+	                     {% if block.rhetorical %}
+                                     <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" onclick="onChooseAnswer(this)"/>{{answer.label}}</li>
+	                     {% else %}
+                          <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" onclick="onChooseAnswer(this)"/>{{answer.label}}</li>
+	                     {% endif %}
+	                     {% endfor %}
                       </ol>
-                 {% if block.rhetorical %}
                  </form>
-		 {% endif %}
            </div>
 
 	   {% if block.rhetorical %}

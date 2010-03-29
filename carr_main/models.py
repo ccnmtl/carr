@@ -5,6 +5,7 @@ from django.utils import simplejson
 from django.contrib.contenttypes import generic
 from django.contrib.sites.models import Site
 from pagetree.models import PageBlock, Section
+from pageblocks.models import PullQuoteBlock
 from django import forms
 from django.db.models.signals import post_save
 from django.contrib.sites.models import Site
@@ -134,3 +135,26 @@ class FlashVideoBlock(models.Model):
         self.width = vals.get('width','')
         self.height = vals.get('height','')
         self.save()
+        
+        
+        
+
+
+class PullQuoteBlock_2 (PullQuoteBlock):
+    template_file = "admin/pageblocks/pullquoteblock_2.html"
+    #template_file = "pageblocks/pullquoteblock_2.html"
+    display_name = "Pull Quote Type 2"
+    @classmethod
+    def create(self,request):
+        return PullQuoteBlock_2.objects.create(body=request.POST.get('body',''))
+
+
+class PullQuoteBlock_3 (PullQuoteBlock):
+    template_file = "admin/pageblocks/pullquoteblock_3.html"
+    
+    #template_file = "pageblocks/pullquoteblock_3.html"
+    display_name = "Pull Quote Type 3"
+
+    @classmethod
+    def create(self,request):
+        return PullQuoteBlock_3.objects.create(body=request.POST.get('body',''))

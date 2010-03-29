@@ -121,8 +121,12 @@ def loadstate(request):
     
 @login_required
 def savestate(request):
+    #import pdb
+    #pdb.set_trace()
+    
     json = request.POST['json']
     
+    print json
     try: 
         state = ActivityState.objects.get(user=request.user)
         state.json = json

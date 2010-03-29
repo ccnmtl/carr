@@ -1,28 +1,94 @@
+function randomly(){    return (Math.round(Math.random())-0.5);}
+
+function calculate_order () {
+    //Show all questions:
+    //return list(range($$('.cases').length))
+    
+    //Show all questions in a random order:
+    // return list(range($$('.cases').length)).sort(randOrd)
+ 
+    // Show a certain number of required questions, then a certain number of random questions.
+    normal_order_questions = [1 ];
+    
+    random_order_questions = [3, 4, 5, 6, 7, 8, 9, 10, 11];
+    
+    how_many_random_order_questions = 1;
+    
+    random_order_questions.sort(randomly)
+    
+    random_order_questions.length = how_many_random_order_questions;
+    
+    return normal_order_questions.concat ( random_order_questions)
+ 
+}
+
+function shuffle_questions(order) {
+
+    nums = list(range(order.length))
+    
+    //create placeholders for the sorted questions
+    $('sorted_questions').appendChild (DIV ({id : "sorted_questions_div"}, map (DIV, nums)));
+    
+    destination_divs = $('sorted_questions_div').childNodes;
+    source_divs = map (function a (n){ return  $('case_' + n)}, order);
+
+    // swap the questions and the placeholders:
+    map (function f (a) { swapDOM (a[0], a[1])}, zip (destination_divs, source_divs));
+    
+    // show the resulting sorted divs, leaving the others hidden as per the CSS file.
+    map (function f (a) { setStyle (a, {'display':'block'}) }, $$('#sorted_questions_div div.cases'))
+
+    // number the questions:
+    map (function f (a) { a[0].innerHTML = a[1] + 1}, zip ($$('#sorted_questions_div .question_order'), nums));
+
+}
+
 function debug(string)
 {
-   if (false)
+   if (true)
       log("DEBUG " + string)
 }
 
+
+
 function onChooseAnswer(ctrl)
 {
-   debug('onChooseAnswer: ' + ctrl.name)
    a = ctrl.id.split('_')
-   setStyle(a[0] + "_answer", {'display':'block'})
+   // set rhetorical questions to display:
+   if ($(a[0] + "_answer")) {
+    setStyle(a[0] + "_answer", {'display':'block'})
+   }
 }
 
 function loadStateSuccess(doc)
+
 {
-   debug('loadStateSuccess')
+    //debug ("load state success");
+    //debug (doc);
+    //debug (serializeJSON(doc));
+    
+    forEach(doc.question, function (question) {
+        debug (serializeJSON(question));
+        $(question.id + "_" + question.answer).checked = true
+    }
+    );
+  
+   /*
    // add each element to the correct div
    // remove the element from the "accept" list
    forEach(doc.question,
            function(question)
-           {
+           {  
+              debug (serializeJSON(question));
               $(question.id + "_" + question.answer).checked = true
-              setStyle(question.id + "_answer", {'display':'block'})
+              //if  ($( question.id + "_answer" )) {
+              //    setStyle(question.id + "_answer", {'display':'block'})
+              // }
            })
+   */
    
+   order = calculate_order();
+   shuffle_questions(order);
    maybeEnableNext()
 }
 

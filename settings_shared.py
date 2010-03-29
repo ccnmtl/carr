@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'postgresql_psycopg2' # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = 'carr' # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
+DATABASE_USER = 'postgres'             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
@@ -94,8 +94,8 @@ WIND_SUPERUSER_MAPPER_GROUPS = ['anp8','jb2410','zm4','sbd12','egr2107','kmh2124
 # Pageblocks/Pagetree settings 
 PAGEBLOCKS = ['pageblocks.HTMLBlock',
               'pageblocks.PullQuoteBlock',
-              'pageblocks.PullQuoteBlock_2',
-              'pageblocks.PullQuoteBlock_3',
+              'carr_main.PullQuoteBlock_2',
+              'carr_main.PullQuoteBlock_3',
               'pageblocks.ImageBlock',
               'carr_main.FlashVideoBlock',
               'quiz.Quiz',
