@@ -25,29 +25,29 @@
                  <form id="form-{{question.id}}" method="post">
                        <ol type="A">
 	                     {% for answer in question.answer_set.all %}
-	                     {% if block.rhetorical %}
-                                     <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" onclick="onChooseAnswer(this)"/>{{answer.label}}</li>
-	                     {% else %}
-                          <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" onclick="onChooseAnswer(this)"/>{{answer.label}}</li>
-	                     {% endif %}
+                          <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" onclick="onChooseAnswer(this)" right_answer="{{answer.correct}}"/>{{answer.label}}</li>
+                          
 	                     {% endfor %}
                       </ol>
                  </form>
            </div>
 
-	   {% if block.rhetorical %}
            <div class="casesanswerdisplay">
-              <div id="{{question.id}}_answer" class="answer" style='display: none'>
+              <div id="{{question.id}}_answer" class="answer" >
                  <p>{% if question.correct_answer_letter %}<b>The
                  correct answer is
-                 {{question.correct_answer_letter}}:</b>{% endif %} {{question.explanation|markdown}}</p>
+                 {{question.correct_answer_letter}}: 
+                 {{question.correct_answer_value}}</b>{% endif %} {{question.explanation|markdown}}</p>
+                 <p>
+                 </p>
               </div>
            </div>
-	   {% endif %}
      </div>
 </div> 
 {% endfor %}
-
-{% if block.rhetorical %}
-<script src="http://mt.ccnmtl.columbia.edu/pedialabs/js/quizshow.js" type="text/javascript" language="javascript"></script>
-{% endif %}	
+<div id ="show_score">
+    <a onMouseUp="showScore()" >Show score</a>
+</div>
+<div id ="show_quiz_results">
+    You scored <span id="quiz_score"> </span> out of a possible <span id="quiz_max_score"> </span>
+</div>
