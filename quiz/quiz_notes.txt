@@ -1,0 +1,25 @@
+
+
+COPY:
+    Maria Janelli: yes - it's all on the gccnmtl site. both quizzes are final.
+    Maria Janelli: reporting the scores - instructors should be able to view scores for their current students
+    
+SCORING:
+    Maria Janelli: admins should be able to view scores for all students ever
+    Maria Janelli: sortable by name, grade, semester, year, instructor would be ideal
+    eddie: correct answers are highlighted
+    eddie: for now no feedback
+    Maria Janelli: right - no feedback
+
+    eddie: until quiz is completed
+    Maria Janelli: just system feedback
+
+    eddie: at which point we show a score
+    Maria Janelli: show the score (and correct answers) after submitting the pre-test
+
+    Maria Janelli: for the post-test, students cannot complete the module until they score 100% right
+    Maria Janelli: so there is no need to show wrong answers on the post-test
+
+    eddie: gotcha - so you would just show a link back to a fresh quiz if they don't get 100%
+    Maria Janelli: yes - a new quiz, randomized
+
