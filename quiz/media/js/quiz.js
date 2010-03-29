@@ -8,9 +8,9 @@ function calculate_order () {
     // return list(range($$('.cases').length)).sort(randOrd)
  
     // Show a certain number of required questions, then a certain number of random questions.
-    normal_order_questions = [1 ];
+    normal_order_questions = [1, 6];
     
-    random_order_questions = [3, 4, 5, 6, 7, 8, 9, 10, 11];
+    random_order_questions = [3, 4, 5,  7, 8, 9, 10, 11];
     
     how_many_random_order_questions = 1;
     
@@ -90,6 +90,42 @@ function loadStateSuccess(doc)
    order = calculate_order();
    shuffle_questions(order);
    maybeEnableNext()
+}
+
+function showScore()
+{
+    if (!confirm ('Are you done?')) {
+        return;
+    }
+   
+   // NOTE this includes chosen answers previously chosen... 
+   
+   // TODO consider wiping all answers on retake test.
+   // makes sense. Otherwise, if you answer wrong, you only have a chance to right the wrong if you're lucky enough to randomly see the question again.
+   
+    // show all the correct answers:
+    map (showElement , $$('.answer'))
+    
+    // all possible answers:
+    all_answers = $$('#sorted_questions_div .question')
+    
+    // all chosen answers:
+    chosen_answers = filter (function f(a) {return a.checked}, all_answers) 
+    
+    //TODO make sure that on "show score" all answers are ready. propmt for remaining unanaswered questions.
+    
+    max_score = chosen_answers.length
+   
+    actual_score = filter (function f(a) {return getNodeAttribute (a, 'right_answer') == 'True'}, chosen_answers).length
+   
+     //You scored <span ="quiz_score"> </span> out of a possible <span ="quiz_max_score"> </span>
+    
+    $('quiz_score').innerHTML = actual_score;
+    
+    $('quiz_max_score').innerHTML = max_score;
+    
+    
+    showElement('show_quiz_results')
 }
 
 function loadStateError(err)

@@ -117,6 +117,11 @@ class Question(models.Model):
             return None
         return self.answer_set.filter(correct=True)[0].ordinality
 
+    def correct_answer_value(self):
+        if self.question_type != "single choice":
+            return None
+        return self.answer_set.filter(correct=True)[0].value
+
     def correct_answer_letter(self):
         if self.question_type != "single choice" or self.answer_set.count() == 0:
             return None

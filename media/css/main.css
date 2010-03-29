@@ -1196,7 +1196,12 @@ display: block;
 	padding: 10px;
 	border: 1px solid #ccc;
 	background-color: #dadada;
+    display: none; /* for carr, not showing answers until after the entire quiz is taken. */
+}
 
+
+#show_quiz_results {
+    display: none;
 }
 
 .moretoggle {
