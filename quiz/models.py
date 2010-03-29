@@ -103,7 +103,7 @@ class Question(models.Model):
         ordering = ('quiz','ordinality')
 
     def __unicode__(self):
-        return self.text
+        return unicode(self.quiz.pageblock())  + (": %d " % self.ordinality) + " " + self.text[0:30] + "..."
 
     def add_answer_form(self,request=None):
         class AddAnswerForm(forms.ModelForm):

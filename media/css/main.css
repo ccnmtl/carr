@@ -1200,6 +1200,10 @@ display: block;
 }
 
 
+#show_score, #retake_quiz_div {
+    cursor: pointer;
+}
+
 #show_quiz_results {
     display: none;
 }
