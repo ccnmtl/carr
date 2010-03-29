@@ -8,18 +8,25 @@ function calculate_order () {
     // return list(range($$('.cases').length)).sort(randOrd)
  
     // Show a certain number of required questions, then a certain number of random questions.
-    normal_order_questions = [1, 6];
-    
-    random_order_questions = [3, 4, 5,  7, 8, 9, 10, 11];
-    
-    how_many_random_order_questions = 1;
-    
-    random_order_questions.sort(randomly)
-    
-    random_order_questions.length = how_many_random_order_questions;
-    
-    return normal_order_questions.concat ( random_order_questions)
  
+     if (window.location.href.match(/post_test/)) {
+        normal_order_questions = [1];
+        
+        random_order_questions = [2];
+        
+        how_many_random_order_questions = 1;
+        
+        random_order_questions.sort(randomly)
+        
+        random_order_questions.length = how_many_random_order_questions;
+        
+        tmp = normal_order_questions.concat ( random_order_questions)
+        
+        return  tmp.sort(randomly)
+     }
+     else {
+         return list(range($$('.cases').length))
+     }
 }
 
 function shuffle_questions(order) {
@@ -49,47 +56,41 @@ function debug(string)
       log("DEBUG " + string)
 }
 
+function retakeQuiz()
+{
+
+    if (!confirm ('Are you sure you want to start the quiz again? This will erase your answers.')) {
+        return;
+    }
+    hideElement ('show_quiz_results')
+    map (function f(q){ q.checked = false},$$('input.question'))
+    saveState()
+    window.location.reload()
+}
 
 
 function onChooseAnswer(ctrl)
 {
    a = ctrl.id.split('_')
    // set rhetorical questions to display:
-   if ($(a[0] + "_answer")) {
-    setStyle(a[0] + "_answer", {'display':'block'})
-   }
+   //if ($(a[0] + "_answer")) {
+   // setStyle(a[0] + "_answer", {'display':'block'})
+   // }
 }
 
 function loadStateSuccess(doc)
-
-{
-    //debug ("load state success");
-    //debug (doc);
-    //debug (serializeJSON(doc));
-    
-    forEach(doc.question, function (question) {
-        debug (serializeJSON(question));
-        $(question.id + "_" + question.answer).checked = true
-    }
-    );
-  
-   /*
-   // add each element to the correct div
-   // remove the element from the "accept" list
+{  
    forEach(doc.question,
            function(question)
            {  
               debug (serializeJSON(question));
               $(question.id + "_" + question.answer).checked = true
-              //if  ($( question.id + "_answer" )) {
-              //    setStyle(question.id + "_answer", {'display':'block'})
-              // }
            })
-   */
+   
    
    order = calculate_order();
    shuffle_questions(order);
-   maybeEnableNext()
+   //maybeEnableNext()
 }
 
 function showScore()
@@ -107,7 +108,7 @@ function showScore()
     map (showElement , $$('.answer'))
     
     // all possible answers:
-    all_answers = $$('#sorted_questions_div .question')
+    all_answers = $$('#sorted_questions_div input.question')
     
     // all chosen answers:
     chosen_answers = filter (function f(a) {return a.checked}, all_answers) 
@@ -146,9 +147,7 @@ function loadState()
 MochiKit.Signal.connect(window, "onload", loadState)
 
 function saveState()
-{
-   debug("saveState")
-   url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/save/"
+{   url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/save/"
  
    doc = 
    {
@@ -164,12 +163,15 @@ function saveState()
                  a = question.id.split('_')
                  q = {}
                  
+                 
                  q['id'] = a[0]
                  q['answer'] = a[1]
                  doc['question'].push(q)
               }
            })
-
+    debug (JSON.stringify(doc, null))
+    
+    
    // save state via a synchronous request. 
    var sync_req = new XMLHttpRequest();  
    sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
@@ -178,4 +180,3 @@ function saveState()
 }
 
 MochiKit.Signal.connect(window, "onbeforeunload", saveState)
-
