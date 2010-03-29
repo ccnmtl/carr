@@ -94,8 +94,8 @@ WIND_SUPERUSER_MAPPER_GROUPS = ['anp8','jb2410','zm4','sbd12','egr2107','kmh2124
 # Pageblocks/Pagetree settings 
 PAGEBLOCKS = ['pageblocks.HTMLBlock',
               'pageblocks.PullQuoteBlock',
-              'pageblocks.PullQuoteBlock_2',
-              'pageblocks.PullQuoteBlock_3',
+              'carr_main.PullQuoteBlock_2',
+              'carr_main.PullQuoteBlock_3',
               'pageblocks.ImageBlock',
               'carr_main.FlashVideoBlock',
               'quiz.Quiz',

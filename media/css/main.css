@@ -1167,6 +1167,8 @@ float: left;
 
 .cases {
 
+display:none;
+ /* i'm hiding the quiz questions at first, then shuffling them, then showing them once they're all shuffled. */
 padding: 10px 10px 20px 10px;
 border: 1px solid #ccc;
 margin-bottom: 10px;
