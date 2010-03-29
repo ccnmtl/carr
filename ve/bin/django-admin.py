@@ -1,4 +1,4 @@
-#!/usr/local/share/sandbox/tobaccocessation/ve/bin/python
+#!/usr/local/share/sandboxes/sdreher/tobaccocessation/ve/bin/python
 from django.core import management
 
 if __name__ == "__main__":
