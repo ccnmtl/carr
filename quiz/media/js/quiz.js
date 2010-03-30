@@ -5,7 +5,7 @@ function calculate_order () {
     //return list(range($$('.cases').length))
     
     //Show all questions in a random order:
-    // return list(range($$('.cases').length)).sort(randOrd)
+    // return list(range($$('.cases').length)).sort(randomly)
  
     // Show a certain number of required questions, then a certain number of random questions.
  
@@ -25,7 +25,7 @@ function calculate_order () {
         return  tmp.sort(randomly)
      }
      else {
-         return list(range($$('.cases').length))
+        return list(range($$('.cases').length)).sort(randomly)
      }
 }
 
