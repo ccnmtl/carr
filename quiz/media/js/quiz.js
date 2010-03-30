@@ -10,11 +10,13 @@ function calculate_order () {
     // Show a certain number of required questions, then a certain number of random questions.
  
      if (window.location.href.match(/post_test/)) {
-        normal_order_questions = [1];
+        //TODO: misleading. normal_order actually means the required ones. 
+         normal_order_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ]
+
+        random_order_questions = [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52]
+     
         
-        random_order_questions = [2];
-        
-        how_many_random_order_questions = 1;
+        how_many_random_order_questions = 10;
         
         random_order_questions.sort(randomly)
         
