@@ -32,6 +32,9 @@ function calculate_order () {
 function shuffle_questions(order) {
 
     nums = list(range(order.length))
+    if ($("sorted_questions_div")) {
+        removeElement ($("sorted_questions_div"));
+    }
     
     //create placeholders for the sorted questions
     $('sorted_questions').appendChild (DIV ({id : "sorted_questions_div"}, map (DIV, nums)));
@@ -80,16 +83,18 @@ function onChooseAnswer(ctrl)
 
 function loadStateSuccess(doc)
 {  
-   forEach(doc.question,
-           function(question)
-           {  
-              debug (serializeJSON(question));
-              $(question.id + "_" + question.answer).checked = true
-           })
    
    
    order = calculate_order();
    shuffle_questions(order);
+   forEach(doc.question,
+           function(question)
+           {  
+              debug (serializeJSON(question));
+              if ($(question.id + "_" + question.answer)) {
+                $(question.id + "_" + question.answer).checked = true
+              }
+           })
    //maybeEnableNext()
 }
 
@@ -110,7 +115,7 @@ function showScore()
     
     
     if (chosen_answers.length < number_of_questions_to_answer) {
-        alert ('Please answer all the questions');
+        alert ('Please answer all the questions.');
         return;
     }
     

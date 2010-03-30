@@ -12,7 +12,6 @@
 <span id="sorted_questions">
 </span>
 
-
 {% for question in block.question_set.all %}
 <div class="cases" id = "case_{{question.ordinality}}" >
      {{question.intro_text|markdown}}
@@ -37,7 +36,7 @@
                  <p>{% if question.correct_answer_letter %}<b>The
                  correct answer is
                  {{question.correct_answer_letter}}: 
-                 {{question.correct_answer_value}}</b>{% endif %} {{question.explanation|markdown}}</p>
+                 {{question.correct_answer_value}}</b>{% endif %} {{question.explanation|markdown}}.</p>
                  <p>
                  </p>
               </div>
@@ -50,10 +49,9 @@
 </div>
 
 <div id ="show_quiz_results">
-    You scored <span id="quiz_score"> </span> out of a possible <span id="quiz_max_score"> </span>
+    You scored <span id="quiz_score">x</span> out of a possible <span id="quiz_max_score">y</span>.
 </div>
 
 <div id ="retake_quiz_div">
     <a onMouseUp="retakeQuiz()" >Retake Quiz</a>
 </div>
-
