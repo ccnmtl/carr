@@ -4,6 +4,7 @@ from django.contrib import admin
 
 
 class AnswerAdmin(admin.ModelAdmin):
+    search_fields = ['value', 'question']
     #search_fields = ['short_title', 'long_title', 'crib_notes']
     list_display = ('value', 'question')
     
@@ -12,7 +13,7 @@ class AnswerAdmin(admin.ModelAdmin):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    #search_fields = ['short_title', 'long_title', 'crib_notes']
+    search_fields = ['value']
     #list_display = ('value', 'question')
     #list_display = ['text', 'quiz']
     list_display = ['text', 'ordinality']
