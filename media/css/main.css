@@ -1204,7 +1204,7 @@ display: block;
     cursor: pointer;
 }
 
-#show_quiz_results {
+#show_quiz_results,  #retake_quiz_div {
     display: none;
 }
 
