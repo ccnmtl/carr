@@ -95,23 +95,33 @@ function loadStateSuccess(doc)
 
 function showScore()
 {
-    if (!confirm ('Are you done?')) {
-        return;
-    }
-   
-   // NOTE this includes chosen answers previously chosen... 
    
    // TODO consider wiping all answers on retake test.
    // makes sense. Otherwise, if you answer wrong, you only have a chance to right the wrong if you're lucky enough to randomly see the question again.
    
-    // show all the correct answers:
-    map (showElement , $$('.answer'))
     
-    // all possible answers:
+    // all visible answers:
     all_answers = $$('#sorted_questions_div input.question')
     
     // all chosen answers:
     chosen_answers = filter (function f(a) {return a.checked}, all_answers) 
+    
+    number_of_questions_to_answer = $$('#sorted_questions_div .cases').length
+    
+    
+    if (chosen_answers.length < number_of_questions_to_answer) {
+        alert ('Please answer all the questions');
+        return;
+    }
+    
+    if (!confirm ('Are you done?')) {
+        return;
+    }
+    
+    // show all the correct answers:
+    map (showElement , $$('.answer'))
+    
+    hideElement ('show_score');
     
     //TODO make sure that on "show score" all answers are ready. propmt for remaining unanaswered questions.
     
@@ -126,7 +136,9 @@ function showScore()
     $('quiz_max_score').innerHTML = max_score;
     
     
-    showElement('show_quiz_results')
+    showElement('show_quiz_results');
+    
+    showElement ('retake_quiz_div');
 }
 
 function loadStateError(err)
