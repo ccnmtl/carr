@@ -40,7 +40,8 @@ function shuffle_questions(order) {
     $('sorted_questions').appendChild (DIV ({id : "sorted_questions_div"}, map (DIV, nums)));
     
     destination_divs = $('sorted_questions_div').childNodes;
-    source_divs = map (function a (n){ return  $('case_' + n)}, order);
+
+    source_divs = $$('.cases')
 
     // swap the questions and the placeholders:
     map (function f (a) { swapDOM (a[0], a[1])}, zip (destination_divs, source_divs));
