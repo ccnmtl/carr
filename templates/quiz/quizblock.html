@@ -13,7 +13,7 @@
 </span>
 
 {% for question in block.question_set.all %}
-<div class="cases" id = "case_{{question.ordinality}}" >
+<div class="cases" id = "case_{{question.id}}" >
      {{question.intro_text|markdown}}
 
      <div class="casetitle"> Question <span class = "question_order">x</span>:</div>
