@@ -1,38 +1,49 @@
-function randomly(){    return (Math.round(Math.random())-0.5);}
+function randomly(){ return 0.5 - Math.random();}
+
+http://javascript.about.com/library/blsort2.htm
 
 function calculate_order () {
+ 
+    // Show a certain number of required questions, then a certain number of random questions.
+     if (window.location.href.match(/post_test/)) {
+        
+        //These questions *will* be on the quiz regardless of the order the questions are presented in:
+         required_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ];
+
+        // These questions are questions that *might* be on the quiz:
+        randomly_picked_questions = [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
+     
+        // How many of the questions that *might* be on the quiz should we add to the ones that *will* be?
+        how_many_randomly_picked_questions = 10;
+        
+        // shake the hat:
+        randomly_picked_questions.sort(randomly);
+
+        // ok, pick that many from the hat -- assign length in order to pick.        
+        randomly_picked_questions.length = how_many_randomly_picked_questions;
+        
+        
+        final_list_of_questions = required_questions.concat ( randomly_picked_questions);
+        
+        // reshuffle all questions so they appear in a random order:
+        final_list_of_questions.sort(randomly)
+        
+        return final_list_of_questions;
+     }
+     else {
+        return list(range($$('.cases').length)).sort(randomly)
+     }
+     
+     
     //Show all questions:
     //return list(range($$('.cases').length))
     
     //Show all questions in a random order:
     // return list(range($$('.cases').length)).sort(randomly)
- 
-    // Show a certain number of required questions, then a certain number of random questions.
- 
-     if (window.location.href.match(/post_test/)) {
-        //TODO: misleading. normal_order actually means the required ones. 
-         normal_order_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ]
-
-        random_order_questions = [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52]
-     
-        
-        how_many_random_order_questions = 10;
-        
-        random_order_questions.sort(randomly)
-        
-        random_order_questions.length = how_many_random_order_questions;
-        
-        tmp = normal_order_questions.concat ( random_order_questions)
-        
-        return  tmp.sort(randomly)
-     }
-     else {
-        return list(range($$('.cases').length)).sort(randomly)
-     }
 }
 
 function shuffle_questions(order) {
-
+    // ORDER is an array of database ID's of questions. It is assumed that all questions, from ID 13 through 52, are on the page.
     nums = list(range(order.length))
     if ($("sorted_questions_div")) {
         removeElement ($("sorted_questions_div"));
@@ -41,14 +52,16 @@ function shuffle_questions(order) {
     //create placeholders for the sorted questions
     $('sorted_questions').appendChild (DIV ({id : "sorted_questions_div"}, map (DIV, nums)));
     
-    destination_divs = $('sorted_questions_div').childNodes;
+    // source_divs is a new ordering of the existing, currently hidden divs.
+    source_divs = map (function(a) { return $('case_' + a)}, order)
 
-    source_divs = $$('.cases')
+    //destination_divs is a bunch of empty placeholder divs:
+    destination_divs = $('sorted_questions_div').childNodes;
 
     // swap the questions and the placeholders:
     map (function f (a) { swapDOM (a[0], a[1])}, zip (destination_divs, source_divs));
     
-    // show the resulting sorted divs, leaving the others hidden as per the CSS file.
+    // show the resulting sorted divs, leaving the un-chosen ones hidden as per the CSS file.
     map (function f (a) { setStyle (a, {'display':'block'}) }, $$('#sorted_questions_div div.cases'))
 
     // number the questions:
