@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block js %}
+    <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+
+
+
+
+<ul>
+{% for score in scores %}
+<li>
+    {{score.student}}
+    <ul>
+    
+    {% if score.quiz_scores%}
+        {% for s in score.quiz_scores %}
+            <li>
+                {{s.quiz.label}}: {{s.score}} correct out of {{s.answer_count}} questions
+            </li>
+        {%endfor %}
+    {%else%}
+        No results.
+    {%endif%}
+    </ul>
+</li>
+{%endfor %}
+</ul>
+{% endblock %}
+
+
