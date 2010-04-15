@@ -2,6 +2,9 @@ from django.contrib import admin
 from models import SiteSection
 from models import Section
 from pagetree.models import Hierarchy, SectionChildren, PageBlock
+from django.contrib.flatpages.models import FlatPage
+from django.contrib.flatpages.admin import FlatPageAdmin as FlatPageAdminOld
+
 
 class SectionChildrenInline(admin.StackedInline):
     model = SectionChildren
@@ -32,4 +35,15 @@ admin.site.unregister(Section)
 admin.site.register(SiteSection, SectionAdmin)
 
 
+
+
+
+class FlatPageAdmin(FlatPageAdminOld):
+    class Media:
+        js = ('js/tiny_mce/tiny_mce.js',
+              'js/tiny_mce/textareas.js',)
+
+# We have to unregister it, and then reregister
+admin.site.unregister(FlatPage)
+admin.site.register(FlatPage, FlatPageAdmin)
 

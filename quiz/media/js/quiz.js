@@ -1,11 +1,12 @@
 function randomly(){ return 0.5 - Math.random();}
 
-http://javascript.about.com/library/blsort2.htm
+
+post_test = window.location.href.match(/post_test/);
 
 function calculate_order () {
  
-    // Show a certain number of required questions, then a certain number of random questions.
-     if (window.location.href.match(/post_test/)) {
+    // Show a some required questions, and some questions picked at random out of a hat, in a random order..
+     if (post_test) {
         
         //These questions *will* be on the quiz regardless of the order the questions are presented in:
          required_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ];
@@ -106,7 +107,7 @@ function loadStateSuccess(doc)
    forEach(doc.question,
            function(question)
            {  
-              debug (serializeJSON(question));
+              //debug (serializeJSON(question));
               if ($(question.id + "_" + question.answer)) {
                 $(question.id + "_" + question.answer).checked = true
               }

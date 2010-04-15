@@ -7,6 +7,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from pagetree.models import Hierarchy
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
+from django.contrib.auth.models import User
+
 
 class rendered_with(object):
     def __init__(self, template_name):
@@ -101,6 +103,74 @@ def add_answer_to_question(request,id):
         answer.save()
     return HttpResponseRedirect(reverse("edit-question",args=[question.id]))
 
+#@rendered_with('quiz/scores.html')
+#@rendered_with('quiz/edit_answer.html')
+
+@rendered_with('quiz/scores.html')
+def scores(request):
+    """
+    instructors should be able to view scores for their current students
+    admins should be able to view scores for all students ever
+    sortable by name, grade, semester, year, instructor would be ideal
+    """
+    scores = []
+    #import pdb
+    #pdb.set_trace()
+    
+    
+    #get students from request.user
+    #if admin:
+    #    students = User.objects.all()    
+    students = User.objects.all()
+    questions = Question.objects.all()
+    quizzes = Quiz.objects.all()
+    
+    #TODO: accept quiz ID as an argument.           
+    import pdb
+    
+    quiz_key = {}
+    answer_key = {}
+    for question in questions:
+        try:
+            answer_key [question.id ] = question.answer_set.get(correct=True).id 
+            quiz_key [question.id ] = question.quiz.id
+        except:
+            pass
+
+    for student in students:
+        
+        doc = "{}"
+        try:
+            state = ActivityState.objects.get(user=student)
+            if (len(state.json) > 0):
+                doc = state.json
+                score = simplejson.loads (doc)['question']
+                results = [{
+                            'question':         int(a['id']), 
+                            'actual_answer':    int(a['answer']),
+                            'correct_answer':   answer_key[int(a['id'])],
+                            'quiz_number':      quiz_key  [int(a['id'])]
+                } for a in score]
+
+                quiz_scores = []
+                
+                for quiz in quizzes:
+                    answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
+                    if answer_count:                
+                        correct_answer_count = len([a for  a in results if a['correct_answer'] == a['actual_answer'] and a['quiz_number'] == quiz.id ])
+                        quiz_scores.append( { 'quiz': quiz, 'score': correct_answer_count, 'answer_count' : answer_count})
+                scores.append( {
+                    'student': student,
+                    'quiz_scores': quiz_scores
+                })
+                
+        except:
+            pass
+        
+         
+    return { 'scores':  scores, 'quizzes':quizzes}
+
+
 @rendered_with('quiz/edit_answer.html')
 def edit_answer(request,id):
     answer = get_object_or_404(Answer,id=id)
@@ -121,12 +191,7 @@ def loadstate(request):
     
 @login_required
 def savestate(request):
-    #import pdb
-    #pdb.set_trace()
-    
     json = request.POST['json']
-    
-    print json
     try: 
         state = ActivityState.objects.get(user=request.user)
         state.json = json

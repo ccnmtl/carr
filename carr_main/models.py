@@ -50,16 +50,17 @@ class SiteSection(Section):
     def __unicode__(self):
         return self.label
         
-    @classmethod
-    def in_current_site(self):
-        return Site.objects.get(id=settings.SITE_ID) in x.sites.all()
-        
     def site_section_nav (self, traversal_function):
         """ traverse the tree until you can return a page that visible on the current site"""
+
+        
+
+        
         x = self
+        
         while traversal_function(x):
-             x = traversal_function(x).section_site()
-             if x.in_current_site:
+            x = traversal_function(x).section_site()
+            if Site.objects.get(id=settings.SITE_ID) in x.sites.all():
                 return x
         return None
         

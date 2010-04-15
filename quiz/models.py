@@ -20,6 +20,10 @@ class Quiz(models.Model):
 
     def __unicode__(self):
         return unicode(self.pageblock())
+        
+    def label(self):
+        return self.pageblock().label
+    
 
     def needs_submit(self):
         return not self.rhetorical

@@ -31,6 +31,9 @@ def page(request,path):
     ss = SiteState.objects.get_or_create(user=request.user)[0]
     current_site = Site.objects.get_current()
     
+    #import pdb
+    #pdb.set_trace()
+    
     # Skip to the first leaf, make sure to mark these sections as visited
     if (current_root != section):
         ss.set_has_visited(ancestors)
