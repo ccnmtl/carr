@@ -1,17 +1,74 @@
-   <link href="/activity/treatment/media/css/treatment.css" rel="stylesheet" type="text/css" />
-
+   <link href="/site_media/bruise_recon/css/bruise_recon.css" rel="stylesheet" type="text/css" />
    <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script>
    <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/Visual.js"></script>
-   <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/DragAndDrop.js"></script>
    <script type="text/javascript" src="/site_media/js/json2.js"></script>
-   <script type="text/javascript" src="/activity/treatment/media/js/treatment.js"></script>
+   <script type="text/javascript" src="/activity/treatment/media/js/bruise_recon.js"></script>
+
 
 <a class="reset_button" href="#" onclick="clearState(); return false;">Reset Exercise</a>
-   <h5>
-     Select ALL treatment options likely to be effective for patients of each type. <br />
-     Assume that all patients have a non-significant health history and no prior quit attempts. 
-    
-   </h5>
+   
+   <div class = "case_title">
+    Case name: {{block.case.name}}
+   </div>
+
+
+
+   
+   <div class = "case_info_div">
+       <div>Case History:</div>
+       <div>
+       {{block.case.case_history}} 
+       </div>
+       
+       <div>Injury Photos and Location:</div>
+       <div>
+        <img class= "bruise_recon_img" src = "/uploads/{{block.case.image}}" /> 
+       </div>
+       
+   </div>
+
+   <div class ="questions_div">
+       <div>
+        Questions:
+       </div>
+       <div>
+           Is this likely to be a case of child abuse? 
+           <div id ="answer_yes">Yes</div>
+           <div id ="answer_no">No</div>
+       </div>
+
+
+       <div class = "factors_div">
+            <div>What factor(s) led you to this decision?</div>
+            
+            <div class = "bruise_recon_checkbox_div" id="patterns">
+                Patterns {{block.case.factors_for_decision}} 
+            </div>
+            <div class = "bruise_recon_checkbox_div" id="severity">
+                Severity {{block.case.factors_for_decision}} 
+            </div>
+            <div class = "bruise_recon_checkbox_div" id="body_location">
+                Body Location {{block.case.factors_for_decision}} 
+            </div>
+            <div class = "bruise_recon_checkbox_div" id="credibility">
+                Explanation Credibility {{block.case.factors_for_decision}} 
+            </div>
+       </div>
+   </div>
+   
+   <div class="feedback_div">
+       <div>
+           Correct answer: <em>{{block.case.correct_answer}}</em> 
+       </div>
+       
+       <div>Explanation:</div>
+       
+       <div class="explanation">
+            {{block.case.explanation}} 
+       </div>
+   </div>
+
+   <!--
     	<div id="treatment_leftcol">
 		  <h6>Patient Smokes</h6>
 		  <div class="smoker_quantity">
@@ -27,8 +84,9 @@
 		     <div class="footer">2 packs per day</div>
 		  </div>
 		</div>
-		
+		-->
 		<!--  DROP TARGETS -->
+		<!--
 		<div id="treatment_centercol">
 		  <h6>Best Treatment Choices</h6>
 		  <div id="treatment_light_smoker" class="treatment_choice"></div><div class="countdown">Treatments Remaining: <span id="light_smoker_countdown">5</span></div>
@@ -39,8 +97,9 @@
            You've successfully completed the exercise.<br /><br />
         </div>
 		</div>
-		
+		-->
 		<!-- DRAGGABLE ITEMS -->
+	    <!--
 		<div id="treatment_rightcol">
 		    <h6>Available Medications</h6>
           <table id="treatments" class="treatments" cellpadding="0">
@@ -55,6 +114,6 @@
 		    
           </table>
 		</div>
-     
+    
      <span id="treatment_template" style="display: none;"><img src="/activity/treatment/media/images/"></span>
-     
+     --> 

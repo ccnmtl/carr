@@ -13,10 +13,9 @@ class Case(models.Model):
     correct_answer = models.CharField(max_length=25)
     explanation = models.TextField()
     factors_for_decision = models.TextField()
-    
             
     def __unicode__(self):
-        return "%s" % (self.case_history)
+        return "%s" % (self.name)
     
 
 class Block(models.Model):
@@ -57,7 +56,9 @@ class Block(models.Model):
         self.save()
         
     def case(self):
-        return Case.objects.filter(name=self.case_name).order_by('id')
+        #import pdb
+        #pdb.set_trace()
+        return Case.objects.get(name=self.case_name)
 
 
             
