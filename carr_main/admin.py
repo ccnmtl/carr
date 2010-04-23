@@ -37,7 +37,7 @@ admin.site.register(SiteSection, SectionAdmin)
 
 
 
-
+print "AAAAAAA"
 class FlatPageAdmin(FlatPageAdminOld):
     class Media:
         js = ('js/tiny_mce/tiny_mce.js',

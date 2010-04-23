@@ -52,12 +52,7 @@ class SiteSection(Section):
         
     def site_section_nav (self, traversal_function):
         """ traverse the tree until you can return a page that visible on the current site"""
-
-        
-
-        
         x = self
-        
         while traversal_function(x):
             x = traversal_function(x).section_site()
             if Site.objects.get(id=settings.SITE_ID) in x.sites.all():
