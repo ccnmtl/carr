@@ -2,69 +2,86 @@
    <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script>
    <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/Visual.js"></script>
    <script type="text/javascript" src="/site_media/js/json2.js"></script>
-   <script type="text/javascript" src="/activity/treatment/media/js/bruise_recon.js"></script>
+   <script type="text/javascript" src="/site_media/bruise_recon/js/bruise_recon.js"></script>
 
 
+<!--
 <a class="reset_button" href="#" onclick="clearState(); return false;">Reset Exercise</a>
-   
+ 
+ -->
+   <!--
    <div class = "case_title">
     Case name: {{block.case.name}}
    </div>
-
-
-
+-->
    
-   <div class = "case_info_div">
-       <div>Case History:</div>
-       <div>
-       {{block.case.case_history}} 
+   <div id = "case_info_div">
+        <div id ="bruise_recon_photo_container">
+           <div>Injury Photos and Location:</div>
+           <div>
+            <img class= "bruise_recon_img" src = "/uploads/{{block.case.image}}" /> 
+           </div>
        </div>
        
-       <div>Injury Photos and Location:</div>
-       <div>
-        <img class= "bruise_recon_img" src = "/uploads/{{block.case.image}}" /> 
+       <div id = "bruise_recon_history_container">
+           <div>Case History:</div>
+           <div>
+           {{block.case.case_history}} 
+           </div>
        </div>
-       
    </div>
 
-   <div class ="questions_div">
+   <div id ="questions_div">
        <div>
         Questions:
        </div>
        <div>
-           Is this likely to be a case of child abuse? 
-           <div id ="answer_yes">Yes</div>
-           <div id ="answer_no">No</div>
+           Is this likely to be a case of child abuse?
        </div>
-
+       <div class = "buttons_div">
+           <div class="answer_button purple_button" id ="answer_yes">Yes</div>
+           <div class="answer_button purple_button" id ="answer_no">No</div>
+       </div>
 
        <div class = "factors_div">
             <div>What factor(s) led you to this decision?</div>
-            
-            <div class = "bruise_recon_checkbox_div" id="patterns">
-                Patterns {{block.case.factors_for_decision}} 
+            <!--
+             {{block.case.factors_for_decision}} 
+            -->
+            <div class ="bruise_recon_checkbox_div purple_button" id="patterns">
+                Patterns
             </div>
-            <div class = "bruise_recon_checkbox_div" id="severity">
-                Severity {{block.case.factors_for_decision}} 
+            <div class ="bruise_recon_checkbox_div purple_button" id="severity">
+                Severity
             </div>
-            <div class = "bruise_recon_checkbox_div" id="body_location">
-                Body Location {{block.case.factors_for_decision}} 
+            <div class ="bruise_recon_checkbox_div purple_button" id="location">
+                Body Location
             </div>
-            <div class = "bruise_recon_checkbox_div" id="credibility">
-                Explanation Credibility {{block.case.factors_for_decision}} 
+            <div class ="bruise_recon_checkbox_div purple_button" id="explanation">
+                Explanation&nbsp;Credibility
             </div>
        </div>
+       
+       
+       <div class="submit_div purple_button"  id ="submit_div">Submit</div>
    </div>
    
-   <div class="feedback_div">
-       <div>
-           Correct answer: <em>{{block.case.correct_answer}}</em> 
+   <div id="feedback_div">
+       <div id = "your_answer_was">
+       </div>
+       
+       <div id ="correct_answer">
+           Correct answer: Is this a case of abuse? <em>{{block.case.correct_answer}}</em>. 
        </div>
        
        <div>Explanation:</div>
        
        <div class="explanation">
             {{block.case.explanation}} 
+       </div>
+       
+       <div id="correct_factors">
+            {{block.case.factors_for_decision}} 
        </div>
    </div>
 
