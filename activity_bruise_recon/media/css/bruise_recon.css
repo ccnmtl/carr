@@ -42,10 +42,16 @@ div#correct_factors{
     display:none;
 }
 
+div#hidden_js_info {
+    display:none
+}
+
+
 div#bruise_recon_photo_container {
    float:left;
  
 }
+
 
 div#bruise_recon_photo_container, div#bruise_recon_history_container {
   padding: 5px;
