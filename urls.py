@@ -26,9 +26,9 @@ urlpatterns += patterns('',
                        (r'^main/', include('carr_main.urls')),
                        
                        
-                       (r'^activity/bruise_recon/', include('carr.activity_bruise_recon.urls')),
+                       (r'^activity/bruise_recon/',  include('carr.activity_bruise_recon.urls')),
                        (r'^activity/taking_action/', include('carr.activity_taking_action.urls')),
-                       (r'^activity/mini_cases/', include('carr.activity_mini_cases.urls')),
+                       (r'^activity/mini_cases/',    include('carr.activity_mini_cases.urls')),
                        
                        
                        
