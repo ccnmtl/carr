@@ -30,7 +30,7 @@
 <div id="questions_div">
 
 	<h4>
-		Questions: 
+		Question: 
 	</h4>
 	
 	<p>
@@ -70,33 +70,44 @@
 		</div>
 	</div>
 	
-	<div class="submit_div purple_button" id="submit_div">
-		Submit
+	<div id="submit_div">
+		Answer Question
 	</div>
 	
 </div>
 
 <div id="feedback_div">
 
-	<div id="your_answer_was">
-	</div>
+	<div id="your_answer_was"></div>
 	
 	<div id="correct_answer">
-		Correct answer: Is this a case of abuse? 
+		<h4>Correct Answer:</h4> 
 		
-		<em>{{block.case.correct_answer}}</em>. 
+		<p>
+		Is this a case of abuse? <em>{{block.case.correct_answer}}</em>. 
+		</p>
+		
+		<div id="correct_factors">
+			<p>
+			What factor(s) led to this decision? <em>{{block.case.factors_for_decision}}</em>. 
+			</p>
+			
+		</div>
+		
 	</div>
 	
-	<div>
-		Explanation:
-	</div>
 	
 	<div class="explanation">
+	
+		<h4>
+		Explanation:
+		</h4>
+		
+		<p>
 		{{block.case.explanation}} 
+		</p>
+		
 	</div>
 	
-	<div id="correct_factors">
-		{{block.case.factors_for_decision}} 
-	</div>
 	
 </div>
