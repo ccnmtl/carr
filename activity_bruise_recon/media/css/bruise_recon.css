@@ -80,7 +80,7 @@ div#hidden_js_info { display: none; }
 
 div.answer_button { float: left; }
 
-div.buttons_div, div.purple_button
+div.buttons_div
 {
 	float: none;
 	clear: both;
