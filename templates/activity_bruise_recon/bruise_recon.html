@@ -1,11 +1,16 @@
-   <link href="/site_media/bruise_recon/css/bruise_recon.css" rel="stylesheet" type="text/css" />
-   <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script>
-   <script type="text/javascript" src="/site_media/js/json2.js"></script>
-   <script type="text/javascript" src="/site_media/bruise_recon/js/bruise_recon.js"></script>
- 
-   <div id ="hidden_js_info">
-    <div id = "case_name">{{block.case.name}}</div>
-   </div>
+<link href="/site_media/bruise_recon/css/bruise_recon.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script> 
+<script type="text/javascript" src="/site_media/js/json2.js"></script> 
+<script type="text/javascript" src="/site_media/bruise_recon/js/bruise_recon.js"></script> 
+
+<div id="hidden_js_info">
+
+	<div id="case_name">
+		{{block.case.name}}
+	</div>
+	
+</div>
 
 <div id="case_info_div">
 
@@ -14,9 +19,10 @@
 	</div>
 	
 	<div id="bruise_recon_history_container">
-	
-		<h5>Case History</h5>
-		{{block.case.case_history}}
+		<h5>
+			Case History
+		</h5>
+		{{block.case.case_history}} 
 	</div>
 	
 </div>
@@ -33,53 +39,64 @@
 	
 	<div class="buttons_div">
 		<div class="answer_button purple_button" id="answer_yes">
-			Yes
+			Yes 
 		</div>
 		<div class="answer_button purple_button" id="answer_no">
-			No
+			No 
 		</div>
 	</div>
+	
 	<br />
+	
 	<p>
-		What factor(s) led you to this decision?
+		What factor(s) led you to this decision? 
 	</p>
+	
 	<div class="factors_div">
 		<!--
-             {{block.case.factors_for_decision}} 
-            -->
-            <div class ="bruise_recon_checkbox_div purple_button" id="patterns">
-                Patterns
-            </div>
-            <div class ="bruise_recon_checkbox_div purple_button" id="severity">
-                Severity
-            </div>
-            <div class ="bruise_recon_checkbox_div purple_button" id="location">
-                Body Location
-            </div>
-            <div class ="bruise_recon_checkbox_div purple_button" id="explanation">
-                Explanation&nbsp;Credibility
-            </div>
-       </div>
-       
-       
-       <div class="submit_div purple_button"  id ="submit_div">Submit</div>
-   </div>
-   
-   <div id="feedback_div">
-       <div id = "your_answer_was">
-       </div>
-       
-       <div id ="correct_answer">
-           Correct answer: Is this a case of abuse? <em>{{block.case.correct_answer}}</em>. 
-       </div>
-       
-       <div>Explanation:</div>
-       
-       <div class="explanation">
-            {{block.case.explanation}} 
-       </div>
-       
-       <div id="correct_factors">
-            {{block.case.factors_for_decision}} 
-       </div>
-   </div>
+		{{block.case.factors_for_decision}} 
+		-->
+		<div class="bruise_recon_checkbox_div purple_button" id="patterns">
+			Patterns 
+		</div>
+		<div class="bruise_recon_checkbox_div purple_button" id="severity">
+			Severity 
+		</div>
+		<div class="bruise_recon_checkbox_div purple_button" id="location">
+			Body Location 
+		</div>
+		<div class="bruise_recon_checkbox_div purple_button" id="explanation">
+			Explanation&nbsp;Credibility 
+		</div>
+	</div>
+	
+	<div class="submit_div purple_button" id="submit_div">
+		Submit
+	</div>
+	
+</div>
+
+<div id="feedback_div">
+
+	<div id="your_answer_was">
+	</div>
+	
+	<div id="correct_answer">
+		Correct answer: Is this a case of abuse? 
+		
+		<em>{{block.case.correct_answer}}</em>. 
+	</div>
+	
+	<div>
+		Explanation:
+	</div>
+	
+	<div class="explanation">
+		{{block.case.explanation}} 
+	</div>
+	
+	<div id="correct_factors">
+		{{block.case.factors_for_decision}} 
+	</div>
+	
+</div>
