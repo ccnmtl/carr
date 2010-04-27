@@ -1,5 +1,7 @@
    <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script>
    
+   <script type="text/javascript" src="/site_media/taking_action/js/nav.js"></script>
+   
    <script type="text/javascript" src="/site_media/taking_action/js/review_case_history.js"></script>
    <script type="text/javascript" src="/site_media/taking_action/js/analyze_action_criteria.js"></script>
    <script type="text/javascript" src="/site_media/taking_action/js/choose_action.js"></script>
@@ -55,9 +57,8 @@
    
    <div class = "activity_step" id ="review_case_history">
         <div class = "half-page">
-        Case History
-        (case history goes here.)
-        
+                <div class="case_history_title">Case History</div>
+                <div id = "review_case_history_copy">A social worker is working with a father and his 10-year daughter at a family agency. The father and the girl’s mother are engaged in custody fight over the daughter. The daughter tells the social worker that her mother’s new boyfriend is creepy. The social worker asks the daughter what she means. The daughter says that the boyfriend tells her that he likes sex. The father interrupts saying “That man is a pervert and he should not be anywhere near my daughter. He is scaring my daughter. She told me that he rubbed up against her, isn’t that right honey? (she nods). That jerk should not be in that house. Her mother is not protecting her”. The social worker wonders if the father is making everything up to win custody.</div>
         </div>
         <div class = "half-page">
            <p>Your Observations</p>
@@ -66,37 +67,74 @@
            <p> <input type="checkbox" /> Checkbox</p>
            <p> <input type="checkbox" /> Checkbox</p>
            <p> Other observations:</p>
-           <p><textarea id = "asd" >dsf</textarea></p>
-            <div class="purple_button" id = "review_case_history_next">next</div>
+           <p><textarea id = "other_observations" ></textarea></p>
         </div>
-        
-    
+        <div class="purple_button taking_action_next_button">next</div>
    </div>
+   
+   
+   
+   
    <div class = "activity_step" id ="analyze_action_criteria">
-    analyze
-   <div class="purple_button" id = "analyze_action_criteria_next">next</div>
+    <div class="review_case_button">Review Case</div>
+    <div class = "half-page">
+           <p>Your Observations</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> Other observations:</p>
+           <p><textarea id = "other_observations" ></textarea></p>
+    </div>
+        <div class = "half-page">
+            Criteria for Action
+           <p> <input type="checkbox" />Child is in imminent danger</p>
+           <p> <input type="checkbox" />You believe this child is being abused</p>
+           <p> <input type="checkbox" />You are acting in a professional capacity</p>
+        </div>
+        <div class="purple_button taking_action_next_button">next</div>
    </div>
    
    
    <div class = "activity_step" id ="choose_action">
-    choose
-      <div class="purple_button" id = "choose_action_criteria_next">next</div>
- 
+       <div class = "half-page">
+           <p>Your Observations</p>
+           <p> Observation</p>
+           <p> Other observations:</p>
+           <p><textarea id = "other_observations" ></textarea></p>
+           <p> Criteria for Action:</p>
+           <p>Child is in imminent danger</p>
+           <p>You believe this child is being abused</p>
+           <p>You are acting in a professional capacity</p>
+       </div>
+       <div class = "half-page">Choose an Action Plan
+            <div class = "action_button">
+                <p class = "action_heading">Do Nothing</p>
+                <p class = "action explanation">This is the wrong answer because...</p>
+            </div>
+            <div class = "action_button">
+                <p class = "action_heading">Call SCR</p>
+                <p class = "action explanation">This is the wrong answer because...</p>
+            </div>
+            <div class = "action_button">
+                <p class = "action_heading">Call 911</p>
+                <p class = "action explanation">This is the wrong answer because...</p> 
+            </div>
+       </div>
+      <div class="purple_button taking_action_next_button" >next</div>
    </div>
-   <div class = "activity_step" id ="action_feedback">
-    feedback
-   </div>
+   
+   
    <div class = "activity_step" id ="next_steps">
-   next steps
-   </div>
-   <div class = "activity_step" id ="next_steps_feedback">
-   feedback
+        next steps
+        <div class="purple_button taking_action_next_button">next</div>
    </div>
    <div class = "activity_step" id ="complete_report">
-    report
+        report
+        <div class="purple_button taking_action_next_button">next</div>
    </div>
    <div class = "activity_step" id ="case_summary">
-    summary
+        summary
    </div>
 
    

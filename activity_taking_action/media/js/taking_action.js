@@ -24,10 +24,15 @@ function maybeEnableNext()
 
 function load_step (step_name) {
     logDebug (step_name);
+    map (hideElement, $$('.activity_step'))
     showElement($$('div#' + step_name +  '.activity_step')[0] );
-    steps[step_name].load()
-    
+    if (steps[step_name] != undefined) {
+        steps[step_name].load()
+    }
 }
+
+
+
 
 function loadStateSuccess(doc)
 {
@@ -121,7 +126,7 @@ function like_checkbox(selected_class, all_button_class, the_element) {
 //toggleElement
 function hide_answer()
 {
-    hideElement('feedback_div');
+    //hideElement('feedback_div');
 /*
    if (!$('dosage_correct'))
       $("dosage").focus()
