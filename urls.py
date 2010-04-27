@@ -24,9 +24,14 @@ urlpatterns += patterns('',
                        (r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logged_out.html'}),
                        (r'^admin/pagetree/',include('pagetree.urls')),
                        (r'^main/', include('carr_main.urls')),
-                       #(r'^activity/treatment/', include('carr.activity_treatment_choice.urls')),
-                       #(r'^activity/prescription/', include('carr.activity_prescription_writing.urls')),
-                       #(r'^activity/virtualpatient/', include('carr.activity_virtual_patient.urls')),
+                       
+                       
+                       (r'^activity/bruise_recon/',  include('carr.activity_bruise_recon.urls')),
+                       (r'^activity/taking_action/', include('carr.activity_taking_action.urls')),
+                       (r'^activity/mini_cases/',    include('carr.activity_mini_cases.urls')),
+                       
+                       
+                       
                        (r'^activity/quiz/', include('carr.quiz.urls')),
                        ('^accounts/',include('djangowind.urls')),
                        
@@ -36,13 +41,6 @@ urlpatterns += patterns('',
                        (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media_root}),
                        (r'^uploads/(?P<path>.*)$','django.views.static.serve',{'document_root' : settings.MEDIA_ROOT}),
                        
-                       # completely override pagetree for virtual patient. it's too much to fit it into the structure                       
-                       #url(r'^assist/activity-virtual-patient/$', 'tobaccocessation.activity_virtual_patient.views.root', name='root'),
-                       #url(r'^assist/activity-virtual-patient/options/(?P<patient_id>\d+)/$', 'tobaccocessation.activity_virtual_patient.views.options', name='options'),
-                       #url(r'^assist/activity-virtual-patient/selection/(?P<patient_id>\d+)/$', 'tobaccocessation.activity_virtual_patient.views.selection', name='selection'),
-                       #url(r'^assist/activity-virtual-patient/prescription/(?P<patient_id>\d+)/$', 'tobaccocessation.activity_virtual_patient.views.prescription', name='prescription'),
-                       #url(r'^assist/activity-virtual-patient/prescription/(?P<patient_id>\d+)/(?P<medication_idx>\d+)/$', 'tobaccocessation.activity_virtual_patient.views.prescription', name='next_prescription'),
-                       #url(r'^assist/activity-virtual-patient/results/(?P<patient_id>\d+)/$', 'tobaccocessation.activity_virtual_patient.views.results', name='results'),
 
                        # very important that this stays last and in this order
                        (r'^(?P<path>.*)$','carr_main.views.page'),

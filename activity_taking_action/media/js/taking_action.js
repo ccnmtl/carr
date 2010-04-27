@@ -22,9 +22,30 @@ function maybeEnableNext()
   }
 }
 
+function load_step (step_name) {
+    logDebug (step_name);
+    map (hideElement, $$('.activity_step'))
+    showElement($$('div#' + step_name +  '.activity_step')[0] );
+    if (steps[step_name] != undefined) {
+        steps[step_name].load()
+    }
+}
+
+
+
+
 function loadStateSuccess(doc)
 {
-   debug('loadStateSuccess')
+  debug('loadStateSuccess')
+  logDebug (serializeJSON(doc));
+  default_step = 'review_case_history';
+  
+  current_step = doc['current_step'] || default_step;
+  load_step (current_step)
+  
+  //map (hideElement, $$('.activity_step'))
+   
+  /*
   case_name =  $('case_name').innerHTML;
    
    if (doc && doc[case_name])
@@ -56,45 +77,8 @@ function loadStateSuccess(doc)
    if (factors_as_string.match(/explanation/) != null) {
             addElementClass($('explanation'), 'button_selected');
    }
+   */
    
-   /*
-   
-   if (doc && doc[$('medication_name').value])
-   {
-      rx = doc[$('medication_name').value]
-      $('dosage').value = rx['dosage']
-      $('disp').value = rx['disp']
-      $('sig').value = rx['sig']
-      $('refills').value = rx['refills']
-                              
-      if ($('dosage_2'))
-      {
-         $('dosage_2').value = rx['dosage_2']
-         
-         $('disp_2').value = rx['disp_2']
-         
-         $('sig_2').value = rx['sig_2']
-         
-         $('refills_2').value = rx['refills_2']
-      }
-   }
-                                                                                                                                                                       
-   setBackgroundColor($('dosage'))
-   setBackgroundColor($('disp'))
-   setBackgroundColor($('sig'))
-   setBackgroundColor($('refills'))
-   
-   if ($('dosage_2'))
-   {
-      setBackgroundColor($('dosage_2'))
-      setBackgroundColor($('disp_2'))
-      setBackgroundColor($('sig_2'))
-      setBackgroundColor($('refills_2'))
-   }
-   
-  if ($('dosage_correct'))
-     connectCallouts()
-   */ 
   maybeEnableNext()
 }
 
@@ -110,11 +94,11 @@ function loadStateError(err)
 function loadState()
 {
    debug("loadState")
-   
-   url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/load/"
+   url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
    
+   /*
    hide_answer();
    
    
@@ -128,7 +112,7 @@ function loadState()
   connect ('explanation',   'onclick', partial (toggleElementClass,'button_selected',    'explanation' ));
 
   connect('submit_div', 'onclick', show_answer);
-
+ */
   maybeEnableNext();
 }
 
@@ -142,7 +126,7 @@ function like_checkbox(selected_class, all_button_class, the_element) {
 //toggleElement
 function hide_answer()
 {
-    hideElement('feedback_div');
+    //hideElement('feedback_div');
 /*
    if (!$('dosage_correct'))
       $("dosage").focus()
@@ -161,14 +145,17 @@ function numeric(field) {
 
 function validate() {
     // make sure either yes or no is selected.
+    /*
     return (
         hasElementClass($('answer_yes'), 'button_selected')
             || hasElementClass($('answer_no'), 'button_selected'));
+            */
 }
 
 
 function answer_is_correct() {
    
+    /*
     answer_is_yes = ($('correct_answer').innerHTML.toLowerCase().match(/yes/))
     factors_include_severity = ($('correct_factors').innerHTML.toLowerCase().match(/severity/))
     factors_include_location = ($('correct_factors').innerHTML.toLowerCase().match(/location/))
@@ -195,7 +182,7 @@ function answer_is_correct() {
     if (factors_include_explanation) {
         if (! hasElementClass($('explanation'), 'button_selected')) { return false };
     }
-    
+    */
     //patterns, severity, body location, explanation credibility
     logDebug ("ok factors are correct too");
     return true;
@@ -203,6 +190,7 @@ function answer_is_correct() {
 }
 
 function show_answer() {
+/*
     if (!validate()) {
         alert ("Please choose yes or no.");
         return;
@@ -216,7 +204,7 @@ function show_answer() {
     
     }
     showElement ('feedback_div');
-    
+  */  
       maybeEnableNext();
 }
 
@@ -226,10 +214,11 @@ MochiKit.Signal.connect(window, "onload", loadState)
 
 function saveState()
 {
+/*
   case_name =  $('case_name').innerHTML;
   
   debug("saveState")
-  url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/save/"
+  url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/"
 
    debug("saveState");
    doc = {}
@@ -258,7 +247,7 @@ function saveState()
   
   
   sync_req.send(queryString({'json':JSON.stringify(what_to_send , null)}));
-   
+   */
 }
 
 MochiKit.Signal.connect(window, "onbeforeunload", saveState)

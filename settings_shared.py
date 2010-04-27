@@ -20,9 +20,14 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
 USE_I18N = False
-MEDIA_ROOT = "/var/www/carr/uploads/"
-MEDIA_URL = '/uploads/'
-ADMIN_MEDIA_PREFIX = '/media/'
+
+
+#MEDIA_URL = '/uploads/'
+#ADMIN_MEDIA_PREFIX = '/media/'
+
+MEDIA_ROOT = '/var/www/carr/uploads/'
+MEDIA_URL = '/site_media/uploads/'
+
 SECRET_KEY = ')ng#)ef_u@_^zvvu@dxm7ql-yb^_!a6%v3v^j3b(mp+)l+5%@h'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
@@ -59,7 +64,8 @@ INSTALLED_APPS = (
     #'activity_treatment_choice',
     #'activity_virtual_patient',
     'activity_bruise_recon',           
-    'activity_taking_action',
+    'activity_taking_action',   
+    'activity_mini_cases',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

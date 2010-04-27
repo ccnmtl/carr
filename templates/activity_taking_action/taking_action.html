@@ -1,60 +1,207 @@
-   <link href="/activity/treatment/media/css/treatment.css" rel="stylesheet" type="text/css" />
-
    <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script>
-   <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/Visual.js"></script>
-   <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/DragAndDrop.js"></script>
-   <script type="text/javascript" src="/site_media/js/json2.js"></script>
-   <script type="text/javascript" src="/activity/treatment/media/js/treatment.js"></script>
+   
+   <script type="text/javascript" src="/site_media/taking_action/js/nav.js"></script>
+   
+   <script type="text/javascript" src="/site_media/taking_action/js/review_case_history.js"></script>
+   <script type="text/javascript" src="/site_media/taking_action/js/analyze_action_criteria.js"></script>
+   <script type="text/javascript" src="/site_media/taking_action/js/choose_action.js"></script>
+   <script type="text/javascript" src="/site_media/taking_action/js/action_feedback.js"></script>
+   <script type="text/javascript" src="/site_media/taking_action/js/next_steps.js"></script>
+   <script type="text/javascript" src="/site_media/taking_action/js/next_steps_feedback.js"></script>
+   <script type="text/javascript" src="/site_media/taking_action/js/complete_report.js"></script>
+   <script type="text/javascript" src="/site_media/taking_action/js/case_summary.js"></script>
+   
+   <script type="text/javascript" src="/site_media/taking_action/js/taking_action.js"></script>
+   
+   
+   
+   <!--
+       
+   </div>
+   <div class = "activity_step" id ="analyze_action_criteria">
+    analyze
+   <div class="purple_button" id = "analyze_action_criteria_next">next</div>
+   </div>
+   
+   
+   <div class = "activity_step" id ="choose_action">
+    choose
+      <div class="purple_button" id = "choose_action_criteria_next">next</div>
+ 
+   </div>
+   <div class = "activity_step" id ="action_feedback">
+    feedback
+   </div>
+   <div class = "activity_step" id ="next_steps">
+   next steps
+   </div>
+   <div class = "activity_step" id ="next_steps_feedback">
+   feedback
+   </div>
+   <div class = "activity_step" id ="complete_report">
+    report
+   </div>
+   <div class = "activity_step" id ="case_summary">
+    summary
+   </div>-->
+   
+   
+   <link href="/site_media/taking_action/css/taking_action.css" rel="stylesheet" type="text/css" />
+   
 
 <a class="reset_button" href="#" onclick="clearState(); return false;">Reset Exercise</a>
-   <h5>
-     Select ALL treatment options likely to be effective for patients of each type. <br />
-     Assume that all patients have a non-significant health history and no prior quit attempts. 
-    
-   </h5>
-    	<div id="treatment_leftcol">
-		  <h6>Patient Smokes</h6>
-		  <div class="smoker_quantity">
-		    <img src="/activity/treatment/media/images/halfpack.jpg"/>
-		    <div class="footer">1/2 pack per day</div>
-		   </div>
-		  <div class="smoker_quantity">
-		    <img src="/activity/treatment/media/images/onepack.jpg"/>
-		    <div class="footer">1 pack per day</div>
-		  </div>
-		  <div class="smoker_quantity">
-		     <img src="/activity/treatment/media/images/twopacks.jpg"/>
-		     <div class="footer">2 packs per day</div>
-		  </div>
-		</div>
-		
-		<!--  DROP TARGETS -->
-		<div id="treatment_centercol">
-		  <h6>Best Treatment Choices</h6>
-		  <div id="treatment_light_smoker" class="treatment_choice"></div><div class="countdown">Treatments Remaining: <span id="light_smoker_countdown">5</span></div>
-		  <div id="treatment_moderate_smoker" class="treatment_choice"></div><div class="countdown">Treatments Remaining: <span id="moderate_smoker_countdown">3</span></div>
-		  <div id="treatment_heavy_smoker" class="treatment_choice"></div><div class="countdown">Treatments Remaining: <span id="heavy_smoker_countdown">2</span></div>
-		  <div id="success_overlay" style="display: none;">
-           <h1>Congratulations!</h1>
-           You've successfully completed the exercise.<br /><br />
+  <div id ="hidden_js_info">
+    <div id = "case_name"></div>
+   </div>
+   
+   
+   <div class = "activity_step" id ="review_case_history">
+        <div class = "half-page">
+                <div class="case_history_title">Case History</div>
+                <div id = "review_case_history_copy">A social worker is working with a father and his 10-year daughter at a family agency. The father and the girl’s mother are engaged in custody fight over the daughter. The daughter tells the social worker that her mother’s new boyfriend is creepy. The social worker asks the daughter what she means. The daughter says that the boyfriend tells her that he likes sex. The father interrupts saying “That man is a pervert and he should not be anywhere near my daughter. He is scaring my daughter. She told me that he rubbed up against her, isn’t that right honey? (she nods). That jerk should not be in that house. Her mother is not protecting her”. The social worker wonders if the father is making everything up to win custody.</div>
         </div>
-		</div>
-		
-		<!-- DRAGGABLE ITEMS -->
-		<div id="treatment_rightcol">
-		    <h6>Available Medications</h6>
-          <table id="treatments" class="treatments" cellpadding="0">
-         
-             <tr><td style="height: 5px; border: none;"></td></tr>
-                {% for treatment in block.treatments %}
-				        {% if forloop.counter0|divisibleby:"1" %}<tr>{% endif %}
-		                   <td class="treatment" style="background-image: url(/activity/treatment/media/images/{{ treatment }}.jpg)"><span id="{{treatment}}" class="{{ treatment }} treatment_draggable"><img src="/activity/treatment/media/images/{{ treatment }}.jpg"></span></td>
-		                {% if forloop.counter|divisibleby:"1" %}</tr>{% endif %}
-		          {% endfor %}
-		        <tr><td style="height: 99px; border: none;"></td></tr>
-		    
-          </table>
-		</div>
-     
-     <span id="treatment_template" style="display: none;"><img src="/activity/treatment/media/images/"></span>
+        <div class = "half-page">
+           <p>Your Observations</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> Other observations:</p>
+           <p><textarea id = "other_observations" ></textarea></p>
+        </div>
+        <div class="purple_button taking_action_next_button">next</div>
+   </div>
+   
+   
+   
+   
+   <div class = "activity_step" id ="analyze_action_criteria">
+    <div class="review_case_button">Review Case</div>
+    <div class = "half-page">
+           <p>Your Observations</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> <input type="checkbox" /> Checkbox</p>
+           <p> Other observations:</p>
+           <p><textarea id = "other_observations" ></textarea></p>
+    </div>
+        <div class = "half-page">
+            Criteria for Action
+           <p> <input type="checkbox" />Child is in imminent danger</p>
+           <p> <input type="checkbox" />You believe this child is being abused</p>
+           <p> <input type="checkbox" />You are acting in a professional capacity</p>
+        </div>
+        <div class="purple_button taking_action_next_button">next</div>
+   </div>
+   
+   
+   <div class = "activity_step" id ="choose_action">
+       <div class = "half-page">
+           <p>Your Observations</p>
+           <p> Observation</p>
+           <p> Other observations:</p>
+           <p><textarea id = "other_observations" ></textarea></p>
+           <p> Criteria for Action:</p>
+           <p>Child is in imminent danger</p>
+           <p>You believe this child is being abused</p>
+           <p>You are acting in a professional capacity</p>
+       </div>
+       <div class = "half-page">Choose an Action Plan
+            <div class = "action_button">
+                <p class = "action_heading">Do Nothing</p>
+                <p class = "action explanation">This is the wrong answer because...</p>
+            </div>
+            <div class = "action_button">
+                <p class = "action_heading">Call SCR</p>
+                <p class = "action explanation">This is the wrong answer because...</p>
+            </div>
+            <div class = "action_button">
+                <p class = "action_heading">Call 911</p>
+                <p class = "action explanation">This is the wrong answer because...</p> 
+            </div>
+       </div>
+      <div class="purple_button taking_action_next_button" >next</div>
+   </div>
+   
+   
+   <div class = "activity_step" id ="next_steps">
+        next steps
+        <div class="purple_button taking_action_next_button">next</div>
+   </div>
+   <div class = "activity_step" id ="complete_report">
+        report
+        <div class="purple_button taking_action_next_button">next</div>
+   </div>
+   <div class = "activity_step" id ="case_summary">
+        summary
+   </div>
+
+   
+      
+   <!--
+   <div id = "case_info_div">
+        <div id ="bruise_recon_photo_container">
+           <div>Injury Photos and Location:</div>
+           <div>
+           </div>
+       </div>
+       
+       <div id = "bruise_recon_history_container">
+           <div>Case History:</div>
+           <div>
+           </div>
+       </div>
+   </div>
+
+   <div id ="questions_div">
+       <div>
+        Questions:
+       </div>
+       <div>
+           Is this likely to be a case of child abuse?
+       </div>
+       <div class = "buttons_div">
+           <div class="answer_button purple_button" id ="answer_yes">Yes</div>
+           <div class="answer_button purple_button" id ="answer_no">No</div>
+       </div>
+
+       <div class = "factors_div">
+            <div>What factor(s) led you to this decision?</div>
+            <div class ="bruise_recon_checkbox_div purple_button" id="patterns">
+                Patterns
+            </div>
+            <div class ="bruise_recon_checkbox_div purple_button" id="severity">
+                Severity
+            </div>
+            <div class ="bruise_recon_checkbox_div purple_button" id="location">
+                Body Location
+            </div>
+            <div class ="bruise_recon_checkbox_div purple_button" id="explanation">
+                Explanation&nbsp;Credibility
+            </div>
+       </div>
+       
+       
+       <div class="submit_div purple_button"  id ="submit_div">Submit</div>
+   </div>
+   
+   <div id="feedback_div">
+       <div id = "your_answer_was">
+       </div>
+       
+       <div id ="correct_answer">
+           Correct answer: Is this a case of abuse? <em></em>. 
+       </div>
+       
+       <div>Explanation:</div>
+       
+       <div class="explanation">
+       </div>
+       
+       <div id="correct_factors">
+       </div>
+   </div>
+   
+   -->
      
