@@ -2,42 +2,56 @@
    <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script>
    <script type="text/javascript" src="/site_media/js/json2.js"></script>
    <script type="text/javascript" src="/site_media/bruise_recon/js/bruise_recon.js"></script>
-<a class="reset_button" href="#" onclick="clearState(); return false;">Reset Exercise</a>
  
    <div id ="hidden_js_info">
     <div id = "case_name">{{block.case.name}}</div>
    </div>
-   <div id = "case_info_div">
-        <div id ="bruise_recon_photo_container">
-           <div>Injury Photos and Location:</div>
-           <div>
-            <img class= "bruise_recon_img" src = "/uploads/{{block.case.image}}" /> 
-           </div>
-       </div>
-       
-       <div id = "bruise_recon_history_container">
-           <div>Case History:</div>
-           <div>
-           {{block.case.case_history}} 
-           </div>
-       </div>
-   </div>
 
-   <div id ="questions_div">
-       <div>
-        Questions:
-       </div>
-       <div>
-           Is this likely to be a case of child abuse?
-       </div>
-       <div class = "buttons_div">
-           <div class="answer_button purple_button" id ="answer_yes">Yes</div>
-           <div class="answer_button purple_button" id ="answer_no">No</div>
-       </div>
+<div id="case_info_div">
 
-       <div class = "factors_div">
-            <div>What factor(s) led you to this decision?</div>
-            <!--
+	<div id="bruise_recon_photo_container">
+	
+		<!--<img class="bruise_recon_img" src="/uploads/{{block.case.image}}" />-->
+		
+		<img src="http://dummyimage.com/510x390/000/fff.png&text=Injury Photo Slide with Location Thumbnails" />
+	</div>
+	
+	<div id="bruise_recon_history_container">
+	
+		<h5>Case History</h5>
+		
+		<!--{{block.case.case_history}}-->
+				
+    {{block.case.case_history}}			
+	
+	</div>
+	
+</div>
+
+<div id="questions_div">
+
+	<h4>
+		Questions: 
+	</h4>
+	
+	<p>
+		Is this likely to be a case of child abuse? 
+	</p>
+	
+	<div class="buttons_div">
+		<div class="answer_button purple_button" id="answer_yes">
+			Yes
+		</div>
+		<div class="answer_button purple_button" id="answer_no">
+			No
+		</div>
+	</div>
+	<br />
+	<p>
+		What factor(s) led you to this decision?
+	</p>
+	<div class="factors_div">
+		<!--
              {{block.case.factors_for_decision}} 
             -->
             <div class ="bruise_recon_checkbox_div purple_button" id="patterns">

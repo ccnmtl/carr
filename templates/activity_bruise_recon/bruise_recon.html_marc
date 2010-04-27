@@ -1,0 +1,216 @@
+<<<<<<< HEAD
+   <link href="/site_media/bruise_recon/css/bruise_recon.css" rel="stylesheet" type="text/css" />
+   <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script>
+   <script type="text/javascript" src="/site_media/js/json2.js"></script>
+   <script type="text/javascript" src="/site_media/bruise_recon/js/bruise_recon.js"></script>
+<a class="reset_button" href="#" onclick="clearState(); return false;">Reset Exercise</a>
+ 
+   <div id ="hidden_js_info">
+    <div id = "case_name">{{block.case.name}}</div>
+   </div>
+   <div id = "case_info_div">
+        <div id ="bruise_recon_photo_container">
+           <div>Injury Photos and Location:</div>
+           <div>
+            <img class= "bruise_recon_img" src = "/uploads/{{block.case.image}}" /> 
+           </div>
+       </div>
+       
+       <div id = "bruise_recon_history_container">
+           <div>Case History:</div>
+           <div>
+           {{block.case.case_history}} 
+           </div>
+       </div>
+   </div>
+=======
+<link href="/site_media/bruise_recon/css/bruise_recon.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script> 
+<script type="text/javascript" src="/site_media/js/mochikit/MochiKit/Visual.js"></script> 
+<script type="text/javascript" src="/site_media/js/json2.js"></script> 
+<script type="text/javascript" src="/site_media/bruise_recon/js/bruise_recon.js"></script> 
+
+<!--
+<a class="reset_button" href="#" onclick="clearState(); return false;">Reset Exercise</a>
+ -->
+ 
+<!--
+<div class = "case_title">
+Case name: {{block.case.name}}
+</div>
+-->
+>>>>>>> 78545a4bb3558da6c089b7b69b13a6f63dce3fe2
+
+<div id="case_info_div">
+
+	<div id="bruise_recon_photo_container">
+	
+		<!--<img class="bruise_recon_img" src="/uploads/{{block.case.image}}" />-->
+		
+		<img src="http://dummyimage.com/510x390/000/fff.png&text=Injury Photo Slide with Location Thumbnails" />
+	</div>
+	
+	<div id="bruise_recon_history_container">
+	
+		<h5>Case History</h5>
+		
+		<!--{{block.case.case_history}}-->
+				
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sodales, sapien ut sollicitudin interdum, augue libero pharetra nisl, ac tempor nulla tellus sed magna. Nullam id suscipit sem. Aenean sapien leo, bibendum eu placerat vitae, mattis non neque. Nam mattis est in risus ultricies venenatis. Nullam justo est, pretium a varius eu, ullamcorper non nibh. Cras in venenatis ligula. Nam sed lectus at quam volutpat fermentum tempor ac nisi. Pellentesque malesuada ante in risus suscipit non tempus magna placerat. Cras ut turpis vitae nisi bibendum egestas quis sit amet enim. Vivamus ac quam est, id volutpat enim. 				
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sodales, sapien ut sollicitudin interdum, augue libero pharetra nisl, ac tempor nulla tellus sed magna. Nullam id suscipit sem. Aenean sapien leo, bibendum eu placerat vitae, mattis non neque. Nam mattis est in risus ultricies venenatis. Nullam justo est, pretium a varius eu, ullamcorper non nibh. Cras in venenatis ligula. Nam sed lectus at quam volutpat fermentum tempor ac nisi. Pellentesque malesuada ante in risus suscipit non tempus magna placerat. Cras ut turpis vitae nisi bibendum egestas quis sit amet enim. Vivamus ac quam est, id volutpat enim. 				
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sodales, sapien ut sollicitudin interdum, augue libero pharetra nisl, ac tempor nulla tellus sed magna. Nullam id suscipit sem. Aenean sapien leo, bibendum eu placerat vitae, mattis non neque. Nam mattis est in risus ultricies venenatis. Nullam justo est, pretium a varius eu, ullamcorper non nibh. Cras in venenatis ligula. Nam sed lectus at quam volutpat fermentum tempor ac nisi. Pellentesque malesuada ante in risus suscipit non tempus magna placerat. Cras ut turpis vitae nisi bibendum egestas quis sit amet enim. Vivamus ac quam est, id volutpat enim. 				
+	
+	</div>
+	
+</div>
+
+<div id="questions_div">
+
+	<h4>
+		Questions: 
+	</h4>
+	
+	<p>
+		Is this likely to be a case of child abuse? 
+	</p>
+	
+	<div class="buttons_div">
+		<div class="answer_button purple_button" id="answer_yes">
+			Yes
+		</div>
+		<div class="answer_button purple_button" id="answer_no">
+			No
+		</div>
+	</div>
+	<br />
+	<p>
+		What factor(s) led you to this decision?
+	</p>
+	<div class="factors_div">
+		<!--
+             {{block.case.factors_for_decision}} 
+            -->
+<<<<<<< HEAD
+            <div class ="bruise_recon_checkbox_div purple_button" id="patterns">
+                Patterns
+            </div>
+            <div class ="bruise_recon_checkbox_div purple_button" id="severity">
+                Severity
+            </div>
+            <div class ="bruise_recon_checkbox_div purple_button" id="location">
+                Body Location
+            </div>
+            <div class ="bruise_recon_checkbox_div purple_button" id="explanation">
+                Explanation&nbsp;Credibility
+            </div>
+       </div>
+       
+       
+       <div class="submit_div purple_button"  id ="submit_div">Submit</div>
+   </div>
+   
+   <div id="feedback_div">
+       <div id = "your_answer_was">
+       </div>
+       
+       <div id ="correct_answer">
+           Correct answer: Is this a case of abuse? <em>{{block.case.correct_answer}}</em>. 
+       </div>
+       
+       <div>Explanation:</div>
+       
+       <div class="explanation">
+            {{block.case.explanation}} 
+       </div>
+       
+       <div id="correct_factors">
+            {{block.case.factors_for_decision}} 
+       </div>
+   </div>
+=======
+		<div class="bruise_recon_checkbox_div purple_button" id="patterns">
+			Patterns 
+		</div>
+		<div class="bruise_recon_checkbox_div purple_button" id="severity">
+			Severity 
+		</div>
+		<div class="bruise_recon_checkbox_div purple_button" id="location">
+			Body Location 
+		</div>
+		<div class="bruise_recon_checkbox_div purple_button" id="explanation">
+			Explanation&nbsp;Credibility 
+		</div>
+	</div>
+	<br />
+	<div class="submit_div purple_button" id="submit_div">
+		Submit
+	</div>
+</div>
+<div id="feedback_div">
+	<div id="your_answer_was">
+	</div>
+	<div id="correct_answer">
+		Correct answer: Is this a case of abuse? 
+		<em>
+			{{block.case.correct_answer}}</em>. 
+	</div>
+	<div>
+		Explanation:
+	</div>
+	<div class="explanation">
+		{{block.case.explanation}} 
+	</div>
+	<div id="correct_factors">
+		{{block.case.factors_for_decision}} 
+	</div>
+</div>
+<!--
+    	<div id="treatment_leftcol">
+		  <h6>Patient Smokes</h6>
+		  <div class="smoker_quantity">
+		    <img src="/activity/treatment/media/images/halfpack.jpg"/>
+		    <div class="footer">1/2 pack per day</div>
+		   </div>
+		  <div class="smoker_quantity">
+		    <img src="/activity/treatment/media/images/onepack.jpg"/>
+		    <div class="footer">1 pack per day</div>
+		  </div>
+		  <div class="smoker_quantity">
+		     <img src="/activity/treatment/media/images/twopacks.jpg"/>
+		     <div class="footer">2 packs per day</div>
+		  </div>
+		</div>
+		-->
+<!--  DROP TARGETS -->
+<!--
+		<div id="treatment_centercol">
+		  <h6>Best Treatment Choices</h6>
+		  <div id="treatment_light_smoker" class="treatment_choice"></div><div class="countdown">Treatments Remaining: <span id="light_smoker_countdown">5</span></div>
+		  <div id="treatment_moderate_smoker" class="treatment_choice"></div><div class="countdown">Treatments Remaining: <span id="moderate_smoker_countdown">3</span></div>
+		  <div id="treatment_heavy_smoker" class="treatment_choice"></div><div class="countdown">Treatments Remaining: <span id="heavy_smoker_countdown">2</span></div>
+		  <div id="success_overlay" style="display: none;">
+           <h1>Congratulations!</h1>
+           You've successfully completed the exercise.<br /><br />
+        </div>
+		</div>
+		-->
+<!-- DRAGGABLE ITEMS -->
+<!--
+		<div id="treatment_rightcol">
+		    <h6>Available Medications</h6>
+          <table id="treatments" class="treatments" cellpadding="0">
+         
+             <tr><td style="height: 5px; border: none;"></td></tr>
+                {% for treatment in block.treatments %}
+				        {% if forloop.counter0|divisibleby:"1" %}<tr>{% endif %}
+		                   <td class="treatment" style="background-image: url(/activity/treatment/media/images/{{ treatment }}.jpg)"><span id="{{treatment}}" class="{{ treatment }} treatment_draggable"><img src="/activity/treatment/media/images/{{ treatment }}.jpg"></span></td>
+		                {% if forloop.counter|divisibleby:"1" %}</tr>{% endif %}
+		          {% endfor %}
+		        <tr><td style="height: 99px; border: none;"></td></tr>
+		    
+          </table>
+		</div>
+    
+     <span id="treatment_template" style="display: none;"><img src="/activity/treatment/media/images/"></span>
+     -->
+>>>>>>> 78545a4bb3558da6c089b7b69b13a6f63dce3fe2
