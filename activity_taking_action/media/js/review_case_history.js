@@ -1,13 +1,11 @@
 if (typeof(steps) == "undefined") {
     steps = {}
 }
-steps ['review_case_history'] =  {
-    'load': function () {
-        logDebug ("hi case history");
-        connect ('review_case_history_next', 'onclick', partial(load_step,'analyze_action_criteria'));
-    }
-    
 
+step_name = 'review_case_history';
+next_step = 'analyze_action_criteria';
+
+
+steps[step_name] = {
+    'load': partial (new_load, step_name, next_step)
 }
-
-

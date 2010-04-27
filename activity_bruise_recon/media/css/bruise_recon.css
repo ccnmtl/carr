@@ -78,7 +78,7 @@ div#bruise_recon_photo_container, div#bruise_recon_history_container {
  
 div.answer_button { float: left; }
 
-div.buttons_div
+div.buttons_div, div.purple_button
 {
 	float: none;
 	clear: both;

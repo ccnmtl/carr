@@ -16,8 +16,15 @@ div.purple_button {
    border: 3px solid #D4C9DD;
    width: 50px;
    margin: 3px;
+	float: none;
+	clear: both;
    cursor: pointer;
    text-align: center;
+}
+
+div#review_case_history_copy {
+   font-size: 60%;
+
 }
 
 
