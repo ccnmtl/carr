@@ -23,11 +23,14 @@ function maybeEnableNext()
 }
 
 function load_step (step_name) {
-    logDebug (step_name);
+    logDebug ("loading " + step_name);
     map (hideElement, $$('.activity_step'))
     showElement($$('div#' + step_name +  '.activity_step')[0] );
     if (steps[step_name] != undefined) {
         steps[step_name].load()
+    }
+    else {
+        logDebug("not defined.");
     }
 }
 
@@ -38,8 +41,8 @@ function loadStateSuccess(doc)
 {
   debug('loadStateSuccess')
   logDebug (serializeJSON(doc));
-//  default_step = 'review_case_history';
- default_step = 'next_steps';
+  default_step = 'review_case_history';
+ //default_step = 'next_steps';
   
   current_step = doc['current_step'] || default_step;
   load_step (current_step)

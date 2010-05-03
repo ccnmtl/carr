@@ -1,9 +1,9 @@
-if (typeof(steps) == "undefined") {
-    steps = {}
-}
-step_name = 'complete_report';
-next_step = 'case_summary';
-
-steps[step_name] = {
-    'load': partial (new_load, step_name, next_step)
+steps['complete_report'] = {
+    'load': function () {
+        new_load ('complete_report', 'case_summary');
+        connect ( $('show_expert_form'), 'onclick', function (a) {
+            logDebug ('hey');
+            showElement ($$('.report_form.expert_form')[0]);
+        });
+    }
 }
