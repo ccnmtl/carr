@@ -27,16 +27,37 @@ div#review_case_history_copy {
 
 }
 
+div.report_form.expert_form {
+    display: none;
+}
+
+
+p {
+   font-size: 60%;
+   height:15px;
+}
+
+textarea.other_observations {
+	width: 200px;
+	height: 30px;
+}
+
+p.action_explanation {
+    display:none;
+}
+
+p.action_button {
+    color: red;
+    cursor: pointer;
+}
 
 /********/
 
 #callout_container {
-
 	float:left;
 	left: 25px;
 	margin-top:-35px;
 	position:absolute;
-
 }
 
 

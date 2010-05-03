@@ -10,7 +10,6 @@
    <script type="text/javascript" src="/site_media/taking_action/js/next_steps_feedback.js"></script>
    <script type="text/javascript" src="/site_media/taking_action/js/complete_report.js"></script>
    <script type="text/javascript" src="/site_media/taking_action/js/case_summary.js"></script>
-   
    <script type="text/javascript" src="/site_media/taking_action/js/taking_action.js"></script>
    
    
@@ -61,13 +60,13 @@
                 <div id = "review_case_history_copy">A social worker is working with a father and his 10-year daughter at a family agency. The father and the girl’s mother are engaged in custody fight over the daughter. The daughter tells the social worker that her mother’s new boyfriend is creepy. The social worker asks the daughter what she means. The daughter says that the boyfriend tells her that he likes sex. The father interrupts saying “That man is a pervert and he should not be anywhere near my daughter. He is scaring my daughter. She told me that he rubbed up against her, isn’t that right honey? (she nods). That jerk should not be in that house. Her mother is not protecting her”. The social worker wonders if the father is making everything up to win custody.</div>
         </div>
         <div class = "half-page">
-           <p>Your Observations</p>
-           <p> <input type="checkbox" /> Checkbox</p>
-           <p> <input type="checkbox" /> Checkbox</p>
-           <p> <input type="checkbox" /> Checkbox</p>
-           <p> <input type="checkbox" /> Checkbox</p>
-           <p> Other observations:</p>
-           <p><textarea id = "other_observations" ></textarea></p>
+           <p class ="half-page_heading">Your Observations</p>
+           <p> <input type="checkbox" class="review_case_history checkbox observation observation_1" /> Observation 1</p>
+           <p> <input type="checkbox" class="review_case_history checkbox observation observation_2" /> Observation 2</p>
+           <p> <input type="checkbox" class="review_case_history checkbox observation observation_3" /> Observation 3</p>
+           <p> <input type="checkbox" class="review_case_history checkbox observation observation_4" /> Observation 4</p>
+           <p class ="half-page_heading" > Other observations:</p>
+           <p><textarea class ="review_case_history other_observations" ></textarea></p>
         </div>
         <div class="purple_button taking_action_next_button">next</div>
    </div>
@@ -78,19 +77,19 @@
    <div class = "activity_step" id ="analyze_action_criteria">
     <div class="review_case_button">Review Case</div>
     <div class = "half-page">
-           <p>Your Observations</p>
-           <p> <input type="checkbox" /> Checkbox</p>
-           <p> <input type="checkbox" /> Checkbox</p>
-           <p> <input type="checkbox" /> Checkbox</p>
-           <p> <input type="checkbox" /> Checkbox</p>
-           <p> Other observations:</p>
-           <p><textarea id = "other_observations" ></textarea></p>
+           <p class ="half-page_heading">Your Observations</p>
+           <p> <input type="checkbox" class="analyze_action_criteria checkbox observation observation_1" /> Observation 1</p>
+           <p> <input type="checkbox" class="analyze_action_criteria checkbox observation observation_2" /> Observation 2</p>
+           <p> <input type="checkbox" class="analyze_action_criteria checkbox observation observation_3" /> Observation 3</p>
+           <p> <input type="checkbox" class="analyze_action_criteria checkbox observation observation_4" /> Observation 4</p>
+           <p class ="half-page_heading" > Other observations:</p>
+           <p><textarea class ="analyze_action_criteria other_observations" ></textarea></p>
     </div>
         <div class = "half-page">
-            Criteria for Action
-           <p> <input type="checkbox" />Child is in imminent danger</p>
-           <p> <input type="checkbox" />You believe this child is being abused</p>
-           <p> <input type="checkbox" />You are acting in a professional capacity</p>
+            <p class ="half-page_heading" > Criteria for Action</p>
+           <p> <input type="checkbox" class = "analyze_action_criteria checkbox criteria criteria_1" />Child is in imminent danger</p>
+           <p> <input type="checkbox" class = "analyze_action_criteria checkbox criteria criteria_2" />You believe this child is being abused</p>
+           <p> <input type="checkbox" class = "analyze_action_criteria checkbox criteria criteria_3" />You are acting in a professional capacity</p>
         </div>
         <div class="purple_button taking_action_next_button">next</div>
    </div>
@@ -98,27 +97,31 @@
    
    <div class = "activity_step" id ="choose_action">
        <div class = "half-page">
-           <p>Your Observations</p>
-           <p> Observation</p>
-           <p> Other observations:</p>
-           <p><textarea id = "other_observations" ></textarea></p>
-           <p> Criteria for Action:</p>
-           <p>Child is in imminent danger</p>
-           <p>You believe this child is being abused</p>
-           <p>You are acting in a professional capacity</p>
+           <p class ="half-page_heading">Your Observations</p>
+           <p> <input type="checkbox" class="choose_action checkbox observation observation_1" /> Observation 1</p>
+           <p> <input type="checkbox" class="choose_action checkbox observation observation_2" /> Observation 2</p>
+           <p> <input type="checkbox" class="choose_action checkbox observation observation_3" /> Observation 3</p>
+           <p> <input type="checkbox" class="choose_action checkbox observation observation_4" /> Observation 4</p>
+           <p class ="half-page_heading" > Other observations:</p>
+           <p><textarea class ="choose_action other_observations" ></textarea></p>
+            <p class ="half-page_heading" > Criteria for Action</p>
+           <p> <input type="checkbox" class = "choose_action checkbox criteria criteria_1" />Child is in imminent danger</p>
+           <p> <input type="checkbox" class = "choose_action checkbox criteria criteria_2" />You believe this child is being abused</p>
+           <p> <input type="checkbox" class = "choose_action checkbox criteria criteria_3" />You are acting in a professional capacity</p>
        </div>
-       <div class = "half-page">Choose an Action Plan
-            <div class = "action_button">
-                <p class = "action_heading">Do Nothing</p>
-                <p class = "action explanation">This is the wrong answer because...</p>
+       <div class = "half-page">
+            <p class ="half-page_heading">Choose an Action Plan</p>
+            <div>
+                <p class = "choose_action action_button first_round_action first_round_action_1">Do Nothing</p>
+                <p class = "choose_action action_explanation first_round_action_1">This is the wrong answer because...</p>
             </div>
-            <div class = "action_button">
-                <p class = "action_heading">Call SCR</p>
-                <p class = "action explanation">This is the wrong answer because...</p>
+            <div>
+                <p class = "choose_action action_button first_round_action first_round_action_2 correct_choice">Call SCR</p>
+                <p class = "choose_action action_explanation first_round_action_2">This is the wrong answer because...</p>
             </div>
-            <div class = "action_button">
-                <p class = "action_heading">Call 911</p>
-                <p class = "action explanation">This is the wrong answer because...</p> 
+            <div>
+                <p class = "choose_action action_button first_round_action first_round_action_3">Call 911</p>
+                <p class = "choose_action action_explanation first_round_action_3">This is the wrong answer because...</p> 
             </div>
        </div>
       <div class="purple_button taking_action_next_button" >next</div>
@@ -126,82 +129,72 @@
    
    
    <div class = "activity_step" id ="next_steps">
-        next steps
+       <div class = "half-page">
+           <p class ="half-page_heading">Your Observations</p>
+           <p> <input type="checkbox" class="next_steps checkbox observation observation_1" /> Observation 1</p>
+           <p> <input type="checkbox" class="next_steps checkbox observation observation_2" /> Observation 2</p>
+           <p> <input type="checkbox" class="next_steps checkbox observation observation_3" /> Observation 3</p>
+           <p> <input type="checkbox" class="next_steps checkbox observation observation_4" /> Observation 4</p>
+           <p>Other observations:</p>
+           <p><textarea class ="next_steps other_observations" ></textarea></p>
+            <p class ="half-page_heading" > Criteria for Action</p>
+           <p> <input type="checkbox" class = "next_steps checkbox criteria criteria_1" />Child is in imminent danger</p>
+           <p> <input type="checkbox" class = "next_steps checkbox criteria criteria_2" />You believe this child is being abused</p>
+           <p> <input type="checkbox" class = "next_steps checkbox criteria criteria_3" />You are acting in a professional capacity</p>
+           <p>Completed Actions:</p>
+            <div class = "action_button">
+                <p class = "next_steps action_button">Call SCR</p>
+            </div>
+       </div>
+       <div class = "half-page">
+       <p>Choose Next Steps</p>
+            <div>
+                <p class = "action_button second_round_action second_round_action_1">Do nothing; you have fulfilled your obligation</p>
+                <p class = "action_button action_explanation second_round_action_1">This is the wrong answer because...</p> 
+            </div>
+            <div>
+                <p class = "action_button second_round_action second_round_action_2">Call SCR again to follow up</p>
+                <p class = "action_button action_explanation second_round_action_2">This is the wrong answer because...</p> 
+            </div>
+            <div>
+                <p class = "action_button second_round_action  second_round_action_3">Submit report form to SCR</p>
+                <p class = "action_button action_explanation second_round_action_3 correct">This is the right answer because...</p> 
+            </div>
+            <div>
+                <p class = "action_button second_round_action  second_round_action_4">Contact family to follow up on child</p>
+                <p class = "action_button action_explanation second_round_action_4">This is the wrong answer because...</p> 
+            </div>
+       </div>
+       
         <div class="purple_button taking_action_next_button">next</div>
    </div>
    <div class = "activity_step" id ="complete_report">
-        report
-        <div class="purple_button taking_action_next_button">next</div>
+       
+       <div class = "half-page">
+        <div class = "report_form your_form">
+           <p class = "form_field your name"><input type="text" value = "Your name" /></p>
+           <p class = "form_field your capacity"><input type="text" value = "Your capacity" /></p>
+           <p class = "form_field your date"><input type="text" value = "Today's date" /></p>
+           <p class = "form_field your child"><input type="text" value = "Child's name" /></p>
+           <p class = "form_field your incident_date"><input type="text" value = "Date of incident" /></p>
+        </div>
+       </div>
+       
+       <div class = "half-page">
+        <div class = "report_form expert_form">
+           <p class = "form_field expert name"><input type="text" value = "Your name" /></p>
+           <p class = "form_field expert capacity"><input type="text" value = "Your capacity" /></p>
+           <p class = "form_field expert date"><input type="text" value = "Today's date" /></p>
+           <p class = "form_field expert child"><input type="text" value = "Child's name" /></p>
+           <p class = "form_field expert incident_date"><input type="text" value = "Date of incident" /></p>
+        </div>
+       </div>
+       
+        <div class="purple_button" id = "show_expert_form" >Show expert form</div>
+        <div class="purple_button complete_report taking_action_next_button">next</div>
    </div>
    <div class = "activity_step" id ="case_summary">
-        summary
+        <p>Case Summary</p>
+        <p>Lorem ipsum.</p>
    </div>
-
-   
-      
-   <!--
-   <div id = "case_info_div">
-        <div id ="bruise_recon_photo_container">
-           <div>Injury Photos and Location:</div>
-           <div>
-           </div>
-       </div>
-       
-       <div id = "bruise_recon_history_container">
-           <div>Case History:</div>
-           <div>
-           </div>
-       </div>
-   </div>
-
-   <div id ="questions_div">
-       <div>
-        Questions:
-       </div>
-       <div>
-           Is this likely to be a case of child abuse?
-       </div>
-       <div class = "buttons_div">
-           <div class="answer_button purple_button" id ="answer_yes">Yes</div>
-           <div class="answer_button purple_button" id ="answer_no">No</div>
-       </div>
-
-       <div class = "factors_div">
-            <div>What factor(s) led you to this decision?</div>
-            <div class ="bruise_recon_checkbox_div purple_button" id="patterns">
-                Patterns
-            </div>
-            <div class ="bruise_recon_checkbox_div purple_button" id="severity">
-                Severity
-            </div>
-            <div class ="bruise_recon_checkbox_div purple_button" id="location">
-                Body Location
-            </div>
-            <div class ="bruise_recon_checkbox_div purple_button" id="explanation">
-                Explanation&nbsp;Credibility
-            </div>
-       </div>
-       
-       
-       <div class="submit_div purple_button"  id ="submit_div">Submit</div>
-   </div>
-   
-   <div id="feedback_div">
-       <div id = "your_answer_was">
-       </div>
-       
-       <div id ="correct_answer">
-           Correct answer: Is this a case of abuse? <em></em>. 
-       </div>
-       
-       <div>Explanation:</div>
-       
-       <div class="explanation">
-       </div>
-       
-       <div id="correct_factors">
-       </div>
-   </div>
-   
-   -->
      
