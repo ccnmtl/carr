@@ -3,10 +3,27 @@ function randomly(){ return 0.5 - Math.random();}
 
 post_test = window.location.href.match(/post_test/);
 
+/*
+id: 2  ord:1 When are mandated reporters required to call the State Central Register to report suspected child abuse or maltreatment?
+id: 3  ord:2 What should a mandated reporter do before reporting any allegations of abuse/neglect?
+id: 4  ord:3 What should a mandated reporter who suspects that a child is in imminent danger of serious physical injury do first?
+id: 5  ord:4 What should a mandated reporter do when a child discloses sexual abuse has occurred?
+id: 6  ord:5 When is a mandated reporter legally liable?
+id: 8  ord:6 What happens if a mandated reporter who has reasonable cause to suspect child maltreatment/neglect fails to report it?
+id: 54 ord:7 When a mandated reporter makes an oral (telephone) report to the New York State Central Register:
+id: 10 ord:8 When must a LDSS 2221A form be filed?
+id: 11 ord:9 Normal bruising on a child may include:
+id: 12 ord:10 Mandated reporters are entitled to receive a "Summary of Findings." How do you request this document?
+*/
+
 function calculate_order () {
  
     // Show a some required questions, and some questions picked at random out of a hat, in a random order..
      if (post_test) {
+        
+        //TODO move this functionality out of this file so Anders can use the quiz:
+        
+        
         
         //These questions *will* be on the quiz regardless of the order the questions are presented in:
          required_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ];
@@ -44,8 +61,9 @@ function calculate_order () {
 }
 
 function shuffle_questions(order) {
-    // ORDER is an array of database ID's of questions. It is assumed that all questions, from ID 13 through 52, are on the page.
+    // ORDER is an array of database ID's of questions. It is assumed that all questions we need are on the page.
     nums = list(range(order.length))
+    
     if ($("sorted_questions_div")) {
         removeElement ($("sorted_questions_div"));
     }
@@ -53,8 +71,10 @@ function shuffle_questions(order) {
     //create placeholders for the sorted questions
     $('sorted_questions').appendChild (DIV ({id : "sorted_questions_div"}, map (DIV, nums)));
     
+    existing_case_divs = $$('.cases')
+    
     // source_divs is a new ordering of the existing, currently hidden divs.
-    source_divs = map (function(a) { return $('case_' + a)}, order)
+    source_divs = map (function(a) { return existing_case_divs[a]}, order)
 
     //destination_divs is a bunch of empty placeholder divs:
     destination_divs = $('sorted_questions_div').childNodes;
@@ -65,9 +85,9 @@ function shuffle_questions(order) {
     // show the resulting sorted divs, leaving the un-chosen ones hidden as per the CSS file.
     map (function f (a) { setStyle (a, {'display':'block'}) }, $$('#sorted_questions_div div.cases'))
 
-    // number the questions:
+    // number the questions according to their new position:
     map (function f (a) { a[0].innerHTML = a[1] + 1}, zip ($$('#sorted_questions_div .question_order'), nums));
-
+    
 }
 
 function debug(string)
@@ -101,7 +121,6 @@ function onChooseAnswer(ctrl)
 function loadStateSuccess(doc)
 {  
    
-   
    order = calculate_order();
    shuffle_questions(order);
    forEach(doc.question,
@@ -112,6 +131,7 @@ function loadStateSuccess(doc)
                 $(question.id + "_" + question.answer).checked = true
               }
            })
+   
    //maybeEnableNext()
 }
 

@@ -8,6 +8,15 @@
 
 <input type="hidden" id="question_count" value="{{block.question_set.all|length}}"/>
 
+
+<!--
+FOR DEBUGGING:
+
+{% for question in block.question_set.all %}
+ <p> id: {{question.id}}  ord:{{question.ordinality}}  {{question.text}}</p>
+{%endfor %}
+-->
+
 <!-- Once sorted, the questions will go here:.-->
 <span id="sorted_questions">
 </span>
