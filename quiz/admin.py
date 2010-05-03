@@ -12,11 +12,16 @@ class AnswerAdmin(admin.ModelAdmin):
     #inlines = [InstructionInline]
 
 
+class AnswerInline (admin.TabularInline):
+    model = Answer
+
+
+
 class QuestionAdmin(admin.ModelAdmin):
     search_fields = ['value']
     #list_display = ('value', 'question')
-    #list_display = ['text', 'quiz']
-    list_display = ['text', 'ordinality']
+    list_display = ['text', 'quiz', 'ordinality']
+    inlines = [AnswerInline]
     
     #list_display = ('short_title',  'long_title', 'id', 'clientsession', 'created', 'modified')
     #inlines = [InstructionInline]
