@@ -18,9 +18,10 @@ function action_button_clicked(c) {
         showElement ($$('.choose_action.action_explanation.first_round_action_1')[0]);
     } else if (which_class == 'first_round_action_2') {
         showElement ($$('.choose_action.action_explanation.first_round_action_2')[0]); 
-    
     } else if (which_class == 'first_round_action_3') {
         showElement ($$('.choose_action.action_explanation.first_round_action_3')[0]); 
+    } else if (which_class == 'first_round_action_4') {
+        showElement ($$('.choose_action.action_explanation.first_round_action_4')[0]); 
     }
     
 }

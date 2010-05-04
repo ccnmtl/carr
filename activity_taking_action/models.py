@@ -5,7 +5,7 @@ from django.utils import simplejson
 from django.contrib.contenttypes import generic
 from pagetree.models import PageBlock, Section
 from django import forms
-
+from django.contrib.sites.models import Site, RequestSite
 
 class Case(models.Model):
     name = models.CharField(max_length=25)
@@ -17,6 +17,9 @@ class Block(models.Model):
     show_correct = models.BooleanField(default=False)
     template_file = "activity_taking_action/taking_action.html"
     display_name = "Activity: Taking Action"
+    
+    def site(self):
+        return Site.objects.get_current()
     
     def pageblock(self):
         return self.pageblocks.all()[0]

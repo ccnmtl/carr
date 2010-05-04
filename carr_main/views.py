@@ -62,6 +62,9 @@ def page(request,path):
         parent = section.get_parent()
     elif depth == 4:
         parent = section.get_parent().get_parent()
+    elif depth == 5:
+        parent = section.get_parent().get_parent().get_parent()
+        
     leftnav = _construct_menu(request, parent, section, ss)
     
     return dict(section=section,
