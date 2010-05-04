@@ -29,7 +29,8 @@ criteria_css_classes = [
 first_round_action_css_classes = [
     'first_round_action_1',
     'first_round_action_2',
-    'first_round_action_3'    
+    'first_round_action_3',    
+    'first_round_action_4'    
 ]
 
 second_round_action_css_classes = [
