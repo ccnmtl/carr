@@ -1,20 +1,6 @@
 function randomly(){ return 0.5 - Math.random();}
 
-
 post_test = window.location.href.match(/post_test/);
-
-/*
-id: 2  ord:1 When are mandated reporters required to call the State Central Register to report suspected child abuse or maltreatment?
-id: 3  ord:2 What should a mandated reporter do before reporting any allegations of abuse/neglect?
-id: 4  ord:3 What should a mandated reporter who suspects that a child is in imminent danger of serious physical injury do first?
-id: 5  ord:4 What should a mandated reporter do when a child discloses sexual abuse has occurred?
-id: 6  ord:5 When is a mandated reporter legally liable?
-id: 8  ord:6 What happens if a mandated reporter who has reasonable cause to suspect child maltreatment/neglect fails to report it?
-id: 54 ord:7 When a mandated reporter makes an oral (telephone) report to the New York State Central Register:
-id: 10 ord:8 When must a LDSS 2221A form be filed?
-id: 11 ord:9 Normal bruising on a child may include:
-id: 12 ord:10 Mandated reporters are entitled to receive a "Summary of Findings." How do you request this document?
-*/
 
 function calculate_order () {
  
@@ -26,7 +12,7 @@ function calculate_order () {
         
         
         //These questions *will* be on the quiz regardless of the order the questions are presented in:
-         required_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ];
+        required_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ];
 
         // These questions are questions that *might* be on the quiz:
         randomly_picked_questions = [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
@@ -34,16 +20,15 @@ function calculate_order () {
         // How many of the questions that *might* be on the quiz should we add to the ones that *will* be?
         how_many_randomly_picked_questions = 10;
         
-        // shake the hat:
+        // shuffle the randomly picked questions:
         randomly_picked_questions.sort(randomly);
 
-        // ok, pick that many from the hat -- assign length in order to pick.        
+        // ok, pick a certain number out of the urn-- assign length in order to pick.        
         randomly_picked_questions.length = how_many_randomly_picked_questions;
-        
         
         final_list_of_questions = required_questions.concat ( randomly_picked_questions);
         
-        // reshuffle all questions so they appear in a random order:
+        // reshuffle all questions together:
         final_list_of_questions.sort(randomly)
         
         return final_list_of_questions;
@@ -64,14 +49,10 @@ function shuffle_questions(order) {
     // ORDER is an array of database ID's of questions. It is assumed that all questions we need are on the page.
     nums = list(range(order.length))
     
-    if ($("sorted_questions_div")) {
-        removeElement ($("sorted_questions_div"));
-    }
-    
     //create placeholders for the sorted questions
     $('sorted_questions').appendChild (DIV ({id : "sorted_questions_div"}, map (DIV, nums)));
     
-    existing_case_divs = $$('.cases')
+    existing_case_divs = $$('.cases');
     
     // source_divs is a new ordering of the existing, currently hidden divs.
     source_divs = map (function(a) { return existing_case_divs[a]}, order)
@@ -123,6 +104,12 @@ function loadStateSuccess(doc)
    
    order = calculate_order();
    shuffle_questions(order);
+   
+   if (order.length == 1) {
+    // don't bother showing certain elements if the quiz only contains one question)
+    map (hideElement, $$('.casetitle'));
+   }
+   
    forEach(doc.question,
            function(question)
            {  
@@ -165,7 +152,7 @@ function showScore()
     
     hideElement ('show_score');
     
-    //TODO make sure that on "show score" all answers are ready. propmt for remaining unanaswered questions.
+    //TODO make sure that on "show score" all answers are ready. prompt for remaining unanaswered questions.
     
     max_score = chosen_answers.length
    
@@ -173,13 +160,15 @@ function showScore()
    
      //You scored <span ="quiz_score"> </span> out of a possible <span ="quiz_max_score"> </span>
     
-    $('quiz_score').innerHTML = actual_score;
+    if (max_score > 1) {
+        
+        $('quiz_score').innerHTML = actual_score;
+        
+        $('quiz_max_score').innerHTML = max_score;
+        
+        showElement('show_quiz_results');
     
-    $('quiz_max_score').innerHTML = max_score;
-    
-    
-    showElement('show_quiz_results');
-    
+    }
     showElement ('retake_quiz_div');
 }
 

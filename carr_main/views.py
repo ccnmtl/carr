@@ -40,12 +40,8 @@ def page(request,path):
         return HttpResponseRedirect(section.get_absolute_url())
     
     # the previous node is the last leaf, if one exists.
-    if 1 == 0:
-        prev = section.get_previous_leaf()
-        next = section.get_next()
-    else:
-        prev = section.get_previous_site_section()
-        next = section.get_next_site_section()  
+    prev = section.get_previous_site_section()
+    next = section.get_next_site_section()  
     
     # Is this section unlocked now?
     can_access = _unlocked(section, request.user, prev, ss)
@@ -119,14 +115,18 @@ def _unlocked(section,user,previous,sitestate):
     if not section or section.is_root or sitestate.get_has_visited(section):
        return True
     
+    
     if not previous or previous.is_root:
         return True
     
     for p in previous.pageblock_set.all():
         if hasattr(p.block(),'unlocked'):
            if p.block().unlocked(user) == False:
+              print "a"
+              print p
+              print p.block()
+              print p.block().unlocked(user)
               return False
-    
     return sitestate.get_has_visited(previous)
 
 
