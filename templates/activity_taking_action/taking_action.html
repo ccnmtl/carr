@@ -1,5 +1,4 @@
 {% load smartif %} 
-
 <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script> 
 <script type="text/javascript" src="/site_media/taking_action/js/nav.js"></script> 
 <script type="text/javascript" src="/site_media/taking_action/js/review_case_history.js"></script> 
@@ -11,7 +10,6 @@
 <script type="text/javascript" src="/site_media/taking_action/js/complete_report.js"></script> 
 <script type="text/javascript" src="/site_media/taking_action/js/case_summary.js"></script> 
 <script type="text/javascript" src="/site_media/taking_action/js/taking_action.js"></script> 
-
 <!--
 	</div>
 	<div class = "activity_step" id ="analyze_action_criteria">
@@ -38,22 +36,18 @@
 	summary
 	</div>
 -->
-
 <link href="/site_media/taking_action/css/taking_action.css" rel="stylesheet" type="text/css" />
-
 <a class="reset_button" href="#" onclick="clearState(); return false;">
-	Reset Exercise
+	Reset Exercise 
 </a>
-
 <div id="hidden_js_info">
 	<div id="case_name">
 	</div>
 </div>
-
 <div class="activity_step" id="review_case_history">
 	<div class="half-page">
 		<p class="half-page_heading">
-			Case History
+			Case History 
 		</p>
 		<div id="review_case_history_copy">
 			{% if "cdm" in block.site.domain%} A mother brings her 3 year old son to your clinic for a check-up. During the exam, you notice a laceration on the child's lip, and fractured lower incisors. Upon questioning the mother, she tells you that the child hurt himself accidentally when he ran into a doorknob four days ago. {%endif%} {% if "ssw" in block.site.domain%} You are working with a father and his 10-year daughter at a family agency. The father and the girl’s mother are divorcing, and they are fighting for custody of their daughter. The daughter tells you that her mother’s new boyfriend is "creepy." You ask the little girl what she means, and she tells you that the boyfriend tells her that he likes sex. The father interrupts, “That man is a pervert and he should not be anywhere near my daughter. He is scaring my daughter. She told me that he rubbed up against her. Isn’t that right honey?" The girl nods her head yes. "That jerk should not be in that house. Her mother is not protecting her." You wonder if the father is making up this story to win custody of his daughter. {%endif%} 
@@ -61,389 +55,381 @@
 	</div>
 	<div class="half-page">
 		<p class="half-page_heading">
-			Your Observations
+			Your Observations 
 		</p>
 		{% if "cdm" in block.site.domain%} 
 		<p>
 			<input type="checkbox" class="review_case_history checkbox observation observation_1" />
-			The child's injuries are consistent with running into a doorknob.
+			The child's injuries are consistent with running into a doorknob. 
 		</p>
 		<p>
 			<input type="checkbox" class="review_case_history checkbox observation observation_2" />
-			The mother can reasonably explain how the child sustained the bruises.
+			The mother can reasonably explain how the child sustained the bruises. 
 		</p>
 		<p>
 			<input type="checkbox" class="review_case_history checkbox observation observation_3" />
-			The child did not tell you how he got hurt.
+			The child did not tell you how he got hurt. 
 		</p>
 		<p>
 			<input type="checkbox" class="review_case_history checkbox observation observation_4" />
-			The child's mother waited four days before seeking treatment.
+			The child's mother waited four days before seeking treatment. 
 		</p>
 		<p>
 			<input type="checkbox" class="review_case_history checkbox observation observation_5" />
-			The lower teeth are injured.
+			The lower teeth are injured. 
 		</p>
 		{%endif%} {% if "ssw" in block.site.domain%} 
 		<p>
 			<input type="checkbox" class="review_case_history checkbox observation observation_1" />
-			The girl is caught in a bitter divorce and custody battle.
+			The girl is caught in a bitter divorce and custody battle. 
 		</p>
 		<p>
 			<input type="checkbox" class="review_case_history checkbox observation observation_2" />
-			The girl says she is not comfortable around her mother's boyfriend.
+			The girl says she is not comfortable around her mother's boyfriend. 
 		</p>
 		<p>
 			<input type="checkbox" class="review_case_history checkbox observation observation_3" />
-			The father tells you about the daughter's experiences with her mother's boyfriend.
+			The father tells you about the daughter's experiences with her mother's boyfriend. 
 		</p>
 		<p>
 			<input type="checkbox" class="review_case_history checkbox observation observation_4" />
-			The daughter is being abused by her mother's boyfriend.
+			The daughter is being abused by her mother's boyfriend. 
 		</p>
 		{%endif%} 
 		<p class="half-page_heading">
-			Other Observations
+			Other Observations 
 		</p>
 		<p>
 		<textarea class="review_case_history other_observations"></textarea> 
 		</p>
 	</div>
 	<div class="purple_button taking_action_next_button">
-		Next
+		Next 
 	</div>
 </div>
-
-
 <div class="activity_step" id="analyze_action_criteria">
 	<div class="review_case_button">
-		Review Case
+		Review Case 
 	</div>
 	<div class="half-page">
 		<p class="half-page_heading">
-			Your Observations
+			Your Observations 
 		</p>
 		{% if "cdm" in block.site.domain%} 
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox observation observation_1" />
-			The child's injuries are consistent with running into a doorknob.
+			The child's injuries are consistent with running into a doorknob. 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox observation observation_2" />
-			The mother can reasonably explain how the child sustained the bruises.
+			The mother can reasonably explain how the child sustained the bruises. 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox observation observation_3" />
-			The child did not tell you how he got hurt.
+			The child did not tell you how he got hurt. 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox observation observation_4" />
-			The child's mother waited four days before seeking treatment.
+			The child's mother waited four days before seeking treatment. 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox observation observation_5" />
-			The lower teeth are injured.
+			The lower teeth are injured. 
 		</p>
 		{%endif%} {% if "ssw" in block.site.domain%} 
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox observation observation_1" />
-			The girl is caught in a bitter divorce and custody battle.
+			The girl is caught in a bitter divorce and custody battle. 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox observation observation_2" />
-			The girl says she is not comfortable around her mother's boyfriend.
+			The girl says she is not comfortable around her mother's boyfriend. 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox observation observation_3" />
-			The father tells you about the daughter's experiences with her mother's boyfriend.
+			The father tells you about the daughter's experiences with her mother's boyfriend. 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox observation observation_4" />
-			The daughter is being abused by her mother's boyfriend.
+			The daughter is being abused by her mother's boyfriend. 
 		</p>
 		{%endif%} 
 		<p class="half-page_heading">
-			Other observations:
+			Other observations: 
 		</p>
 		<p>
-		<textarea class="analyze_action_criteria other_observations"></textarea>
+		<textarea class="analyze_action_criteria other_observations"></textarea> 
 		</p>
 	</div>
 	<div class="half-page">
 		<p class="half-page_heading">
-			Criteria for Action
+			Criteria for Action 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox criteria criteria_1" />
-			Child is in imminent danger
+			Child is in imminent danger 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox criteria criteria_2" />
-			You believe this child is being abused
+			You believe this child is being abused 
 		</p>
 		<p>
 			<input type="checkbox" class="analyze_action_criteria checkbox criteria criteria_3" />
-			You are acting in a professional capacity
+			You are acting in a professional capacity 
 		</p>
 	</div>
 	<div class="purple_button taking_action_next_button">
-		Next
+		Next 
 	</div>
 </div>
-
-
 <div class="activity_step" id="choose_action">
 	<div class="half-page">
 		<p class="half-page_heading">
-			Your Observations
+			Your Observations 
 		</p>
 		{% if "cdm" in block.site.domain%} 
 		<p>
 			<input type="checkbox" class="choose_action checkbox observation observation observation_1" />
-			The child's injuries are consistent with running into a doorknob.
+			The child's injuries are consistent with running into a doorknob. 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox observation observation observation_2" />
-			The mother can reasonably explain how the child sustained the bruises.
+			The mother can reasonably explain how the child sustained the bruises. 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox observation observation observation_3" />
-			The child did not tell you how he got hurt.
+			The child did not tell you how he got hurt. 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox observation observation observation_4" />
-			The child's mother waited four days before seeking treatment.
+			The child's mother waited four days before seeking treatment. 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox observation observation observation_5" />
-			The lower teeth are injured.
+			The lower teeth are injured. 
 		</p>
 		{%endif%} {% if "ssw" in block.site.domain%} 
 		<p>
 			<input type="checkbox" class="choose_action checkbox observation observation_1" />
-			The girl is caught in a bitter divorce and custody battle.
+			The girl is caught in a bitter divorce and custody battle. 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox observation observation_2" />
-			The girl says she is not comfortable around her mother's boyfriend.
+			The girl says she is not comfortable around her mother's boyfriend. 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox observation observation_3" />
-			The father tells you about the daughter's experiences with her mother's boyfriend.
+			The father tells you about the daughter's experiences with her mother's boyfriend. 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox observation observation_4" />
-			The daughter is being abused by her mother's boyfriend.
+			The daughter is being abused by her mother's boyfriend. 
 		</p>
 		{%endif%} 
 		<p class="half-page_heading">
-			Other Observations
+			Other Observations 
 		</p>
 		<p>
-		<textarea class="choose_action other_observations"></textarea>
+		<textarea class="choose_action other_observations"></textarea> 
 		</p>
 		<p class="half-page_heading">
-			Criteria for Action
+			Criteria for Action 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox criteria criteria_1" />
-			Child is in imminent danger
+			Child is in imminent danger 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox criteria criteria_2" />
-			You believe this child is being abused
+			You believe this child is being abused 
 		</p>
 		<p>
 			<input type="checkbox" class="choose_action checkbox criteria criteria_3" />
-			You are acting in a professional capacity
+			You are acting in a professional capacity 
 		</p>
 	</div>
 	<div class="half-page">
 		<p class="half-page_heading">
-			Choose an Action Plan
+			Choose an Action Plan 
 		</p>
 		{% if "cdm" in block.site.domain%} 
 		<div>
 			<div class="choose_action action_button first_round_action first_round_action_1">
-				Do Nothing
+				Do Nothing 
 			</div>
 			<p class="choose_action action_explanation first_round_action_1">
-				This is the wrong answer because the child is too short to have hit his mouth on a doorknob. The story is not consistent with the injury.
+				This is the wrong answer because the child is too short to have hit his mouth on a doorknob. The story is not consistent with the injury. 
 			</p>
 		</div>
 		<div>
 			<div class="choose_action action_button first_round_action first_round_action_2 correct_choice">
-				Call SCR
+				Call SCR 
 			</div>
-			<p class="choose_action action_explanation first_round_action_2">
-				This is the wrong answer because...
+			<p class="choose_action action_explanation first_round_action_2  correct_choice">
+				This is the wrong answer because... 
 			</p>
 		</div>
 		<div>
 			<div class="choose_action action_button first_round_action first_round_action_3">
-				Call 911
+				Call 911 
 			</div>
 			<p class="choose_action action_explanation first_round_action_3">
-				This is the wrong answer because...
+				This is the wrong answer because... 
 			</p>
 		</div>
 		{%endif%} {% if "ssw" in block.site.domain%} 
 		<div>
 			<div class="choose_action action_button first_round_action first_round_action_1">
-				Do Nothing
+				Do Nothing 
 			</div>
 			<p class="choose_action action_explanation first_round_action_1">
-				This is the wrong answer because the child may in fact be in a dangerous situation with her mother's boyfriend.
+				This is the wrong answer because the child may in fact be in a dangerous situation with her mother's boyfriend. 
 			</p>
 		</div>
 		<div>
 			<div class="choose_action action_button first_round_action first_round_action_2 correct_choice">
-				Call SCR
+				Call SCR 
 			</div>
-			<p class="choose_action action_explanation first_round_action_2">
-				This is the right answer because you suspect that the child is being abused.
+			<p class="choose_action action_explanation first_round_action_2 correct_choice">
+				This is the right answer because you suspect that the child is being abused. 
 			</p>
 		</div>
 		<div>
 			<div class="choose_action action_button first_round_action first_round_action_3">
-				Call 911
+				Call 911 
 			</div>
 			<p class="choose_action action_explanation first_round_action_3">
-				This is the wrong answer because the child is not in imminent danger.
+				This is the wrong answer because the child is not in imminent danger. 
 			</p>
 		</div>
 		<div>
-			<div class="choose_action action_button first_round_action first_round_action_4 correct_choice">
-				Perform clinical and radioactive dental examinations to review the extent of the injury.
+			<div class="choose_action action_button first_round_action first_round_action_4 correct_choice correct_choice">
+				Perform clinical and radioactive dental examinations to review the extent of the injury. 
 			</div>
 			<p class="choose_action action_explanation first_round_action_4">
-				This is done to identify the magnitude of force involved in the injury, which will help to verify or refute the mother's story.
+				This is done to identify the magnitude of force involved in the injury, which will help to verify or refute the mother's story. 
 		</div>
 		{%endif%} 
 	</div>
 	<div class="purple_button taking_action_next_button">
-		Next
+		Next 
 	</div>
 </div>
-
-
 <div class="activity_step" id="next_steps">
 	<div class="half-page">
 		<p class="half-page_heading">
-			Your Observations
+			Your Observations 
 		</p>
 		{% if "cdm" in block.site.domain%} 
 		<p>
 			<input type="checkbox" class="next_steps checkbox observation observation_1" />
-			The child's injuries are consistent with running into a doorknob.
+			The child's injuries are consistent with running into a doorknob. 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox observation observation_2" />
-			The mother can reasonably explain how the child sustained the bruises.
+			The mother can reasonably explain how the child sustained the bruises. 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox observation observation_3" />
-			The child did not tell you how he got hurt.
+			The child did not tell you how he got hurt. 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox observation observation_4" />
-			The child's mother waited four days before seeking treatment.
+			The child's mother waited four days before seeking treatment. 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox observation observation_5" />
-			The lower teeth are injured.
+			The lower teeth are injured. 
 		</p>
 		{%endif%} {% if "ssw" in block.site.domain%} 
 		<p>
 			<input type="checkbox" class="next_steps checkbox observation observation_1" />
-			The girl is caught in a bitter divorce and custody battle.
+			The girl is caught in a bitter divorce and custody battle. 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox observation observation_2" />
-			The girl says she is not comfortable around her mother's boyfriend.
+			The girl says she is not comfortable around her mother's boyfriend. 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox observation observation_3" />
-			The father tells you about the daughter's experiences with her mother's boyfriend.
+			The father tells you about the daughter's experiences with her mother's boyfriend. 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox observation observation_4" />
-			The daughter is being abused by her mother's boyfriend.
+			The daughter is being abused by her mother's boyfriend. 
 		</p>
 		{%endif%} 
 		<p class="half-page_heading">
-			Other Observations
+			Other Observations 
 		</p>
 		<p>
-		<textarea class="next_steps other_observations"></textarea>
+		<textarea class="next_steps other_observations"></textarea> 
 		</p>
 		<p class="half-page_heading">
-			Criteria for Action
+			Criteria for Action 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox criteria criteria_1" />
-			Child is in imminent danger
+			Child is in imminent danger 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox criteria criteria_2" />
-			You believe this child is being abused
+			You believe this child is being abused 
 		</p>
 		<p>
 			<input type="checkbox" class="next_steps checkbox criteria criteria_3" />
-			You are acting in a professional capacity
+			You are acting in a professional capacity 
 		</p>
 		<p class="half-page_heading">
-			Completed Actions
+			Completed Actions 
 		</p>
 		<div>
 			<div class="next_steps action_button">
-				Call SCR
+				Call SCR 
 			</div>
 		</div>
 	</div>
 	<div class="half-page">
 		<p class="half-page_heading">
-			Choose Next Steps
+			Choose Next Steps 
 		</p>
 		<div>
 			<div class="next_steps action_button second_round_action second_round_action_1">
-				Do nothing. You have fulfilled your obligation
+				Do nothing. You have fulfilled your obligation 
 			</div>
 			<p class="next_steps action_explanation second_round_action_1">
-				This is the wrong answer. After calling the SCR you must complete and submit form LDSS-2221A.
+				This is the wrong answer. After calling the SCR you must complete and submit form LDSS-2221A. 
 			</p>
 		</div>
 		<div>
 			<div class="next_steps action_button second_round_action second_round_action_2">
-				Call SCR again to follow up
+				Call SCR again to follow up 
 			</div>
 			<p class="next_steps action_explanation second_round_action_2">
-				A second call is not necessary.
+				A second call is not necessary. 
 			</p>
 		</div>
 		<div>
-			<div class="next_steps action_button second_round_action second_round_action_3">
-				Submit form LDSS-2221A.
+			<div class="next_steps action_button second_round_action second_round_action_3 correct_choice">
+				Submit form LDSS-2221A. 
 			</div>
-			<p class="next_steps action_explanation second_round_action_3 correct">
-				After calling the SCR, you must submit the LDSS-2221A within 48 hours.
+			<p class="next_steps action_explanation second_round_action_3 correct_choice">
+				After calling the SCR, you must submit the LDSS-2221A within 48 hours. 
 			</p>
 		</div>
 		<div>
 			<div class="next_steps action_button second_round_action second_round_action_4">
-				Contact family to follow up on child
+				Contact family to follow up on child 
 			</div>
 			<p class="next_steps action_explanation second_round_action_4">
-				This is the wrong answer. Do not contact the child's family about your report to the SCR.
+				This is the wrong answer. Do not contact the child's family about your report to the SCR. 
 			</p>
 		</div>
 	</div>
 	<div class="purple_button taking_action_next_button">
-		Next
+		Next 
 	</div>
 </div>
-
-
 <div class="activity_step" id="complete_report">
 	<div class="half-page">
 		<div class="report_form your_form">
@@ -484,15 +470,15 @@
 		</div>
 	</div>
 	<div class="purple_button" id="show_expert_form">
-		Show Expert Form
+		Show Expert Form &#187;
 	</div>
 	<div class="purple_button complete_report taking_action_next_button">
-		Next
+		Next 
 	</div>
 </div>
 <div class="activity_step" id="case_summary">
 	<h5>
-		Case Summary
+		Case Summary 
 	</h5>
 	<p>
 		{% if "cdm" in block.site.domain%} A mother brings her 3 year old son to your clinic for a check-up. During the exam, you notice a laceration on the child's lip, and fractured lower incisors. Upon questioning the mother, she tells you that the child hurt himself accidentally when he ran into a doorknob four days ago. You notice that the child is too short to have sustained the injury on a doorknob. Furthermore, running into a doorknob is not likely to cause a lip laceration, and most mouth injuries impact the upper, not the lower teeth. The child is too young to tell you what happened, and the mother's story is not reasonable. Although the child does not appear to be in imminent danger, you cannot rule out that he has not been abused. You call the SCR to file a report and within the next 2 days, you complete and submit the LDSS-2221A. If the SCR determines that the child may be in an abusive home, the local authorities will be contacted. Your job as a mandated reporter is complete. {%endif%} {% if "ssw" in block.site.domain%}You are working with a father and his 10-year daughter at a family agency. The father and the girl’s mother are divorcing, and they are fighting for custody of their daughter. The daughter tells you that her mother’s new boyfriend is "creepy." You ask the little girl what she means, and she tells you that the boyfriend tells her that he likes sex. The father interrupts, “That man is a pervert and he should not be anywhere near my daughter. He is scaring my daughter. She told me that he rubbed up against her. Isn’t that right honey?" The girl nods her head yes. "That jerk should not be in that house. Her mother is not protecting her." You wonder if the father is making up this story to win custody of his daughter. You notice that the child is caught in a bitter divorce, and her father may be resorting to dishonest and manipulative tactics in order to win custody of his daughter. The girl doesn't say much, but she doesn't disagree with what her father is alleging. Although the child does not appear to be in imminent danger, you cannot rule out that the mother's boyfriend is a danger to. You call the SCR to file a report and within the next 2 days, you complete and submit the LDSS-2221A. If the SCR determines that the child may be in an abusive home, the local authorities will be contacted. Your job as a mandated reporter is complete. {%endif%} 

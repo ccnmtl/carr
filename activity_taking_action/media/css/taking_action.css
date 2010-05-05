@@ -1,6 +1,5 @@
 .activity_step { display: none; }
 
-
 .half-page
 {
 	float: left;
@@ -9,10 +8,7 @@
 	width: 350px;
 }
 
-.half-page, .half-page p, #case_summary p
-{
-	font-size: 100%;
-}
+.half-page, .half-page p, #case_summary p { font-size: 100%; }
 
 .half-page p
 {
@@ -22,8 +18,10 @@
 }
 
 .half-page p.half-page_heading
-
-{font-weight: bold; margin-left: -20px;}
+{
+	font-weight: bold;
+	margin-left: -20px;
+}
 
 .half-page input.checkbox
 {
@@ -32,9 +30,20 @@
 	left: -5px;
 }
 
-a.reset_button {margin-top: -50px;}
+a.reset_button { margin-top: -50px; }
 
-.review_case_button, a.reset_button { background-color: #eee; border: 1px solid #ccc; text-decoration: none; width: 150px;  text-align: center;}
+.review_case_button, a.reset_button, #show_expert_form
+{
+	background-color: #eee;
+	border: 1px solid #ccc;
+	text-decoration: none;
+	width: 150px;
+	text-align: center;
+	color: purple;
+}
+
+#show_expert_form
+{margin-bottom: 50px;}
 
 div.purple_button
 {
@@ -46,7 +55,6 @@ div.purple_button
 	cursor: pointer;
 	text-align: center;
 }
-
 
 div.report_form.expert_form { display: none; }
 
@@ -68,15 +76,20 @@ p.action_explanation { display: none; }
 	font-weight: bold;
 	color: #000;
 	border: 1px solid #D4C9DD;
-} 
-
-#case_summary
-{
-	min-height: 400px;
 }
 
+#show_expert_form
+{margin-bottom: 50px;}
 
+.expert_form
+{border: 1px solid #eee; background-color: #efefef;}
+
+#case_summary { min-height: 400px; }
+
+p.correct_choice {color: green;}
 /********/
+
+/*
 #callout_container
 {
 	float: left;
@@ -200,3 +213,4 @@ p.action_explanation { display: none; }
 	position: absolute;
 	top: 134px;
 }
+*/
