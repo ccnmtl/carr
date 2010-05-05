@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.contrib.auth.models import User
 
+#import django-courseaffils
 
 class rendered_with(object):
     def __init__(self, template_name):

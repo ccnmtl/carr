@@ -1,5 +1,6 @@
 # Django settings for carr project.
 import os.path
+import re
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -46,6 +47,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'courseaffils.middleware.CourseManagerMiddleware',
+    'someutils.AuthRequirementMiddleware',
+    'djangohelpers.middleware.HttpDeleteMiddleware',
+
 )
 
 ROOT_URLCONF = 'carr.urls'
@@ -82,6 +87,7 @@ INSTALLED_APPS = (
     'template_utils',
     'tinymce',
     'typogrify',
+    'courseaffils'
 )
 
 THUMBNAIL_SUBDIR = "thumbs"
@@ -89,8 +95,32 @@ EMAIL_SUBJECT_PREFIX = "[carr] "
 EMAIL_HOST = 'localhost'
 SERVER_EMAIL = "carr@ccnmtl.columbia.edu"
 
-# WIND settings
+# for AuthRequirementMiddleware. this should be a list of 
+# url prefixes for paths that can be accessed by anonymous
+# users. we need to allow anonymous access to the login
+# page, and to static resources.
 
+ANONYMOUS_PATHS = ('/accounts/',
+                   '/site_media/',
+                   '/admin/',
+                   '/login/',
+                   '/carr/',
+                   re.compile(r'^/$'),
+                   )
+
+COURSEAFFILS_PATHS = (
+                      #'/carr/',
+                      #re.compile(r'^/$'),
+                      )
+
+NON_ANONYMOUS_PATHS = COURSEAFFILS_PATHS
+
+COURSEAFFILS_EXEMPT_PATHS = ANONYMOUS_PATHS
+COURSEAFFIL_AUTO_MAP_GROUPS = ['demo']
+
+
+
+# WIND settings
 AUTHENTICATION_BACKENDS = ('djangowind.auth.WindAuthBackend','django.contrib.auth.backends.ModelBackend',)
 WIND_BASE = "https://wind.columbia.edu/"
 WIND_SERVICE = "cnmtl_full_np"
