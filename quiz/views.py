@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.contrib.auth.models import User
 
+#import django-courseaffils
 
 class rendered_with(object):
     def __init__(self, template_name):
@@ -126,10 +127,13 @@ def scores(request):
     quizzes = Quiz.objects.all()
     
     #TODO: accept quiz ID as an argument.           
-    import pdb
+    #import pdb
+    #pdb.set_trace()
     
     quiz_key = {}
     answer_key = {}
+    course_key = {}
+    
     for question in questions:
         try:
             answer_key [question.id ] = question.answer_set.get(correct=True).id 
@@ -138,7 +142,11 @@ def scores(request):
             pass
 
     for student in students:
+        relevant_groups = [x.name for x in student.groups.all() if 'course' in x.name]
+        #import pdb
         
+        #pdb.set_trace()
+        course_key [student.id] = relevant_groups
         doc = "{}"
         try:
             state = ActivityState.objects.get(user=student)
@@ -161,7 +169,8 @@ def scores(request):
                         quiz_scores.append( { 'quiz': quiz, 'score': correct_answer_count, 'answer_count' : answer_count})
                 scores.append( {
                     'student': student,
-                    'quiz_scores': quiz_scores
+                    'quiz_scores': quiz_scores,
+                    'courses' : relevant_groups
                 })
                 
         except:

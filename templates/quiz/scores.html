@@ -7,15 +7,23 @@
 {% block content %}
 
 
+<div class= "back_button">
+     <a href="/carr/"> Back</a>
+</div>
 
-
-
-<ul>
+<ul class = "student_list">
 {% for score in scores %}
 <li>
-    {{score.student}}
-    <ul>
+    {{score.student.first_name}}     {{score.student.last_name}}
+    {% if score.courses %}
+        <ul class = "course_list">
+        {% for s in score.courses %}
+            <li>{{s}}</li>
+        {%endfor%}
+        </ul>
+    {%endif%}
     
+    <ul class= "quiz_list">
     {% if score.quiz_scores%}
         {% for s in score.quiz_scores %}
             <li>
@@ -29,6 +37,11 @@
 </li>
 {%endfor %}
 </ul>
+
+<div class= "back_button">
+     <a href="/carr/"> Back</a>
+</div>
+
 {% endblock %}
 
 
