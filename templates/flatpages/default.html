@@ -8,15 +8,15 @@
    {% include "project_standard_nav.html" %}
 {% endblock %}
 
-{% block primarynavtabs %}
-   <ul>
-      <li><a href="/welcome/">Welcome</a></li>
-      <li><a href="/resources/">Resources</a></li>
-      <li><a href="/assist/">Assist</a></li>
-   </ul>
-{% endblock %}
 
 {% block content %}
-   <h2 class="title">Title</h2>
+   <h2 class="title">{{flatpage.title}}</h2>
+   
+   
+   <div class="flat_page_content">
+    {{flatpage.content}}
+   </div>
+   
+   
 {% endblock %}
          
