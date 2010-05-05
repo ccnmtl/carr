@@ -1220,8 +1220,7 @@ display: block;
 }
 
 .casesanswerdisplay .toggleable {
-
-		background-color: #dadada;
+    background-color: #dadada;
 	padding: 20px;
 	margin-bottom:-10px;
 }
@@ -1295,5 +1294,12 @@ margin-bottom: 1em;
 font-size: 80%;
 }
 
+
+/* ---- Score page elements ---------- */
+
+ul.course_list {
+    color: grey;
+    font-size: 70%;
+}
 
 

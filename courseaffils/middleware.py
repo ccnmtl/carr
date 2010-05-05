@@ -41,12 +41,15 @@ def is_anonymous_path(current_path):
 
 class CourseManagerMiddleware(object):
     def process_request(self, request):
+        #import pdb
+        #pdb.set_trace()
+        
         request.course = None #must be present to be a caching key
 
         path = urlquote(request.get_full_path())
         
-        print "current path is " + request.path
-        print is_anonymous_path(request.path)
+        #print "current path is " + request.path
+        #print is_anonymous_path(request.path)
         
         
         if is_anonymous_path(request.path):
@@ -55,6 +58,9 @@ class CourseManagerMiddleware(object):
         if not request.user.is_authenticated():
             return None
 
+        #import pdb
+        #pdb.set_trace()
+        
         if request.GET.has_key('unset_course'):
             if request.session.has_key(SESSION_KEY):
                 del request.session[SESSION_KEY]
@@ -65,6 +71,9 @@ class CourseManagerMiddleware(object):
 
 
         if request.GET.has_key('set_course'):
+            
+            #print "***"
+            #print course    
             request.session[SESSION_KEY] = course = \
                 Course.objects.get(group__name=request.GET['set_course'])
             decorate_request(request,course)

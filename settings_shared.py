@@ -110,6 +110,7 @@ ANONYMOUS_PATHS = ('/accounts/',
 
 COURSEAFFILS_PATHS = (
                       #'/carr/',
+                      #'/activity/',
                       #re.compile(r'^/$'),
                       )
 
