@@ -21,7 +21,17 @@
 	{% block feeds %}{% endblock %}
 </head>
     <body class="two_columns_left {% block widthtype %}fluid{% endblock %}">
+{% comment %}
+###### FOR WIDTH TYPE--
+   fixed : fixed width, doesn't change with browser resize
+   fluid : variable width, changes with browser resize
+   You can move this to base template if you don't want to deal with it
+   all time in flatpages templates
+{% endcomment %}
+
 <div id="container">
+
+
 {% block masthead %}
 	<!-- ###### Site banner ###### -->
 	<div id="header">
@@ -31,12 +41,9 @@
 			<li><a href="#">About</a></li>
 			<li><a href="#">Help</a></li>
 			<li><a href="#">Contact</a></li>
-			<li><a href="/activity/quiz/scores/">Scores</a></li>
 		</ul>
 		{% endblock %}
 		<!-- CCNMTL title/logo --><h4><a id="logo_ccnmtl"href="http://ccnmtl.columbia.edu" target="_blank" title="Columbia Center for New Media Teaching and Learning"><span>Produced by the Columbia Center for New Media Teaching and Learning</span></a>
-		
-		
 {% if "cdm" in site_domain%}
     	<a id="logo_school" href="http://dental.columbia.edu" target="_blank" title="Columbia University College of Dental Medicine"></a>
 		
@@ -51,6 +58,31 @@
 
 	<!-- ###### Don't touch this ###### -->
 	<div class="visualclear"></div>
+	
+
+{% block primarynav %}
+	<!-- ###### Primary navigation ###### -->
+	<div id="primarynav">
+		<div class="encase" id="{% block navalignment %}leftside{% endblock %}">
+{% comment %}
+###### FOR ALIGNMENT OF TABS on the primary navigation--
+   leftside : all tabs aligning to the left, login to the right
+   rightside :  all tabs aligning to the right, login to the left
+{% endcomment %}
+
+			{% block primarynavtabs %}
+			{% endblock %}
+			
+			{% block usernav %}{% endblock %}
+
+		</div><!-- id="leftside/rightside" -->
+	</div><!-- id="primarynav" -->
+{% endblock %}
+
+<div id="subnav">
+   {% block subnav %}{% endblock %}
+</div>
+
 
 	<!-- ###### Page: Sidebars and Content ###### -->
 	<div id="pagebody">
@@ -71,6 +103,11 @@
 				<!-- ###### Don't touch this ###### -->
 				<div class="visualclear"></div><!-- id="visualclear" -->	
 				
+				<div class="content-nav">
+               {% block contentnav %}
+               {% endblock %}
+            </div>
+                     			
 
 				</div><!-- class="block" -->
 			</div><!-- id="squish" -->

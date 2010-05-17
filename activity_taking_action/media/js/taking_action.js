@@ -41,8 +41,11 @@ function loadStateSuccess(doc)
 {
   debug('loadStateSuccess')
   logDebug (serializeJSON(doc));
-  default_step = 'review_case_history';
- //default_step = 'next_steps';
+  //default_step = 'review_case_history';
+ 
+ 
+  //default_step = 'next_steps';
+  default_step = 'complete_report';
   
   current_step = doc['current_step'] || default_step;
   load_step (current_step)
