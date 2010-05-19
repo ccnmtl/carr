@@ -16,6 +16,8 @@ urlpatterns = patterns('',
                        (r'^edit_answer/(?P<id>\d+)/$','quiz.views.edit_answer',{},'edit-answer'),
                        (r'^load/$', 'carr.quiz.views.loadstate'),
                        (r'^save/$',   'carr.quiz.views.savestate'),
-                       (r'^scores/$', 'carr.quiz.views.scores'),
-
+                       (r'^scores/$', 'carr.quiz.views.scores'), #this is just temporary for testing.
+                       (r'^scores/student/$', 'carr.quiz.views.scores_student'),
+                       (r'^scores/faculty/$', 'carr.quiz.views.scores_faculty'),
+                       (r'^scores/admin/$', 'carr.quiz.views.scores_admin')
 )

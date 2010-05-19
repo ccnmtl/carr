@@ -8,6 +8,8 @@ from pagetree.models import Hierarchy
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.contrib.auth.models import User
+import pdb
+
 
 #import django-courseaffils
 
@@ -107,6 +109,44 @@ def add_answer_to_question(request,id):
 #@rendered_with('quiz/scores.html')
 #@rendered_with('quiz/edit_answer.html')
 
+def score_on_quiz (the_quiz, the_student):
+    blarg = Question.objects.filter(quiz = the_quiz)
+    print blarg       
+    #pdb.set_trace()
+    #pdb.set_trace()
+    try:
+        state = ActivityState.objects.get(user=the_student)
+        print state.json
+        if 1 == 0:
+                        if (len(state.json) > 0):
+                            score = simplejson.loads (state.json)['question']
+                            results = [{
+                                        'question':         int(a['id']), 
+                                        'actual_answer':    int(a['answer']),
+                                        'correct_answer':   answer_key[int(a['id'])],
+                                        'quiz_number':      quiz_key  [int(a['id'])]
+                            } for a in score]
+
+                            quiz_scores = []
+                            
+                            for quiz in quizzes:
+                                answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
+                                if answer_count:                
+                                    correct_answer_count = len([a for  a in results if a['correct_answer'] == a['actual_answer'] and a['quiz_number'] == quiz.id ])
+                                    quiz_scores.append( { 'quiz': quiz, 'score': correct_answer_count, 'answer_count' : answer_count})
+                            scores.append( {
+                                'student': student,
+                                'quiz_scores': quiz_scores,
+                                'taking_courses' : taking_courses,
+				                'teaching_courses': teaching_courses
+                            })
+                            
+    except:
+        pass    
+
+
+
+
 @rendered_with('quiz/scores.html')
 def scores(request):
     """
@@ -115,7 +155,6 @@ def scores(request):
     sortable by name, grade, semester, year, instructor would be ideal
     """
     scores = []
-    #import pdb
     #pdb.set_trace()
     
     
@@ -126,13 +165,13 @@ def scores(request):
     questions = Question.objects.all()
     quizzes = Quiz.objects.all()
     
-    #TODO: accept quiz ID as an argument.           
-    #import pdb
+    #TODO: accept quiz ID as an argument.          
     #pdb.set_trace()
-    
+
+	#SEE  http://www.columbia.edu/acis/rad/authmethods/auth-affil
+    # see http://www.columbia.edu/acis/rad/authmethods/wind/ar01s06.html
     quiz_key = {}
     answer_key = {}
-    course_key = {}
     
     for question in questions:
         try:
@@ -142,17 +181,17 @@ def scores(request):
             pass
 
     for student in students:
-        relevant_groups = [x.name for x in student.groups.all() if 'course' in x.name]
-        #import pdb
+		#note
+		# t1.y2010 is fall 2010
+		# t3.y2010 is spring 2010
+        taking_courses = [x.name for x in student.groups.all() if 'st.course' in x.name and 't3.y2010' in x.name ]
+        teaching_courses = [x.name for x in student.groups.all() if 'fc.course' in x.name and 't3.y2010' in x.name ]
         
         #pdb.set_trace()
-        course_key [student.id] = relevant_groups
-        doc = "{}"
         try:
             state = ActivityState.objects.get(user=student)
             if (len(state.json) > 0):
-                doc = state.json
-                score = simplejson.loads (doc)['question']
+                score = simplejson.loads (state.json)['question']
                 results = [{
                             'question':         int(a['id']), 
                             'actual_answer':    int(a['answer']),
@@ -170,7 +209,8 @@ def scores(request):
                 scores.append( {
                     'student': student,
                     'quiz_scores': quiz_scores,
-                    'courses' : relevant_groups
+                    'taking_courses' : taking_courses,
+					'teaching_courses': teaching_courses
                 })
                 
         except:
@@ -178,6 +218,32 @@ def scores(request):
         
          
     return { 'scores':  scores, 'quizzes':quizzes}
+
+
+
+@rendered_with('quiz/scores_student.html')
+def scores_student(request):
+    print score_on_quiz (Quiz.objects.all()[2], request.user)
+    return {}
+
+@rendered_with('quiz/scores_faculty.html')
+def scores_faculty(request):
+    return {}
+
+@rendered_with('quiz/scores_admin.html')
+def scores_admin(request):
+    return {}
+
+
+if 1 == 0:
+	new_stuff = """
+               (r'^scores/$', 'carr.quiz.views.scores'), #this is just temporary for testing.
+               (r'^scores/student/$', 'carr.quiz.views.scores_student'),
+               (r'^scores/faculty/$', 'carr.quiz.views.scores_faculty'),
+               (r'^scores/admin/$', 'carr.quiz.views.scores_admin')"""
+
+
+
 
 
 @rendered_with('quiz/edit_answer.html')

@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class= "back_button">
+     <a href="/carr/"> Back</a>
+</div>
+Student view
+
+<table class = "student_list">
+
+	<tr>
+		<th>Activity</th>
+		<th>Score</th>
+		<th>Link</th>
+	</tr>
+	<tr>
+		<td>
+			pre-test
+		</td>
+		<td>
+			score
+		</td>
+		<td>
+			<a href = "/carr/Introduction/pretest/" >Go </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Activity -- Abuse or Accident?
+		</td>
+		<td>
+			score
+		</td>
+		<td>
+			<a href = "/carr/recognizing_abuse/abuse_or_accident_activity/case_1/" >Go </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Case 1
+		</td>
+		<td>
+			score
+		</td>
+		<td>
+			<a href = "/carr/recognizing_abuse/cases_activity/case_1/" >Go </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Case 2
+		</td>
+		<td>
+			score
+		</td>
+		<td>
+			<a href = "/carr/recognizing_abuse/cases_activity/case_2/" >Go </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Case 3
+		</td>
+		<td>
+			score
+		</td>
+		<td>
+			<a href = "/carr/recognizing_abuse/cases_activity/case_3/" >Go </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			post-test
+		</td>
+		<td>
+			score
+		</td>
+		<td>
+			<a href = "/carr/conclusion/post_test/" >Go </a>
+		</td>
+	</tr>
+</table>
+<!--
+<ul class = "student_list">
+
+{% for score in scores %}
+<li>
+    {{score.student.first_name}}     {{score.student.last_name}}
+    {% if score.courses %}
+        <ul class = "course_list">
+        {% for s in score.courses %}
+            <li>{{s}}</li>
+        {%endfor%}
+        </ul>
+    {%endif%}
+    
+    <ul class= "quiz_list">
+    {% if score.quiz_scores%}
+        {% for s in score.quiz_scores %}
+            <li>
+                {{s.quiz.label}}: {{s.score}} correct out of {{s.answer_count}} questions
+            </li>
+        {%endfor %}
+    {%else%}
+        No results.
+    {%endif%}
+    </ul>
+</li>
+{%endfor %}
+</ul>
+
+-->
+<div class= "back_button">
+     <a href="/carr/"> Back</a>
+</div>
+{% endblock %}
+
+<!--
+<pre contenteditable class = "magic_form"> </pre>
+-->
