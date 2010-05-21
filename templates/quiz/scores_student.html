@@ -10,11 +10,6 @@
 {% endblock %}
 {% block content %}
 
-
-
-
-
-
 <table class = "student_list">
 
 	<tr>
@@ -23,47 +18,6 @@
 		<th>Link</th>
 	</tr>
 	
-	<!--
-	   
-	{%for q in quizzes_2 %}
-	    {{q}}<br>
-	    {% with q.0 as blarg %}
-	         {{blarg}}<br/>
-	         number lookup{{scores.blarg}}<br />
-	        {{scores.8}}<br />
-	    {%endwith%}
-	    {% with q.1 as blarg %}
-	         {{blarg}}<br/>
-	         string lookup{{scores.blarg}}<br />
-	        {{scores.8}}<br />
-	    {%endwith%}
-	    END
-	{%endfor %}
-	
-	<br />
-	<br />
-	<br />
-	{%for q in quizzes %}
-	    {{q}}<br />
-	    {% with q.id as blarg %}
-	    {{q.id}}<br />
-	    {{blarg}}<br />
-	    {{scores.blarg}}<br />
-	    asdasd {{scores.blarg}}<br />
-	    {%endwith%}
-	{%endfor %}
-    
-    <ul class= "quiz_list">
-    {% if scores%}
-        {% for s in scores %}
-            <li>
-                {{s.quiz.label}}: {{s.score}} / {{s.answer_count}}
-            </li>
-        {%endfor %}
-    {%else%}
-        No quiz results.
-    {%endif%}
-    -->
     </ul>
 	<tr>
 		<td>
@@ -151,38 +105,6 @@
 		</td>
 	</tr>
 </table>
-<!--
-<ul class = "student_list">
 
-{% for score in scores %}
-<li>
-    {{score.student.first_name}}     {{score.student.last_name}}
-    {% if score.courses %}
-        <ul class = "course_list">
-        {% for s in score.courses %}
-            <li>{{s}}</li>
-        {%endfor%}
-        </ul>
-    {%endif%}
-    
-    <ul class= "quiz_list">
-    {% if score.quiz_scores%}
-        {% for s in score.quiz_scores %}
-            <li>
-                {{s.quiz.label}}: {{s.score}} correct out of {{s.answer_count}} questions
-            </li>
-        {%endfor %}
-    {%else%}
-        No results.
-    {%endif%}
-    </ul>
-</li>
-{%endfor %}
-</ul>
-
--->
 {% endblock %}
 
-<!--
-<pre contenteditable class = "magic_form"> </pre>
--->

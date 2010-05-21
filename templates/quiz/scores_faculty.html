@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load quiz_template_tags %}
+{% load smartif %}
 {% block sidebarleft %}
     <ul>
         <li>
@@ -6,47 +8,72 @@
             </li>
     </ul>
 {% endblock %}
+
+
+
 {% block content %}
 <ul class = "student_list">
 {% if student_info %}
 
+        <table>
+        <tr>
+                <td>Student</td>
+                <td>Pre-Test</td>
+                <td>Activity: Abuse vs. Accident?</td>
+                <td>Case 1</td>
+                <td>Case 2</td>
+                <td>Case 3</td>
+                <td>Activity: Taking Action</td>
+                <td>Post-Test </td>
+            
+        </tr>
+        {% for st in student_info %}
+        <tr>
+            <td>
+               {{st.student.first_name}}
+               {{st.student.last_name}}
+            </td>
+            
+            <td>
+                {% get_courses for 'pre-test' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+            </td>
+            <td>
+                
+		            {%if st.score_on_bruise_recon != None %}
+			            {{st.score_on_bruise_recon}} / 3
+			        {%else %}
+			            n/a
+			        {%endif%}
+            </td>
+            <td>
+                {% get_courses for 'Case 1' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+            </td>
+            <td>
+                {% get_courses for 'Case 2' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+            </td>
+            <td>
+                {% get_courses for 'Case 3' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+            </td>
+            <td>
+              
+		            {%if st.score_on_taking_action %}
+			            Complete
+			        {%else %}
+			            Incomplete
+			        {%endif%}
+            </td>
 
-{% for score in student_info %}
-<!--
-<li>
-    {{score.student.first_name}}     {{score.student.last_name}}
-    {% if score.courses %}
-        <ul class = "course_list">
-        {% for s in score.courses %}
-            <li>{{s}}</li>
-        {%endfor%}
-        </ul>
-    {%endif%}
-    
-    <ul class= "quiz_list">
-    {% if score.quiz_scores%}
-        {% for s in score.quiz_scores %}
-            <li>
-                {{s.quiz.label}}: {{s.score}} correct out of {{s.answer_count}} questions
-            </li>
+            <td>
+                {% get_courses for 'post-test' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+            </td>
+        </tr>
         {%endfor %}
-    {%else%}
-        No results.
-    {%endif%}
-    </ul>
 
-</li>
-
--->
-{%endfor %}
+        </table>
 {%else%}
     You don't appear to be teaching any courses this semester.
 {%endif%}
 </ul>
-
-<div class= "back_button">
-     <a href="/carr/"> Back</a>
-</div>
 
 {% endblock %}
 

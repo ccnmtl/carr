@@ -7,43 +7,22 @@
     </ul>
 {% endblock %}
 {% block content %}
-<div class= "back_button">
-     <a href="/carr/"> Back</a>
-</div>
 
-<ul class = "student_list">
-{% for score in scores %}
-<li>
-    {{score.student.first_name}}     {{score.student.last_name}}
-    {% if score.courses %}
-        <ul class = "course_list">
-        {% for s in score.courses %}
-            <li>{{s}}</li>
-        {%endfor%}
-        </ul>
-    {%endif%}
-    
-    <ul class= "quiz_list">
-    {% if score.quiz_scores%}
-        {% for s in score.quiz_scores %}
+    School of Social Work courses:
+        <ul>
+        {% for course in ssw_courses %}
             <li>
-                {{s.quiz.label}}: {{s.score}} correct out of {{s.answer_count}} questions
+               <a href = "/activity/quiz/scores/faculty" >{{course.course_string}}, taught by {{course.faculty_member}}. ({{course.semester}})</a>
             </li>
         {%endfor %}
-    {%else%}
-        No results.
-    {%endif%}
     </ul>
-</li>
-{%endfor %}
-</ul>
-
-<div class= "back_button">
-     <a href="/carr/"> Back</a>
-</div>
-
+    College of Dental Medicine courses:
+    <ul>
+        {% for course in dds_courses %}
+            <li>
+               <a href = "/activity/quiz/scores/faculty" >{{course.course_string}}, taught by {{course.faculty_member}}. ({{course.semester}})</a>
+            </li>
+        {%endfor %}
+    </ul>
 {% endblock %}
 
-<!--
-<pre contenteditable class = "magic_form"> </pre>
--->
