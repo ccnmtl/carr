@@ -9,19 +9,9 @@
 
 <input type="hidden" id="question_count" value="{{block.question_set.all|length}}"/>
 
-<input type="hidden" id="quiz_id" value="{{block.question_set.all|length}}"/>
+<input type="hidden" id="quiz_id" value="{{block.id}}"/>
 
 
-{{block.name}}a
-
-{{block.question_set}}b
-
-{{block}}c
-
-ddd{{block.id}}d
-{{block.section}}e
-{{block.description}}f
-{{block.quiz}}g
 
 
 <!--
@@ -48,7 +38,7 @@ FOR DEBUGGING:
                  <form id="form-{{question.id}}" method="post">
                        <ol type="A">
 	                     {% for answer in question.answer_set.all %}
-                          <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" onclick="onChooseAnswer(this)" right_answer="{{answer.correct}}"/>{{answer.label}}</li>
+                          <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" right_answer="{{answer.correct}}"/>{{answer.label}}</li>
                           
 	                     {% endfor %}
                       </ol>

@@ -1,5 +1,7 @@
 function randomly(){ return 0.5 - Math.random();}
 
+var all_quizzes_info = {}
+
 post_test = window.location.href.match(/post_test/);
 
 function calculate_order () {
@@ -89,19 +91,21 @@ function retakeQuiz()
     window.location.reload()
 }
 
-
+/*
 function onChooseAnswer(ctrl)
 {
-   a = ctrl.id.split('_')
+   //a = ctrl.id.split('_')
    // set rhetorical questions to display:
    //if ($(a[0] + "_answer")) {
    // setStyle(a[0] + "_answer", {'display':'block'})
    // }
 }
 
+*/
+
 function loadStateSuccess(doc)
 {  
-   
+   all_quizzes_info = doc;
    order = calculate_order();
    shuffle_questions(order);
    
@@ -110,16 +114,21 @@ function loadStateSuccess(doc)
     map (hideElement, $$('.casetitle'));
    }
    
-   forEach(doc.question,
-           function(question)
-           {  
-              //debug (serializeJSON(question));
-              if ($(question.id + "_" + question.answer)) {
-                $(question.id + "_" + question.answer).checked = true
-              }
-           })
-   
+   the_key = 'quiz_' + $('quiz_id').value
+   if (doc[the_key]){
+       this_quiz_info = doc[the_key]
+       
+       forEach(this_quiz_info.question,
+               function(question)
+               {  
+                  //debug (serializeJSON(question));
+                  if ($(question.id + "_" + question.answer)) {
+                    $(question.id + "_" + question.answer).checked = true
+                  }
+               })
+   }   
    //maybeEnableNext()
+    
 }
 
 function showScore()
@@ -192,7 +201,8 @@ MochiKit.Signal.connect(window, "onload", loadState)
 function saveState()
 {   url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/save/"
  
-   doc = 
+   quiz_id = $('quiz_id').value;
+   question_info = 
    {
       'question': []
    }
@@ -209,18 +219,22 @@ function saveState()
                  
                  q['id'] = a[0]
                  q['answer'] = a[1]
-                 doc['question'].push(q)
+                 question_info['question'].push(q)
               }
            })
-    debug (JSON.stringify(doc, null))
+           
     
     
-   // save state via a synchronous request. 
+   // save state via a synchronous request.
+   what_to_send =  all_quizzes_info;
+   what_to_send ['quiz_' + quiz_id ] = question_info;
+   debug (what_to_send)
+
    var sync_req = new XMLHttpRequest();  
    sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
    sync_req.open("POST", url, false);
    
-   sync_req.send(queryString({'json':JSON.stringify(doc, null)}));
+   sync_req.send(queryString({'json':JSON.stringify(what_to_send, null)}));
 }
 
 MochiKit.Signal.connect(window, "onbeforeunload", saveState)

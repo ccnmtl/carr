@@ -1,28 +1,35 @@
 {% extends 'base.html' %}
+{% block sidebarleft %}
+    <ul>
+        <li>
+            <a href="/carr/">Back</a>
+            </li>
+    </ul>
+{% endblock %}
 {% block content %}
 <div class= "back_button">
      <a href="/carr/"> Back</a>
 </div>
 
 <ul class = "student_list">
-{% for score in scores %}
+{% for u in users %}
 <li>
-    {{score.student.first_name}} {{score.student.last_name}}
-    {% if score.taking_courses %}
+    {{u.student.first_name}} {{u.student.last_name}}
+    {% if u.taking_courses %}
 		<div>
 			<em>Currently taking:</em>        
 			<ul class = "course_list">
-		    {% for s in score.taking_courses %}
+		    {% for s in u.taking_courses %}
 		        <li>{{s}}</li>
 		    {%endfor%}
 		    </ul>
 		</div>
     {%endif%}
-    {% if score.teaching_courses %}
+    {% if u.teaching_courses %}
 		<div>
 			<em>Currently teaching:</em>        
 			<ul class = "course_list">
-		    {% for s in score.teaching_courses %}
+		    {% for s in u.teaching_courses %}
 		        <li>{{s}}</li>
 		    {%endfor%}
 		    </ul>
@@ -30,8 +37,8 @@
     {%endif%}
     
     <ul class= "quiz_list">
-    {% if score.quiz_scores%}
-        {% for s in score.quiz_scores %}
+    {% if u.quiz_scores%}
+        {% for s in u.quiz_scores %}
             <li>
                 {{s.quiz.label}}: {{s.score}} correct out of {{s.answer_count}} questions
             </li>

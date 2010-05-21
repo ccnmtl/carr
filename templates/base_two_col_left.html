@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>CARR: {% block title %}{% endblock %}</title>
+	<title>CARE: {% block title %}{% endblock %}</title>
 	<link rel="stylesheet" href="/site_media/css/main.css" media="screen" />
 	{% if "cdm" in site_domain%}
     	<link rel="stylesheet" href="/site_media/css/cdm.css" media="screen" />
@@ -35,12 +35,15 @@
 {% block masthead %}
 	<!-- ###### Site banner ###### -->
 	<div id="header">
-		<!-- Project title/logo --><h1 id="logo_project"><a href="./" title="Project Title: Project Django"><span>Project Title: Project Django </span></a></h1>	
+		<!-- Project title/logo --><h1 id="logo_project"><a href="./" title="Project Title: Project Django"><span>Project Title: CARE </span></a></h1>	
 		{% block standardnav %}
 		<ul id="standardnav">
-			<li><a href="#">About</a></li>
-			<li><a href="#">Help</a></li>
-			<li><a href="#">Contact</a></li>
+			<li><a href="/about">About</a></li>
+			<li><a href="/help">Help</a></li>
+			<li><a href="/contact">Contact</a></li>
+			<li><a href="/activity/quiz/scores/student">sc_student</a></li>
+			<li><a href="/activity/quiz/scores/faculty">sc_fac</a></li>
+			<li><a href="/activity/quiz/scores/admin">sc_admin</a></li>
 		</ul>
 		{% endblock %}
 		<!-- CCNMTL title/logo --><h4><a id="logo_ccnmtl"href="http://ccnmtl.columbia.edu" target="_blank" title="Columbia Center for New Media Teaching and Learning"><span>Produced by the Columbia Center for New Media Teaching and Learning</span></a>

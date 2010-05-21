@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
+{% block sidebarleft %}
+    <ul>
+        <li>
+            <a href="/carr/">Back</a>
+            </li>
+    </ul>
+{% endblock %}
 {% block content %}
-<div class= "back_button">
-     <a href="/carr/"> Back</a>
-</div>
-
 <ul class = "student_list">
-{% for score in scores %}
+{% if student_info %}
+
+
+{% for score in student_info %}
+<!--
 <li>
     {{score.student.first_name}}     {{score.student.last_name}}
     {% if score.courses %}
@@ -27,8 +34,14 @@
         No results.
     {%endif%}
     </ul>
+
 </li>
+
+-->
 {%endfor %}
+{%else%}
+    You don't appear to be teaching any courses this semester.
+{%endif%}
 </ul>
 
 <div class= "back_button">

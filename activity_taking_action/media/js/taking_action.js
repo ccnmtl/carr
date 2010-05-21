@@ -41,50 +41,13 @@ function loadStateSuccess(doc)
 {
   debug('loadStateSuccess')
   logDebug (serializeJSON(doc));
-  //default_step = 'review_case_history';
- 
- 
-  //default_step = 'next_steps';
-  default_step = 'complete_report';
+  default_step = 'review_case_history';
   
   current_step = doc['current_step'] || default_step;
   load_step (current_step)
   
   //map (hideElement, $$('.activity_step'))
    
-  /*
-  case_name =  $('case_name').innerHTML;
-   
-   if (doc && doc[case_name])
-   {
-    state_for_this_page = doc[case_name];
-    logDebug (serializeJSON(state_for_this_page));
-   }
-   if (state_for_this_page['answered']) {
-        if (state_for_this_page['answered'] == 'yes') {
-            addElementClass($('answer_yes'), 'button_selected');
-        }
-        else if (state_for_this_page['answered'] == 'no') {
-            addElementClass($('answer_no'), 'button_selected');
-        }
-    }
-   if (state_for_this_page['factors']) {
-        factors_as_string = state_for_this_page['factors'].join (',');
-        logDebug (factors_as_string); 
-   }
-   if (factors_as_string.match(/patterns/) != null) {
-            addElementClass($('patterns'), 'button_selected');
-   }
-   if (factors_as_string.match(/severity/) != null) {
-            addElementClass($('severity'), 'button_selected');
-   }
-   if (factors_as_string.match(/location/) != null) {
-            addElementClass($('location'), 'button_selected');
-   }
-   if (factors_as_string.match(/explanation/) != null) {
-            addElementClass($('explanation'), 'button_selected');
-   }
-   */
    
   maybeEnableNext()
 }
@@ -105,21 +68,6 @@ function loadState()
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
    
-   /*
-   hide_answer();
-   
-   
-  connect ('answer_yes', 'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_yes'))
-  connect ('answer_no',  'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_no'))
-  
-  
-  connect ('patterns',      'onclick', partial (toggleElementClass,'button_selected',    'patterns' ));
-  connect ('severity',      'onclick', partial (toggleElementClass,'button_selected',    'severity' ));
-  connect ('location',      'onclick', partial (toggleElementClass,'button_selected',    'location' ));
-  connect ('explanation',   'onclick', partial (toggleElementClass,'button_selected',    'explanation' ));
-
-  connect('submit_div', 'onclick', show_answer);
- */
   maybeEnableNext();
 }
 
@@ -160,58 +108,8 @@ function validate() {
 }
 
 
-function answer_is_correct() {
-   
-    /*
-    answer_is_yes = ($('correct_answer').innerHTML.toLowerCase().match(/yes/))
-    factors_include_severity = ($('correct_factors').innerHTML.toLowerCase().match(/severity/))
-    factors_include_location = ($('correct_factors').innerHTML.toLowerCase().match(/location/))
-    factors_include_patterns = ($('correct_factors').innerHTML.toLowerCase().match(/patterns/))
-    factors_include_explanation = ($('correct_factors').innerHTML.toLowerCase().match(/explanation/))
-    
-    if (answer_is_yes) {
-        if (hasElementClass($('answer_no'), 'button_selected')) { return false };
-    }
-    else {
-        if (hasElementClass($('answer_yes'), 'button_selected')) { return false };
-    }
-    
-    logDebug ("yes no answer is correct");
-    if (factors_include_severity) {
-        if (! hasElementClass($('severity'), 'button_selected')) { return false };
-    }
-    if (factors_include_location) {
-        if (! hasElementClass($('location'), 'button_selected')) { return false };
-    }
-    if (factors_include_patterns) {
-        if (! hasElementClass($('patterns'), 'button_selected')) { return false };
-    }
-    if (factors_include_explanation) {
-        if (! hasElementClass($('explanation'), 'button_selected')) { return false };
-    }
-    */
-    //patterns, severity, body location, explanation credibility
-    logDebug ("ok factors are correct too");
-    return true;
-
-}
-
 function show_answer() {
-/*
-    if (!validate()) {
-        alert ("Please choose yes or no.");
-        return;
-    }
-    hideElement ('submit_div');
-    if (answer_is_correct()) {
-        $("your_answer_was").innerHTML = "Your answer is correct.";
-    }
-    else {
-        $("your_answer_was").innerHTML = "Your answer is incorrect.";
-    
-    }
-    showElement ('feedback_div');
-  */  
+ 
       maybeEnableNext();
 }
 

@@ -247,7 +247,12 @@ function saveState()
    if (hasElementClass($('patterns'),    'button_selected')) { doc ['factors'].push (   'patterns') };
    if (hasElementClass($('explanation'), 'button_selected')) { doc ['factors'].push ('explanation') };
    
-   
+   if (answer_is_correct()) {
+        doc['score'] = 1;
+   }
+   else {
+        doc['score'] = 0;
+   }
    
   var sync_req = new XMLHttpRequest();  
   sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
