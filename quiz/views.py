@@ -64,8 +64,13 @@ def score_on_all_quizzes (the_student):
     state = ActivityState.objects.get(user=the_student)
     if (len(state.json) > 0):
         score = []
+        #pdb.set_trace()
         for a in simplejson.loads (state.json).values():
-            score.extend(a['question'])
+            try:
+                score.extend(a['question'])
+            except:
+                pass
+                #eh.
         results = [{
                     'question':         int(a['id']), 
                     'actual':    int(a['answer']),
