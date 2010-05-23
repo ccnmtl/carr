@@ -1,22 +1,56 @@
 {% extends "base.html" %}
+
 {% block content %}
+
 {% if form.has_errors %}
-<p>Your username and password didn't match. Please try again.</p>
+
+<p>Your user name and password didn't match. Please try again.</p>
+
 {% endif %}
+
+<h3>Log In</h3>
+
+<fieldset>
+
+<legend>Columbia University Users</legend>
+
 <form method="get" action="{{ wind_base }}login">
 <input type="hidden" name="service" value="{{ wind_service }}" />
 <input type="hidden" name="destination" value="http://{{ request.get_host }}/accounts/windlogin/?next={{ next }}" />
-<p>If you have a Columbia UNI, you already have an account and can
-login through WIND with it</p>
-<input type="submit" value="Here" />
+
+<p>If you have a Columbia UNI, you already have an account and can log in through WIND with it.</p>
+
+<input type="submit" value="Log In" />
 </form>
-<p>otherwise: </p>
+
+</fieldset>
+
+
+<fieldset>
+
+<legend>Non-Columbia University Users</legend>
+
+<p>If you do not have a Columbia UNI, log in here.</p>
+
+
 <form method="post" action=".">
 <table>
-<tr><td><label for="id_username">Username:</label></td><td>{{ form.username }}</td></tr>
+<tr><td><label for="id_username">User Name:</label></td><td>{{ form.username }}</td></tr>
 <tr><td><label for="id_password">Password:</label></td><td>{{ form.password }}</td></tr>
 </table>
-<input type="submit" value="login" />
+<input type="submit" value="Log In" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
+</fieldset>
+
+<h3>About CARE</h3>
+
+<p>
+The Child Abuse Reporting Education (CARE) Project is an online resource designed to teach graduate students in the Columbia University School of Social Work and the College of Dental Medicine how to recognize the symptoms of child abuse and how to report abuse when acting in their professional capacities. Social workers, dentists, and all other human service professionals are required by law to report suspected abuse or maltreatment of minors to the New York State Central Register of Child Abuse and Maltreatment. 
+</p>
+
+<p>
+The CARE Project provides a guided structure to child abuse reporting requirements courses at Columbia University, providing students with access to online training modules created to enhance understanding and practice of child abuse reporting standards. Each module contains informational text and images, interactive learning activities, and pre- and post- course evaluations that allow students to test their understanding of what they have learned. Once the training modules are completed, students then discuss the CARE material in class with instructors. 
+</p>
+
 {% endblock %}
