@@ -1,3 +1,4 @@
+{% load smartif %}
 <link href="/site_media/bruise_recon/css/bruise_recon.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script> 
@@ -66,7 +67,11 @@
 			Body Location 
 		</div>
 		<div class="bruise_recon_checkbox_div purple_button" id="explanation">
-			Explanation&nbsp;Credibility 
+			{% if "cdm" in block.site.domain%}
+			     Credible History
+		    {%else %}
+		        Explanation&nbsp;Credibility
+		    {%endif%}
 		</div>
 	</div>
 	

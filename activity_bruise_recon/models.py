@@ -5,6 +5,7 @@ from django.utils import simplejson
 from django.contrib.contenttypes import generic
 from pagetree.models import PageBlock, Section
 from django import forms
+from django.contrib.sites.models import Site, RequestSite
 
 class Case(models.Model):
     name = models.CharField(max_length=25)
@@ -27,6 +28,9 @@ class Block(models.Model):
     
     def pageblock(self):
         return self.pageblocks.all()[0]
+        
+    def site(self):
+        return Site.objects.get_current()
 
     def __unicode__(self):
         return unicode(self.pageblock())
