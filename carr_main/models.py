@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.utils import simplejson
 from django.contrib.contenttypes import generic
 from django.contrib.sites.models import Site
-from pagetree.models import PageBlock, Section
+from pagetree.models import PageBlock, Section, SectionChildren
 from pageblocks.models import PullQuoteBlock
 from django import forms
 from django.db.models.signals import post_save
@@ -40,10 +40,9 @@ class SiteState(models.Model):
         self.last_location = path
         self.visited = simplejson.dumps(self.state_object)
         self.save()    
-        
-        
-        
+
 class SiteSection(Section):
+
     
     sites = models.ManyToManyField(Site)
     
@@ -55,7 +54,11 @@ class SiteSection(Section):
         x = self
         while traversal_function(x):
             x = traversal_function(x).section_site()
-            if Site.objects.get(id=settings.SITE_ID) in x.sites.all():
+            #if Site.objects.get(id=settings.SITE_ID) in x.sites.all():
+            #    return x
+            #if x.in_site():
+            #    return x
+            if settings.SITE_ID in [s.id for s in x.sites.all()]:
                 return x
         return None
         
@@ -69,6 +72,15 @@ Section.section_site =                  lambda x : SiteSection.objects.get(secti
 Section.sites =                         lambda x : x.section_site().sites.all()
 Section.get_previous_site_section =     lambda x : x.section_site().get_previous_site_section()
 Section.get_next_site_section =         lambda x : x.section_site().get_next_site_section()
+Section.in_site =                       lambda x: settings.SITE_ID in [s.id for s in x.sites()]
+
+def new_get_children(self):
+    return [sc.child for sc in SectionChildren.objects.filter(parent=self).order_by("ordinality") if sc.child.in_site()]
+
+Section.get_children = new_get_children
+
+
+
             
 def find_or_add_site_section(**kwargs):
     new_section = kwargs['instance']
