@@ -10,6 +10,13 @@
 <script type="text/javascript" src="/site_media/taking_action/js/complete_report.js"></script> 
 <script type="text/javascript" src="/site_media/taking_action/js/case_summary.js"></script> 
 <script type="text/javascript" src="/site_media/taking_action/js/taking_action.js"></script> 
+
+
+{% if "cdm" in block.site.domain%} 
+    <script type="text/javascript" >
+       hide_expert_form_toggle_button = true;
+    </script> 
+{%endif%} 
 <!--
 	</div>
 	<div class = "activity_step" id ="analyze_action_criteria">
@@ -44,8 +51,6 @@
 
 -->
 <div id="hidden_js_info">
-	<div id="case_name">
-	</div>
 </div>
 <div class="activity_step" id="review_case_history">
 	<div class="half-page">
@@ -58,8 +63,6 @@
 			{% if "ssw" in block.site.domain%} 
 You are working with a father and his 10-year daughter at a family agency. The father and the girl's mother are divorcing, and they are fighting for custody of their daughter. The daughter tells you that her mother's new boyfriend is "creepy." You ask the little girl what she means, and she tells you that the boyfriend tells her that he likes sex. The father interrupts, "That man is a pervert and he should not be anywhere near my daughter. He is scaring my daughter. She told me that he rubbed up against her. Isn't that right honey?" The girl nods her head yes. "That jerk should not be in that house. Her mother is not protecting her." You wonder if the father is making up this story to win custody of his daughter.
 			{%endif%}
-			
-			
 		</div>
 	</div>
 	<div class="half-page">
@@ -301,13 +304,23 @@ You are working with a father and his 10-year daughter at a family agency. The f
 				This is the wrong answer because the child is not in imminent danger. 
 			</p>
 		</div>
+		
+		
+		
+		{% if "cdm" in block.site.domain%} 
 		<div>
 			<div class="choose_action action_button first_round_action first_round_action_4 correct_choice correct_choice">
 				Perform clinical and radioactive dental examinations to review the extent of the injury. 
 			</div>
+			
+			
 			<p class="choose_action action_explanation first_round_action_4">
 				This is done to identify the magnitude of force involved in the injury, which will help to verify or refute the mother's story. 
+		    </p>
 		</div>
+		{%endif%}
+		
+		
 		{%endif%} 
 	</div>
 	<div class="purple_button taking_action_next_button">

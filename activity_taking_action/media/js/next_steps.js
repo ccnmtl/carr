@@ -17,16 +17,13 @@ function action_button_clicked_round_2(c) {
     logDebug (which_class);
     logDebug('ok');
     if (       which_class == 'second_round_action_1') {
-        showElement($$('.action_button.action_explanation.second_round_action_1')[0]);
+        showElement($$('.action_explanation.second_round_action_1')[0]);
     } else if (which_class == 'second_round_action_2') {
-        showElement($$('.action_button.action_explanation.second_round_action_2')[0]);
+        showElement($$('.action_explanation.second_round_action_2')[0]);
     } else if (which_class == 'second_round_action_3') {
-        showElement($$('.action_button.action_explanation.second_round_action_3')[0]);
+        showElement($$('.action_explanation.second_round_action_3')[0]);
     } else if (which_class == 'second_round_action_4') {
-        showElement($$('.action_button.action_explanation.second_round_action_4')[0]);
+        showElement($$('.action_explanation.second_round_action_4')[0]);
     }
 }
 
-
-    
-    

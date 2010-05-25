@@ -1,6 +1,6 @@
 
-
-default_step = 'complete_report';
+default_step = 'review_case_history';
+//default_step = 'complete_report';
 game_state = {}
 
 
@@ -49,14 +49,18 @@ function loadStateSuccess(doc)
   
   debug('loadStateSuccess')
   logDebug (serializeJSON(doc));
-  //default_step = 'review_case_history';
+  //
  
-  current_step = doc['current_step'] || default_step;
+  //current_step = doc['current_step'] || default_step;
+  current_step = default_step;
   load_step (current_step)
   
   //map (hideElement, $$('.activity_step'))
-  
+  if (hide_expert_form_toggle_button) {
+     hideElement($('show_expert_form'));
+  }
   maybeEnableNext()
+  
 }
 
 function loadStateError(err)
