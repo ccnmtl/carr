@@ -1,3 +1,9 @@
+
+
+default_step = 'complete_report';
+game_state = {}
+
+
 function debug(string)
 {
     if (false)
@@ -39,16 +45,17 @@ function load_step (step_name) {
 
 function loadStateSuccess(doc)
 {
+  game_state = doc;
+  
   debug('loadStateSuccess')
   logDebug (serializeJSON(doc));
-  default_step = 'review_case_history';
-  
+  //default_step = 'review_case_history';
+ 
   current_step = doc['current_step'] || default_step;
   load_step (current_step)
   
   //map (hideElement, $$('.activity_step'))
-   
-   
+  
   maybeEnableNext()
 }
 
@@ -78,25 +85,6 @@ function like_checkbox(selected_class, all_button_class, the_element) {
 }
 
 
-//toggleElement
-function hide_answer()
-{
-    //hideElement('feedback_div');
-/*
-   if (!$('dosage_correct'))
-      $("dosage").focus()
-      */
-}
-
-
-function numeric(field) {
-    var regExpr = new RegExp("^[0-9]$");
-    if (!regExpr.test(field.value)) 
-    {
-      // Case of error
-      field.value = "";
-    }
-}
 
 function validate() {
     // make sure either yes or no is selected.
@@ -117,42 +105,38 @@ function show_answer() {
 MochiKit.Signal.connect(window, "onload", loadState)
 //MochiKit.Signal.connect(window, "onload", setfocus)
 
+
+
+function ldss_form_fields_to_save () {
+    results = {}
+    filled_out_fields = filter (function (a) { return a.innerHTML != '';}, $$('.magic_form'))
+    //logDebug (filled_out_fields);
+    map( function (a) {results[a.id] = a.innerHTML}, filled_out_fields);
+    return results;
+}
+
+
 function saveState()
 {
-/*
-  case_name =  $('case_name').innerHTML;
+
   
   debug("saveState")
   url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/"
 
    debug("saveState");
-   doc = {}
    
-   if (hasElementClass($('answer_yes'), 'button_selected'))
-   {
-        doc ['answered'] = 'yes';
-   } else {
-        doc ['answered'] = 'no';
-   }
+   doc = ldss_form_fields_to_save()
+   doc ['current_step'] = current_step;
+
    
-   doc ['factors'] = []
-   if (hasElementClass($('severity'),    'button_selected')) { doc ['factors'].push (   'severity') };
-   if (hasElementClass($('location'),    'button_selected')) { doc ['factors'].push (   'location') };
-   if (hasElementClass($('patterns'),    'button_selected')) { doc ['factors'].push (   'patterns') };
-   if (hasElementClass($('explanation'), 'button_selected')) { doc ['factors'].push ('explanation') };
-   
-   
-   
+   logDebug (serializeJSON(doc))
   var sync_req = new XMLHttpRequest();  
   sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
   sync_req.open("POST", url, false);
   
-  what_to_send = {}
-  what_to_send [case_name ] = doc
-  
-  
-  sync_req.send(queryString({'json':JSON.stringify(what_to_send , null)}));
-   */
+    
+  sync_req.send(queryString({'json':JSON.stringify(doc , null)}));
+   
 }
 
 MochiKit.Signal.connect(window, "onbeforeunload", saveState)

@@ -40,6 +40,7 @@ a.reset_button { margin-top: -50px; }
 	width: 150px;
 	text-align: center;
 	color: purple;
+    z-index: 100;
 }
 
 #show_expert_form
@@ -98,16 +99,18 @@ p.correct_choice {color: green;}
 
 
 pre.magic_form {
-    margin: 0px;
-    padding-left: 8px;
-	line-height: 8px important;
-	font-size: 8px important;
-    height: 8px important;
     color: blue;
-	width: 650px;
+	/*left: 100px; */
 }
 
+div.positioner_div {
 
+    position: absolute;
+    margin: 0px;
+	font-size: 8px important;
+    cursor: text;
+
+}
 
 /********/
 
