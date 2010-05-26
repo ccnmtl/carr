@@ -10,6 +10,8 @@ from django.utils import simplejson
 from django.contrib.auth.models import User
 from activity_bruise_recon.models import ActivityState as bruise_recon_state
 from activity_taking_action.models import ActivityState as taking_action_state
+from django.contrib.sites.models import Site, RequestSite
+
 
 import pdb
 
@@ -114,6 +116,7 @@ def scores(request):
     sortable by name, grade, semester, year, instructor would be ideal
     """
 
+
     questions = Question.objects.all()
     quizzes = Quiz.objects.all()
     
@@ -171,10 +174,14 @@ def scores(request):
 
 @rendered_with('quiz/scores_student.html')
 def scores_student(request):
+
+    
+
     return {
         'scores':  score_on_all_quizzes (request.user),
         'score_on_bruise_recon' : score_on_bruise_recon(request.user),
-        'score_on_taking_action' : score_on_taking_action(request.user)
+        'score_on_taking_action' : score_on_taking_action(request.user),
+        'site' : Site.objects.get_current()
     }
     
 
@@ -391,6 +398,11 @@ def loadstate(request):
     
 @login_required
 def savestate(request):
+
+    #import pdb;
+    #pdb.set_trace()
+    
+    
     json = request.POST['json']
     try: 
         state = ActivityState.objects.get(user=request.user)

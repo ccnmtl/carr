@@ -45,39 +45,49 @@
 			<a href = "/carr/recognizing_abuse/abuse_or_accident_activity/case_1/" >Go </a>
 		</td>
 	</tr>
-	<tr>
-		<td>
-			Case 1
-		</td>
-		<td>
-			{% get_courses for 'Case 1' in scores as score %}{{score.score}} / {{score.answer_count}}
-		</td>
-		<td>
-			<a href = "/carr/recognizing_abuse/cases_activity/case_1/" >Go </a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Case 2
-		</td>
-		<td>
-            {% get_courses for 'Case 2' in scores as score %}{{score.score}} / {{score.answer_count}}
-		</td>
-		<td>
-			<a href = "/carr/recognizing_abuse/cases_activity/case_2/" >Go </a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Case 3
-		</td>
-		<td>
-            {% get_courses for 'Case 3' in scores as score %}{{score.score}} / {{score.answer_count}}
-		</td>
-		<td>
-			<a href = "/carr/recognizing_abuse/cases_activity/case_3/" >Go </a>
-		</td>
-	</tr>
+	
+	
+	{% if "ssw" in site.domain%}
+	            <tr>
+		            <td>
+			            Case 1
+		            </td>
+		            <td>
+			            {% get_courses for 'Case 1' in scores as score %}{{score.score}} / {{score.answer_count}}
+		            </td>
+		            <td>
+			            <a href = "/carr/recognizing_abuse/cases_activity/case_1/" >Go </a>
+		            </td>
+	            </tr>
+	            <tr>
+		            <td>
+			            Case 2
+		            </td>
+		            <td>
+                        {% get_courses for 'Case 2' in scores as score %}{{score.score}} / {{score.answer_count}}
+		            </td>
+		            <td>
+			            <a href = "/carr/recognizing_abuse/cases_activity/case_2/" >Go </a>
+		            </td>
+	            </tr>
+	            <tr>
+		            <td>
+			            Case 3
+		            </td>
+		            <td>
+                        {% get_courses for 'Case 3' in scores as score %}{{score.score}} / {{score.answer_count}}
+		            </td>
+		            <td>
+			            <a href = "/carr/recognizing_abuse/cases_activity/case_3/" >Go </a>
+		            </td>
+	            </tr>
+	{%else %}
+	
+	
+	
+	{%endif%}
+	
+	
 	<tr>
 		<td>
 			Activity: Taking Action
