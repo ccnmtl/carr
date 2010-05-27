@@ -123,21 +123,25 @@ function ldss_form_fields_to_save () {
 function saveState()
 {
 
-  
   debug("saveState")
   url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/"
 
-   debug("saveState");
    
    doc = ldss_form_fields_to_save()
+    
+   if ( filter(function (a) { return a.substring (0, 14) == 'form_pre_field' }, keys(game_state)).length > 0) {
+        doc['complete'] = 'true' 
+   }
+
    doc ['current_step'] = current_step;
+
+   
 
    
    logDebug (serializeJSON(doc))
   var sync_req = new XMLHttpRequest();  
   sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
   sync_req.open("POST", url, false);
-  
     
   sync_req.send(queryString({'json':JSON.stringify(doc , null)}));
    

@@ -14,11 +14,12 @@ function loadStateSuccess(doc)
      if (pre_test) {
         hideElement ($('retake_quiz_div'));
      }
+     
 
    all_quizzes_info = doc;
    the_key = 'quiz_' + $('quiz_id').value
    
-   if (doc[the_key]){
+   if (doc[the_key] && doc[the_key]['question'].length > 0){
         logDebug ("found info for this quiz.");
         this_quiz_info = doc[the_key]
         question_ids_as_loaded = map (function (a) { return parseInt(a.id.split('_')[1]) }, $$('.cases.really'))

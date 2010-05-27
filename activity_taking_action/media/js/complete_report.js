@@ -41,7 +41,6 @@ function hide_expert_form () {
 }
 
 function toggle_expert_form() {
-    logDebug ("asdasdad");
     if ( $('show_or_hide').innerHTML == 'Show') {
         show_expert_form();
     }
@@ -49,8 +48,6 @@ function toggle_expert_form() {
         hide_expert_form();
     }
 }
-
-
 
 
 function magic_field ( params ){

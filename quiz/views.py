@@ -19,10 +19,12 @@ import pdb
 if 1 == 1:   
         #TODO move these two into their respective modules.
         def score_on_taking_action(the_student):
-            """For now just report complete if the user has visited the page."""
+            """For now just report complete if the user has attempted to fill out LDSS form."""
             try:
                 if the_student.taking_action_user.all().count() > 0:
-                    return 1
+                    #import pdb
+                    #pdb.set_trace()
+                    return simplejson.loads(the_student.taking_action_user.all()[0].json).has_key('complete')
                 else:
                     return None
             except:

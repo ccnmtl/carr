@@ -11,6 +11,25 @@ from django.db.models.signals import post_save
 from django.contrib.sites.models import Site
 
 
+#import pdb
+#pdb.set_trace()
+
+
+
+def user_type(self):
+    if len( [ g for g in self.groups.all() if 'tlcxml' in  g.name]) > 0:
+        return 'admin'
+    elif len( [ g for g in self.groups.all() if '.fc.' in  g.name]) > 0:
+        return 'faculty'
+    else:
+        return 'student'
+        
+        
+User.user_type = user_type
+
+
+
+
 class SiteState(models.Model):
     user = models.ForeignKey(User, related_name="application_user")
     last_location = models.CharField(max_length=255)
