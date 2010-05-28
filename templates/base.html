@@ -41,9 +41,19 @@
 			<li><a href="/about">About</a></li>
 			<li><a href="/credits">Credits</a></li>
 			<li><a href="/contact">Contact</a></li>
-			<li><a href="/activity/quiz/scores/student">sc_student</a></li>
-			<li><a href="/activity/quiz/scores/faculty">sc_fac</a></li>
-			<li><a href="/activity/quiz/scores/admin">sc_admin</a></li>
+                {%if user.user_type == "student" %}
+                    <li><a href="/activity/quiz/scores/student">My scores</a></li>
+                {% endif %}
+              
+              
+                {%if user.user_type == "faculty" %}
+	                <li><a href="/activity/quiz/scores/faculty">My students' scores</a></li>
+                {% endif %}
+                
+                {%if user.user_type == "admin" %}
+	                <li><a href="/activity/quiz/scores/admin">All scores</a></li>
+                {% endif %}
+               </ul>
 		</ul>
 		
 		

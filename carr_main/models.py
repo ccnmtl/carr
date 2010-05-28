@@ -9,11 +9,13 @@ from pageblocks.models import PullQuoteBlock
 from django import forms
 from django.db.models.signals import post_save
 from django.contrib.sites.models import Site
-
+import re
 
 #import pdb
 #pdb.set_trace()
 
+
+#TODO: add a little caching here - will go a long way.
 
 
 def user_type(self):
@@ -24,9 +26,25 @@ def user_type(self):
     else:
         return 'student'
         
+def classes_i_teach(self):
+    my_classes = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name)    for c in self.groups.all()]
+    return [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'fc']
+    
+def classes_i_take(self):
+    my_classes = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name)    for c in self.groups.all()]
+    return [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'st']
+
+def students_i_teach (self):
+    the_classes_i_teach = self.classes_i_teach()
+    # yeah, the people who take more than zero of the classes I teach.
+    return [ u for u in User.objects.all()  if len([c for c in u.classes_i_take() if c in the_classes_i_teach]) > 0 ]
+
+
         
 User.user_type = user_type
-
+User.classes_i_teach = classes_i_teach        
+User.classes_i_take = classes_i_take
+User.students_i_teach = students_i_teach
 
 
 

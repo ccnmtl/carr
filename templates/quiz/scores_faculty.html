@@ -35,7 +35,13 @@
             </td>
             
             <td>
-                {% get_courses for 'pre-test' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+                {% get_courses for 'pre-test' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+                
             </td>
             <td>
                 
@@ -46,25 +52,45 @@
 			        {%endif%}
             </td>
             <td>
-                {% get_courses for 'Case 1' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+            {% get_courses for 'Case 1' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
             </td>
             <td>
-                {% get_courses for 'Case 2' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+            {% get_courses for 'Case 2' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
             </td>
             <td>
-                {% get_courses for 'Case 3' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+            {% get_courses for 'Case 3' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
             </td>
             <td>
               
 		            {%if st.score_on_taking_action %}
 			            Complete
 			        {%else %}
-			            Incomplete
+                        n/a
 			        {%endif%}
             </td>
 
             <td>
-                {% get_courses for 'post-test' in st.scores as score %}{{score.score}} / {{score.answer_count}}
+                {% get_courses for 'post-test' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
             </td>
         </tr>
         {%endfor %}
