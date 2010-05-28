@@ -77,7 +77,19 @@ function calculate_order () {
         randomly_picked_questions = [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
      
         // How many of the questions that *might* be on the quiz should we add to the ones that *will* be?
-        how_many_randomly_picked_questions = 10;
+
+
+        
+         if (window.location.href.match(/cdm/)== null) {
+            // last-minute change: the dental school professor wants to remove these:
+            how_many_randomly_picked_questions = 10;
+        
+        } else {
+            how_many_randomly_picked_questions = 0;   
+        
+        }
+
+
         
         // shuffle the randomly picked questions:
         randomly_picked_questions.sort(randomly);
