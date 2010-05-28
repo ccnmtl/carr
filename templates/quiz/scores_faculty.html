@@ -44,12 +44,11 @@
                 
             </td>
             <td>
-                
-		            {%if st.score_on_bruise_recon != None %}
-			            {{st.score_on_bruise_recon}} / 3
-			        {%else %}
-			            n/a
-			        {%endif%}
+	            {%if st.score_on_bruise_recon  %}
+		            {{st.score_on_bruise_recon}} / 3
+		        {%else %}
+		            n/a
+		        {%endif%}
             </td>
             <td>
             {% get_courses for 'Case 1' in st.scores as score %}

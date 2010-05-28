@@ -21,7 +21,7 @@ if 1 == 1:
         def score_on_taking_action(the_student):
             """For now just report complete if the user has attempted to fill out LDSS form."""
             try:
-                if the_student.taking_action_user.all().count() > 0:
+                if len(the_student.taking_action_user.all()) > 0:
                     #import pdb
                     #pdb.set_trace()
                     return simplejson.loads(the_student.taking_action_user.all()[0].json).has_key('complete')
@@ -31,11 +31,16 @@ if 1 == 1:
                 return None
 
         def score_on_bruise_recon(the_student):
+            #pdb.set_trace()
             try:
-                if the_student.bruise_recon_user.all():
+                if len(the_student.bruise_recon_user.all()) > 0:
                     recon_json = simplejson.loads(the_student.bruise_recon_user.all()[0].json)
                     bruise_recon_score_info = dict([(a.strip(), b['score']) for a, b in recon_json.iteritems() if a.strip() != '' and b.has_key('score')])
                     return  sum(bruise_recon_score_info.values())
+                else:
+                    print "Returning none."
+                    return None
+                    
             except:
                 return None
 
@@ -65,7 +70,12 @@ def score_on_all_quizzes (the_student):
     questions = Question.objects.all()
     quizzes = Quiz.objects.all()
 
-    state = ActivityState.objects.get(user=the_student)
+
+    try:
+        state = ActivityState.objects.get(user=the_student)
+    except ActivityState.DoesNotExist:
+        return []
+        
     if (len(state.json) > 0):
         score = []
         #pdb.set_trace()
@@ -110,75 +120,10 @@ def question_and_quiz_keys():
     return { 'answer_key':answer_key, 'quiz_key':quiz_key}
 
 
-@rendered_with('quiz/scores.html')
-def scores(request):
-    """
-    instructors should be able to view scores for their current students
-    admins should be able to view scores for all students ever
-    sortable by name, grade, semester, year, instructor would be ideal
-    """
-
-
-    questions = Question.objects.all()
-    quizzes = Quiz.objects.all()
-    
-    users = []
-
-    tmp = question_and_quiz_keys()
-    answer_key = tmp ['answer_key']
-    quiz_key =   tmp ['quiz_key']
-
-
-    for student in User.objects.all():
-		#note
-		# t1.y2010 is fall 2010
-		# t3.y2010 is spring 2010
-        taking_courses = [x.name for x in student.groups.all() if 'st.course' in x.name and 't3.y2010' in x.name ]
-        teaching_courses = [x.name for x in student.groups.all() if 'fc.course' in x.name and 't3.y2010' in x.name ]
-        
-        #pdb.set_trace()
-        try:
-            state = ActivityState.objects.get(user=student)
-            if (len(state.json) > 0):
-                #put all the answers for this user together:
-                score = []
-                for a in simplejson.loads (state.json).values():
-                    score.extend(a['question'])
-
-                results = [{
-                            'question':         int(a['id']), 
-                            'actual':    int(a['answer']),
-                            'correct':   answer_key[int(a['id'])],
-                            'quiz_number':      quiz_key  [int(a['id'])]
-                } for a in score]
-
-                quiz_scores = []
-                
-                for quiz in quizzes:
-                    answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
-                    if answer_count:                
-                        correct_count = len([a for  a in results if a['correct'] == a['actual'] and a['quiz_number'] == quiz.id ])
-                        quiz_scores.append( { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count})
-                users.append( {
-                    'student': student,
-                    'quiz_scores': quiz_scores,
-                    'taking_courses' : taking_courses,
-					'teaching_courses': teaching_courses
-                })
-                
-        except:
-            pass
-        
-         
-    return { 'users':  users, 'quizzes':quizzes}
-
 
 
 @rendered_with('quiz/scores_student.html')
 def scores_student(request):
-
-    
-
     return {
         'scores':  score_on_all_quizzes (request.user),
         'score_on_bruise_recon' : score_on_bruise_recon(request.user),
@@ -189,23 +134,11 @@ def scores_student(request):
 
 @rendered_with('quiz/scores_faculty.html')
 def scores_faculty(request):
-    
-    """Figure out which students are in my class:"""
-    teaching_courses = [x.name for x in request.user.groups.all() if 'fc.course' in x.name ]
-    my_students_info = {}
-    if teaching_courses != []:
-        students = User.objects.all()
-        for student in students:
-            taking_courses = [x.name for x in student.groups.all() if 'st.course' in x.name and 't3.y2010' in x.name ]
-            for x in taking_courses:
-                #if this course is in the professor's affils, add the student to students_to_show .
-                pass
-    
-    
-    students_to_show = User.objects.all()
-    """ For now, just for debugging, show *all* users' info. """
-    
-    
+
+    #NOTE: for now, this shows all the students I teach regardless of their course.
+    students_to_show = request.user.students_i_teach()
+    #pdb.set_trace()    
+
     questions = Question.objects.all()
     quizzes = Quiz.objects.all()
     
@@ -228,14 +161,13 @@ def scores_faculty(request):
             )
         except:
             pass
-    
     return { 'student_info' : result }
     
     
 
 @rendered_with('quiz/scores_admin.html')
 def scores_admin(request):
-    """ for now just dummmy data; we can populate this at the beginning of fall with actual student data."""
+    """ for now just dummmy data; we can populate this at the beginning of fall with actual class data."""
     
     return {
         'dds_courses': [
@@ -251,7 +183,7 @@ def scores_admin(request):
                             },
                             {
                             "course_string": 'ssw2345',
-                            "faculty member": 'asdasd',
+                            "faculty member": 'xyz',
                             "semester": 'fall_2010'
                             }
                             
@@ -283,9 +215,6 @@ def scores_admin(request):
     }
 
 
-
-
-
 ######
 ######
 ######
@@ -298,6 +227,82 @@ def scores_admin(request):
 ######
 ######
 
+
+if 1 == 0:
+                @rendered_with('quiz/scores.html')
+                def scores(request):
+                    """
+                    instructors should be able to view scores for their current students
+                    admins should be able to view scores for all students ever
+                    sortable by name, grade, semester, year, instructor would be ideal
+                    """
+
+
+                    questions = Question.objects.all()
+                    quizzes = Quiz.objects.all()
+                    
+                    users = []
+
+                    tmp = question_and_quiz_keys()
+                    answer_key = tmp ['answer_key']
+                    quiz_key =   tmp ['quiz_key']
+
+
+                    for student in User.objects.all():
+		                #note
+		                # t1.y2010 is fall 2010
+		                # t3.y2010 is spring 2010
+                        taking_courses = [x.name for x in student.groups.all() if 'st.course' in x.name and 't3.y2010' in x.name ]
+                        teaching_courses = [x.name for x in student.groups.all() if 'fc.course' in x.name and 't3.y2010' in x.name ]
+                        
+                        #pdb.set_trace()
+                        try:
+                            state = ActivityState.objects.get(user=student)
+                            if (len(state.json) > 0):
+                                #put all the answers for this user together:
+                                score = []
+                                for a in simplejson.loads (state.json).values():
+                                    score.extend(a['question'])
+
+                                results = [{
+                                            'question':         int(a['id']), 
+                                            'actual':    int(a['answer']),
+                                            'correct':   answer_key[int(a['id'])],
+                                            'quiz_number':      quiz_key  [int(a['id'])]
+                                } for a in score]
+
+                                quiz_scores = []
+                                
+                                for quiz in quizzes:
+                                    answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
+                                    if answer_count:                
+                                        correct_count = len([a for  a in results if a['correct'] == a['actual'] and a['quiz_number'] == quiz.id ])
+                                        quiz_scores.append( { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count})
+                                users.append( {
+                                    'student': student,
+                                    'quiz_scores': quiz_scores,
+                                    'taking_courses' : taking_courses,
+					                'teaching_courses': teaching_courses
+                                })
+                                
+                        except:
+                            pass
+                        
+                         
+                    return { 'users':  users, 'quizzes':quizzes}
+
+
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
 
 
 def get_hierarchy():
