@@ -135,8 +135,7 @@ def scores_faculty_courses(request):
     return {  }
 
 
-#                       #show results for all students in one course.
-#                       (r'^scores/faculty/course/(?P<id>\d+)/$', 'carr.quiz.views.scores_faculty_course')
+#show results for all students in one course.
 @rendered_with('quiz/scores_faculty_course.html')
 def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     course_info = (c1, c2, c3, c4, c5, c6)
@@ -190,33 +189,17 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
 
 
                 
-    
+# list all classes:    
 @rendered_with('quiz/scores_admin.html')
 def scores_admin(request):
-    
-    #pdb.set_trace()
     all_affils = Group.objects.all()
-    
     tmp = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name) for c in all_affils]
-    
     course_matches = [a for a in tmp if a != None]
-    
-    #all the courses that any faculty user has ever *taught*:
-    all_courses_taught = [(a.groups()[0:6] ) for a in course_matches if  a.groups()[6] == 'fc']
-    
-    # all the courses in all_courses_taught that were also *taken" by a student user:
-    all_courses_taken = [(a.groups()[0:6] ) for a in course_matches if  a.groups()[0:6] in all_courses_taught and a.groups()[6] =='st']
-    
-
-    # this *looks* like O (n^2) but it's actually quite scalable, I think, in practice.
-    # find all the teachers for this class:
-    faculty_key = {}
-    for course_info in all_courses_taken:
-        course_string = "t%s.y%s.s%s.c%s%s.%s.fc" % course_info
-        for a in all_affils:
-            if course_string in a.name:
-                faculty_key [course_info] = a.user_set.all()
-    
+    relevant_classes = []
+    # here: for each course matches, add to relevant_classes:
+    #all the courses that have a st and an fc and the st is not the same as the fc
+    results = [  ]
+    checked = [  ]
     term_key = {
         '1': 'Spring ',
         '2': 'Summer ',
@@ -224,158 +207,38 @@ def scores_admin(request):
         '4': 'Winter '
     }
     
-    #pdb.set_trace()
+    #Faculty members are also given student wind affils for the classes they teach.
+    #Therefore, don't show classes unless there is *at least* one student who is not also faculty.
+    #Note: this is more efficient than it looks. We can also come back and optimize it further after a couple semesters.
     
-    results = [  ]
-    
-    for course_info in all_courses_taken:
-        results.append (
-            {
-             'course_string': "%s %s%s, section %s" % (course_info[5], course_info[3], course_info[4],course_info[2]),
-             'faculty' : faculty_key[course_info],
-             'semester' : term_key[course_info[0]] + course_info[1],
-             'course_info' : course_info
-             }
-         )
-    
-    #pdb.set_trace()         
-             
-    return {
-    
-        'courses' : results,
-        
-        'dds_courses': [
-                            {
-                            "course_string": 'ssw1234',
-                            "faculty_member": 'xyz',
-                            "semester": 'fall_2010'
-                            },
-                            {
-                            "course_string": 'ssw5678',
-                            "faculty_member": 'xyz',
-                            "semester": 'fall_2010'
-                            },
-                            {
-                            "course_string": 'ssw2345',
-                            "faculty member": 'xyz',
-                            "semester": 'fall_2010'
-                            }
-                            
-                        ],
+    for course_info in [a.groups()[0:6]  for a in course_matches]:
+        if course_info not in checked:
+            checked.append (course_info)
+            faculty_affils_list = [a for a in all_affils if "t%s.y%s.s%s.c%s%s.%s.fc" % course_info in a.name]
+            student_affils_list = [a for a in all_affils if "t%s.y%s.s%s.c%s%s.%s.st" % course_info in a.name]
+            if faculty_affils_list and student_affils_list:
+                print course_info
+                faculty =  faculty_affils_list[0].user_set.all()
+                students = student_affils_list[0].user_set.all()
+                if [s for s in students if s not in faculty]:
+                    results.append (
+                        {
+                         'course_string': "%s %s%s, section %s" % (course_info[5], course_info[3], course_info[4],course_info[2]),
+                         'faculty' : faculty,
+                         'semester' : term_key[course_info[0]] + course_info[1],
+                         'course_info' : course_info
+                         }
+                     )
+            else:
+                print "ditching"
+        else:
+            print "ditching"
             
-            'ssw_courses': [
-                            {
-                            "course_string": 'dds1234',
-                            "faculty_member": 'xyz',
-                            "semester": 'fall_2010'
-                            },
-                            {
-                            "course_string": 'dds2345',
-                            "faculty_member": 'xyz',
-                            "semester": 'fall_2010'
-                            },
-                            {
-                            "course_string": 'dds5678',
-                            "faculty_member": 'xyz',
-                            "semester": 'fall_2010'
-                            },
-                            {
-                            "course_string": 'dds1234',
-                            "faculty_member": 'xyz',
-                            "semester": 'fall_2010'
-                            }
-                            
-                        ],
+    return {    
+        'courses' : results,
     }
 
 
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-
-
-if 1 == 0:
-                @rendered_with('quiz/scores.html')
-                def scores(request):
-                    """
-                    instructors should be able to view scores for their current students
-                    admins should be able to view scores for all students ever
-                    sortable by name, grade, semester, year, instructor would be ideal
-                    """
-
-
-                    questions = Question.objects.all()
-                    quizzes = Quiz.objects.all()
-                    
-                    users = []
-
-                    tmp = question_and_quiz_keys()
-                    answer_key = tmp ['answer_key']
-                    quiz_key =   tmp ['quiz_key']
-
-
-                    for student in User.objects.all():
-		                #note
-		                # t1.y2010 is fall 2010
-		                # t3.y2010 is spring 2010
-                        taking_courses = [x.name for x in student.groups.all() if 'st.course' in x.name and 't3.y2010' in x.name ]
-                        teaching_courses = [x.name for x in student.groups.all() if 'fc.course' in x.name and 't3.y2010' in x.name ]
-                        
-                        #pdb.set_trace()
-                        try:
-                            state = ActivityState.objects.get(user=student)
-                            if (len(state.json) > 0):
-                                #put all the answers for this user together:
-                                score = []
-                                for a in simplejson.loads (state.json).values():
-                                    score.extend(a['question'])
-
-                                results = [{
-                                            'question':         int(a['id']), 
-                                            'actual':    int(a['answer']),
-                                            'correct':   answer_key[int(a['id'])],
-                                            'quiz_number':      quiz_key  [int(a['id'])]
-                                } for a in score]
-
-                                quiz_scores = []
-                                
-                                for quiz in quizzes:
-                                    answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
-                                    if answer_count:                
-                                        correct_count = len([a for  a in results if a['correct'] == a['actual'] and a['quiz_number'] == quiz.id ])
-                                        quiz_scores.append( { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count})
-                                users.append( {
-                                    'student': student,
-                                    'quiz_scores': quiz_scores,
-                                    'taking_courses' : taking_courses,
-					                'teaching_courses': teaching_courses
-                                })
-                                
-                        except:
-                            pass
-                        
-                         
-                    return { 'users':  users, 'quizzes':quizzes}
-
-
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
 ######
 
 
