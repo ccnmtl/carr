@@ -40,11 +40,24 @@ def students_i_teach (self):
     return [ u for u in User.objects.all()  if len([c for c in u.classes_i_take() if c in the_classes_i_teach]) > 0 ]
 
 
+def is_taking (self, course_info):
+    """ takes a list of wind affils, and returns true if  a given course is in it."""
+    course_string = "t%s.y%s.s%s.c%s%s.%s" % course_info
+    list_of_wind_affils = [g.name for g in self.groups.all()]
+    for w in list_of_wind_affils:
+        if course_string in w:
+            return True
+    return False;
+    
+    
+
+
         
 User.user_type = user_type
 User.classes_i_teach = classes_i_teach        
 User.classes_i_take = classes_i_take
 User.students_i_teach = students_i_teach
+User.is_taking = is_taking
 
 
 

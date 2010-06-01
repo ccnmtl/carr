@@ -7,13 +7,11 @@ from django.shortcuts import render_to_response, get_object_or_404
 from pagetree.models import Hierarchy
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from activity_bruise_recon.models import ActivityState as bruise_recon_state
 from activity_taking_action.models import ActivityState as taking_action_state
 from django.contrib.sites.models import Site, RequestSite
-
-
-import pdb
+import re, pdb
 
 
 if 1 == 1:   
@@ -175,18 +173,112 @@ def scores_faculty_courses(request):
 #                       #show results for all students in one course.
 #                       (r'^scores/faculty/course/(?P<id>\d+)/$', 'carr.quiz.views.scores_faculty_course')
 @rendered_with('quiz/scores_faculty_course.html')
-def scores_faculty_course(request, id):
-    return { 'id' : id}
+def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
+    course_info = (c1, c2, c3, c4, c5, c6)
+    
+    
+    if request.user.user_type() == 'admin':
+        course_string = "t%s.y%s.s%s.c%s%s.%s.st" % course_info
+        all_affils = Group.objects.all()
+        for a in all_affils:
+            if course_string in a.name:
+                students_to_show = a.user_set.all()
+    
+    else:
+        all_my_students =  request.user.students_i_teach()
+        students_to_show = [s for s in all_my_students if s.is_taking(course_info)]
 
-                      
+    questions = Question.objects.all()
+    quizzes = Quiz.objects.all()
+    
+    result = []
+
+    tmp = question_and_quiz_keys()
+    answer_key = tmp ['answer_key']
+    quiz_key =   tmp ['quiz_key']
+    
+    #pdb.set_trace()
+    for student in students_to_show:
+        try:
+            result.append (
+                {
+                    'student': student,
+                    'scores':  score_on_all_quizzes (student),
+                    'score_on_bruise_recon' : score_on_bruise_recon(student),
+                    'score_on_taking_action' : score_on_taking_action(student)
+                }
+            )
+        except:
+             result.append (
+                {
+                    'student': student,
+                    'scores':  None,
+                    'score_on_bruise_recon' : None,
+                    'score_on_taking_action' : None
+                }
+            )
+    
+    
+    return { 'c' : course_info , 'student_info' : result}
 
     
 
+
+                
+    
 @rendered_with('quiz/scores_admin.html')
 def scores_admin(request):
-    """ for now just dummmy data; we can populate this at the beginning of fall with actual class data."""
     
+    #pdb.set_trace()
+    all_affils = Group.objects.all()
+    
+    tmp = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name) for c in all_affils]
+    
+    course_matches = [a for a in tmp if a != None]
+    
+    #all the courses that any faculty user has ever *taught*:
+    all_courses_taught = [(a.groups()[0:6] ) for a in course_matches if  a.groups()[6] == 'fc']
+    
+    # all the courses in all_courses_taught that were also *taken" by a student user:
+    all_courses_taken = [(a.groups()[0:6] ) for a in course_matches if  a.groups()[0:6] in all_courses_taught and a.groups()[6] =='st']
+    
+
+    # this *looks* like O (n^2) but it's actually quite scalable, I think, in practice.
+    # find all the teachers for this class:
+    faculty_key = {}
+    for course_info in all_courses_taken:
+        course_string = "t%s.y%s.s%s.c%s%s.%s.fc" % course_info
+        for a in all_affils:
+            if course_string in a.name:
+                faculty_key [course_info] = a.user_set.all()
+    
+    term_key = {
+        '1': 'Spring ',
+        '2': 'Summer ',
+        '3': 'Fall ',
+        '4': 'Winter '
+    }
+    
+    #pdb.set_trace()
+    
+    results = [  ]
+    
+    for course_info in all_courses_taken:
+        results.append (
+            {
+             'course_string': "%s %s%s, section %s" % (course_info[5], course_info[3], course_info[4],course_info[2]),
+             'faculty' : faculty_key[course_info],
+             'semester' : term_key[course_info[0]] + course_info[1],
+             'course_info' : course_info
+             }
+         )
+    
+    #pdb.set_trace()         
+             
     return {
+    
+        'courses' : results,
+        
         'dds_courses': [
                             {
                             "course_string": 'ssw1234',

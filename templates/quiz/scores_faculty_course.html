@@ -9,9 +9,95 @@
     </ul>
 {% endblock %}
 
-
 {% block content %}
-    <div>
-        Your scores for course {{id}}.
-    </div>
+<div>
+    Scores for students in t{{c.0}}.y{{c.1}}.s{{c.2}}.c{{c.3}}{{c.4}}.{{c.5}}:
+</div>
+
+{% if student_info %}
+        <table>
+        <tr>
+                <td>Student</td>
+                <td>Pre-Test</td>
+                <td>Activity: Abuse vs. Accident?</td>
+                <td>Case 1</td>
+                <td>Case 2</td>
+                <td>Case 3</td>
+                <td>Activity: Taking Action</td>
+                <td>Post-Test </td>
+            
+        </tr>
+        {% for st in student_info %}
+        <tr>
+            <td>
+               {{st.student.first_name}}
+               {{st.student.last_name}}
+            </td>
+            
+            <td>
+                {% get_courses for 'pre-test' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+                
+            </td>
+            <td>
+	            {%if st.score_on_bruise_recon  %}
+		            {{st.score_on_bruise_recon}} / 3
+		        {%else %}
+		            n/a
+		        {%endif%}
+            </td>
+            <td>
+            {% get_courses for 'Case 1' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+            </td>
+            <td>
+            {% get_courses for 'Case 2' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+            </td>
+            <td>
+            {% get_courses for 'Case 3' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+            </td>
+            <td>
+              
+		            {%if st.score_on_taking_action %}
+			            Complete
+			        {%else %}
+                        n/a
+			        {%endif%}
+            </td>
+
+            <td>
+                {% get_courses for 'post-test' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+            </td>
+        </tr>
+        {%endfor %}
+
+        </table>
+{%else%}
+    You don't appear to be teaching any courses this semester.
+{%endif%}
+    
+    
 {%endblock%}

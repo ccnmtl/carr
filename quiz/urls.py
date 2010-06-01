@@ -30,8 +30,21 @@ urlpatterns = patterns('',
                        (r'^scores/faculty/courses/$', 'carr.quiz.views.scores_faculty_courses'),
                        
                        
+                       #  (?P<game_label>\w+)
+                       
+                       #  (?P<c1>\w+)
+
+                       #  (?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/$
+                       
+
+
+
+                       
                        #show results for all students in one course.
-                       (r'^scores/faculty/course/(?P<id>\d+)/$', \
+#                       (r'^scores/faculty/course/(?P<id>\d+)/$', \
+
+
+                       (r'^scores/faculty/course/(?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$', \
                        'carr.quiz.views.scores_faculty_course'),
 
                        

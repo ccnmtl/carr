@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{%load smartif %}
 {% block sidebarleft %}
     <ul>
         <li>
@@ -8,21 +9,51 @@
 {% endblock %}
 {% block content %}
 
-    School of Social Work courses:
-        <ul>
-        {% for course in ssw_courses %}
-            <li>
-               <a href = "/activity/quiz/scores/faculty" >{{course.course_string}}, taught by {{course.faculty_member}}. ({{course.semester}})</a>
-            </li>
+    <table>
+            <tr>
+                <td>
+                School
+                </td>
+                <td>
+                Term
+                </td>
+                <td>
+                Course
+                </td>
+                <td>
+                Faculty
+                </td>
+            </tr>
+
+
+        {% for course in courses %}
+            <tr>
+                <td>
+                   {{course.course_info.5}}
+                </td>
+                <td>
+                   {{course.semester}}
+                </td>
+                
+                
+                <td>
+                {% with course.course_info as c %}
+                        <a href = "/activity/quiz/scores/faculty/course/{{c.0}}/{{c.1}}/{{c.2}}/{{c.3}}/{{c.4}}/{{c.5}}/">{{course.course_string}}</a>
+                {%endwith %}
+                
+                   
+                </td>
+                <td>
+                    {% for u in course.faculty %}
+                        {{u}}
+                        {%if not forloop.last%},{%endif%}
+                    {% endfor %}
+                </td>
+
+
+            </tr>
         {%endfor %}
-    </ul>
-    College of Dental Medicine courses:
-    <ul>
-        {% for course in dds_courses %}
-            <li>
-               <a href = "/activity/quiz/scores/faculty" >{{course.course_string}}, taught by {{course.faculty_member}}. ({{course.semester}})</a>
-            </li>
-        {%endfor %}
-    </ul>
+    </table>
+
 {% endblock %}
 
