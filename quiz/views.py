@@ -165,6 +165,23 @@ def scores_faculty(request):
     
     
 
+#                       #list ALL COURSES courses for the logged-in faculty member.
+#                       (r'^scores/faculty/courses/$', 'carr.quiz.views.scores_faculty_courses')
+@rendered_with('quiz/scores_faculty_courses.html')
+def scores_faculty_courses(request):
+    return {  }
+
+
+#                       #show results for all students in one course.
+#                       (r'^scores/faculty/course/(?P<id>\d+)/$', 'carr.quiz.views.scores_faculty_course')
+@rendered_with('quiz/scores_faculty_course.html')
+def scores_faculty_course(request, id):
+    return { 'id' : id}
+
+                      
+
+    
+
 @rendered_with('quiz/scores_admin.html')
 def scores_admin(request):
     """ for now just dummmy data; we can populate this at the beginning of fall with actual class data."""

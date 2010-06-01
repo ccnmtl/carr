@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load quiz_template_tags %}
+{% load smartif %}
+{% block sidebarleft %}
+    <ul>
+        <li>
+            <a href="/carr/">Back</a>
+            </li>
+    </ul>
+{% endblock %}
+
+
+{% block content %}
+    <div>
+        Your scores for course {{id}}.
+    </div>
+{%endblock%}
