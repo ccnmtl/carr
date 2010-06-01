@@ -11,12 +11,18 @@
 
 {% block content %}
     <div>
-        A list of all your courses this semester.
+        Your classes:
     </div>
-    <div>
-
     {%for c in user.classes_i_teach %}
+    <div>
         <a href = "/activity/quiz/scores/faculty/course/{{c.0}}/{{c.1}}/{{c.2}}/{{c.3}}/{{c.4}}/{{c.5}}/">
 t{{c.0}}.y{{c.1}}.s{{c.2}}.c{{c.3}}{{c.4}}.{{c.5}}</a>
+    </div>
     {% endfor %}
+    
+    <div>
+        <em>
+         Note: A class will not be displayed until a student in that class logs into CARE.
+        </em>
+    </div>
 {%endblock%}

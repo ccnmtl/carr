@@ -130,41 +130,6 @@ def scores_student(request):
     }
     
 
-@rendered_with('quiz/scores_faculty.html')
-def scores_faculty(request):
-
-    #NOTE: for now, this shows all the students I teach regardless of their course.
-    students_to_show = request.user.students_i_teach()
-    #pdb.set_trace()    
-
-    questions = Question.objects.all()
-    quizzes = Quiz.objects.all()
-    
-    result = []
-
-    tmp = question_and_quiz_keys()
-    answer_key = tmp ['answer_key']
-    quiz_key =   tmp ['quiz_key']
-    
-    #pdb.set_trace()
-    for student in students_to_show:
-        try:
-            result.append (
-                {
-                    'student': student,
-                    'scores':  score_on_all_quizzes (student),
-                    'score_on_bruise_recon' : score_on_bruise_recon(student),
-                    'score_on_taking_action' : score_on_taking_action(student)
-                }
-            )
-        except:
-            pass
-    return { 'student_info' : result }
-    
-    
-
-#                       #list ALL COURSES courses for the logged-in faculty member.
-#                       (r'^scores/faculty/courses/$', 'carr.quiz.views.scores_faculty_courses')
 @rendered_with('quiz/scores_faculty_courses.html')
 def scores_faculty_courses(request):
     return {  }
