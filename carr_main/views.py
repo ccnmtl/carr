@@ -24,6 +24,7 @@ class rendered_with(object):
 @login_required
 @rendered_with('carr_main/page.html')
 def page(request,path):
+    print path
     h = Hierarchy.get_hierarchy('main')
     current_root = h.get_section_from_path(path)
     section = h.get_first_leaf(current_root)

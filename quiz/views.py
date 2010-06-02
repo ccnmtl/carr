@@ -192,12 +192,31 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
 # list all classes:    
 @rendered_with('quiz/scores_admin.html')
 def scores_admin(request):
+    """
+    Show ALL THE SCORES, for ALL THE STUDENTS, EVER.
+    
+    Note: this is much more efficient than it might look at first glance,
+    and plenty efficient for the first couple semesters.
+    We can also come back and optimize it further once we have actual data.
+   
+    Faculty members are also given student wind affils for the classes they teach.
+    Therefore,  the trick is not to show classes unless there is
+    *at least* one student who is not also faculty.
+    
+    Also, if we wanted to, we could further narrow classed down for the following school codes:
+        pedi
+        pros
+        regi
+        opdn
+        socw    
+    """
+    
+
     all_affils = Group.objects.all()
     tmp = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name) for c in all_affils]
     course_matches = [a for a in tmp if a != None]
     relevant_classes = []
-    # here: for each course matches, add to relevant_classes:
-    #all the courses that have a st and an fc and the st is not the same as the fc
+    launch_year = 2010
     results = [  ]
     checked = [  ]
     term_key = {
@@ -207,32 +226,31 @@ def scores_admin(request):
         '4': 'Winter '
     }
     
-    #Faculty members are also given student wind affils for the classes they teach.
-    #Therefore, don't show classes unless there is *at least* one student who is not also faculty.
-    #Note: this is more efficient than it looks. We can also come back and optimize it further after a couple semesters.
-    
     for course_info in [a.groups()[0:6]  for a in course_matches]:
-        if course_info not in checked:
+        f_lookup = "t%s.y%s.s%s.c%s%s.%s.fc"
+        s_lookup = "t%s.y%s.s%s.c%s%s.%s.st"
+        if course_info not in checked:            
             checked.append (course_info)
-            faculty_affils_list = [a for a in all_affils if "t%s.y%s.s%s.c%s%s.%s.fc" % course_info in a.name]
-            student_affils_list = [a for a in all_affils if "t%s.y%s.s%s.c%s%s.%s.st" % course_info in a.name]
-            if faculty_affils_list and student_affils_list:
-                print course_info
-                faculty =  faculty_affils_list[0].user_set.all()
-                students = student_affils_list[0].user_set.all()
-                if [s for s in students if s not in faculty]:
-                    results.append (
-                        {
-                         'course_string': "%s %s%s, section %s" % (course_info[5], course_info[3], course_info[4],course_info[2]),
-                         'faculty' : faculty,
-                         'semester' : term_key[course_info[0]] + course_info[1],
-                         'course_info' : course_info
-                         }
-                     )
+            if int(course_info[1]) >= launch_year:
+                faculty_affils_list = [a for a in all_affils if f_lookup % course_info in a.name]
+                student_affils_list = [a for a in all_affils if s_lookup % course_info in a.name]
+                if faculty_affils_list and student_affils_list:
+                    faculty =  faculty_affils_list[0].user_set.all()
+                    students = student_affils_list[0].user_set.all()
+                    if [s for s in students if s not in faculty]:
+                        results.append ( {
+                             'course_string': "%s %s%s, section %s" % \
+                             (course_info[5], course_info[3], course_info[4],course_info[2]),
+                             'faculty' : faculty,
+                             'semester' : term_key[course_info[0]] + course_info[1],
+                             'course_info' : course_info
+                        })
+                else:
+                    pass
             else:
-                print "ditching"
+                pass
         else:
-            print "ditching"
+            pass
             
     return {    
         'courses' : results,

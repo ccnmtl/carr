@@ -49,8 +49,8 @@ def is_taking (self, course_info):
             return True
     return False;
     
-    
-
+def score_info_for_class (course_info):
+    return { }
 
         
 User.user_type = user_type
