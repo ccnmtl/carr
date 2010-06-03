@@ -11,11 +11,13 @@ from django.contrib.auth.models import User, Group
 from activity_bruise_recon.models import ActivityState as bruise_recon_state
 from activity_taking_action.models import ActivityState as taking_action_state
 from django.contrib.sites.models import Site, RequestSite
+from carr_main.models import number_of_students_in_class, students_in_class
+from django.core.cache import cache
+
 import re, pdb
 
-
 if 1 == 1:   
-        #TODO move these two into their respective modules.
+        #TODO move these two into their respective apps.
         def score_on_taking_action(the_student):
             """For now just report complete if the user has attempted to fill out LDSS form."""
             try:
@@ -187,13 +189,47 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
 
     
 
+if 1 == 0:
+    def score_info_for_class (course_info):
+        return { }
+
+    def number_of_students_in_class (course_info):
+        return { }
 
                 
+                
+    
+def score_info_for_class (course_info):
+    cache_key = "score_info_for_t%s.y%s.s%s.c%s%s.%s" % course_info
+    print 
+    #if cache.get(cache_key):
+    #    print "score_info_for_class found in cache."
+    #    return cache.get(cache_key)
+    result = dict([(a, score_on_all_quizzes(a)) for a in students_in_class(course_info)])
+    cache.set(cache_key,result,60*60)
+    return result
+                
+def summarize_score_info_for_class (course_info):
+    info = score_info_for_class (course_info)
+    students_with_scores =  [v for v in info.values() if v]
+    #print students_with_scores
+    pre_test_count = 0
+    post_test_count = 0
+    
+    for a in students_with_scores:
+        for b in a:
+            if b['quiz'].label() == 'Pre-test':
+                pre_test_count = pre_test_count + 1
+            if b['quiz'].label() == 'Pre-test':
+                post_test_count == post_test_count + 1
+    return {'pre_test' : pre_test_count, 'post_test': post_test_count}
+    
+
 # list all classes:    
 @rendered_with('quiz/scores_admin.html')
 def scores_admin(request):
     """
-    Show ALL THE SCORES, for ALL THE STUDENTS, EVER.
+    Show ALL THE SCORES, for ALL THE STUDENTS. EVER.
     
     Note: this is much more efficient than it might look at first glance,
     and plenty efficient for the first couple semesters.
@@ -238,12 +274,15 @@ def scores_admin(request):
                     faculty =  faculty_affils_list[0].user_set.all()
                     students = student_affils_list[0].user_set.all()
                     if [s for s in students if s not in faculty]:
+                        #pdb.set_trace()
                         results.append ( {
                              'course_string': "%s %s%s, section %s" % \
                              (course_info[5], course_info[3], course_info[4],course_info[2]),
                              'faculty' : faculty,
                              'semester' : term_key[course_info[0]] + course_info[1],
-                             'course_info' : course_info
+                             'course_info' : course_info,
+                             'score_info_for_class' : summarize_score_info_for_class (course_info),
+                             'number_of_students_in_class' : number_of_students_in_class (course_info),
                         })
                 else:
                     pass

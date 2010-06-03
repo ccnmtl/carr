@@ -24,16 +24,12 @@ class rendered_with(object):
 @login_required
 @rendered_with('carr_main/page.html')
 def page(request,path):
-    print path
     h = Hierarchy.get_hierarchy('main')
     current_root = h.get_section_from_path(path)
     section = h.get_first_leaf(current_root)
     ancestors = section.get_ancestors()
     ss = SiteState.objects.get_or_create(user=request.user)[0]
     current_site = Site.objects.get_current()
-    
-    #import pdb
-    #pdb.set_trace()
     
     # Skip to the first leaf, make sure to mark these sections as visited
     if (current_root != section):

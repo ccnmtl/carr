@@ -9,39 +9,60 @@ from pageblocks.models import PullQuoteBlock
 from django import forms
 from django.db.models.signals import post_save
 from django.contrib.sites.models import Site
-import re
+from django.core.cache import cache
+from django.contrib.auth.models import User, Group
 
-#import pdb
-#pdb.set_trace()
-
-
-#TODO: add a little caching here - will go a long way.
+import re, pdb
 
 
 def user_type(self):
+    if cache.get("user_type_%d" % self.id):
+        print "user type found in cache."
+        return cache.get("user_type_%d" % self.id)
+    result = None
     if len( [ g for g in self.groups.all() if 'tlcxml' in  g.name]) > 0:
-        return 'admin'
+        #TODO: also give admin to all people marked such in the admin user interface.
+        result = 'admin'
     elif len( [ g for g in self.groups.all() if '.fc.' in  g.name]) > 0:
-        return 'faculty'
+        result = 'faculty'
     else:
-        return 'student'
+        result = 'student'
+    cache.set("user_type_%d" % self.id,result,60*60*24)
+    print "user type stored in cache."
+    return result
+
         
 def classes_i_teach(self):
+    if cache.get("classes_i_teach_%d" % self.id):
+        print "classes_i_teach found in cache."
+        return cache.get("classes_i_teach_%d" % self.id)
+        
     my_classes = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name)    for c in self.groups.all()]
-    return [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'fc']
+    result = [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'fc']
+    cache.set("classes_i_teach_%d" % self.id,result,30)
+    return result
     
 def classes_i_take(self):
+    if cache.get("classes_i_take_%d" % self.id):
+        print "classes_i_take found in cache."
+        return cache.get("classes_i_take_%d" % self.id)
     my_classes = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name)    for c in self.groups.all()]
-    return [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'st']
+    result = [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'st']
+    cache.set("classes_i_take_%d" % self.id,result,30)
+    return result
 
 def students_i_teach (self):
+    if cache.get("students_i_teach_%d" % self.id):
+        print "students_i_teach found in cache."
+        return cache.get("students_i_teach_%d" % self.id)
     the_classes_i_teach = self.classes_i_teach()
     # yeah, the people who take more than zero of the classes I teach.
-    return [ u for u in User.objects.all()  if len([c for c in u.classes_i_take() if c in the_classes_i_teach]) > 0 ]
+    result = [ u for u in User.objects.all()  if len([c for c in u.classes_i_take() if c in the_classes_i_teach]) > 0  and u != self]
+    cache.set("students_i_teach_%d" % self.id,result,30)
+    return result
 
 
 def is_taking (self, course_info):
-    """ takes a list of wind affils, and returns true if  a given course is in it."""
     course_string = "t%s.y%s.s%s.c%s%s.%s" % course_info
     list_of_wind_affils = [g.name for g in self.groups.all()]
     for w in list_of_wind_affils:
@@ -49,8 +70,29 @@ def is_taking (self, course_info):
             return True
     return False;
     
-def score_info_for_class (course_info):
-    return { }
+def students_in_class(course_info):
+    cache_key = "students_in_t%s.y%s.s%s.c%s%s.%s" % course_info
+    
+    if cache.get(cache_key):
+        print "students_in_class found in cache."
+        return cache.get(cache_key)
+    result = []
+    all_affils = Group.objects.all()
+    f_lookup = "t%s.y%s.s%s.c%s%s.%s.fc"
+    s_lookup = "t%s.y%s.s%s.c%s%s.%s.st"
+    faculty_affils_list = [a for a in all_affils if f_lookup % course_info in a.name]
+    student_affils_list = [a for a in all_affils if s_lookup % course_info in a.name]
+    if faculty_affils_list and student_affils_list:
+        faculty =  faculty_affils_list[0].user_set.all()
+        students = student_affils_list[0].user_set.all()
+        result = [s for s in students if s not in faculty]
+    
+    cache.set(cache_key,result,30)
+    return result
+   
+
+def number_of_students_in_class (course_info):
+    return len(students_in_class(course_info))
 
         
 User.user_type = user_type
@@ -58,6 +100,9 @@ User.classes_i_teach = classes_i_teach
 User.classes_i_take = classes_i_take
 User.students_i_teach = students_i_teach
 User.is_taking = is_taking
+
+
+
 
 
 

@@ -7,12 +7,7 @@ admin.autodiscover()
 site_media_root = os.path.join(os.path.dirname(__file__),"media")
 
 urlpatterns = patterns('',
-
-
-   #(r'^welcome/$', 'carr_main.views.page', {'path': '/carr'}),
-           
-   (r'^welcome/$', 'django.views.generic.simple.redirect_to', {'url': '/carr'}),
-   
+   (r'^welcome/$', 'django.views.generic.simple.redirect_to', {'url': '/carr'}),   
    (r'^crossdomain.xml$', 'django.views.static.serve', {'document_root': os.path.abspath(os.path.dirname(__file__)), 'path': 'crossdomain.xml'}),
    (r'^$','carr_main.views.index'),
    (r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logged_out.html'}),
