@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load markup %}
+{% load smartif %}
+{% block title %}{% endblock %}
+
+{% block sidebarleft %}
+{% endblock %}
+
+{% block content %}
+    <script language="javascript">
+        student_quiz = {{student_json|safe}};
+    </script>
+    <div class = "answer" >
+        Responses for  {{student.first_name }} {{student.last_name }} to {{quiz.label}}
+    </div>
+    {% with quiz as block%}
+        {% include "quiz/quizblock.html" %}
+    {%endwith%}
+{% endblock %}
+
+{% block contentnav %}
+{% endblock %}
+
+
