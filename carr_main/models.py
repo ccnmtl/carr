@@ -17,7 +17,7 @@ import re, pdb
 
 def user_type(self):
     if cache.get("user_type_%d" % self.id):
-        print "user type found in cache."
+        #print "user type found in cache."
         return cache.get("user_type_%d" % self.id)
     result = None
     if len( [ g for g in self.groups.all() if 'tlcxml' in  g.name]) > 0:
@@ -28,13 +28,13 @@ def user_type(self):
     else:
         result = 'student'
     cache.set("user_type_%d" % self.id,result,60*60*24)
-    print "user type stored in cache."
+    #print "user type stored in cache."
     return result
 
         
 def classes_i_teach(self):
     if cache.get("classes_i_teach_%d" % self.id):
-        print "classes_i_teach found in cache."
+        #print "classes_i_teach found in cache."
         return cache.get("classes_i_teach_%d" % self.id)
         
     my_classes = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name)    for c in self.groups.all()]
@@ -44,7 +44,7 @@ def classes_i_teach(self):
     
 def classes_i_take(self):
     if cache.get("classes_i_take_%d" % self.id):
-        print "classes_i_take found in cache."
+        #print "classes_i_take found in cache."
         return cache.get("classes_i_take_%d" % self.id)
     my_classes = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name)    for c in self.groups.all()]
     result = [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'st']
@@ -53,7 +53,7 @@ def classes_i_take(self):
 
 def students_i_teach (self):
     if cache.get("students_i_teach_%d" % self.id):
-        print "students_i_teach found in cache."
+        #print "students_i_teach found in cache."
         return cache.get("students_i_teach_%d" % self.id)
     the_classes_i_teach = self.classes_i_teach()
     # yeah, the people who take more than zero of the classes I teach.
@@ -74,7 +74,7 @@ def students_in_class(course_info):
     cache_key = "students_in_t%s.y%s.s%s.c%s%s.%s" % course_info
     
     if cache.get(cache_key):
-        print "students_in_class found in cache."
+        #print "students_in_class found in cache."
         return cache.get(cache_key)
     result = []
     all_affils = Group.objects.all()

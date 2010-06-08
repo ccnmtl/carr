@@ -20,6 +20,9 @@ urlpatterns = patterns('',
                        
                        
                        
+                       (r'^studentquiz/(?P<quiz_id>\d+)/user/(?P<user_id>\d+)/$', 'carr.quiz.views.studentquiz'),
+                       
+                       
                        (r'^scores/student/$', 'carr.quiz.views.scores_student'),
                        
                        #list all courses for the logged-in faculty member.

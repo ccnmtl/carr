@@ -187,15 +187,6 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     
     return { 'c' : course_info , 'student_info' : result}
 
-    
-
-if 1 == 0:
-    def score_info_for_class (course_info):
-        return { }
-
-    def number_of_students_in_class (course_info):
-        return { }
-
                 
                 
     
@@ -363,10 +354,37 @@ def add_question_to_quiz(request,id):
         question.save()
     return HttpResponseRedirect(reverse("edit-quiz",args=[quiz.id]))
 
+
+
+
+#(r'^studentquiz/(?P<quiz_id>\d+)/user/(?P<quiz_id>\d+)$', 'carr.quiz.views.studentquiz'),
+
+#@rendered_with('quiz/quizblock.html')
+
+@rendered_with('quiz/studentquiz.html')
+def studentquiz(request, quiz_id, user_id):
+    #http://kodos.ccnmtl.columbia.edu:64757/activity/quiz/studentquiz/2/user/5/
+    #pdb.set_trace()
+    student = get_object_or_404(User,id=user_id)
+    quiz = get_object_or_404(Quiz,id=quiz_id)
+    
+    #return {'student_id': user_id}
+
+    #pdb.set_trace()
+    return {
+        'student' : student,
+        'quiz'  : quiz,
+        'student_json': state_json (student)
+    } 
+    #return dict(question=question)
+
+
 @rendered_with('quiz/edit_question.html')
 def edit_question(request,id):
     question = get_object_or_404(Question,id=id)
     return dict(question=question)
+
+
 
 def add_answer_to_question(request,id):
     question = get_object_or_404(Question,id=id)
@@ -384,16 +402,19 @@ def edit_answer(request,id):
     answer = get_object_or_404(Answer,id=id)
     return dict(answer=answer)
 
-@login_required
-def loadstate(request):
+
+def state_json (user):
     try: 
-        state = ActivityState.objects.get(user=request.user)
+        state = ActivityState.objects.get(user=user)
         if (len(state.json) > 0):
             doc = state.json
     except ActivityState.DoesNotExist:
         doc = "{}"
+    return doc
 
-    response = HttpResponse(doc, 'application/json')
+@login_required
+def loadstate(request):
+    response = HttpResponse(state_json(request.user), 'application/json')
     response['Cache-Control']='max-age=0,no-cache,no-store'
     return response
     

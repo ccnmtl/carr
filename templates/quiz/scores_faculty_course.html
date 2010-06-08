@@ -37,7 +37,7 @@
             <td>
                 {% get_courses for 'pre-test' in st.scores as score %}
                 {% if score.answer_count %}
-                    {{score.score}} / {{score.answer_count}}
+                    <a href ="/activity/quiz/studentquiz/2/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
                 {%endif %}
@@ -53,7 +53,7 @@
             <td>
             {% get_courses for 'Case 1' in st.scores as score %}
                 {% if score.answer_count %}
-                    {{score.score}} / {{score.answer_count}}
+                    <a href ="/activity/quiz/studentquiz/6/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
                 {%endif %}
@@ -61,7 +61,7 @@
             <td>
             {% get_courses for 'Case 2' in st.scores as score %}
                 {% if score.answer_count %}
-                    {{score.score}} / {{score.answer_count}}
+                    <a href ="/activity/quiz/studentquiz/7/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
                 {%endif %}
@@ -69,7 +69,7 @@
             <td>
             {% get_courses for 'Case 3' in st.scores as score %}
                 {% if score.answer_count %}
-                    {{score.score}} / {{score.answer_count}}
+                   <a href ="/activity/quiz/studentquiz/8/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
                 {%endif %}
@@ -86,7 +86,7 @@
             <td>
                 {% get_courses for 'post-test' in st.scores as score %}
                 {% if score.answer_count %}
-                    {{score.score}} / {{score.answer_count}}
+                    <a href ="/activity/quiz/studentquiz/3/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
                 {%endif %}

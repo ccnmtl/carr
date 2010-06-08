@@ -2,11 +2,11 @@
 import os.path
 import re
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('CCNMTL', 'eddie@ccnmtl.columbia.edu'),
+    ('CCNMTL', 'ccnmtl-sysadmin@columbia.edu'),
 )
 
 MANAGERS = ADMINS
@@ -18,13 +18,12 @@ DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
+CACHE_BACKEND = 'locmem://'
+
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
 USE_I18N = False
 
-
-#MEDIA_URL = '/uploads/'
-#ADMIN_MEDIA_PREFIX = '/media/'
 
 MEDIA_ROOT = '/var/www/carr/uploads/'
 MEDIA_URL = '/site_media/uploads/'
@@ -39,7 +38,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.request',
-    )
+)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -65,9 +64,6 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    #'activity_prescription_writing',
-    #'activity_treatment_choice',
-    #'activity_virtual_patient',
     'activity_bruise_recon',           
     'activity_taking_action',   
     'activity_mini_cases',

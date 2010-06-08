@@ -8,9 +8,12 @@ pre_test = window.location.href.match(/pretest/) != null;
 var kill_state_flag = false;
 var kill_this_quiz_flag = false;
 
+
+
 function loadStateSuccess(doc)
 {  
 
+    
      if (pre_test) {
         hideElement ($('retake_quiz_div'));
      }
@@ -235,6 +238,13 @@ function loadStateError(err)
 
 function loadState()
 {
+    if (typeof student_quiz != "undefined") {
+        //alert ("A");
+        loadStateSuccess(student_quiz);
+        return;
+    }
+
+
    debug("loadState")
    url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/load/"
    deferred = loadJSONDoc(url)

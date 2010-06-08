@@ -77,6 +77,7 @@ def page(request,path):
     
 @login_required
 def index(request):
+    print "OK EDDIE WAZ HERE"
     try:
         ss = SiteState.objects.get(user=request.user)
         url = ss.last_location
