@@ -1307,4 +1307,17 @@ ul.course_list {
     font-size: 70%;
 }
 
+/* ---- score table ---------- */
 
+table.scorestable {width: 100%;}
+
+table.scorestable th, table.scorestable td 
+{padding: 2px 5px 2px 5px; border: 1px solid #999;}
+
+
+table.scorestable th
+{background-color: #ccc;}
+
+
+table.scorestable td
+{background-color: #eee;}

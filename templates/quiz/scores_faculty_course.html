@@ -10,21 +10,21 @@
 {% endblock %}
 
 {% block content %}
-<div>
+<h3>
     Scores for students in t{{c.0}}.y{{c.1}}.s{{c.2}}.c{{c.3}}{{c.4}}.{{c.5}}:
-</div>
+</h3>
 
 {% if student_info %}
-        <table>
+    <table class="scorestable" cellspacing="0" summary="scores table" border="1">
         <tr>
-                <td>Student</td>
-                <td>Pre-Test</td>
-                <td>Activity: Abuse vs. Accident?</td>
-                <td>Case 1</td>
-                <td>Case 2</td>
-                <td>Case 3</td>
-                <td>Activity: Taking Action</td>
-                <td>Post-Test </td>
+                <th>Student</th>
+                <th>Pre-Test</th>
+                <th>Activity: Abuse vs. Accident?</th>
+                <th>Case 1</th>
+                <th>Case 2</th>
+                <th>Case 3</th>
+                <th>Activity: Taking Action</th>
+                <th>Post-Test</th>
             
         </tr>
         {% for st in student_info %}
