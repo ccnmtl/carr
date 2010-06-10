@@ -60,8 +60,6 @@ class rendered_with(object):
 
         return rendered_func
 
-
-
 def score_on_all_quizzes (the_student):
     tmp = question_and_quiz_keys()
     answer_key = tmp ['answer_key']

@@ -72,8 +72,15 @@ function loadStateError(err)
 
 
 
+
 function loadState()
 {
+    if (typeof student_response != "undefined") {
+        loadStateSuccess(student_response);
+        return;
+    }
+
+
    debug("loadState")
    url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/load/"
    deferred = loadJSONDoc(url)

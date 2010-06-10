@@ -12,7 +12,7 @@ function maybeEnableNext()
    if (validate()) {
     gonext = true;
    }
-   
+   /*
    if (gonext){
          setStyle('next', {'display': 'inline'}) 
    }
@@ -20,6 +20,7 @@ function maybeEnableNext()
   {
      setStyle('next', {'display': 'none'}) 
   }
+  */
 }
 
 function loadStateSuccess(doc)
@@ -109,7 +110,14 @@ function loadStateError(err)
 
 function loadState()
 {
-   debug("loadState")
+    if (typeof student_response != "undefined") {
+        loadStateSuccess(student_response);
+        return;
+    }
+
+
+   debug("loadState");
+
    
    url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/load/"
    deferred = loadJSONDoc(url)
@@ -266,4 +274,5 @@ function saveState()
    
 }
 
+// TODO fix this:
 MochiKit.Signal.connect(window, "onbeforeunload", saveState)
