@@ -19,12 +19,13 @@
         <tr>
                 <th>Student</th>
                 <th>Pre-Test</th>
-                <th>Activity: Abuse vs. Accident?</th>
+                <th>Activity: Abuse or Accident?</th>
                 <th>Case 1</th>
                 <th>Case 2</th>
                 <th>Case 3</th>
                 <th>Activity: Taking Action</th>
-                <th>Post-Test</th>
+                <th>Post-Test -- initial score</th>
+                <th>Post-Test -- status</th>
             
         </tr>
         {% for st in student_info %}
@@ -45,7 +46,17 @@
             </td>
             <td>
 	            {%if st.score_on_bruise_recon  %}
-		            {{st.score_on_bruise_recon}} / 3
+	            {{st.score_on_bruise_recon}} / 3
+	            
+            	{% if "cdm" in site_domain%}
+		            ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
+		            <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
+		            <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
+		        {%else %}
+		              ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
+		                <a href="/activity/bruise_recon/studentcase/5/user/{{st.student.id}}/">2</a>
+		                <a href="/activity/bruise_recon/studentcase/6/user/{{st.student.id}}/">3</a>) 
+		        {%endif%}
 		        {%else %}
 		            n/a
 		        {%endif%}
@@ -75,9 +86,8 @@
                 {%endif %}
             </td>
             <td>
-              
 		            {%if st.score_on_taking_action %}
-			            Complete
+		            <a href ="/activity/taking_action/student/{{st.student.id}}/">Complete</a>
 			        {%else %}
                         n/a
 			        {%endif%}
@@ -91,6 +101,15 @@
                     n/a
                 {%endif %}
             </td>
+            
+            <td>
+                {%if score.score == score.answer_count and score.score > 0%}
+                    Complete
+                {% else %}
+                    Incomplete
+                {%endif %}
+            </td>
+            
         </tr>
         {%endfor %}
 

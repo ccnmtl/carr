@@ -63,11 +63,9 @@ def savestate(request):
     
 @rendered_with('activity_bruise_recon/student_response.html')
 def student(request, block_id, user_id):
-    #http://kodos.ccnmtl.columbia.edu:64757/activity/quiz/studentquiz/2/user/5/
-    #pdb.set_trace()
+    #/activity/bruise_recon/studentcase/3/user/5/
     student_user = get_object_or_404(User,id=user_id)
     block = get_object_or_404(Block, id=block_id)
-    
     return {
         'student' : student_user,
         'bruise_recon_block': block,

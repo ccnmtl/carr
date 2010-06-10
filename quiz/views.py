@@ -132,7 +132,10 @@ def scores_student(request):
 
 @rendered_with('quiz/scores_faculty_courses.html')
 def scores_faculty_courses(request):
-    return {  }
+    return {  
+    
+        'site' : Site.objects.get_current()
+    }
 
 
 #show results for all students in one course.
@@ -183,7 +186,7 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
             )
     
     
-    return { 'c' : course_info , 'student_info' : result}
+    return { 'c' : course_info , 'student_info' : result,  'site' : Site.objects.get_current()}
 
                 
                 
@@ -282,6 +285,7 @@ def scores_admin(request):
             
     return {    
         'courses' : results,
+        'site' : Site.objects.get_current()
     }
 
 
@@ -400,7 +404,6 @@ def edit_answer(request,id):
     answer = get_object_or_404(Answer,id=id)
     return dict(answer=answer)
 
-
 def state_json (user):
     try: 
         state = ActivityState.objects.get(user=user)
@@ -415,7 +418,7 @@ def loadstate(request):
     response = HttpResponse(state_json(request.user), 'application/json')
     response['Cache-Control']='max-age=0,no-cache,no-store'
     return response
-    
+
 @login_required
 def savestate(request):
 

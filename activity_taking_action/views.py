@@ -63,9 +63,12 @@ def savestate(request):
     return HttpResponse(simplejson.dumps(response), 'application/json')
     
     
+
+    
 @rendered_with('activity_taking_action/student_response.html')
 def student(request, user_id):
-    #http://kodos.ccnmtl.columbia.edu:64757/activity/quiz/studentquiz/2/user/5/
+    # activity/taking_action/student/5/
+
     #pdb.set_trace()
     student_user = get_object_or_404(User,id=user_id)
     

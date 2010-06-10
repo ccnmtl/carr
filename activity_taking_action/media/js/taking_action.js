@@ -13,7 +13,7 @@ function debug(string)
 
 function maybeEnableNext()
 {
-   gonext = false
+   /* gonext = false
  
    if (validate()) {
     gonext = true;
@@ -26,6 +26,7 @@ function maybeEnableNext()
   {
      setStyle('next', {'display': 'none'}) 
   }
+  */
 }
 
 function load_step (step_name) {
@@ -59,8 +60,6 @@ function loadStateSuccess(doc)
   if (hide_expert_form_toggle_button) {
      hideElement($('show_expert_form'));
   }
-  maybeEnableNext()
-  
 }
 
 function loadStateError(err)
@@ -76,7 +75,10 @@ function loadStateError(err)
 function loadState()
 {
     if (typeof student_response != "undefined") {
-        loadStateSuccess(student_response);
+        logDebug ("Student answer found.");
+        game_state = student_response;
+        current_step = "complete_report"
+        load_step ("complete_report")
         return;
     }
 

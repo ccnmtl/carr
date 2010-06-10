@@ -10,10 +10,18 @@ steps['complete_report'] = {
         connect ( $('show_expert_form'), 'onclick', function (a) {
             showElement ($$('.report_form.expert_form')[0]);
         });
-        L = Math.round(getElementPosition( $('scrolling_ldss_form')).x)
-        T = Math.round(getElementPosition( $('scrolling_ldss_form')).y)
-        W = getElementDimensions( $('scrolling_ldss_form')).w
-        H = getElementDimensions( $('scrolling_ldss_form')).h
+        //L = Math.round(getElementPosition( $('scrolling_ldss_form')).x)
+        //T = Math.round(getElementPosition( $('scrolling_ldss_form')).y)
+        //W = getElementDimensions( $('scrolling_ldss_form')).w
+        //H = getElementDimensions( $('scrolling_ldss_form')).h
+        
+        
+        // hard-coding these: otherwise cross-browser rendering details mess up the names of the fields.
+        L = 226;
+        T = 195; 
+        W = 650;
+        H = 870;
+        
         for (i = L; i < L + W; i += 60) {
             for (j = T; j < (T + H  - 20) ; j += 20) {
                 fieldz.push ( [ i, j ] );
@@ -56,7 +64,7 @@ function magic_field ( params ){
     field_id = 'form_pre_field_' + params[0] + '_' + params[1];
     
     val = (game_state[field_id] == undefined) ? '': game_state[field_id] ;
-    
+    logDebug (field_id);
     new_div =  DIV ( { 'class' : 'positioner_div' }, 
     PRE({
                 'id' : field_id,
