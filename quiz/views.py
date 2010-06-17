@@ -38,7 +38,7 @@ if 1 == 1:
                     bruise_recon_score_info = dict([(a.strip(), b['score']) for a, b in recon_json.iteritems() if a.strip() != '' and b.has_key('score')])
                     return  sum(bruise_recon_score_info.values())
                 else:
-                    print "Returning none."
+                    #print "Returning none."
                     return None
                     
             except:
@@ -68,33 +68,67 @@ def score_on_all_quizzes (the_student):
     questions = Question.objects.all()
     quizzes = Quiz.objects.all()
 
-
+    #pdb.set_trace()
     try:
         state = ActivityState.objects.get(user=the_student)
+        print state.json
     except ActivityState.DoesNotExist:
         return []
         
     if (len(state.json) > 0):
         score = []
         #pdb.set_trace()
+        
+        #TODO what does this do??
         for a in simplejson.loads (state.json).values():
             try:
                 score.extend(a['question'])
             except:
                 pass
                 #eh.
+                
+                
+        
         results = [{
-                    'question':         int(a['id']), 
+                    'question':         int(a['id']), #TODO why do we need this line? 
                     'actual':    int(a['answer']),
                     'correct':   answer_key[int(a['id'])],
                     'quiz_number':      quiz_key  [int(a['id'])]
         } for a in score]
         quiz_scores = []
+        #print results;
+
         for quiz in quizzes:
+            try:
+                raw_quiz_info = simplejson.loads (state.json)['quiz_%d' % quiz.id]
+            except:
+                raw_quiz_info = {}
+            
+            
+            print raw_quiz_info
+            #pdb.set_trace()
+                
             answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
             if answer_count:                
                 correct_count = len([a for  a in results if a['correct'] == a['actual'] and a['quiz_number'] == quiz.id ])
-                quiz_scores.append( { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count})
+                quiz_results = { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count}
+                
+                try:
+                    if raw_quiz_info['all_correct']:
+                        quiz_results ['all_correct'] =  raw_quiz_info['all_correct']
+                except:
+                    pass
+                
+                try:
+                    if raw_quiz_info['initial_score']:
+                        quiz_results ['initial_score'] =  raw_quiz_info['initial_score']
+                except:
+                    pass
+               
+                quiz_scores.append(quiz_results)
+                print "***"
+                print the_student
+                print quiz_scores
         return quiz_scores
 
 #SEE  http://www.columbia.edu/acis/rad/authmethods/auth-affil
@@ -132,8 +166,8 @@ def scores_student(request):
 
 @rendered_with('quiz/scores_faculty_courses.html')
 def scores_faculty_courses(request):
-    return {  
-    
+    print "AAAA"
+    return {
         'site' : Site.objects.get_current()
     }
 
@@ -142,7 +176,7 @@ def scores_faculty_courses(request):
 @rendered_with('quiz/scores_faculty_course.html')
 def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     course_info = (c1, c2, c3, c4, c5, c6)
-    
+    #print "ASDASD"
     
     if request.user.user_type() == 'admin':
         course_string = "t%s.y%s.s%s.c%s%s.%s.st" % course_info
@@ -193,7 +227,6 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     
 def score_info_for_class (course_info):
     cache_key = "score_info_for_t%s.y%s.s%s.c%s%s.%s" % course_info
-    print 
     #if cache.get(cache_key):
     #    print "score_info_for_class found in cache."
     #    return cache.get(cache_key)
@@ -355,13 +388,6 @@ def add_question_to_quiz(request,id):
         question.ordinality = quiz.question_set.count() + 1
         question.save()
     return HttpResponseRedirect(reverse("edit-quiz",args=[quiz.id]))
-
-
-
-
-#(r'^studentquiz/(?P<quiz_id>\d+)/user/(?P<quiz_id>\d+)$', 'carr.quiz.views.studentquiz'),
-
-#@rendered_with('quiz/quizblock.html')
 
 @rendered_with('quiz/studentquiz.html')
 def studentquiz(request, quiz_id, user_id):

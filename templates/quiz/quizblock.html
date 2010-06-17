@@ -12,19 +12,16 @@
 <input type="hidden" id="quiz_id" value="{{block.id}}"/>
 
 
-
-
-<!--
-FOR DEBUGGING:
-
-{% for question in block.question_set.all %}
- <p> id: {{question.id}}  ord:{{question.ordinality}}  {{question.text}}</p>
-{%endfor %}
--->
-
 <!-- Once sorted, the questions will go here:.-->
+
+<div id ="show_quiz_results">
+You scored <span id="quiz_score">x</span> out of a possible <span id="quiz_max_score">y</span>.
+</div>
+
 <span id="sorted_questions">
 </span>
+
+
 
 {% for question in block.question_set.all %}
 <div class="cases really" id = "case_{{question.id}}" >
@@ -64,9 +61,6 @@ FOR DEBUGGING:
     <a onMouseUp="showScore()" >Submit Your Responses</a>
 </div>
 
-<div id ="show_quiz_results">
-        You scored <span id="quiz_score">x</span> out of a possible <span id="quiz_max_score">y</span>.
-</div>
 
 <div id ="retake_quiz_div">
     <a onMouseUp="retakeQuiz()" >Retake Quiz</a>

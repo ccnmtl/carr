@@ -10,33 +10,32 @@
 {% endblock %}
 
 {% block content %}
-<h3>
+<div>
     Scores for students in t{{c.0}}.y{{c.1}}.s{{c.2}}.c{{c.3}}{{c.4}}.{{c.5}}:
-</h3>
+</div>
 
 {% if student_info %}
-    <table class="scorestable" cellspacing="0" summary="scores table" border="1">
+        <table>
         <tr>
-            <th>Student</th>
-            <th>Pre-Test</th>
-            <th>Activity: Abuse or Accident?</th>
-            <th>Case 1</th>
-            <th>Case 2</th>
-            <th>Case 3</th>
-            <th>Activity: Taking Action</th>
-            <th>Post-Test -- initial score</th>
-            <th>Post-Test -- status</th>
+                <td>Student</td>
+                <td>Pre-Test</td>
+                <td>Activity: Abuse or Accident?</td>
+                <td>Case 1</td>
+                <td>Case 2</td>
+                <td>Case 3</td>
+                <td>Activity: Taking Action</td>
+                <td>Post-Test </td>
+            
         </tr>
         {% for st in student_info %}
         <tr>
-        
             <td>
                {{st.student.first_name}}
                {{st.student.last_name}}
             </td>
             
             <td>
-                {% get_scores for 'pre-test' in st.scores as score %}
+                {% get_courses for 'pre-test' in st.scores as score %}
                 {% if score.answer_count %}
                     <a href ="/activity/quiz/studentquiz/2/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
@@ -46,23 +45,13 @@
             </td>
             <td>
 	            {%if st.score_on_bruise_recon  %}
-	            {{st.score_on_bruise_recon}} / 3
-	            
-            	{% if "cdm" in site_domain%}
-		            ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
-		            <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
-		            <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
-		        {%else %}
-		              ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
-		                <a href="/activity/bruise_recon/studentcase/5/user/{{st.student.id}}/">2</a>
-		                <a href="/activity/bruise_recon/studentcase/6/user/{{st.student.id}}/">3</a>) 
-		        {%endif%}
+		            {{st.score_on_bruise_recon}} / 3
 		        {%else %}
 		            n/a
 		        {%endif%}
             </td>
             <td>
-            {% get_scores for 'Case 1' in st.scores as score %}
+            {% get_courses for 'Case 1' in st.scores as score %}
                 {% if score.answer_count %}
                     <a href ="/activity/quiz/studentquiz/6/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
@@ -70,7 +59,7 @@
                 {%endif %}
             </td>
             <td>
-            {% get_scores for 'Case 2' in st.scores as score %}
+            {% get_courses for 'Case 2' in st.scores as score %}
                 {% if score.answer_count %}
                     <a href ="/activity/quiz/studentquiz/7/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
@@ -78,7 +67,7 @@
                 {%endif %}
             </td>
             <td>
-            {% get_scores for 'Case 3' in st.scores as score %}
+            {% get_courses for 'Case 3' in st.scores as score %}
                 {% if score.answer_count %}
                    <a href ="/activity/quiz/studentquiz/8/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
@@ -86,29 +75,25 @@
                 {%endif %}
             </td>
             <td>
-	            {%if st.score_on_taking_action %}
-	            <a href ="/activity/taking_action/student/{{st.student.id}}/">Complete</a>
-		        {%else %}
-                    n/a
-		        {%endif%}
+              
+		            {%if st.score_on_taking_action %}
+		            <a href ="activity/taking_action/student/5/">Complete</a>
+			        {%else %}
+                        n/a
+			        {%endif%}
             </td>
+
             <td>
-                {% get_scores for 'post-test' in st.scores as score %}
-                {% if score.initial_score.quiz_score %}
-                    <a href ="/activity/quiz/studentquiz/3/user/{{st.student.id}}/">{{score.initial_score.quiz_score}} /  {{score.initial_score.quiz_max_score}}</a>
+                {% get_courses for 'post-test' in st.scores as score %}
+                {% if score.answer_count %}
+                    <a href ="/activity/quiz/studentquiz/3/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
-                {%endif %}
-            </td>
-            <td>
-                {%if score.all_correct and score.all_correct == "t" %}
-                    Complete
-                {% else %}
-                    Incomplete
                 {%endif %}
             </td>
         </tr>
         {%endfor %}
+
         </table>
 {%else%}
     You don't appear to be teaching any courses this semester.

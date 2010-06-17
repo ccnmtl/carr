@@ -9,7 +9,7 @@ register = template.Library()
 
 
 
-class GetCourses(TemplateTagNode):
+class GetScores(TemplateTagNode):
     noun_for = {"for": "quiz_label", 'in': 'obj'}
 
     def __init__(self, varname, quiz_label, obj):
@@ -21,6 +21,6 @@ class GetCourses(TemplateTagNode):
         except:
             return None
         
-register.tag('get_courses', GetCourses.process_tag)
+register.tag('get_scores', GetScores.process_tag)
 
 

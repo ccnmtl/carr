@@ -14,13 +14,16 @@ from django.contrib.auth.models import User, Group
 
 import re, pdb
 
+course_re = '.*t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2}).*'
 
 def user_type(self):
     if cache.get("user_type_%d" % self.id):
         #print "user type found in cache."
         return cache.get("user_type_%d" % self.id)
     result = None
-    if len( [ g for g in self.groups.all() if 'tlcxml' in  g.name]) > 0:
+    if self == None:
+        return None
+    elif len( [ g for g in self.groups.all() if 'tlcxml' in  g.name]) > 0:
         #TODO: also give admin to all people marked such in the admin user interface.
         result = 'admin'
     elif len( [ g for g in self.groups.all() if '.fc.' in  g.name]) > 0:
@@ -30,23 +33,26 @@ def user_type(self):
     cache.set("user_type_%d" % self.id,result,60*60*24)
     #print "user type stored in cache."
     return result
-
         
 def classes_i_teach(self):
-    if cache.get("classes_i_teach_%d" % self.id):
+    cache_key = "classes_i_teach_%d" % self.id
+    if cache.get(cache_key):
         #print "classes_i_teach found in cache."
-        return cache.get("classes_i_teach_%d" % self.id)
+        return cache.get(cache_key)
         
-    my_classes = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name)    for c in self.groups.all()]
+    my_classes = [re.match(course_re,c.name)    for c in self.groups.all()]
+    #print self.groups.all()
+    #print my_classes
+    #pdb.set_trace()
     result = [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'fc']
-    cache.set("classes_i_teach_%d" % self.id,result,30)
+    cache.set(cache_key,result,30)
     return result
     
 def classes_i_take(self):
     if cache.get("classes_i_take_%d" % self.id):
         #print "classes_i_take found in cache."
         return cache.get("classes_i_take_%d" % self.id)
-    my_classes = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name)    for c in self.groups.all()]
+    my_classes = [re.match(course_re,c.name)    for c in self.groups.all()]
     result = [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'st']
     cache.set("classes_i_take_%d" % self.id,result,30)
     return result

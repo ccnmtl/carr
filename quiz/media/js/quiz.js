@@ -11,14 +11,12 @@ var kill_this_quiz_flag = false;
 
 
 function loadStateSuccess(doc)
-{  
-
-    
-     if (pre_test) {
+{   
+    logDebug ("loadStateSuccess");
+   if (pre_test) {
         hideElement ($('retake_quiz_div'));
-     }
-     
-
+   }
+   
    all_quizzes_info = doc;
    the_key = 'quiz_' + $('quiz_id').value
    
@@ -176,7 +174,7 @@ function show_score(validate)
 {
    // TODO consider wiping all answers on retake test.
    // makes sense. Otherwise, if you answer wrong, you only have a chance to right the wrong if you're lucky enough to randomly see the question again.
-   
+   logDebug ("show score");
     
     // all visible answers:
     all_answers = $$('#sorted_questions_div input.question')
@@ -203,8 +201,6 @@ function show_score(validate)
     
     hideElement ('show_score');
     
-    hideElement ('show_score');
-    
     
     //TODO make sure that on "show score" all answers are ready. prompt for remaining unanaswered questions.
     
@@ -223,6 +219,35 @@ function show_score(validate)
         showElement('show_quiz_results');
     
     }
+    else {
+        logDebug('BLARG');
+    }
+    
+    //store the first score; for diagnostic tests that might be taken several times:
+        quiz_id = $('quiz_id').value;
+        if (  typeof(all_quizzes_info ['quiz_' + quiz_id]) == 'undefined') {
+            all_quizzes_info ['quiz_' + quiz_id] = {}
+        }
+        if ( typeof(all_quizzes_info ['quiz_' + quiz_id]['initial_score'] ) == 'undefined') {
+           logDebug ("Initial score not found; saving:");
+            
+            all_quizzes_info ['quiz_' + quiz_id]['initial_score']  = { 
+                'quiz_score': actual_score, 
+                'quiz_max_score': max_score 
+            };
+            logDebug (all_quizzes_info);
+        }
+        else {
+           // logDebug ("Initial score found:");
+           // logDebug (serializeJSON(all_quizzes_info ['quiz_' + quiz_id]['initial_score']));
+        }
+        if  (actual_score > 0 && actual_score == max_score) {
+            all_quizzes_info ['quiz_' + quiz_id]['all_correct'] = 't';
+        } else {
+            all_quizzes_info ['quiz_' + quiz_id]['all_correct'] = 'f';
+        }
+        //logDebug ("all correct is:");
+        //logDebug (all_quizzes_info ['quiz_' + quiz_id]['all_correct']);
     
     if (!pre_test) {
         showElement ('retake_quiz_div');
@@ -238,14 +263,14 @@ function loadStateError(err)
 
 function loadState()
 {
+
+   debug("loadState")
     if (typeof student_quiz != "undefined") {
         //alert ("A");
         loadStateSuccess(student_quiz);
         return;
     }
 
-
-   debug("loadState")
    url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
@@ -274,11 +299,8 @@ function saveState()
    else {
        
        what_to_send = all_quizzes_info
-       question_info = 
-       {
-          'question': []
-       }
-       delete what_to_send ['quiz_' + quiz_id]
+       question_info = []
+       delete what_to_send ['quiz_' + quiz_id]['question']
        questions = getElementsByTagAndClassName('*', 'question')
        forEach(questions,
                function(question) {
@@ -286,28 +308,18 @@ function saveState()
                   {
                      a = question.id.split('_')
                      q = {}
-                     
-                     
                      q['id'] = a[0]
                      q['answer'] = a[1]
-                     question_info['question'].push(q)
+                     question_info.push(q)
                   }
                })
-               
-        
-        
            // save state via a synchronous request.
-           //what_to_send =  all_quizzes_info;
-           what_to_send ['quiz_' + quiz_id ] = question_info;
+           what_to_send ['quiz_' + quiz_id ]['question'] = question_info;
    }
    
-   
-   debug (what_to_send)
-
    var sync_req = new XMLHttpRequest();  
    sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
    sync_req.open("POST", url, false);
-   
    sync_req.send(queryString({'json':JSON.stringify(what_to_send, null)}));
 }
 

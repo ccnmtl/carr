@@ -1213,6 +1213,16 @@ display: block;
     display: none;
 }
 
+#show_quiz_results {
+	padding: 10px;
+	margin: 10px;
+    font-size: 200%;
+	border: 1px solid #ccc;
+	background-color: #dadada;
+    display: none; /* for carr, not showing answers until after the entire quiz is taken. */
+
+
+}
 .moretoggle {
 
 
