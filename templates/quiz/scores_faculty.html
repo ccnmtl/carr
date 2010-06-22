@@ -1,1 +1,113 @@
+<<<<<<< HEAD
 NO LONGER IN USE
+=======
+{% extends 'base.html' %}
+{% load quiz_template_tags %}
+{% load smartif %}
+{% block sidebarleft %}
+    <ul>
+        <li>
+            <a href="/carr/">Back</a>
+            </li>
+    </ul>
+{% endblock %}
+
+
+
+{% block content %}
+<ul class = "student_list">
+{% if student_info %}
+
+    <table class="scorestable" cellspacing="0" summary="scores table">
+        <tr>
+                <th>Student</th>
+                <th>Pre-Test</th>
+                <th>Activity: Abuse vs. Accident?</th>
+                <th>Case 1</th>
+                <th>Case 2</th>
+                <th>Case 3</th>
+                <th>Activity: Taking Action</th>
+                <th>Post-Test </th>
+            
+        </tr>
+        {% for st in student_info %}
+        <tr>
+            <td>
+               {{st.student.first_name}}
+               {{st.student.last_name}}
+            </td>
+            
+            <td>
+                {% get_courses for 'pre-test' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+                
+            </td>
+            <td>
+	            {%if st.score_on_bruise_recon  %}
+		            {{st.score_on_bruise_recon}} / 3
+		        {%else %}
+		            n/a
+		        {%endif%}
+            </td>
+            <td>
+            {% get_courses for 'Case 1' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+            </td>
+            <td>
+            {% get_courses for 'Case 2' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+            </td>
+            <td>
+            {% get_courses for 'Case 3' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+            </td>
+            <td>
+              
+		            {%if st.score_on_taking_action %}
+			            Complete
+			        {%else %}
+                        n/a
+			        {%endif%}
+            </td>
+
+            <td>
+                {% get_courses for 'post-test' in st.scores as score %}
+                {% if score.answer_count %}
+                    {{score.score}} / {{score.answer_count}}
+                {% else %}
+                    n/a
+                {%endif %}
+            </td>
+        </tr>
+        {%endfor %}
+
+        </table>
+{%else%}
+    You don't appear to be teaching any courses this semester.
+{%endif%}
+</ul>
+
+
+<a href = "/activity/quiz/scores/faculty/courses/">New Page</a> 
+{% endblock %}
+
+<!--
+<pre contenteditable class = "magic_form"> </pre>
+-->
+>>>>>>> f88c19095e0e2cc8a014e05b223bbc96b63e7256
