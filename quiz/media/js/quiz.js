@@ -20,7 +20,9 @@ function loadStateSuccess(doc)
    all_quizzes_info = doc;
    the_key = 'quiz_' + $('quiz_id').value
    
-   if (doc[the_key] && doc[the_key]['question'].length > 0){
+   test_already_taken = (doc[the_key] && doc[the_key]['question'].length > 0)
+   
+   if (test_already_taken){
         logDebug ("found info for this quiz.");
         this_quiz_info = doc[the_key]
         question_ids_as_loaded = map (function (a) { return parseInt(a.id.split('_')[1]) }, $$('.cases.really'))
@@ -37,8 +39,6 @@ function loadStateSuccess(doc)
                     $(question.id + "_" + question.answer).checked = true
                   }
                });
-               
-         show_score(false);
    }
    else {
         logDebug ("starting from scratch as no quiz found.");
@@ -48,8 +48,12 @@ function loadStateSuccess(doc)
         forEach ( $$('input.question'), function (a) {a.checked = false})
    }
    
-   
    shuffle_questions(order);
+   
+   // adding this:
+   if (test_already_taken) {
+         show_score(false);
+   }
    
    if (order.length == 1) {
         // don't bother showing certain elements if the quiz only contains one question)

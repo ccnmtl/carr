@@ -16,7 +16,7 @@ steps['complete_report'] = {
         //H = getElementDimensions( $('scrolling_ldss_form')).h
         
         
-        // hard-coding these: otherwise cross-browser rendering details mess up the names of the fields.
+        // hard-coding these: otherwise cross-browser rendering details mess up the names of the fields
         L = 226;
         T = 195; 
         W = 650;
