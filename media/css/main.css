@@ -195,38 +195,39 @@ img, img a
 /* ---- Header (Banner) block elements ---------- */
 #header
 {
-	display: block;
 	width: 900px;
 	height: 100px;
 	min-width: 900px;
 	margin: 0;
 	padding: 0;
 	border: 0;
-	background-color: #fff;
+	position: relative;
 }
 
-#header #logo_project
+#header h1#logo_project
 {
-	display: block;
-	float: left;
-	width: 271px;
+	width: 220px;
 	height: 100px;
-	overflow: hidden;
 	margin: 0;
 	padding: 0;
-	border: 0;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-image: url('../img/logo_project.jpg');
+	background-repeat: no-repeat;
+	background-position: left center;
 }
 
-#header #logo_project a
+#header h1#logo_project a#logo_school
 {
 	display: block;
-	width: 271px;
-	height: 94px;
-	margin: 0;
-	padding: 0;
-	border: 0;
-	background: transparent url('../img/logo_project.jpg') left center no-repeat;
-	float: left;
+	width: 220px;
+	height: 100px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+	text-indent: -2000px;
 }
 
 #header h4 

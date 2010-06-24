@@ -35,7 +35,20 @@
 {% block masthead %}
 	<!-- ###### Site banner ###### -->
 	<div id="header">
-		<!-- Project title/logo --><h1 id="logo_project"><a href="./" title="Project Title: Project Django"><span>Project Title: Project Django </span></a></h1>	
+		<!-- Project title/logo -->
+		<h1 id="logo_project">
+			<a id="logo_school" href="./" target="_blank" title="CARE - School Name">Child Abuse Reporting Education</a>
+			<!--
+			{% if "cdm" in site_domain%}
+				<a id="logo_school" href="http://dental.columbia.edu" target="_blank" title="CARE - Columbia University College of Dental Medicine">Child Abuse Reporting Education</a>
+			{%endif%}
+			-->
+			<!--
+			{% if "ssw" in site_domain%}
+				<a id="logo_school" href="http://socialwork.columbia.edu" target="_blank" title="CARE - Columbia University School of Social Work">Child Abuse Reporting Education</a>
+			{%endif%}
+			-->
+		</h1>	
 		{% block standardnav %}
 		<ul id="standardnav">
 			<li><a href="/about">About</a></li>
@@ -59,13 +72,6 @@
 		
 		{% endblock %}
 		<!-- CCNMTL title/logo --><h4><a id="logo_ccnmtl"href="http://ccnmtl.columbia.edu" target="_blank" title="Columbia Center for New Media Teaching and Learning"><span>Produced by the Columbia Center for New Media Teaching and Learning</span></a>
-{% if "cdm" in site_domain%}
-    	<a id="logo_school" href="http://dental.columbia.edu" target="_blank" title="Columbia University College of Dental Medicine"></a>
-		
-{%endif%}
-{% if "ssw" in site_domain%}
-    	<a id="logo_school" href="http://socialwork.columbia.edu" target="_blank" title="Columbia University School of Social Work"></a>
-{%endif%}
 		
 
 		</h4>
