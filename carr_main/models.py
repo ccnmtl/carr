@@ -115,6 +115,7 @@ User.is_taking = is_taking
 class SiteState(models.Model):
     user = models.ForeignKey(User, related_name="application_user")
     last_location = models.CharField(max_length=255)
+    
     visited = models.TextField()
     
     def __init__(self, *args, **kwargs):
@@ -137,10 +138,18 @@ class SiteState(models.Model):
         self.save()
     
     def save_last_location(self, path, section):
+        #import pdb
+        #import settings
+        #pdb.set_trace()
+        if len([a for a in Site.objects.all() if a not in section.section_site().sites.all()]) > 0:
+            print "This section only exists on some of the sites, so we're not saving it."
+            return
+        print "This section is on all the sites, so we'll save it."
         self.state_object[str(section.id)] = section.label
         self.last_location = path
         self.visited = simplejson.dumps(self.state_object)
         self.save()    
+
 
 class SiteSection(Section):
 

@@ -213,10 +213,10 @@ img, img a
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	background-image: url('../img/logo_project.jpg');
-	z-index: 1;
+	background-image: url('../img/logo_project.jpg'); 
 	background-repeat: no-repeat;
 	background-position: left center;
+    z-index: 1;
 }
 
 #header h1#logo_project a#logo_school

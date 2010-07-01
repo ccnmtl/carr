@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, include
 from django.contrib import admin
 from django.conf import settings
 import os.path
@@ -7,6 +7,7 @@ admin.autodiscover()
 site_media_root = os.path.join(os.path.dirname(__file__),"media")
 
 urlpatterns = patterns('',
+
    (r'^welcome/$', 'django.views.generic.simple.redirect_to', {'url': '/carr'}),   
    (r'^crossdomain.xml$', 'django.views.static.serve', {'document_root': os.path.abspath(os.path.dirname(__file__)), 'path': 'crossdomain.xml'}),
    (r'^$','carr_main.views.index'),
@@ -23,4 +24,5 @@ urlpatterns = patterns('',
    # very important that this stays last and in this order
    (r'^(?P<path>.*)$','carr_main.views.page'),
 )
+
 

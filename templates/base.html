@@ -36,10 +36,9 @@
 	<!-- ###### Site banner ###### -->
 	<div id="header">
 		<!-- Project title/logo -->
-		<a id="logo_school" href="/carr" ><h1 id="logo_project">
-			Child Abuse Reporting Education
-		</h1>
-		</a>
+        <h1 id="logo_project">
+            <a id="logo_school" href="/" title="CARE">Child Abuse Reporting Education</a>
+       </h1>
 		{% block standardnav %}
 		<ul id="standardnav">
 			<li><a href="/about">About</a></li>
@@ -48,12 +47,9 @@
                 {%if user.user_type == "student" %}
                     <li><a href="/activity/quiz/scores/student">My Scores</a></li>
                 {% endif %}
-              
-              
                 {%if user.user_type == "faculty" %}
 	                <li><a href="/activity/quiz/scores/faculty">My Students' Scores</a></li>
                 {% endif %}
-                
                 {%if user.user_type == "admin" %}
 	                <li><a href="/activity/quiz/scores/admin">All Scores</a></li>
                 {% endif %}
@@ -136,7 +132,6 @@
 {% block footer %}
 	<!-- ###### Footer ###### -->
 	<div id="footer">
-	<p class="printonly"><br /><img src="/site_media/img/logo_ccnmtl_sidebar.gif" class="printonly" /></p>
 	</div><!-- id="footer" -->
 {% endblock %}
 
