@@ -12,39 +12,13 @@ from activity_bruise_recon.models import ActivityState as bruise_recon_state
 from activity_taking_action.models import ActivityState as taking_action_state
 from django.contrib.sites.models import Site, RequestSite
 from carr_main.models import number_of_students_in_class, students_in_class
+
+
+from activity_taking_action.models import score_on_taking_action
+from activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
 
 import re, pdb
-
-if 1 == 1:   
-        #TODO move these two into their respective apps.
-        def score_on_taking_action(the_student):
-            """For now just report complete if the user has attempted to fill out LDSS form."""
-            try:
-                if len(the_student.taking_action_user.all()) > 0:
-                    #import pdb
-                    #pdb.set_trace()
-                    return simplejson.loads(the_student.taking_action_user.all()[0].json).has_key('complete')
-                else:
-                    return None
-            except:
-                return None
-
-        def score_on_bruise_recon(the_student):
-            #pdb.set_trace()
-            try:
-                if len(the_student.bruise_recon_user.all()) > 0:
-                    recon_json = simplejson.loads(the_student.bruise_recon_user.all()[0].json)
-                    bruise_recon_score_info = dict([(a.strip(), b['score']) for a, b in recon_json.iteritems() if a.strip() != '' and b.has_key('score')])
-                    return  sum(bruise_recon_score_info.values())
-                else:
-                    #print "Returning none."
-                    return None
-                    
-            except:
-                return None
-
-
 
 class rendered_with(object):
     def __init__(self, template_name):
@@ -60,6 +34,7 @@ class rendered_with(object):
 
         return rendered_func
 
+# a couple helper functions for scoring:
 def score_on_all_quizzes (the_student):
     tmp = question_and_quiz_keys()
     answer_key = tmp ['answer_key']
@@ -77,20 +52,15 @@ def score_on_all_quizzes (the_student):
         
     if (len(state.json) > 0):
         score = []
-        #pdb.set_trace()
         
-        #TODO what does this do??
         for a in simplejson.loads (state.json).values():
             try:
                 score.extend(a['question'])
             except:
-                pass
-                #eh.
-                
-                
+                pass #eh.
         
         results = [{
-                    'question':         int(a['id']), #TODO why do we need this line? 
+                    'question':         int(a['id']),
                     'actual':    int(a['answer']),
                     'correct':   answer_key[int(a['id'])],
                     'quiz_number':      quiz_key  [int(a['id'])]
@@ -103,10 +73,7 @@ def score_on_all_quizzes (the_student):
                 raw_quiz_info = simplejson.loads (state.json)['quiz_%d' % quiz.id]
             except:
                 raw_quiz_info = {}
-            
-            
-            print raw_quiz_info
-            #pdb.set_trace()
+            #print raw_quiz_info
                 
             answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
             if answer_count:                
@@ -126,14 +93,33 @@ def score_on_all_quizzes (the_student):
                     pass
                
                 quiz_scores.append(quiz_results)
-                print "***"
-                print the_student
-                print quiz_scores
         return quiz_scores
 
 #SEE  http://www.columbia.edu/acis/rad/authmethods/auth-affil
 # see http://www.columbia.edu/acis/rad/authmethods/wind/ar01s06.html
 #    students = User.objects.all()
+
+def score_info_for_class (course_info):
+    cache_key = "score_info_for_t%s.y%s.s%s.c%s%s.%s" % course_info
+    if cache.get(cache_key):
+        return cache.get(cache_key)
+    result = dict([(a, score_on_all_quizzes(a)) for a in students_in_class(course_info)])
+    cache.set(cache_key,result,60*60)
+    return result
+                
+def summarize_score_info_for_class (course_info):
+    info = score_info_for_class (course_info)
+    students_with_scores =  [v for v in info.values() if v]
+    pre_test_count = 0
+    post_test_count = 0
+    
+    for a in students_with_scores:
+        for b in a:
+            if b['quiz'].label() == 'Pre-test':
+                pre_test_count = pre_test_count + 1
+            if b['quiz'].label() == 'Pre-test':
+                post_test_count == post_test_count + 1
+    return {'pre_test' : pre_test_count, 'post_test': post_test_count}
 
 def question_and_quiz_keys():
     questions = Question.objects.all()
@@ -152,8 +138,6 @@ def question_and_quiz_keys():
     return { 'answer_key':answer_key, 'quiz_key':quiz_key}
 
 
-
-
 @rendered_with('quiz/scores_student.html')
 def scores_student(request):
     return {
@@ -166,17 +150,21 @@ def scores_student(request):
 
 @rendered_with('quiz/scores_faculty_courses.html')
 def scores_faculty_courses(request):
-    print "AAAA"
+    if request.user.user_type() == 'student':
+        return scores_student(request)
     return {
         'site' : Site.objects.get_current()
     }
 
-
 #show results for all students in one course.
 @rendered_with('quiz/scores_faculty_course.html')
 def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
+    
+    if request.user.user_type() == 'student':
+        return scores_student(request)
+        
+            
     course_info = (c1, c2, c3, c4, c5, c6)
-    #print "ASDASD"
     
     if request.user.user_type() == 'admin':
         course_string = "t%s.y%s.s%s.c%s%s.%s.st" % course_info
@@ -222,35 +210,7 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     
     return { 'c' : course_info , 'student_info' : result,  'site' : Site.objects.get_current()}
 
-                
-                
-    
-def score_info_for_class (course_info):
-    cache_key = "score_info_for_t%s.y%s.s%s.c%s%s.%s" % course_info
-    #if cache.get(cache_key):
-    #    print "score_info_for_class found in cache."
-    #    return cache.get(cache_key)
-    result = dict([(a, score_on_all_quizzes(a)) for a in students_in_class(course_info)])
-    cache.set(cache_key,result,60*60)
-    return result
-                
-def summarize_score_info_for_class (course_info):
-    info = score_info_for_class (course_info)
-    students_with_scores =  [v for v in info.values() if v]
-    #print students_with_scores
-    pre_test_count = 0
-    post_test_count = 0
-    
-    for a in students_with_scores:
-        for b in a:
-            if b['quiz'].label() == 'Pre-test':
-                pre_test_count = pre_test_count + 1
-            if b['quiz'].label() == 'Pre-test':
-                post_test_count == post_test_count + 1
-    return {'pre_test' : pre_test_count, 'post_test': post_test_count}
-    
 
-# list all classes:    
 @rendered_with('quiz/scores_admin.html')
 def scores_admin(request):
     """
@@ -271,7 +231,9 @@ def scores_admin(request):
         opdn
         socw    
     """
-    
+
+    if request.user.user_type() == 'student':
+        return scores_student(request)
 
     all_affils = Group.objects.all()
     tmp = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name) for c in all_affils]
@@ -321,9 +283,21 @@ def scores_admin(request):
         'site' : Site.objects.get_current()
     }
 
+@rendered_with('quiz/studentquiz.html')
+def studentquiz(request, quiz_id, user_id):
+    """allows a faculty member to see the answers a student posted for a quiz.
+    URL, btw, is: /activity/quiz/studentquiz/2/user/5/ """    
+    if request.user.user_type() == 'student':
+        return scores_student(request)
 
-######
-
+    student = get_object_or_404(User,id=user_id)
+    quiz = get_object_or_404(Quiz,id=quiz_id)
+    
+    return {
+        'student' : student,
+        'quiz'  : quiz,
+        'student_json': state_json (student)
+    }
 
 def get_hierarchy():
     return Hierarchy.objects.get_or_create(name="main",defaults=dict(base_url="/"))[0]
@@ -389,23 +363,6 @@ def add_question_to_quiz(request,id):
         question.save()
     return HttpResponseRedirect(reverse("edit-quiz",args=[quiz.id]))
 
-@rendered_with('quiz/studentquiz.html')
-def studentquiz(request, quiz_id, user_id):
-    #http://kodos.ccnmtl.columbia.edu:64757/activity/quiz/studentquiz/2/user/5/
-    #pdb.set_trace()
-    student = get_object_or_404(User,id=user_id)
-    quiz = get_object_or_404(Quiz,id=quiz_id)
-    
-    #return {'student_id': user_id}
-
-    #pdb.set_trace()
-    return {
-        'student' : student,
-        'quiz'  : quiz,
-        'student_json': state_json (student)
-    } 
-    #return dict(question=question)
-
 
 @rendered_with('quiz/edit_question.html')
 def edit_question(request,id):
@@ -445,13 +402,9 @@ def loadstate(request):
     response['Cache-Control']='max-age=0,no-cache,no-store'
     return response
 
+
 @login_required
 def savestate(request):
-
-    #import pdb;
-    #pdb.set_trace()
-    
-    
     json = request.POST['json']
     try: 
         state = ActivityState.objects.get(user=request.user)
