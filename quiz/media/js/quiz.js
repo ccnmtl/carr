@@ -56,8 +56,9 @@ function loadStateSuccess(doc)
    }
    
    if (order.length == 1) {
-        // don't bother showing certain elements if the quiz only contains one question)
+        // adjust a couple things if the quiz only contains one question:
         map (hideElement, $$('.casetitle'));
+        $('show_score_link').innerHTML = 'Submit Your Response';
    }
    
    //maybeEnableNext()
