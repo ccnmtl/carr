@@ -26,7 +26,7 @@ function maybeEnableNext()
 function loadStateSuccess(doc)
 {
    debug('loadStateSuccess')
-  case_name =  $('case_name').innerHTML;
+   case_name =  $('case_name').innerHTML.trim();
    
    if (doc && doc[case_name])
    {
@@ -234,18 +234,18 @@ MochiKit.Signal.connect(window, "onload", loadState)
 
 function saveState()
 {
-  case_name =  $('case_name').innerHTML;
+   case_name =  $('case_name').innerHTML.trim();
   
-  debug("saveState")
-  url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/save/"
+   url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/save/"
 
    debug("saveState");
    doc = {}
    
-   if (hasElementClass($('answer_yes'), 'button_selected'))
-   {
+   if (hasElementClass($('answer_yes'), 'button_selected')) {
         doc ['answered'] = 'yes';
-   } else {
+   }
+   
+   if (hasElementClass($('answer_no'), 'button_selected')){
         doc ['answered'] = 'no';
    }
    

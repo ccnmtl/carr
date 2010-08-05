@@ -213,6 +213,13 @@ function show_score(validate)
    
     actual_score = filter (function f(a) {return getNodeAttribute (a, 'right_answer') == 'True'}, chosen_answers).length
    
+    make_these_green = filter (function f(a) {return getNodeAttribute (a, 'right_answer') == 'True'}, $$('.question'));
+    //make_these_red   = filter (function f(a) {return getNodeAttribute (a, 'right_answer') != 'True'}, $$('.question'));
+    
+    forEach (make_these_green, function(a) { addElementClass (a.parentNode, 'correct_answer')});
+    //forEach (make_these_red,   function(a) { addElementClass (a.parentNode, 'incorrect_answer')});
+    
+    
      //You scored <span ="quiz_score"> </span> out of a possible <span ="quiz_max_score"> </span>
     
     if (max_score > 1) {
@@ -223,9 +230,6 @@ function show_score(validate)
         
         showElement('show_quiz_results');
     
-    }
-    else {
-        logDebug('BLARG');
     }
     
     //store the first score; for diagnostic tests that might be taken several times:
