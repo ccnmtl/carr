@@ -13,8 +13,8 @@ function debug(string)
 
 function maybeEnableNext()
 {
-   /* gonext = false
- 
+  gonext = false
+  
    if (validate()) {
     gonext = true;
    }
@@ -26,7 +26,17 @@ function maybeEnableNext()
   {
      setStyle('next', {'display': 'none'}) 
   }
-  */
+  
+}
+
+function validate() {
+    if (filter(function (a) { return a.substring (0, 14) == 'form_pre_field' }, keys(game_state)).length > 0) {
+      return true
+    }
+    if (filter (function(a) {return (a.innerHTML.trim() != '')}, $$('.magic_form') ).length > 0) {
+      return true;
+    }
+  return false;
 }
 
 function load_step (step_name) {
@@ -39,6 +49,7 @@ function load_step (step_name) {
     else {
         logDebug("not defined.");
     }
+    maybeEnableNext();
 }
 
 
@@ -70,8 +81,6 @@ function loadStateError(err)
 }
 
 
-
-
 function loadState()
 {
     if (typeof student_response != "undefined") {
@@ -83,7 +92,7 @@ function loadState()
     }
 
 
-   debug("loadState")
+   //debug("loadState")
    url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
@@ -98,15 +107,6 @@ function like_checkbox(selected_class, all_button_class, the_element) {
 }
 
 
-
-function validate() {
-    // make sure either yes or no is selected.
-    /*
-    return (
-        hasElementClass($('answer_yes'), 'button_selected')
-            || hasElementClass($('answer_no'), 'button_selected'));
-            */
-}
 
 
 function show_answer() {
@@ -131,23 +131,20 @@ function ldss_form_fields_to_save () {
 
 function saveState()
 {
-
-  debug("saveState")
+  logDebug ("SAVING STATE????");
   url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/"
 
+  doc = ldss_form_fields_to_save()
    
-   doc = ldss_form_fields_to_save()
-    
-   if ( filter(function (a) { return a.substring (0, 14) == 'form_pre_field' }, keys(game_state)).length > 0) {
-        doc['complete'] = 'true' 
-   }
+  if (validate()) {
+       doc['complete'] = 'true' 
+  }
 
-   doc ['current_step'] = current_step;
-
-   
-
-   
-   logDebug (serializeJSON(doc))
+  
+  doc ['current_step'] = current_step;
+  
+  //doc = {}
+  //logDebug (serializeJSON(doc))
   var sync_req = new XMLHttpRequest();  
   sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
   sync_req.open("POST", url, false);
@@ -155,5 +152,6 @@ function saveState()
   sync_req.send(queryString({'json':JSON.stringify(doc , null)}));
    
 }
+
 
 MochiKit.Signal.connect(window, "onbeforeunload", saveState)
