@@ -12,7 +12,7 @@ function maybeEnableNext()
    if (validate()) {
     gonext = true;
    }
-   /*
+   
    if (gonext){
          setStyle('next', {'display': 'inline'}) 
    }
@@ -20,7 +20,7 @@ function maybeEnableNext()
   {
      setStyle('next', {'display': 'none'}) 
   }
-  */
+  
 }
 
 function loadStateSuccess(doc)
@@ -58,44 +58,6 @@ function loadStateSuccess(doc)
             addElementClass($('explanation'), 'button_selected');
    }
    
-   /*
-   
-   if (doc && doc[$('medication_name').value])
-   {
-      rx = doc[$('medication_name').value]
-      $('dosage').value = rx['dosage']
-      $('disp').value = rx['disp']
-      $('sig').value = rx['sig']
-      $('refills').value = rx['refills']
-                              
-      if ($('dosage_2'))
-      {
-         $('dosage_2').value = rx['dosage_2']
-         
-         $('disp_2').value = rx['disp_2']
-         
-         $('sig_2').value = rx['sig_2']
-         
-         $('refills_2').value = rx['refills_2']
-      }
-   }
-                                                                                                                                                                       
-   setBackgroundColor($('dosage'))
-   setBackgroundColor($('disp'))
-   setBackgroundColor($('sig'))
-   setBackgroundColor($('refills'))
-   
-   if ($('dosage_2'))
-   {
-      setBackgroundColor($('dosage_2'))
-      setBackgroundColor($('disp_2'))
-      setBackgroundColor($('sig_2'))
-      setBackgroundColor($('refills_2'))
-   }
-   
-  if ($('dosage_correct'))
-     connectCallouts()
-   */ 
   maybeEnableNext()
 }
 

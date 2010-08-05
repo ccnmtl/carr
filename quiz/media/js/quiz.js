@@ -10,6 +10,29 @@ var kill_this_quiz_flag = false;
 
 
 
+function maybeEnableNext()
+{
+   gonext = false
+ 
+   if (all_done_with_quiz()) {
+    gonext = true;
+   }
+   
+   if (gonext){
+         setStyle('next', {'display': 'inline'}) 
+   }
+  else
+  {
+     setStyle('next', {'display': 'none'}) 
+  }
+  
+}
+
+function all_done_with_quiz() {
+  return filter (function(f) { return (f.style.display == 'block') }, $$('.answer')).length > 0;
+}
+
+
 function loadStateSuccess(doc)
 {   
     logDebug ("loadStateSuccess");
@@ -61,7 +84,7 @@ function loadStateSuccess(doc)
         $('show_score_link').innerHTML = 'Submit Your Response';
    }
    
-   //maybeEnableNext()
+   maybeEnableNext();
     
 }
 
@@ -261,6 +284,8 @@ function show_score(validate)
     if (!pre_test) {
         showElement ('retake_quiz_div');
     }
+    
+   maybeEnableNext();
 }
 
 function loadStateError(err)
@@ -283,6 +308,8 @@ function loadState()
    url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
+   
+   
 }
 
 MochiKit.Signal.connect(window, "onload", loadState)
