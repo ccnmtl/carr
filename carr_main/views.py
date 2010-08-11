@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import permission_required
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from pagetree.models import Hierarchy
 from django.contrib.auth.decorators import login_required
 from carr_main.models import SiteState
 from django.contrib.sites.models import Site, RequestSite
+
 
 class rendered_with(object):
     def __init__(self, template_name):
@@ -25,7 +26,7 @@ class rendered_with(object):
 @rendered_with('carr_main/page.html')
 def page(request,path):
     h = Hierarchy.get_hierarchy('main')
-    current_root = h.get_section_from_path(path)
+    current_root = h.get_section_from_path(path)    
     section = h.get_first_leaf(current_root)
     ancestors = section.get_ancestors()
     ss = SiteState.objects.get_or_create(user=request.user)[0]
@@ -43,6 +44,9 @@ def page(request,path):
     # Is this section unlocked now?
     can_access = _unlocked(section, request.user, prev, ss)
     if can_access:
+        #just to avoid drama, only save last location if the section is available on both sites.
+        #import pdb
+        #pdb.set_trace()
         ss.save_last_location(request.path, section)
         
     module = None
@@ -77,14 +81,14 @@ def page(request,path):
     
 @login_required
 def index(request):
-    print "OK EDDIE WAZ HERE"
     try:
         ss = SiteState.objects.get(user=request.user)
         url = ss.last_location
     except SiteState.DoesNotExist:
         url = "welcome"
-        
+    
     return HttpResponseRedirect(url)
+
 
 #####################################################################
 ## View Utility Methods
@@ -123,10 +127,9 @@ def _unlocked(section,user,previous,sitestate):
     for p in previous.pageblock_set.all():
         if hasattr(p.block(),'unlocked'):
            if p.block().unlocked(user) == False:
-              print "a"
-              print p
-              print p.block()
-              print p.block().unlocked(user)
+              #print p
+              #print p.block()
+              #print p.block().unlocked(user)
               return False
     return sitestate.get_has_visited(previous)
 
