@@ -12,7 +12,7 @@ function maybeEnableNext()
    if (validate()) {
     gonext = true;
    }
-   /*
+   
    if (gonext){
          setStyle('next', {'display': 'inline'}) 
    }
@@ -20,13 +20,13 @@ function maybeEnableNext()
   {
      setStyle('next', {'display': 'none'}) 
   }
-  */
+  
 }
 
 function loadStateSuccess(doc)
 {
    debug('loadStateSuccess')
-  case_name =  $('case_name').innerHTML;
+   case_name =  $('case_name').innerHTML.trim();
    
    if (doc && doc[case_name])
    {
@@ -58,44 +58,6 @@ function loadStateSuccess(doc)
             addElementClass($('explanation'), 'button_selected');
    }
    
-   /*
-   
-   if (doc && doc[$('medication_name').value])
-   {
-      rx = doc[$('medication_name').value]
-      $('dosage').value = rx['dosage']
-      $('disp').value = rx['disp']
-      $('sig').value = rx['sig']
-      $('refills').value = rx['refills']
-                              
-      if ($('dosage_2'))
-      {
-         $('dosage_2').value = rx['dosage_2']
-         
-         $('disp_2').value = rx['disp_2']
-         
-         $('sig_2').value = rx['sig_2']
-         
-         $('refills_2').value = rx['refills_2']
-      }
-   }
-                                                                                                                                                                       
-   setBackgroundColor($('dosage'))
-   setBackgroundColor($('disp'))
-   setBackgroundColor($('sig'))
-   setBackgroundColor($('refills'))
-   
-   if ($('dosage_2'))
-   {
-      setBackgroundColor($('dosage_2'))
-      setBackgroundColor($('disp_2'))
-      setBackgroundColor($('sig_2'))
-      setBackgroundColor($('refills_2'))
-   }
-   
-  if ($('dosage_correct'))
-     connectCallouts()
-   */ 
   maybeEnableNext()
 }
 
@@ -234,18 +196,18 @@ MochiKit.Signal.connect(window, "onload", loadState)
 
 function saveState()
 {
-  case_name =  $('case_name').innerHTML;
+   case_name =  $('case_name').innerHTML.trim();
   
-  debug("saveState")
-  url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/save/"
+   url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/save/"
 
    debug("saveState");
    doc = {}
    
-   if (hasElementClass($('answer_yes'), 'button_selected'))
-   {
+   if (hasElementClass($('answer_yes'), 'button_selected')) {
         doc ['answered'] = 'yes';
-   } else {
+   }
+   
+   if (hasElementClass($('answer_no'), 'button_selected')){
         doc ['answered'] = 'no';
    }
    

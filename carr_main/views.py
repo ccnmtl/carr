@@ -32,6 +32,8 @@ def page(request,path):
     ss = SiteState.objects.get_or_create(user=request.user)[0]
     current_site = Site.objects.get_current()
     
+    
+    
     # Skip to the first leaf, make sure to mark these sections as visited
     if (current_root != section):
         ss.set_has_visited(ancestors)
@@ -67,6 +69,10 @@ def page(request,path):
         parent = section.get_parent().get_parent().get_parent()
         
     leftnav = _construct_menu(request, parent, section, ss)
+    
+    
+    #ok let's try this
+    ss.set_has_visited([section])
     
     return dict(section=section,
                 accessible=can_access,
@@ -117,6 +123,10 @@ def _construct_menu(request, parent, section, ss):
 
 def _unlocked(section,user,previous,sitestate):
     """ if the user can proceed past this section """
+    #import pdb
+    #pdb.set_trace()
+    
+    
     if not section or section.is_root or sitestate.get_has_visited(section):
        return True
     

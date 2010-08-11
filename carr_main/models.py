@@ -153,7 +153,6 @@ class SiteState(models.Model):
 
 class SiteSection(Section):
 
-    
     sites = models.ManyToManyField(Site)
     
     def __unicode__(self):
@@ -164,10 +163,6 @@ class SiteSection(Section):
         x = self
         while traversal_function(x):
             x = traversal_function(x).section_site()
-            #if Site.objects.get(id=settings.SITE_ID) in x.sites.all():
-            #    return x
-            #if x.in_site():
-            #    return x
             if settings.SITE_ID in [s.id for s in x.sites.all()]:
                 return x
         return None
@@ -186,10 +181,12 @@ Section.in_site =                       lambda x: settings.SITE_ID in [s.id for 
 
 def new_get_children(self):
     return [sc.child for sc in SectionChildren.objects.filter(parent=self).order_by("ordinality") if sc.child.in_site()]
-
 Section.get_children = new_get_children
 
 
+def new_get_siblings(self):
+    return [sc.child for sc in SectionChildren.objects.filter(parent=self.get_parent()) if sc.child.in_site()]
+Section.get_siblings = new_get_siblings
 
             
 def find_or_add_site_section(**kwargs):

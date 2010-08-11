@@ -10,6 +10,29 @@ var kill_this_quiz_flag = false;
 
 
 
+function maybeEnableNext()
+{
+   gonext = false
+ 
+   if (all_done_with_quiz()) {
+    gonext = true;
+   }
+   
+   if (gonext){
+         setStyle('next', {'display': 'inline'}) 
+   }
+  else
+  {
+     setStyle('next', {'display': 'none'}) 
+  }
+  
+}
+
+function all_done_with_quiz() {
+  return filter (function(f) { return (f.style.display == 'block') }, $$('.answer')).length > 0;
+}
+
+
 function loadStateSuccess(doc)
 {   
     logDebug ("loadStateSuccess");
@@ -56,11 +79,12 @@ function loadStateSuccess(doc)
    }
    
    if (order.length == 1) {
-        // don't bother showing certain elements if the quiz only contains one question)
+        // adjust a couple things if the quiz only contains one question:
         map (hideElement, $$('.casetitle'));
+        $('show_score_link').innerHTML = 'Submit Your Response';
    }
    
-   //maybeEnableNext()
+   maybeEnableNext();
     
 }
 
@@ -212,6 +236,13 @@ function show_score(validate)
    
     actual_score = filter (function f(a) {return getNodeAttribute (a, 'right_answer') == 'True'}, chosen_answers).length
    
+    make_these_green = filter (function f(a) {return getNodeAttribute (a, 'right_answer') == 'True'}, $$('.question'));
+    //make_these_red   = filter (function f(a) {return getNodeAttribute (a, 'right_answer') != 'True'}, $$('.question'));
+    
+    forEach (make_these_green, function(a) { addElementClass (a.parentNode, 'correct_answer')});
+    //forEach (make_these_red,   function(a) { addElementClass (a.parentNode, 'incorrect_answer')});
+    
+    
      //You scored <span ="quiz_score"> </span> out of a possible <span ="quiz_max_score"> </span>
     
     if (max_score > 1) {
@@ -222,9 +253,6 @@ function show_score(validate)
         
         showElement('show_quiz_results');
     
-    }
-    else {
-        logDebug('BLARG');
     }
     
     //store the first score; for diagnostic tests that might be taken several times:
@@ -256,6 +284,8 @@ function show_score(validate)
     if (!pre_test) {
         showElement ('retake_quiz_div');
     }
+    
+   maybeEnableNext();
 }
 
 function loadStateError(err)
@@ -278,6 +308,8 @@ function loadState()
    url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
+   
+   
 }
 
 MochiKit.Signal.connect(window, "onload", loadState)

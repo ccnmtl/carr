@@ -6,6 +6,7 @@ from django.contrib.contenttypes import generic
 from pagetree.models import PageBlock, Section
 from django import forms
 from django.contrib.sites.models import Site, RequestSite
+from django.utils import simplejson
 
 class Case(models.Model):
     name = models.CharField(max_length=25)
@@ -69,5 +70,18 @@ class Block(models.Model):
 class ActivityState (models.Model):
     user = models.ForeignKey(User, related_name="bruise_recon_user")
     json = models.TextField(blank=True)
-        
+    
+    
+def score_on_bruise_recon(the_student):
+    try:
+        if len(the_student.bruise_recon_user.all()) > 0:
+            recon_json = simplejson.loads(the_student.bruise_recon_user.all()[0].json)
+            bruise_recon_score_info = dict([(a.strip(), b['score']) for a, b in recon_json.iteritems() if a.strip() != '' and b.has_key('score')])
+            return  sum(bruise_recon_score_info.values())
+        else:
+            return None
+            
+    except:
+        return None
+          
     

@@ -1206,6 +1206,16 @@ display: block;
 }
 
 
+
+.correct_answer {
+	background-color: #0E0;
+}
+
+.incorrect_answer {
+	background-color: #E00;
+}
+
+
 #show_score, #retake_quiz_div {
     cursor: pointer;
 }

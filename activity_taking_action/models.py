@@ -6,6 +6,7 @@ from django.contrib.contenttypes import generic
 from pagetree.models import PageBlock, Section
 from django import forms
 from django.contrib.sites.models import Site, RequestSite
+from django.utils import simplejson
 
 class Case(models.Model):
     name = models.CharField(max_length=25)
@@ -61,3 +62,12 @@ class ActivityState (models.Model):
 
 
     
+def score_on_taking_action(the_student):
+    """For now just report complete if the user has attempted to fill out LDSS form."""
+    try:
+        if len(the_student.taking_action_user.all()) > 0:
+            return simplejson.loads(the_student.taking_action_user.all()[0].json).has_key('complete')
+        else:
+            return None
+    except:
+        return None
