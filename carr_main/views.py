@@ -87,11 +87,14 @@ def page(request,path):
     
 @login_required
 def index(request):
+    print "index"
     try:
         ss = SiteState.objects.get(user=request.user)
         url = ss.last_location
+        if url == '':
+            url = '/carr'
     except SiteState.DoesNotExist:
-        url = "welcome"
+        url = "/carr"
     
     return HttpResponseRedirect(url)
 
