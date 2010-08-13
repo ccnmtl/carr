@@ -184,7 +184,7 @@ function shuffle_questions(order) {
     map (function f (a) { a[0].innerHTML = a[1] + 1}, zip ($$('#sorted_questions_div .question_order'), nums));
     
     
-    var cheat == false;
+    var cheat = false;
     
     if (cheat) {
       right_answers = filter (function f(a) { return getNodeAttribute (a, 'right_answer') == 'True'}, $$('.question'))
