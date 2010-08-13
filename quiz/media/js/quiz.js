@@ -7,7 +7,7 @@ pre_test = window.location.href.match(/pretest/) != null;
 
 var kill_state_flag = false;
 var kill_this_quiz_flag = false;
-
+var perfect_score = false;
 
 
 function maybeEnableNext()
@@ -28,9 +28,14 @@ function maybeEnableNext()
   
 }
 
-function all_done_with_quiz() {
+function all_done_with_quiz() {  
+    if (post_test) {
+      return perfect_score;
+   }
   return filter (function(f) { return (f.style.display == 'block') }, $$('.answer')).length > 0;
 }
+
+
 
 
 function loadStateSuccess(doc)
@@ -106,9 +111,6 @@ function calculate_order () {
         randomly_picked_questions = [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
      
         // How many of the questions that *might* be on the quiz should we add to the ones that *will* be?
-
-
-        
          if (window.location.href.match(/cdm/)== null) {
             // last-minute change: the dental school professor wants to remove these:
             how_many_randomly_picked_questions = 10;
@@ -156,8 +158,8 @@ function shuffle_questions(order) {
 
 
     // ORDER is a new ordering of the existing questions in $$(.'cases')
-    logDebug ("Order is : " + order);
-    logDebug ("Length of order is : " + order.length);
+    //logDebug ("Order is : " + order);
+    //logDebug ("Length of order is : " + order.length);
     
     nums = list(range(order.length))
     
@@ -181,7 +183,30 @@ function shuffle_questions(order) {
     // number the questions according to their new position:
     map (function f (a) { a[0].innerHTML = a[1] + 1}, zip ($$('#sorted_questions_div .question_order'), nums));
     
+    
+    var cheat == false;
+    
+    if (cheat) {
+      right_answers = filter (function f(a) { return getNodeAttribute (a, 'right_answer') == 'True'}, $$('.question'))
+      forEach(right_answers, function f(a)  { a.checked = true; });
+    }
+    
 }
+
+/*
+
+delete from carr_main_sitestate;
+delete from quiz_activitystate;
+insert into carr_main_sitestate (user_id, last_location, visited) values (
+          5,
+          '/carr/conclusion/post_test/',
+          '{"622": "Abuse or Accident 3 (ssw)", "621": "Abuse or Accident 2 (ssw)", "620": "Abuse or Accident 1 (ssw)", "259": "CARR", "239": "Introduction", "252": "Activity: Abuse or Accident?", "253": "Reporting Process", "250": "Signs of Abuse", "251": "Activity: Cases", "256": "Post-Test", "254": "Video Assignment", "255": "Activity: When and How to Take Action", "1": "Root", "618": "case_3", "619": "Intro: Abuse or Accident?", "616": "case_1", "617": "case_2", "245": "NY State Statistics", "244": "Overview and Objectives", "247": "Relevant Legislation", "246": "Pre-test", "241": "Recognizing Abuse", "240": "The Law", "243": "Conclusion", "242": "Reporting Abuse", "249": "Types of Abuse", "248": "The Mandated Reporter"}'
+);
+
+
+*/
+
+
 
 function debug(string)
 {
@@ -200,9 +225,7 @@ function showScore() {
 
 function show_score(validate)
 {
-   // TODO consider wiping all answers on retake test.
-   // makes sense. Otherwise, if you answer wrong, you only have a chance to right the wrong if you're lucky enough to randomly see the question again.
-   logDebug ("show score");
+   // logDebug ("show score");
     
     // all visible answers:
     all_answers = $$('#sorted_questions_div input.question')
@@ -235,6 +258,12 @@ function show_score(validate)
     max_score = chosen_answers.length
    
     actual_score = filter (function f(a) {return getNodeAttribute (a, 'right_answer') == 'True'}, chosen_answers).length
+    
+    
+    if (actual_score == max_score) {
+      perfect_score = true;
+      // used in the final quiz to determine whether you can advance to the next page.
+    }
    
     make_these_green = filter (function f(a) {return getNodeAttribute (a, 'right_answer') == 'True'}, $$('.question'));
     //make_these_red   = filter (function f(a) {return getNodeAttribute (a, 'right_answer') != 'True'}, $$('.question'));
@@ -285,7 +314,16 @@ function show_score(validate)
         showElement ('retake_quiz_div');
     }
     
+    
+    if (post_test && (actual_score != max_score)) {
+      alert ('You must score 100% on the post-test to receive credit for this training. Please click "Retake Quiz" and try again. ');
+    }
+
+
    maybeEnableNext();
+   
+   
+   
 }
 
 function loadStateError(err)
