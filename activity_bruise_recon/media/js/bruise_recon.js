@@ -91,7 +91,7 @@ function loadState()
   connect ('answer_yes', 'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_yes'))
   connect ('answer_no',  'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_no'))
   
-  
+    /// this has a small bug in it, but it's never bothered anyone.
   connect ('patterns',      'onclick', partial (toggleElementClass,'button_selected',    'patterns' ));
   connect ('severity',      'onclick', partial (toggleElementClass,'button_selected',    'severity' ));
   connect ('location',      'onclick', partial (toggleElementClass,'button_selected',    'location' ));
@@ -166,8 +166,24 @@ function answer_is_correct() {
         if (! hasElementClass($('explanation'), 'button_selected')) { return false };
     }
     
+    
+    if (!factors_include_severity) {
+        if (hasElementClass($('severity'), 'button_selected')) { return false };
+    }
+    if (!factors_include_location) {
+        if (hasElementClass($('location'), 'button_selected')) { return false };
+    }
+    if (!factors_include_patterns) {
+        if (hasElementClass($('patterns'), 'button_selected')) { return false };
+    }
+    if (!factors_include_explanation) {
+        if (hasElementClass($('explanation'), 'button_selected')) { return false };
+    }
+    
+    
+    
     //patterns, severity, body location, explanation credibility
-    logDebug ("ok factors are correct too");
+    logDebug ("ok factors are exactly correct too");
     return true;
 
 }
