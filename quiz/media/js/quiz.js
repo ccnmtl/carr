@@ -9,6 +9,21 @@ var kill_state_flag = false;
 var kill_this_quiz_flag = false;
 var perfect_score = false;
 
+function disable_all_sidenav_items_after_current_one() {
+    all_sidenav_items =  $$('#sidebar_left ul li')
+    selected_sidenav_item =  $$('#sidebar_left ul li.selected')[0]
+    all_sidenav_items.slice(all_sidenav_items.indexOf(selected_sidenav_item) + 1)
+    sidenav_items_to_disable = all_sidenav_items.slice(all_sidenav_items.indexOf(selected_sidenav_item) + 1)
+    forEach (sidenav_items_to_disable, disable_sidenav_item)
+
+
+}
+
+function disable_sidenav_item (item) {
+    forEach(getElementsByTagAndClassName('a', null, item), hideElement)
+    forEach(getElementsByTagAndClassName('span', null, item), showElement)
+}
+
 
 function maybeEnableNext()
 {
@@ -17,15 +32,18 @@ function maybeEnableNext()
    if (all_done_with_quiz()) {
     gonext = true;
    }
+   logDebug ("gonext is:");
+   logDebug (gonext);
    
    if (gonext){
          setStyle('next', {'display': 'inline'}) 
    }
   else
   {
-     setStyle('next', {'display': 'none'}) 
+    setStyle('next', {'display': 'none'})
+    // just to be extra mean:
+    disable_all_sidenav_items_after_current_one();
   }
-  
 }
 
 function all_done_with_quiz() {  
@@ -71,14 +89,11 @@ function loadStateSuccess(doc)
    else {
         logDebug ("starting from scratch as no quiz found.");
         order = calculate_order();
-        
-        
         forEach ( $$('input.question'), function (a) {a.checked = false})
    }
    
    shuffle_questions(order);
    
-   // adding this:
    if (test_already_taken) {
          show_score(false);
    }
@@ -194,18 +209,6 @@ function shuffle_questions(order) {
     
 }
 
-/*
-
-delete from carr_main_sitestate;
-delete from quiz_activitystate;
-insert into carr_main_sitestate (user_id, last_location, visited) values (
-          5,
-          '/carr/conclusion/post_test/',
-          '{"622": "Abuse or Accident 3 (ssw)", "621": "Abuse or Accident 2 (ssw)", "620": "Abuse or Accident 1 (ssw)", "259": "CARR", "239": "Introduction", "252": "Activity: Abuse or Accident?", "253": "Reporting Process", "250": "Signs of Abuse", "251": "Activity: Cases", "256": "Post-Test", "254": "Video Assignment", "255": "Activity: When and How to Take Action", "1": "Root", "618": "case_3", "619": "Intro: Abuse or Accident?", "616": "case_1", "617": "case_2", "245": "NY State Statistics", "244": "Overview and Objectives", "247": "Relevant Legislation", "246": "Pre-test", "241": "Recognizing Abuse", "240": "The Law", "243": "Conclusion", "242": "Reporting Abuse", "249": "Types of Abuse", "248": "The Mandated Reporter"}'
-);
-
-
-*/
 
 
 
@@ -226,8 +229,6 @@ function showScore() {
 
 function show_score(validate)
 {
-   // logDebug ("show score");
-    
     // all visible answers:
     all_answers = $$('#sorted_questions_div input.question')
     
@@ -238,7 +239,6 @@ function show_score(validate)
     
     
     if (validate) {
-        
         if (chosen_answers.length < number_of_questions_to_answer) {
             alert ('Please answer all the questions.');
             return;
@@ -360,6 +360,17 @@ function saveState()
     quiz_id = $('quiz_id').value;
    
    
+   all_answers = $$('#sorted_questions_div input.question')
+   chosen_answers = filter (function f(a) {return a.checked}, all_answers) 
+   number_of_questions_to_answer = $$('#sorted_questions_div .cases').length
+   
+   
+    if (chosen_answers.length < number_of_questions_to_answer) {
+      // only saving state if all the questions are answered.
+      return;
+    }
+   
+   
    if (kill_state_flag) {
         // kill all state info for this user.
         what_to_send = {}
@@ -375,7 +386,11 @@ function saveState()
        
        what_to_send = all_quizzes_info
        question_info = []
-       delete what_to_send ['quiz_' + quiz_id]['question']
+       if (what_to_send ['quiz_' + quiz_id] != undefined) {
+        delete what_to_send ['quiz_' + quiz_id]['question']
+       }else {
+         what_to_send ['quiz_' + quiz_id] = {};
+       }
        questions = getElementsByTagAndClassName('*', 'question')
        forEach(questions,
                function(question) {
@@ -388,7 +403,7 @@ function saveState()
                      question_info.push(q)
                   }
                })
-           // save state via a synchronous request.
+               
            what_to_send ['quiz_' + quiz_id ]['question'] = question_info;
    }
    

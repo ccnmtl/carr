@@ -19,14 +19,19 @@ function maybeEnableNext()
     gonext = true;
    }
    
+   
    if (gonext){
-         setStyle('next', {'display': 'inline'}) 
+     setStyle('next', {'display': 'inline'});
+     logDebug ('you can go');
+     showElement($('conclusion'));
+     hideElement ($('span_conclusion'));
    }
-  else
-  {
-     setStyle('next', {'display': 'none'}) 
+  else {
+     setStyle('next', {'display': 'none'});
+     logDebug ('you cant go');
+     hideElement($('conclusion'));
+     showElement ($('span_conclusion'));
   }
-  
 }
 
 function validate() {

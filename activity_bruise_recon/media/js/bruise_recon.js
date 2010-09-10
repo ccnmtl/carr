@@ -12,15 +12,6 @@ function maybeEnableNext()
    if (validate()) {
     gonext = true;
    }
-   
-   if (gonext){
-         setStyle('next', {'display': 'inline'}) 
-   }
-  else
-  {
-     setStyle('next', {'display': 'none'}) 
-  }
-  
 }
 
 function loadStateSuccess(doc)
@@ -32,6 +23,9 @@ function loadStateSuccess(doc)
    {
     state_for_this_page = doc[case_name];
     logDebug (serializeJSON(state_for_this_page));
+   }
+   else {
+     state_for_this_page = {}
    }
    if (state_for_this_page['answered']) {
         if (state_for_this_page['answered'] == 'yes') {
