@@ -36,7 +36,6 @@ steps['complete_report'] = {
 
 
 function show_expert_form() {
-
     map (hideElement , $$('.positioner_div'))
     updateNodeAttributes($('scrolling_ldss_form'), {'style': { 'background-image': 'url(/site_media/img/expert_ldss.png)'}});
     $('show_or_hide').innerHTML = "Hide"
