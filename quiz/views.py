@@ -141,10 +141,17 @@ def summarize_score_info_for_class (course_info):
     
     for a in students_with_scores:
         for b in a:
+            #print b['quiz'].label()
             if b['quiz'].label() == 'Pre-test':
                 pre_test_count = pre_test_count + 1
-            if b['quiz'].label() == 'Pre-test':
-                post_test_count == post_test_count + 1
+            
+            
+            if b['quiz'].label() == 'Post-test':
+                if b['all_correct'] == 't':
+                    post_test_count = post_test_count + 1
+
+    #print course_info
+    #print  {'pre_test' : pre_test_count, 'post_test': post_test_count}
     return {'pre_test' : pre_test_count, 'post_test': post_test_count}
 
 def question_and_quiz_keys():
@@ -186,22 +193,16 @@ def scores_faculty_courses(request):
 @rendered_with('quiz/scores_faculty_course.html')
 def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     
+    
     if request.user.user_type() == 'student':
         return scores_student(request)
-        
-            
+    
     course_info = (c1, c2, c3, c4, c5, c6)
+    course_string = "t%s.y%s.s%s.c%s%s.%s.st" % course_info
     
-    if request.user.user_type() == 'admin':
-        course_string = "t%s.y%s.s%s.c%s%s.%s.st" % course_info
-        all_affils = Group.objects.all()
-        for a in all_affils:
-            if course_string in a.name:
-                students_to_show = a.user_set.all()
-    
-    else:
-        all_my_students =  request.user.students_i_teach()
-        students_to_show = [s for s in all_my_students if s.is_taking(course_info)]
+
+    students_to_show = students_in_class(course_info)
+
 
     questions = Question.objects.all()
     quizzes = Quiz.objects.all()
