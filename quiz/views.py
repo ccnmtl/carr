@@ -59,21 +59,20 @@ def score_on_all_quizzes (the_student):
                 score.extend(a['question'])
             except:
                 pass #eh.
-        try:
-          results = [{
-                      'question':         int(a['id']),
-                      'actual':    int(a['answer']),
-                      'correct':   answer_key[int(a['id'])],
-                      'quiz_number':      quiz_key  [int(a['id'])]
-          } for a in score if int (a['id']) in quiz_key.keys()    ]
-        except:
-          #import pdb
-          #pdb.set_trace()
-          print 'nope'
+
+        # if int (a['id']) in quiz_key.keys() :
+        # don't deal with questions that have since been removed from quiz.
+        
+        
+        results = [{
+                    'question':         int(a['id']),
+                    'actual':    int(a['answer']),
+                    'correct':   answer_key[int(a['id'])],
+                    'quiz_number':      quiz_key  [int(a['id'])]
+        } for a in score if int (a['id']) in quiz_key.keys() ]
           
         quiz_scores = []
-        #print results;
-
+        
         for quiz in quizzes:
             try:
                 raw_quiz_info = simplejson.loads (state.json)['quiz_%d' % quiz.id]
