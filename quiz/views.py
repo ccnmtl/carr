@@ -36,7 +36,6 @@ class rendered_with(object):
 
 # a couple helper functions for scoring:
 def score_on_all_quizzes (the_student):
-    print (the_student)
     tmp = question_and_quiz_keys()
     answer_key = tmp ['answer_key']
     quiz_key =   tmp ['quiz_key']
@@ -47,7 +46,7 @@ def score_on_all_quizzes (the_student):
     #pdb.set_trace()
     try:
         state = ActivityState.objects.get(user=the_student)
-        print state.json
+        #print state.json
     except ActivityState.DoesNotExist:
         return []
         
@@ -73,23 +72,41 @@ def score_on_all_quizzes (the_student):
           
         quiz_scores = []
         
+        ###
+        #print the_student.username
+        
+        
         for quiz in quizzes:
+            ###
+            #print 'quiz_%d' % quiz.id
             try:
                 raw_quiz_info = simplejson.loads (state.json)['quiz_%d' % quiz.id]
             except:
                 raw_quiz_info = {}
+            ###
             #print raw_quiz_info
+            
+            
                 
             answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
-            if answer_count:                
+            
+            
+            if answer_count or raw_quiz_info.has_key ( 'all_correct' ) or raw_quiz_info.has_key ( 'initial_score'):
+                #print "let's try it"       
                 correct_count = len([a for  a in results if a['correct'] == a['actual'] and a['quiz_number'] == quiz.id ])
                 quiz_results = { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count}
+                
+                
+                
                 
                 try:
                     if raw_quiz_info['all_correct']:
                         quiz_results ['all_correct'] =  raw_quiz_info['all_correct']
                 except:
                     pass
+                
+                
+                
                 
                 try:
                     if raw_quiz_info['initial_score']:
@@ -98,6 +115,10 @@ def score_on_all_quizzes (the_student):
                     pass
                
                 quiz_scores.append(quiz_results)
+        
+        #print "ok final result for this user is:"
+        #print quiz_scores
+        
         return quiz_scores
 
 #SEE  http://www.columbia.edu/acis/rad/authmethods/auth-affil
