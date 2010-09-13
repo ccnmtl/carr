@@ -36,6 +36,7 @@ class rendered_with(object):
 
 # a couple helper functions for scoring:
 def score_on_all_quizzes (the_student):
+    print (the_student)
     tmp = question_and_quiz_keys()
     answer_key = tmp ['answer_key']
     quiz_key =   tmp ['quiz_key']
@@ -58,13 +59,18 @@ def score_on_all_quizzes (the_student):
                 score.extend(a['question'])
             except:
                 pass #eh.
-        
-        results = [{
-                    'question':         int(a['id']),
-                    'actual':    int(a['answer']),
-                    'correct':   answer_key[int(a['id'])],
-                    'quiz_number':      quiz_key  [int(a['id'])]
-        } for a in score]
+        try:
+          results = [{
+                      'question':         int(a['id']),
+                      'actual':    int(a['answer']),
+                      'correct':   answer_key[int(a['id'])],
+                      'quiz_number':      quiz_key  [int(a['id'])]
+          } for a in score if int (a['id']) in quiz_key.keys()    ]
+        except:
+          #import pdb
+          #pdb.set_trace()
+          print 'nope'
+          
         quiz_scores = []
         #print results;
 
