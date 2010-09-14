@@ -147,7 +147,7 @@ def summarize_score_info_for_class (course_info):
             
             
             if b['quiz'].label() == 'Post-test':
-                if b['all_correct'] == 't':
+                if b.has_key ('all_correct') and b['all_correct'] == 't':
                     post_test_count = post_test_count + 1
 
     #print course_info
