@@ -128,6 +128,8 @@ class Question(models.Model):
     def correct_answer_number(self):
         if self.question_type != "single choice":
             return None
+        print self
+        print self.answer_set.filter(correct=True)[0].ordinality
         return self.answer_set.filter(correct=True)[0].ordinality
 
     def correct_answer_value(self):
@@ -138,6 +140,9 @@ class Question(models.Model):
     def correct_answer_letter(self):
         if self.question_type != "single choice" or self.answer_set.count() == 0:
             return None
+        #import pdb
+        #pdb.set_trace()
+        
         return chr(ord('A') + self.correct_answer_number() - 1)
 
     def update_answers_order(self,answer_ids):

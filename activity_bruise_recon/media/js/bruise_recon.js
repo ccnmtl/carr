@@ -39,19 +39,20 @@ function loadStateSuccess(doc)
         factors_as_string = state_for_this_page['factors'].join (',');
         logDebug (factors_as_string); 
    }
-   if (factors_as_string.match(/patterns/) != null) {
-            addElementClass($('patterns'), 'button_selected');
+   if (typeof (factors_as_string)  != "undefined") {
+     if (factors_as_string.match(/patterns/) != null) {
+              addElementClass($('patterns'), 'button_selected');
+     }
+     if (factors_as_string.match(/severity/) != null) {
+              addElementClass($('severity'), 'button_selected');
+     }
+     if (factors_as_string.match(/location/) != null) {
+              addElementClass($('location'), 'button_selected');
+     }
+     if (factors_as_string.match(/explanation/) != null) {
+              addElementClass($('explanation'), 'button_selected');
+     }
    }
-   if (factors_as_string.match(/severity/) != null) {
-            addElementClass($('severity'), 'button_selected');
-   }
-   if (factors_as_string.match(/location/) != null) {
-            addElementClass($('location'), 'button_selected');
-   }
-   if (factors_as_string.match(/explanation/) != null) {
-            addElementClass($('explanation'), 'button_selected');
-   }
-   
   maybeEnableNext()
 }
 
@@ -129,7 +130,6 @@ function validate() {
         hasElementClass($('answer_yes'), 'button_selected')
             || hasElementClass($('answer_no'), 'button_selected'));
 }
-
 
 function answer_is_correct() {
    

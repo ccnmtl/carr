@@ -64,19 +64,20 @@ function loadStateSuccess(doc)
    }
    
    all_quizzes_info = doc;
-   the_key = 'quiz_' + $('quiz_id').value
+   quiz_key = 'quiz_' + $('quiz_id').value
    
-   test_already_taken = (doc[the_key] &&  doc[the_key]['question'] &&  doc[the_key]['question'].length > 0)
+   test_already_taken = (doc[quiz_key] &&  doc[quiz_key]['question'] &&  doc[quiz_key]['question'].length > 0)
    
    if (test_already_taken){
         logDebug ("found info for this quiz.");
-        this_quiz_info = doc[the_key]
+        this_quiz_info = doc[quiz_key]
         question_ids_as_loaded = map (function (a) { return parseInt(a.id.split('_')[1]) }, $$('.cases.really'))
         
-        question_ids_as_needed = map (parseInt, map (itemgetter('id'), doc[the_key]['question']))
-        order  = map (function (a) { return question_ids_as_loaded.indexOf(a)  },  question_ids_as_needed)
+        question_ids_as_needed = map (parseInt, map (itemgetter('id'), doc[quiz_key]['question']))
+        //order  = map (function (a) { return question_ids_as_loaded.indexOf(a)  },  question_ids_as_needed)
+	order = map (function(a) { return findValue (question_ids_as_loaded, a) }, question_ids_as_needed);        
         
-        forEach(this_quiz_info.question,
+	forEach(this_quiz_info.question,
                function(question)
                {  
                   //debug (serializeJSON(question));
@@ -156,8 +157,11 @@ function calculate_order () {
         
         question_ids_as_needed = final_list_of_questions;
         
-        order  = map (function (a) { return question_ids_as_loaded.indexOf(a)  },  question_ids_as_needed)
-        
+
+	// oops. i.e. doesn't do indexOf on array-like objects.
+	// order  = map (function (a) { return question_ids_as_loaded.indexOf(a)  },  question_ids_as_needed)
+	order = map (function(a) { return findValue (question_ids_as_loaded, a) }, question_ids_as_needed);
+
         return order;
         
      }
@@ -228,7 +232,8 @@ function show_score(validate)
 {
     // all visible answers:
     all_answers = $$('#sorted_questions_div input.question')
-    
+    quiz_key =  'quiz_' + $('quiz_id').value;    
+
     // all chosen answers:
     chosen_answers = filter (function f(a) {return a.checked}, all_answers) 
     
@@ -271,13 +276,13 @@ function show_score(validate)
     }
     
     //store the first score; for diagnostic tests that might be taken several times:
-    quiz_id = $('quiz_id').value;
-    if (  typeof(all_quizzes_info ['quiz_' + quiz_id]) == 'undefined') {
-        all_quizzes_info ['quiz_' + quiz_id] = {}
+    //quiz_id = $('quiz_id').value;
+    if (  typeof(all_quizzes_info [quiz_key]) == 'undefined') {
+        all_quizzes_info [quiz_key] = {}
     }
-    if ( typeof(all_quizzes_info ['quiz_' + quiz_id]['initial_score'] ) == 'undefined') {
+    if ( typeof(all_quizzes_info [quiz_key]['initial_score'] ) == 'undefined') {
        logDebug ("Initial score not found; saving:");
-        all_quizzes_info ['quiz_' + quiz_id]['initial_score']  = { 
+        all_quizzes_info [quiz_key]['initial_score']  = { 
             'quiz_score': actual_score, 
             'quiz_max_score': max_score 
         };
@@ -285,18 +290,18 @@ function show_score(validate)
     }
     else {
         logDebug ("Initial score found:");
-        logDebug (serializeJSON(all_quizzes_info ['quiz_' + quiz_id]['initial_score']));
+        logDebug (serializeJSON(all_quizzes_info [quiz_key]['initial_score']));
     }
     if  (actual_score > 0 && actual_score == max_score) {
-        all_quizzes_info ['quiz_' + quiz_id]['all_correct'] = 't';
+        all_quizzes_info [quiz_key]['all_correct'] = 't';
         // You got all the answers right; no need to retake the test.
         hideElement ('retake_quiz_div');
         
     } else {
-        all_quizzes_info ['quiz_' + quiz_id]['all_correct'] = 'f';
+        all_quizzes_info [quiz_key]['all_correct'] = 'f';
     }
     logDebug ("all correct is:");
-    logDebug (all_quizzes_info ['quiz_' + quiz_id]['all_correct']);
+    logDebug (all_quizzes_info [quiz_key]['all_correct']);
 
     if (!pre_test) {
         if (!perfect_score)  {
@@ -343,8 +348,8 @@ function saveState()
 
     what_to_send = all_quizzes_info;
     url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/save/"
-    quiz_id = $('quiz_id').value;
-   
+    //quiz_id = $('quiz_id').value;
+   quiz_key =  'quiz_' + $('quiz_id').value;
    
    all_answers = $$('#sorted_questions_div input.question')
    chosen_answers = filter (function f(a) {return a.checked}, all_answers) 
@@ -355,10 +360,10 @@ function saveState()
    initial_score_found = null;
    
    if (all_quizzes_info != undefined &&
-       all_quizzes_info ['quiz_' + quiz_id] != undefined
-       && all_quizzes_info ['quiz_' + quiz_id]['initial_score'] != undefined) {
-   //if ( typeof(all_quizzes_info ['quiz_' + quiz_id]['initial_score'] ) != 'undefined') {
-      initial_score_found = all_quizzes_info ['quiz_' + quiz_id]['initial_score'];
+       all_quizzes_info [quiz_key] != undefined
+       && all_quizzes_info [quiz_key]['initial_score'] != undefined) {
+   //if ( typeof(all_quizzes_info [quiz_key]['initial_score'] ) != 'undefined') {
+      initial_score_found = all_quizzes_info [quiz_key]['initial_score'];
    }
    
    
@@ -369,16 +374,16 @@ function saveState()
    
    if  (kill_this_quiz_flag) {
       logDebug ("Do save the initial results, but delete all question and answer info.");
-      delete what_to_send ['quiz_' + quiz_id]['question'];
+      delete what_to_send [quiz_key]['question'];
    }
    else {
        question_info = []
-       if (what_to_send ['quiz_' + quiz_id] != undefined) {
+       if (what_to_send [quiz_key] != undefined) {
          logDebug ("Deleting all info for quiz, so it can be replaced with the quiz you just took.");
-         delete what_to_send ['quiz_' + quiz_id]['question']
+         delete what_to_send [quiz_key]['question']
        }else {
          logDebug ("No info found on this quiz.");
-         what_to_send ['quiz_' + quiz_id] = {};
+         what_to_send [quiz_key] = {};
        }
        questions = getElementsByTagAndClassName('*', 'question')
        forEach(questions,
@@ -396,20 +401,20 @@ function saveState()
            
            if (initial_score_found != null) {
               logDebug ("Found an initial score, so preserving it.");
-              what_to_send  ['quiz_' + quiz_id]['initial_score'] = initial_score_found;
+              what_to_send  [quiz_key]['initial_score'] = initial_score_found;
            }
            
            
-           what_to_send ['quiz_' + quiz_id ]['question'] = question_info;
+           what_to_send [quiz_key ]['question'] = question_info;
            
    
    }
    var sync_req = new XMLHttpRequest();  
    sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
    sync_req.open("POST", url, false);
-   sync_req.send(queryString({'json':JSON.stringify(what_to_send, null)}));
+   sync_req.send(queryString({'json':serializeJSON(what_to_send)}));
    logDebug ("Just sent:");
-   logDebug (JSON.stringify(what_to_send, null));
+   logDebug (serializeJSON(what_to_send));
    logDebug ("ok done with savestate.");
 }
 
