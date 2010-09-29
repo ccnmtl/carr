@@ -32,8 +32,8 @@ function maybeEnableNext()
    if (all_done_with_quiz()) {
     gonext = true;
    }
-   logDebug ("gonext is:");
-   logDebug (gonext);
+   //logDebug ("gonext is:");
+   //logDebug (gonext);
    
    if (gonext){
          setStyle('next', {'display': 'inline'}) 
@@ -128,10 +128,9 @@ function calculate_order () {
         
         //These questions *will* be on the quiz regardless of the order the questions are presented in:
         required_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ];
-
         
         // These questions are questions that *might* be on the quiz:
-        randomly_picked_questions = [23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
+        randomly_picked_questions = [23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
      
         // How many of the questions that *might* be on the quiz should we add to the ones that *will* be?
          if (window.location.href.match(/cdm/)== null) {
@@ -157,6 +156,11 @@ function calculate_order () {
         
         question_ids_as_needed = final_list_of_questions;
         
+        if (final_list_of_questions.length != 20 ) {
+          logDebug ('oops.');
+        } else {
+          logDebug ('ok');
+        }
 
 	// oops. i.e. doesn't do indexOf on array-like objects.
 	// order  = map (function (a) { return question_ids_as_loaded.indexOf(a)  },  question_ids_as_needed)
@@ -286,11 +290,11 @@ function show_score(validate)
             'quiz_score': actual_score, 
             'quiz_max_score': max_score 
         };
-        logDebug (all_quizzes_info);
+        //logDebug (all_quizzes_info);
     }
     else {
-        logDebug ("Initial score found:");
-        logDebug (serializeJSON(all_quizzes_info [quiz_key]['initial_score']));
+        //logDebug ("Initial score found:");
+        //logDebug (serializeJSON(all_quizzes_info [quiz_key]['initial_score']));
     }
     if  (actual_score > 0 && actual_score == max_score) {
         all_quizzes_info [quiz_key]['all_correct'] = 't';
@@ -300,8 +304,8 @@ function show_score(validate)
     } else {
         all_quizzes_info [quiz_key]['all_correct'] = 'f';
     }
-    logDebug ("all correct is:");
-    logDebug (all_quizzes_info [quiz_key]['all_correct']);
+    //logDebug ("all correct is:");
+    //logDebug (all_quizzes_info [quiz_key]['all_correct']);
 
     if (!pre_test) {
         if (!perfect_score)  {

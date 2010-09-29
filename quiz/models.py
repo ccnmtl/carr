@@ -128,8 +128,8 @@ class Question(models.Model):
     def correct_answer_number(self):
         if self.question_type != "single choice":
             return None
-        print self
-        print self.answer_set.filter(correct=True)[0].ordinality
+        #print self
+        #print self.answer_set.filter(correct=True)[0].ordinality
         return self.answer_set.filter(correct=True)[0].ordinality
 
     def correct_answer_value(self):

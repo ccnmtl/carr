@@ -115,7 +115,6 @@ function like_checkbox(selected_class, all_button_class, the_element) {
 
 
 function show_answer() {
- 
       maybeEnableNext();
 }
 
@@ -136,7 +135,6 @@ function ldss_form_fields_to_save () {
 
 function saveState()
 {
-  logDebug ("SAVING STATE????");
   url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/"
 
   doc = ldss_form_fields_to_save()

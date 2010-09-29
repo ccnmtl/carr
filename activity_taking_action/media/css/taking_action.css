@@ -43,6 +43,11 @@ a.reset_button { margin-top: -50px; }
     z-index: 100;
 }
 
+.taking_action_pagenumber {
+  text-align: center;
+  color: #888;
+}
+
 #show_expert_form
 {margin-bottom: 50px;}
 
