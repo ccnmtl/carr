@@ -50,7 +50,7 @@
                 </td>
                 <td>
                     {% for u in course.faculty %}
-                        {{u}}
+                        {{u.last_name}}
                         {%if not forloop.last%},{%endif%}
                     {% endfor %}
                 </td>

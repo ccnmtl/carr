@@ -262,6 +262,14 @@ def scores_admin(request):
     if request.user.user_type() == 'student':
         return scores_student(request)
 
+    site = Site.objects.get_current()
+    
+    cache_key = "scores_admin"
+    if cache.get(cache_key):
+        results =  cache.get(cache_key)
+        return { 'courses' : results, 'site' : site  }
+    
+
     all_affils = Group.objects.all()
     tmp = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name) for c in all_affils]
     course_matches = [a for a in tmp if a != None]
@@ -305,10 +313,8 @@ def scores_admin(request):
         else:
             pass
             
-    return {    
-        'courses' : results,
-        'site' : Site.objects.get_current()
-    }
+    cache.set(cache_key,results,60*10)
+    return { 'courses' : results, 'site' : site  }
 
 @rendered_with('quiz/studentquiz.html')
 def studentquiz(request, quiz_id, user_id):
