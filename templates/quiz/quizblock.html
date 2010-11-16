@@ -5,7 +5,6 @@
 
 {% load markup %}
 {% load smartif %}
-{{ block.description|markdown }}
 
 <input type="hidden" id="question_count" value="{{block.question_set.all|length}}"/>
 
@@ -15,8 +14,11 @@
 <!-- Once sorted, the questions will go here:.-->
 
 <div id ="show_quiz_results">
-You scored <span id="quiz_score">x</span> out of a possible <span id="quiz_max_score">y</span>.
+You  <span id="initially">initially&nbsp;</span>scored <span id="quiz_score">x</span> out of a possible <span id="quiz_max_score">y</span>.
 </div>
+
+
+{{ block.description|markdown }}
 
 <span id="sorted_questions">
 </span>
