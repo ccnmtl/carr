@@ -81,12 +81,18 @@ function show_initial_score(this_quiz, quiz_key) {
 }
 
 
+//http://kodos.ccnmtl.columbia.edu:64757/carr/recognizing_abuse/cases_activity/case_1/
+
+
+
 function loadStateSuccess(doc)
-{   
-   logDebug ("loadStateSuccess");
-   if (pre_test) {
-        hideElement ($('retake_quiz_div'));
+{
+
+   if (!post_test) {
+        // post test is the only test you are allowed to retake.
+        hide_retake = true;
    }
+   
    all_quizzes_info = doc;
    hideElement($('initially'));
    
@@ -94,10 +100,9 @@ function loadStateSuccess(doc)
    this_quiz = doc[quiz_key];
    
    
-   logDebug (this_quiz);
    test_already_taken = (this_quiz && this_quiz['question'] &&  this_quiz['question'].length > 0)
    
-   logDebug (test_already_taken);
+   logDebug ("test already taken is " + test_already_taken);
    
    
    if (test_already_taken) {
@@ -111,6 +116,7 @@ function loadStateSuccess(doc)
       }
       show_previous_answers_to_quiz (the_answers);
       show_score(false);
+      freeze_buttons();
    }
    else {
       logDebug ("starting from scratch as no quiz found.");
@@ -129,11 +135,14 @@ function loadStateSuccess(doc)
    maybeEnableNext();
    
    if (hide_retake) {
-      logDebug ("Perfect score: hiding retake.");
       hideElement ($('retake_quiz_div'));
    }
 }
 
+
+function freeze_buttons() {
+  forEach($$('input.question'), function (i) {i.disabled = true});
+}
 
 function calculate_order () {
     // Returns a list of database ID's of questions in the order this quiz should display them.
@@ -314,6 +323,8 @@ function show_score(fresh_answers)
     if (post_test && (!hide_retake)) {
       alert ('You must score 100% on the post-test to receive credit for this training. Please click "Retake Quiz" and try again. ');
     }
+    
+   freeze_buttons();
    maybeEnableNext();
 }
 
@@ -328,6 +339,7 @@ function loadState()
 {
    debug("loadState")
     if (typeof student_quiz != "undefined") {
+        hide_retake = true; // no reason for a faculty member to be interested in the "retake quiz" link.
         loadStateSuccess(student_quiz);
         return;
     }
@@ -357,6 +369,9 @@ function collect_question_info() {
 
 function saveState()
 {   
+    if (typeof student_response != "undefined") {
+      return;
+    }
 
     what_to_send = all_quizzes_info;
     url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/save/"

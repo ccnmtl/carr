@@ -65,8 +65,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'activity_bruise_recon',           
-    'activity_taking_action',   
-    'activity_mini_cases',
+    'activity_taking_action',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

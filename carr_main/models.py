@@ -16,6 +16,17 @@ import re, pdb
 
 course_re = '.*t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2}).*'
 
+
+def user_sort_key (student):
+    if student.last_name:
+        return student.last_name
+    else:
+        return student.username
+
+def sort_users (users):
+    return sorted(users, key=user_sort_key)
+
+
 def user_type(self):
     if cache.get("user_type_%d" % self.id):
         #print "user type found in cache."
@@ -63,7 +74,10 @@ def students_i_teach (self):
         return cache.get("students_i_teach_%d" % self.id)
     the_classes_i_teach = self.classes_i_teach()
     # yeah, the people who take more than zero of the classes I teach.
-    result = [ u for u in User.objects.all()  if len([c for c in u.classes_i_take() if c in the_classes_i_teach]) > 0  and u != self]
+    
+    result = sort_users([ u for u in User.objects.all()  if len([c for c in u.classes_i_take() if c in the_classes_i_teach]) > 0  and u != self])
+    
+    
     cache.set("students_i_teach_%d" % self.id,result,30)
     return result
 
@@ -91,7 +105,7 @@ def students_in_class(course_info):
     if faculty_affils_list and student_affils_list:
         faculty =  faculty_affils_list[0].user_set.all()
         students = student_affils_list[0].user_set.all()
-        result = [s for s in students if s not in faculty]
+        result = sort_users([s for s in students if s not in faculty])
     
     cache.set(cache_key,result,30)
     return result
@@ -138,9 +152,6 @@ class SiteState(models.Model):
         self.save()
     
     def save_last_location(self, path, section):
-        #import pdb
-        #import settings
-        #pdb.set_trace()
         if len([a for a in Site.objects.all() if a not in section.section_site().sites.all()]) > 0:
             print "This section only exists on some of the sites, so we're not saving it."
             return

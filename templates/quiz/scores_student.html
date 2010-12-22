@@ -24,10 +24,15 @@
 			Pre-Test
 		</td>
 		<td>
-			{% get_scores for 'pre-test' in scores as score %}{{score.score}} / {{score.answer_count}}
+
+			{% get_scores for 'pre-test' in scores as score %}
+					  {% if score %}
+			{{score.score}} / {{score.answer_count}}
+		        {%endif%}
 		</td>
-		<td>
+		<td>{% if score %}
 			<a href = "/carr/Introduction/pretest/" >Go </a>
+		     {%endif%}
 		</td>
 	</tr>
 	<tr>
@@ -35,14 +40,14 @@
 			Activity: Abuse vs. Accident?
 		</td>
 		<td>
-		    {%if score_on_bruise_recon != None %}
+		    {%if score_on_bruise_recon %}
 			    {{score_on_bruise_recon}} / 3
-			{%else %}
-			    n/a
-			{%endif%}
+			  {%endif%}
 		</td>
 		<td>
+		 {%if score_on_bruise_recon %}
 			<a href = "/carr/recognizing_abuse/abuse_or_accident_activity" >Go </a>
+		{%endif%}
 		</td>
 	</tr>
 	
@@ -53,10 +58,16 @@
 			            Case 1
 		            </td>
 		            <td>
-			            {% get_scores for 'Case 1' in scores as score %}{{score.score}} / {{score.answer_count}}
+			            {% get_scores for 'Case 1' in scores as score %}
+			            {% if score %}
+			              {{score.score}} / {{score.answer_count}}
+			            {%endif%}
+		              
 		            </td>
 		            <td>
-			            <a href = "/carr/recognizing_abuse/cases_activity/case_1/" >Go </a>
+			            {% if score %}
+			              <a href = "/carr/recognizing_abuse/cases_activity/case_1/" >Go </a>
+			            {%endif%}
 		            </td>
 	            </tr>
 	            <tr>
@@ -64,10 +75,15 @@
 			            Case 2
 		            </td>
 		            <td>
-                        {% get_scores for 'Case 2' in scores as score %}{{score.score}} / {{score.answer_count}}
+                  {% get_scores for 'Case 2' in scores as score %}
+                  {% if score %}                        
+                        {{score.score}} / {{score.answer_count}}
+                  {%endif%}
 		            </td>
 		            <td>
+                  {% if score %}                        
 			            <a href = "/carr/recognizing_abuse/cases_activity/case_2/" >Go </a>
+                  {%endif%}
 		            </td>
 	            </tr>
 	            <tr>
@@ -75,10 +91,16 @@
 			            Case 3
 		            </td>
 		            <td>
-                        {% get_scores for 'Case 3' in scores as score %}{{score.score}} / {{score.answer_count}}
+                        {% get_scores for 'Case 3' in scores as score %}
+                        
+                  {% if score %}                        
+                        {{score.score}} / {{score.answer_count}}
+                  {%endif%}
 		            </td>
 		            <td>
+                  {% if score %}                  
 			            <a href = "/carr/recognizing_abuse/cases_activity/case_3/" >Go </a>
+                  {%endif%}
 		            </td>
 	            </tr>
 	{%else %}
@@ -93,14 +115,16 @@
 			Activity: Taking Action
 		</td>
 		<td>
-		    {%if score_on_taking_action %}
-			    Complete
+		  {%if score_on_taking_action %}
+			    Form filled out
 			{%else %}
-			    Incomplete
+			    Form not filled out
 			{%endif%}
 		</td>
 		<td>
-			<a href = "/carr/reporting_abuse/taking_action/" >Go </a>
+		  {%if score_on_taking_action %}
+			  <a href = "/carr/reporting_abuse/taking_action/" >Go </a>
+			{%endif%}
 		</td>
 	</tr>
 
@@ -112,24 +136,28 @@
 		<td>
 		
             {% get_scores for 'post-test' in scores as score %}
-			 {% if score.initial_score.quiz_score %}
-                   First try: {{score.initial_score.quiz_score}} /  {{score.initial_score.quiz_max_score}}.
-                {%if score.all_correct and score.all_correct == "t" %}
-                    Final score: {{score.score }} / {{score.answer_count }}. The post-test is complete. 
-                {% else %}
-                    (incomplete)
-                {%endif %}
-            {% else %}
-                n/a
-            {%endif %}
-
+           {%if score%}
+			            {% if score.initial_score.quiz_score %}
+                         First try: {{score.initial_score.quiz_score}} /  {{score.initial_score.quiz_max_score}}.
+                      {%if score.all_correct and score.all_correct == "t" %}
+                          Final score: {{score.score }} / {{score.answer_count }}. The post-test is complete. 
+                      {% else %}
+                          (incomplete)
+                      {%endif %}
+                  {% else %}
+                      n/a
+                  {%endif %}
+            {%endif%}
 		</td>
 		<td>
-			  {%if score.all_correct and score.all_correct == "t" %}
+		
+           {%if score%}
+			          {%if score.all_correct and score.all_correct == "t" %}
                    <a href = "/carr/conclusion/post_test/">Go</a>
                 {% else %}
                    <a href = "/carr/conclusion/post_test/">Retake</a>
                 {%endif %}
+		      {%endif%}
 		</td>
 	</tr>
 </table>

@@ -64,37 +64,43 @@ function loadStateError(err)
 }
 
 
+http://care-ssw.ccnmtl.columbia.edu/admin/carr_main/sitesection/621/
+
+
+
+case_5
+http://care-ssw.ccnmtl.columbia.edu/admin/carr_main/sitesection/622/
+
 
 function loadState()
 {
     if (typeof student_response != "undefined") {
         loadStateSuccess(student_response);
+        if (validate()) {
+          show_answer();
+        }
         return;
     }
-
-
-   debug("loadState");
-
    
    url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
    
    hide_answer();
-   
-   
-  connect ('answer_yes', 'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_yes'))
-  connect ('answer_no',  'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_no'))
+  connect ('answer_yes', 'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_yes'));
+  connect ('answer_no',  'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_no' ));
+  connect ('patterns',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'patterns'));
+  connect ('severity',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'severity'));
+  connect ('location',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'location'));
+  connect ('explanation',  'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'explanation'));
   
-    /// this has a small bug in it, but it's never bothered anyone.
-  connect ('patterns',      'onclick', partial (toggleElementClass,'button_selected',    'patterns' ));
-  connect ('severity',      'onclick', partial (toggleElementClass,'button_selected',    'severity' ));
-  connect ('location',      'onclick', partial (toggleElementClass,'button_selected',    'location' ));
-  connect ('explanation',   'onclick', partial (toggleElementClass,'button_selected',    'explanation' ));
+  
+
 
   connect('submit_div', 'onclick', show_answer);
 
   maybeEnableNext();
+  
 }
 
 
@@ -104,14 +110,17 @@ function like_checkbox(selected_class, all_button_class, the_element) {
 }
 
 
-//toggleElement
+function lock_down_buttons() {
+  forEach ($$('.answer_button'), disconnectAll);
+  forEach ($$('.bruise_recon_checkbox_div'), disconnectAll);
+  forEach ($$('#submit_div'), disconnectAll);
+}
+
+
+
 function hide_answer()
 {
     hideElement('feedback_div');
-/*
-   if (!$('dosage_correct'))
-      $("dosage").focus()
-      */
 }
 
 
@@ -196,9 +205,10 @@ function show_answer() {
     
     }
     showElement ('feedback_div');
-    
-      maybeEnableNext();
+    lock_down_buttons() 
+    maybeEnableNext();
 }
+
 
 
 MochiKit.Signal.connect(window, "onload", loadState)
@@ -206,6 +216,10 @@ MochiKit.Signal.connect(window, "onload", loadState)
 
 function saveState()
 {
+   if (typeof student_response != "undefined") {
+      return;
+   }
+
    case_name =  $('case_name').innerHTML.trim();
   
    url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/save/"
@@ -240,7 +254,6 @@ function saveState()
   
   what_to_send = {}
   what_to_send [case_name ] = doc
-  
   
   sync_req.send(queryString({'json':JSON.stringify(what_to_send , null)}));
    

@@ -135,6 +135,9 @@ function ldss_form_fields_to_save () {
 
 function saveState()
 {
+  if (typeof student_response != "undefined") {
+      return;
+  }
   url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/"
 
   doc = ldss_form_fields_to_save()
@@ -142,12 +145,9 @@ function saveState()
   if (validate()) {
        doc['complete'] = 'true' 
   }
-
   
   doc ['current_step'] = current_step;
   
-  //doc = {}
-  //logDebug (serializeJSON(doc))
   var sync_req = new XMLHttpRequest();  
   sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
   sync_req.open("POST", url, false);

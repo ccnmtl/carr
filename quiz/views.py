@@ -202,8 +202,6 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     
 
     students_to_show = students_in_class(course_info)
-
-
     questions = Question.objects.all()
     quizzes = Quiz.objects.all()
     

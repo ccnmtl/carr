@@ -40,6 +40,8 @@ def loadstate(request):
     
 @login_required
 def savestate(request):
+    #import pdb
+    #pdb.set_trace()
     json = request.POST['json']
     update = simplejson.loads(json)
     
@@ -65,11 +67,10 @@ def savestate(request):
 def student(request, block_id, user_id):
     #/activity/bruise_recon/studentcase/3/user/5/
     student_user = get_object_or_404(User,id=user_id)
-    block = get_object_or_404(Block, id=block_id)
+    block = Block.objects.get(pk=block_id)
     return {
         'student' : student_user,
         'bruise_recon_block': block,
         'student_json': state_json (student_user)
-    } 
-    #return dict(question=question)
+    }
 

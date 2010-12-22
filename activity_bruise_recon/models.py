@@ -17,7 +17,8 @@ class Case(models.Model):
     factors_for_decision = models.TextField()
             
     def __unicode__(self):
-        return "%s" % (self.name)
+        return "%s: \"%s[...]%s\"" % (self.name, self.case_history [:16], self.case_history[-16:])
+
     
 
 class Block(models.Model):

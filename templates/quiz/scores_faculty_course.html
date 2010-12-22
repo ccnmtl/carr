@@ -17,7 +17,9 @@
 {% if student_info %}
     <table class="scorestable" cellspacing="0" summary="scores table">
         <tr>
-            <th>Student</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>UNI</th>
             <th>Pre-Test</th>
             <th>Activity: Abuse or Accident?</th>
             <th>Case 1</th>
@@ -29,12 +31,15 @@
         </tr>
         {% for st in student_info %}
         <tr>
-        
-            <td>
-               {{st.student.first_name}}
-               {{st.student.last_name}}
-            </td>
-            
+          <td>
+             {{st.student.last_name}}
+          </td>
+          <td>
+             {{st.student.first_name}}
+          </td>
+          <td>
+             {{st.student.username}}
+          </td>
             <td>
                 {% get_scores for 'pre-test' in st.scores as score %}
                 {% if score.answer_count %}
@@ -42,7 +47,6 @@
                 {% else %}
                     n/a
                 {%endif %}
-                
             </td>
             <td>
 	            {%if st.score_on_bruise_recon  %}
@@ -109,6 +113,11 @@
             </td>
         </tr>
         {%endfor %}
+        <tr>
+          <td colspan = "11">
+            <em>Notes:</em> "Taking Action" activity is marked "n/a" unless a student entered something into the sample LDSS form. Not all initial question/answer data is available for the Post Test. 
+          </td>
+        </td>
         </table>
 {%else%}
     You don't appear to be teaching any courses this semester.
