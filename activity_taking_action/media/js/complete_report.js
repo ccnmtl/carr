@@ -27,7 +27,20 @@ steps['complete_report'] = {
                 fieldz.push ( [ i, j ] );
             }
         }
-        map (magic_field, fieldz);
+        
+        // if the 
+        form_already_filled_out = false;
+        form_already_filled_out = validate();
+        
+        make_fields_editable = !form_already_filled_out;
+        
+        if (make_fields_editable) {
+          map (magic_field_editable,     fieldz);
+        } else {
+          map (magic_field_not_editable, fieldz);
+       
+        }      
+        
         connect  ('show_expert_form', 'onclick', toggle_expert_form);
     }
     
@@ -57,17 +70,33 @@ function toggle_expert_form() {
 }
 
 
-function magic_field ( params ){
+function magic_field_editable ( params ) {
+    magic_field ( params, true);
+}
+
+function magic_field_not_editable ( params ) {
+    magic_field ( params, false);
+}
+
+
+function magic_field ( params, editable ){
     //return 
+    
+    if (editable) {
+        contenteditable_str = 'true';
+    }
+    else {
+        contenteditable_str = 'false';    
+    }
     
     field_id = 'form_pre_field_' + params[0] + '_' + params[1];
     
     val = (game_state[field_id] == undefined) ? '': game_state[field_id] ;
-    logDebug (field_id);
+    //logDebug (field_id);
     new_div =  DIV ( { 'class' : 'positioner_div' }, 
     PRE({
                 'id' : field_id,
-                'contenteditable':'true',
+                'contenteditable':contenteditable_str,
                 'class':'magic_form'
             },
             val)

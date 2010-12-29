@@ -1,6 +1,6 @@
 
-default_step = 'review_case_history';
-//default_step = 'complete_report';
+//default_step = 'review_case_history';
+default_step = 'complete_report';
 game_state = {}
 
 
@@ -102,7 +102,7 @@ function loadState()
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
    
-  maybeEnableNext();
+  maybeEnableNext();  
 }
 
 
@@ -136,7 +136,7 @@ function ldss_form_fields_to_save () {
 function saveState()
 {
   if (typeof student_response != "undefined") {
-      return;
+      return;      
   }
   url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/"
 

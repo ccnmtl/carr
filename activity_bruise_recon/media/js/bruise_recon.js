@@ -22,7 +22,9 @@ function loadStateSuccess(doc)
    if (doc && doc[case_name])
    {
     state_for_this_page = doc[case_name];
-    logDebug (serializeJSON(state_for_this_page));
+    //logDebug (serializeJSON(state_for_this_page));
+    // if state is already saved you can't change your answers.
+    lock_down_buttons();
    }
    else {
      state_for_this_page = {}
@@ -53,6 +55,11 @@ function loadStateSuccess(doc)
               addElementClass($('explanation'), 'button_selected');
      }
    }
+   /*
+   if (state_for_this_page != null && keys(state_for_this_page).length > 0) {
+   }
+   */
+   
   maybeEnableNext()
 }
 
@@ -62,15 +69,6 @@ function loadStateError(err)
    // @todo: Find a spot to display an error or decide just to fail gracefully
    // $('errorMsg').innerHTML = "An error occurred loading your state (" + err + "). Please start again."
 }
-
-
-http://care-ssw.ccnmtl.columbia.edu/admin/carr_main/sitesection/621/
-
-
-
-case_5
-http://care-ssw.ccnmtl.columbia.edu/admin/carr_main/sitesection/622/
-
 
 function loadState()
 {
@@ -87,27 +85,40 @@ function loadState()
    deferred.addCallbacks(loadStateSuccess, loadStateError)
    
    hide_answer();
-  connect ('answer_yes', 'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_yes'));
-  connect ('answer_no',  'onclick', partial (like_checkbox, 'button_selected', 'answer_button', 'answer_no' ));
-  connect ('patterns',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'patterns'));
-  connect ('severity',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'severity'));
-  connect ('location',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'location'));
-  connect ('explanation',  'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'explanation'));
-  
-  
-
-
-  connect('submit_div', 'onclick', show_answer);
+   
+   alert ("making buttons clickable.");
+   
+   //if (state_for_this_page != null && keys(state_for_this_page).length > 0) {
+       //yes/no behaves like a set of radio buttons
+      connect ('answer_yes', 'onclick', partial (like_radio, 'button_selected', 'answer_button', 'answer_yes'));
+      connect ('answer_no',  'onclick', partial (like_radio, 'button_selected', 'answer_button', 'answer_no' ));
+      
+      
+      // factors behaves like a set of checkboxes.
+      connect ('patterns',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'patterns'));
+      connect ('severity',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'severity'));
+      connect ('location',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'location'));
+      connect ('explanation',  'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'explanation'));
+      
+      connect('submit_div', 'onclick', show_answer);
+  //}  
 
   maybeEnableNext();
   
 }
 
 
-function like_checkbox(selected_class, all_button_class, the_element) {
+function like_radio(selected_class, all_button_class, the_element) {
     map (function(a) {removeElementClass( a,selected_class);}, $$('.' + all_button_class))
     addElementClass( $(the_element), selected_class);
 }
+
+
+
+function like_checkbox(selected_class, all_button_class, the_element) {
+    toggleElementClass( selected_class, $(the_element));
+}
+
 
 
 function lock_down_buttons() {
