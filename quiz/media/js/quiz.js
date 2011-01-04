@@ -122,6 +122,7 @@ function loadStateSuccess(doc)
       logDebug ("starting from scratch as no quiz found.");
       order = calculate_order();
       forEach ( $$('input.question'), function (a) {a.checked = false})
+      thaw_buttons();
       reorder_questions(order);
    }
    
@@ -141,8 +142,14 @@ function loadStateSuccess(doc)
 
 
 function freeze_buttons() {
+  logDebug ('freezing buttons');
   forEach($$('input.question'), function (i) {i.disabled = true});
 }
+
+function thaw_buttons() {
+  forEach($$('input.question'), function (i) {i.disabled = false});
+}
+
 
 function calculate_order () {
     // Returns a list of database ID's of questions in the order this quiz should display them.
@@ -179,13 +186,8 @@ function calculate_order () {
         question_ids_as_loaded = map (function (a) { return parseInt(a.id.split('_')[1]) },  $$('.cases.really'))
         
         question_ids_as_needed = final_list_of_questions;
-        
-        if (final_list_of_questions.length != 20 ) {
-          logDebug ('oops.');
-        } else {
-          logDebug ('ok');
-        }
-     order = map (function(a) { return findValue (question_ids_as_loaded, a) }, question_ids_as_needed);
+
+        order = map (function(a) { return findValue (question_ids_as_loaded, a) }, question_ids_as_needed);
         return order;
      }
      else {

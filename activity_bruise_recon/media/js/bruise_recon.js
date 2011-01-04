@@ -86,7 +86,7 @@ function loadState()
    
    hide_answer();
    
-   alert ("making buttons clickable.");
+   //alert ("making buttons clickable.");
    
    //if (state_for_this_page != null && keys(state_for_this_page).length > 0) {
        //yes/no behaves like a set of radio buttons

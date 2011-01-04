@@ -19,6 +19,7 @@ urlpatterns = patterns('',
    (r'^activity/quiz/', include('carr.quiz.urls')),
    ('^accounts/',include('djangowind.urls')),
    (r'^admin/(.*)', admin.site.root),
+   (r'^selenium/(?P<task>\w+)/$', 'carr_main.views.selenium'),
    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media_root}),
    (r'^uploads/(?P<path>.*)$','django.views.static.serve',{'document_root' : settings.MEDIA_ROOT}),
    # very important that this stays last and in this order

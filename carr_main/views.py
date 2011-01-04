@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
@@ -84,7 +85,32 @@ def page(request,path):
                 depth=depth,
                 site_domain=current_site.domain,
                 leftnav=leftnav)
+
+
+@login_required
+@rendered_with('carr_main/selenium.html')
+def selenium(request,task):
+    if task =='setup':
+        #import pdb
+        #pdb.set_trace()
+        test_user = User.objects.get(username = 'student1')
+        [a.delete() for a in test_user.bruise_recon_user.all()]
+        [a.delete() for a in test_user.taking_action_user.all()]
+        [a.delete() for a in test_user.quiz_user.all()]
+            
+        try:    
+            SiteState.objects.get(user=test_user).delete()
+        except SiteState.DoesNotExist:
+            pass
+            
+        sel_message = "proceed"
+   
+    if task =='teardown':
+        pass
     
+    return dict(task=task, sel_message=sel_message)    
+    
+
 @login_required
 def index(request):
     print "index"
