@@ -5,9 +5,12 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from pagetree.models import Hierarchy
 from django.contrib.auth.decorators import login_required
-from carr_main.models import SiteState
+from carr_main.models import SiteState, user_sort_key, sort_users, user_type
 from django.contrib.sites.models import Site, RequestSite
-
+from quiz.models import Quiz, Question, Answer
+from activity_taking_action.models import score_on_taking_action
+from activity_bruise_recon.models import score_on_bruise_recon
+from quiz.views import score_on_all_quizzes, all_answers_for_quizzes
 
 class rendered_with(object):
     def __init__(self, template_name):
@@ -109,6 +112,124 @@ def selenium(request,task):
         pass
     
     return dict(task=task, sel_message=sel_message)    
+    
+    
+    
+
+@login_required
+@rendered_with('carr_main/stats.html')
+def stats(request,task):
+    """ 
+Two tables with one row per student. This will get very large and is only really intended to be run infrequently. We will cache it once a day.
+
+registrar_summary:
+
+   1. Student first name
+   2. student last name
+   3. UNI
+   4. Course number
+   5. Section number
+   6. Term and year
+   7. date "completed" CARE
+
+8.pre-test score including which questions the student answered incorrectly (we'll need to be able to identify which questions students consistently get wrong so we can look at the questions)
+9. activity: abuse or accident - students response for each
+10. case 1
+11. case 2
+12. case 3
+13. Taking action (This one seems a bit more difficult) I'm not sure if any data is being saved for this activity. It looks like it is either complete or n/a.
+14 Post-test initial score including which questions the student answered incorrectly (we'll need to be able to identify which questions students consistently get wrong so we can look at the questions) [We need to be able to match the 10 pre-test questions with their identical 10 post-test questions. Is this something we can build into the data structure?]
+
+
+question_comparison:
+  1. A breakdown of all the questions in the pre-test, along with whether or not the students answered the individual questions correctly or not.
+
+  2. A breakdown of the individual cases in the Activity: Cases and whether or not the students answered the question for each case correctly or not.
+
+  3. One column for the Activity: Taking Action and whether or not the students completed this.
+
+  4. One column for the post-test initial score.
+
+  5. One column for the Post-Test status.
+
+  These can be individual spreadsheets. Ideally, each spreadsheet will be sortable so that we can tally % correct, incorrect, missing, etc.
+
+
+http://kodos.ccnmtl.columbia.edu:64757/stats/registrar_summary/
+
+and
+
+http://kodos.ccnmtl.columbia.edu:64757/stats/question_comparison/
+"""
+
+
+    # from carr_main.models import SiteState, user_sort_key, sort_users, user_type
+    #import pdb
+    #pdb.set_trace()
+    #for now, just do all users with unis starting  with A:
+    #the_users = sort_users([ u for u in User.objects.all() if u.username < 'b' and u.user_type() == 'student'])
+    #all_questions = Question.objects.all()
+    
+    the_users = sort_users([ u for u in User.objects.all() if u.user_type() == 'student' ]) 
+    
+    #and u.username in [ 'amr2223', 'aab2175', 'ao2365']
+    
+    #blarg =  Question.objects.all().filter(quiz__id = 3)
+    #import pdb
+    #pdb.set_trace()
+    
+    pre_test_questions  = Question.objects.all().filter(quiz__id = 2)
+    post_test_questions = Question.objects.all().filter(quiz__id = 3)
+    
+    case_1_questions =    Question.objects.all().filter(quiz__id = 6)
+    case_2_questions =    Question.objects.all().filter(quiz__id = 7)
+    case_3_questions =    Question.objects.all().filter(quiz__id = 8)
+    
+    blarg = []
+    blarg.extend(pre_test_questions)
+    blarg.extend(case_1_questions)
+    blarg.extend(case_2_questions)
+    blarg.extend(case_3_questions)
+    blarg.extend(post_test_questions)
+    
+    tmp = Question.objects.all().order_by("quiz")
+    questions_in_order = [(str(q.id), q ) for q in blarg ]
+    
+    
+    #print questions_in_order
+    
+    #import pdb
+    #pdb.set_trace()
+    
+    the_stats = {}
+    for u in the_users:
+    
+        print u.username
+        
+        the_stats[u.username] = {}
+        
+        the_stats[u.username]['user_object'] = u
+        the_stats[u.username]['taking_action'] = score_on_taking_action(u)
+        the_stats[u.username]['bruise_recon'] = score_on_bruise_recon(u)
+        the_stats[u.username]['quizzes'] = score_on_all_quizzes(u)
+        the_stats[u.username]['answers'] = {}
+        
+        for question_id, correct_incorrect in all_answers_for_quizzes(u).iteritems():
+            the_question = Question.objects.get(pk=question_id)
+            the_stats[u.username]['answers'] [str(question_id)] = correct_incorrect
+    
+    if task =='registrar_summary':
+        pass
+        
+    if task =='question_comparison':
+        pass
+    
+    return dict(task=task,
+                stats = the_stats,
+                users = the_users, 
+                questions_in_order = questions_in_order,
+                site = Site.objects.get_current()
+           )    
     
 
 @login_required

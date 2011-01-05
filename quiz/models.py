@@ -150,6 +150,9 @@ class Question(models.Model):
             answer = Answer.objects.get(id=aid)
             answer.ordinality = i + 1
             answer.save()
+            
+    def short_text(self):
+        return self.text[0:36]
 
 class Answer(models.Model):
     question = models.ForeignKey(Question)

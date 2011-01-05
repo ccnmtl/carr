@@ -91,8 +91,7 @@ def score_on_all_quizzes (the_student):
             answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
             
             
-            if answer_count or raw_quiz_info.has_key ( 'all_correct' ) or raw_quiz_info.has_key ( 'initial_score'):
-                #print "let's try it"       
+            if answer_count or raw_quiz_info.has_key ( 'all_correct' ) or raw_quiz_info.has_key ( 'initial_score'):  
                 correct_count = len([a for  a in results if a['correct'] == a['actual'] and a['quiz_number'] == quiz.id ])
                 quiz_results = { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count}
                 
@@ -116,10 +115,37 @@ def score_on_all_quizzes (the_student):
                
                 quiz_scores.append(quiz_results)
         
-        #print "ok final result for this user is:"
-        #print quiz_scores
         
         return quiz_scores
+
+def all_answers_for_quizzes (the_student):
+    """ For all the quizzes the student took, list whether the student answered correctly or not."""
+    tmp = question_and_quiz_keys()
+    answer_key = tmp ['answer_key']
+    quiz_key =   tmp ['quiz_key']
+    try:
+        state = ActivityState.objects.get(user=the_student)
+    except ActivityState.DoesNotExist:
+        return {}
+    if (len(state.json) > 0):
+        score = []
+        for a in simplejson.loads (state.json).values():
+            try:
+                score.extend(a['question'])
+            except:
+                pass #eh.
+        results = {}
+        quiz_keys_to_consider = [a for a in score if int (a['id']) in quiz_key.keys()]
+        for a in quiz_keys_to_consider:
+            question_id = int(a['id'])
+            actual_answer_id = int(a['answer'])
+            correct_answer_id = answer_key[int(a['id'])]
+            if actual_answer_id == correct_answer_id:
+                results [question_id] = 'c' #correct.
+            else:      
+                results [question_id] = 'i' #incorrect.
+        return results
+
 
 #SEE  http://www.columbia.edu/acis/rad/authmethods/auth-affil
 # see http://www.columbia.edu/acis/rad/authmethods/wind/ar01s06.html
