@@ -129,6 +129,9 @@ def stats(request,task):
     TODO: show initial answers for students who have them.
     """
     
+    if request.user.user_type() == 'student':
+        return scores_student(request)
+    
     #TODO: narrow down users based on task
     if task =='registrar_summary':
         pass
