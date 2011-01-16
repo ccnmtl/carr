@@ -1,5 +1,6 @@
 {% load quiz_template_tags %}
 {% load smartif %}
+{% spaceless %}
 
 <!--
 <div id = "task">
@@ -105,8 +106,8 @@
    </td>
 
   <td>
-     {% get_scores for 'post-test' in row.quizzes as score %}
-        {%if score.all_correct and score.all_correct == "t" %}
+     {% get_scores for 'post-test' in row.quizzes as post_test_scores %}
+        {%if post_test_scores.all_correct and post_test_scores.all_correct == "t" %}
             complete
         {% else %}
             incomplete
@@ -131,27 +132,23 @@
   </td/>
   
   <td>
-      {% get_scores for 'post-test' in row.quizzes as score %}
-      {% if score.initial_score.quiz_score %}
-      {{score.initial_score.quiz_score}} /  {{score.initial_score.quiz_max_score}}
+  
+      {% if post_test_scores.initial_score.quiz_score %}
+      {{post_test_scores.initial_score.quiz_score}} /  {{post_test_scores.initial_score.quiz_max_score}}
       {% else %}
           n/a
       {%endif %}
   </td>
-
-  {% with row.answers as  a  %}
-    {% for question_id_string, question in questions_in_order %}
+      
+  {%for answer in row.answers_in_order %}
       <td>
-        {%for row_question_id, correct_incorrect in row.answers.iteritems %}
-            {% ifequal question_id_string row_question_id %}
-                {{correct_incorrect}}
-            {%endifequal %}
-        {%endfor %}
+          {{answer}}
       </td>
-    {%endfor%}
-  {% endwith %}
+  {%endfor %}
 
    </tr>
 {%endfor %}
+
 </table>
 </div>
+{% endspaceless %}
