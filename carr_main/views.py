@@ -142,12 +142,12 @@ def stats(request,task):
     #for now just use all users.
     the_users = sort_users([ u for u in User.objects.all() if u.user_type() == 'student' ]) 
     
-    pre_test_questions  = Question.objects.all().filter(quiz__id = 2)
-    post_test_questions = Question.objects.all().filter(quiz__id = 3)
+    pre_test_questions  = Question.objects.filter(quiz__id = 2)
+    post_test_questions = Question.objects.filter(quiz__id = 3)
     
-    case_1_questions =    Question.objects.all().filter(quiz__id = 6)
-    case_2_questions =    Question.objects.all().filter(quiz__id = 7)
-    case_3_questions =    Question.objects.all().filter(quiz__id = 8)
+    case_1_questions =    Question.objects.filter(quiz__id = 6)
+    case_2_questions =    Question.objects.filter(quiz__id = 7)
+    case_3_questions =    Question.objects.filter(quiz__id = 8)
     
     blarg = []
     blarg.extend(pre_test_questions)
@@ -165,13 +165,18 @@ def stats(request,task):
         the_stats[u.username]['taking_action'] = score_on_taking_action(u)
         the_stats[u.username]['bruise_recon'] = score_on_bruise_recon(u)
         the_stats[u.username]['quizzes'] = score_on_all_quizzes(u)
-        the_stats[u.username]['answers'] = {}
         
-        for question_id, correct_incorrect in all_answers_for_quizzes(u).iteritems():
-            the_question = Question.objects.get(pk=question_id)
-            the_stats[u.username]['answers'] [str(question_id)] = correct_incorrect
-    
-    
+        all_answers = all_answers_for_quizzes(u)
+        the_stats[u.username]['answers_in_order'] = []
+        for question_id_string, question in questions_in_order:
+            found = False
+            for question_id, correct_incorrect in all_answers.iteritems():
+                if question_id_string == str(question_id):
+                    the_stats[u.username]['answers_in_order'].append(correct_incorrect)
+                    found = True
+            if not found:
+                the_stats[u.username]['answers_in_order'].append("")
+            
     return dict(task = task,
                 stats = the_stats,
                 users = the_users, 

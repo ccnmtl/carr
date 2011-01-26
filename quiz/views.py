@@ -39,10 +39,9 @@ def score_on_all_quizzes (the_student):
     tmp = question_and_quiz_keys()
     answer_key = tmp ['answer_key']
     quiz_key =   tmp ['quiz_key']
-
-    questions = Question.objects.all()
-    quizzes = Quiz.objects.all()
-
+    quizzes =    tmp['quizzes']
+    questions =  tmp['questions']
+    
     #pdb.set_trace()
     try:
         state = ActivityState.objects.get(user=the_student)
@@ -52,8 +51,8 @@ def score_on_all_quizzes (the_student):
         
     if (len(state.json) > 0):
         score = []
-        
-        for a in simplejson.loads (state.json).values():
+        json_stream = simplejson.loads(state.json)
+        for a in json_stream.values():
             try:
                 score.extend(a['question'])
             except:
@@ -80,7 +79,7 @@ def score_on_all_quizzes (the_student):
             ###
             #print 'quiz_%d' % quiz.id
             try:
-                raw_quiz_info = simplejson.loads (state.json)['quiz_%d' % quiz.id]
+                raw_quiz_info = json_stream['quiz_%d' % quiz.id]
             except:
                 raw_quiz_info = {}
             ###
@@ -181,20 +180,33 @@ def summarize_score_info_for_class (course_info):
     return {'pre_test' : pre_test_count, 'post_test': post_test_count}
 
 def question_and_quiz_keys():
-    questions = Question.objects.all()
-    quizzes = Quiz.objects.all()
+    quizzes = cache.get("quizzes")
+    if not quizzes:
+        quizzes = Quiz.objects.all()
+        cache.set("quizzes", quizzes, 60*60)
     
-    quiz_key = {}
-    answer_key = {}
+    questions = cache.get("questions")
+    if not questions:
+        questions = Question.objects.all()
+        cache.set("questions", questions, 60*60)
     
-    for question in questions:
-        try:
-            answer_key [question.id ] = question.answer_set.get(correct=True).id 
-            quiz_key [question.id ] = question.quiz.id
-        except:
-            pass
+    quiz_key = cache.get("quiz_key")
+    answer_key = cache.get("answer_key")
+    if not quiz_key or not answer_key:
+        quiz_key = {}
+        answer_key = {}
+        
+        for question in questions:
+            try:
+                answer_key [question.id ] = question.answer_set.get(correct=True).id 
+                quiz_key [question.id ] = question.quiz.id
+            except:
+                pass
 
-    return { 'answer_key':answer_key, 'quiz_key':quiz_key}
+        cache.set("quiz_key",quiz_key,60*60)
+        cache.set("answer_key",answer_key,60*60)
+
+    return { 'answer_key':answer_key, 'quiz_key':quiz_key, 'quizzes':quizzes, 'questions':questions }
 
 
 @rendered_with('quiz/scores_student.html')
@@ -228,14 +240,14 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     
 
     students_to_show = students_in_class(course_info)
-    questions = Question.objects.all()
-    quizzes = Quiz.objects.all()
     
     result = []
 
     tmp = question_and_quiz_keys()
     answer_key = tmp ['answer_key']
     quiz_key =   tmp ['quiz_key']
+    questions =  tmp['questions']
+    quizzes =    tmp['quizzes']
     
     #pdb.set_trace()
     for student in students_to_show:

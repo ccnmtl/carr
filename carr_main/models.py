@@ -28,9 +28,11 @@ def sort_users (users):
 
 
 def user_type(self):
-    if cache.get("user_type_%d" % self.id):
+    cache_key = "user_type_%d" % self.id
+    cached = cache.get(cache_key) 
+    if cached:
         #print "user type found in cache."
-        return cache.get("user_type_%d" % self.id)
+        return cached
     result = None
     if self == None:
         return None
@@ -41,15 +43,16 @@ def user_type(self):
         result = 'faculty'
     else:
         result = 'student'
-    cache.set("user_type_%d" % self.id,result,60*60*24)
+    cache.set(cache_key,result,60*60*24)
     #print "user type stored in cache."
     return result
         
 def classes_i_teach(self):
     cache_key = "classes_i_teach_%d" % self.id
-    if cache.get(cache_key):
+    cached = cache.get(cache_key)
+    if cached:
         #print "classes_i_teach found in cache."
-        return cache.get(cache_key)
+        return cached
         
     my_classes = [re.match(course_re,c.name)    for c in self.groups.all()]
     #print self.groups.all()
@@ -60,25 +63,29 @@ def classes_i_teach(self):
     return result
     
 def classes_i_take(self):
-    if cache.get("classes_i_take_%d" % self.id):
+    cache_key = "classes_i_take_%d" % self.id
+    cached = cache.get(cache_key)
+    if cached:
         #print "classes_i_take found in cache."
-        return cache.get("classes_i_take_%d" % self.id)
+        return cached
     my_classes = [re.match(course_re,c.name)    for c in self.groups.all()]
     result = [(a.groups()[0:6] ) for a in my_classes if a != None and a.groups()[6] == 'st']
-    cache.set("classes_i_take_%d" % self.id,result,30)
+    cache.set(cache_key,result,30)
     return result
 
 def students_i_teach (self):
-    if cache.get("students_i_teach_%d" % self.id):
+    cache_key = "students_i_teach_%d" % self.id
+    cached = cache.get(cache_key)
+    if cached:
         #print "students_i_teach found in cache."
-        return cache.get("students_i_teach_%d" % self.id)
+        return cached
     the_classes_i_teach = self.classes_i_teach()
     # yeah, the people who take more than zero of the classes I teach.
     
     result = sort_users([ u for u in User.objects.all()  if len([c for c in u.classes_i_take() if c in the_classes_i_teach]) > 0  and u != self])
     
     
-    cache.set("students_i_teach_%d" % self.id,result,30)
+    cache.set(cache_key,result,30)
     return result
 
 
@@ -92,10 +99,10 @@ def is_taking (self, course_info):
     
 def students_in_class(course_info):
     cache_key = "students_in_t%s.y%s.s%s.c%s%s.%s" % course_info
-    
-    if cache.get(cache_key):
+    cached = cache.get(cache_key)
+    if cached:
         #print "students_in_class found in cache."
-        return cache.get(cache_key)
+        return cached
     result = []
     all_affils = Group.objects.all()
     f_lookup = "t%s.y%s.s%s.c%s%s.%s.fc"
