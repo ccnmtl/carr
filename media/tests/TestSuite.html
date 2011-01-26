@@ -4,21 +4,46 @@
 <head>
   <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
   <title>Care Test Suite</title>
+  <script language="javascript">
+  function hide_other_tests() {
+      is_ssw = (location.href.match(/ssw/) != null) || 
+               (location.href.match(/64757/) != null);
+               
+               
+      is_cdm = (location.href.match(/cdm/) != null) || 
+               (location.href.match(/64756/) != null);
+               
+      if (is_ssw ) {
+         axe('cdm_test_1');
+      }
+      else if (is_cdm ) {
+         axe('ssw_test_1');
+      }
+      
+  }
+  
+  function axe (id) {
+    var el =  document.getElementById(id);
+    el.parentNode.removeChild(el);
+  }
+  </script>
+  
 </head>
 <body>
 <table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
 <tr><td><b>Care tests (beta):</b></td></tr>
-<tr><td><a href="student_facing.html">Student-facing functionality (ssw)</a></td></tr>
-<tr><td><a href="cdm_student_facing.html">Student-facing functionality (cdm)</a></td></tr>
+<tr id="ssw_test_1"><td><a href="student_facing.html">Student-facing functionality (ssw)</a></td></tr>
+<tr id="cdm_test_1"><td><a href="cdm_student_facing.html">Student-facing functionality (cdm)</a></td></tr>
 </tbody></table>
-</body>
 <div>
-Note: Log in as user student_1 before running this test; otherwise it will fail immediately.
+    <em>Note:</em> Log in as user student1 before running this test; otherwise it will fail immediately.
 </div>
-
-<div>
-TODO: in the /selenium/setup view, check that the user is in fact logged in as student 1.
-If this is not the case, throw a helpful error and halt wipe. Check the selenium test for this error before proceeding.
-</div>
-
+<!--
+  <div>
+  TODO: in the /selenium/setup view, check that the user is in fact logged in as student1.
+  If this is not the case, throw a helpful error and halt wipe. Check the selenium test for this error before proceeding.
+  </div>
+-->
+  <script language="javascript">hide_other_tests()</script>
+</body>  
 </html>

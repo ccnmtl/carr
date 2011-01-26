@@ -13,12 +13,14 @@ function debug(string)
 
 function maybeEnableNext()
 {
+  /*
   gonext = false
   
    if (validate()) {
     gonext = true;
    }
-   
+  */
+  gonext = true; // see bug 71075
    
    if (gonext){
      setStyle('next', {'display': 'inline'});

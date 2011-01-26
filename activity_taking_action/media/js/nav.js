@@ -4,15 +4,9 @@ function new_load (step_name, next_step) {
         if (next_button != undefined) {
             connect (next_button, 'onclick', partial(load_step,next_step));
         }
-    else {
-        logDebug("not found. for " + step_name);
-
-    }
 }
 
 steps = {}
-
-
 
 observation_css_classes = [
     'observation_1',

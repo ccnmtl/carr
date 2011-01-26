@@ -10,7 +10,7 @@ from django.contrib.sites.models import Site, RequestSite
 from quiz.models import Quiz, Question, Answer
 from activity_taking_action.models import score_on_taking_action
 from activity_bruise_recon.models import score_on_bruise_recon
-from quiz.views import score_on_all_quizzes, all_answers_for_quizzes
+from quiz.views import score_on_all_quizzes, all_answers_for_quizzes, scores_student
 
 class rendered_with(object):
     def __init__(self, template_name):
