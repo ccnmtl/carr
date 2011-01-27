@@ -22,5 +22,3 @@ class GetScores(TemplateTagNode):
             return None
         
 register.tag('get_scores', GetScores.process_tag)
-
-

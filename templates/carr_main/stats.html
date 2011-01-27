@@ -115,7 +115,15 @@
   </td>
 
   <td>
-  	 {%if row.taking_action %}complete{%else%}incomplete{%endif%}
+      {%ifequal row.taking_action 'completed_form' %}
+          Completed activity & filled out form
+      {%endifequal%}
+      {%ifequal row.taking_action 'clicked_through' %}
+          Completed activity
+      {%endifequal%}
+      {%ifequal row.taking_action 'no_data' %}
+          Did not complete activity
+      {%endifequal%}
    </td>
 
   <td>

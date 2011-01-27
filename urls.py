@@ -28,5 +28,3 @@ urlpatterns = patterns('',
    # very important that this stays last and in this order
    (r'^(?P<path>.*)$','carr_main.views.page'),
 )
-
-

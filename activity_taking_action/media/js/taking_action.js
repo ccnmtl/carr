@@ -37,13 +37,14 @@ function maybeEnableNext()
 }
 
 function validate() {
+    
     if (filter(function (a) { return a.substring (0, 14) == 'form_pre_field' }, keys(game_state)).length > 0) {
       return true
     }
     if (filter (function(a) {return (a.innerHTML.trim() != '')}, $$('.magic_form') ).length > 0) {
       return true;
     }
-  return false;
+  return false;  
 }
 
 function load_step (step_name) {
@@ -91,7 +92,7 @@ function loadStateError(err)
 function loadState()
 {
     if (typeof student_response != "undefined") {
-        logDebug ("Student answer found.");
+        //logDebug ("Student answer found.");
         game_state = student_response;
         current_step = "complete_report"
         load_step ("complete_report")
@@ -153,9 +154,7 @@ function saveState()
   var sync_req = new XMLHttpRequest();  
   sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
   sync_req.open("POST", url, false);
-    
-  sync_req.send(queryString({'json':JSON.stringify(doc , null)}));
-   
+  sync_req.send(queryString({'json':JSON.stringify(doc , null)})); 
 }
 
 

@@ -115,16 +115,21 @@
 			Activity: Taking Action
 		</td>
 		<td>
-		  {%if score_on_taking_action %}
-			    Form filled out
-			{%else %}
-			    Form not filled out
-			{%endif%}
+      {%ifequal score_on_taking_action 'completed_form' %}
+       Completed activity and filled out form
+      {%endifequal%}
+      {%ifequal score_on_taking_action 'clicked_through' %}
+       Completed activity but did not fill out form
+      {%endifequal%}
+      {%ifequal score_on_taking_action 'no_data' %}
+        Did not complete activity
+      {%endifequal%}
+      
 		</td>
 		<td>
-		  {%if score_on_taking_action %}
+		  {%ifequal score_on_taking_action 'completed_form' %}
 			  <a href = "/carr/reporting_abuse/taking_action/" >Go </a>
-			{%endif%}
+			{%endifequal%}
 		</td>
 	</tr>
 

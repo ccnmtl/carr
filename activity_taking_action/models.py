@@ -66,8 +66,11 @@ def score_on_taking_action(the_student):
     """For now just report complete if the user has attempted to fill out LDSS form."""
     try:
         if len(the_student.taking_action_user.all()) > 0:
-            return simplejson.loads(the_student.taking_action_user.all()[0].json).has_key('complete')
+            if simplejson.loads(the_student.taking_action_user.all()[0].json).has_key('complete'):
+              return 'completed_form'  # did they complete the form?
+            else:
+              return 'clicked_through'
         else:
-            return None
+            return 'no_data'
     except:
-        return None
+        return 'no_data'
