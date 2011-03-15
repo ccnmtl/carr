@@ -40,12 +40,14 @@
 			Activity: Abuse vs. Accident?
 		</td>
 		<td>
-		    {%if score_on_bruise_recon %}
+		    {%if score_on_bruise_recon != None%}
 			    {{score_on_bruise_recon}} / 3
-			  {%endif%}
+			{%else %}
+			    NOSCORE?
+			{%endif%}
 		</td>
 		<td>
-		 {%if score_on_bruise_recon %}
+		{%if score_on_bruise_recon != None%}
 			<a href = "/carr/recognizing_abuse/abuse_or_accident_activity" >Go </a>
 		{%endif%}
 		</td>

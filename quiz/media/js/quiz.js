@@ -107,7 +107,7 @@ function loadStateSuccess(doc)
    
    if (test_already_taken) {
       if (show_initial_score(this_quiz, quiz_key)) {
-        logDebug ('show_initial_score');
+        //logDebug ('show_initial_score');
         the_answers = this_quiz['initial_score']['answers_given'];
         setDisplayForElement('inline', $('initially'));
         hide_retake = true;
@@ -119,7 +119,7 @@ function loadStateSuccess(doc)
       freeze_buttons();
    }
    else {
-      logDebug ("starting from scratch as no quiz found.");
+      //logDebug ("starting from scratch as no quiz found.");
       order = calculate_order();
       forEach ( $$('input.question'), function (a) {a.checked = false})
       thaw_buttons();
@@ -160,12 +160,12 @@ function calculate_order () {
         //These questions *will* be on the quiz regardless of the order the questions are presented in:
         required_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ];
         
-        // These questions are questions that *might* be on the quiz:
+        // Questions that *might* be on the quiz:
         randomly_picked_questions = [23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
      
         // How many of the questions that *might* be on the quiz should we add to the ones that *will* be?
          if (window.location.href.match(/cdm/)== null) {
-            // last-minute change: the dental school professor wants to remove these:
+            // last-minute change: the dental school professor wants to remove the randomly-picked questions:
             how_many_randomly_picked_questions = 10;
         
         } else {
@@ -445,8 +445,8 @@ function retakeQuiz()
     }
     hideElement ('show_quiz_results');
     
-    kill_this_quiz()
-    window.location.reload()
+    kill_this_quiz();
+    window.location.reload();
 }
 
 function kill_state()  {   

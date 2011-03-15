@@ -74,10 +74,15 @@ class ActivityState (models.Model):
     
     
 def score_on_bruise_recon(the_student):
+    #import pdb
+    #pdb.set_trace()
     try:
         if len(the_student.bruise_recon_user.all()) > 0:
             recon_json = simplejson.loads(the_student.bruise_recon_user.all()[0].json)
             bruise_recon_score_info = dict([(a.strip(), b['score']) for a, b in recon_json.iteritems() if a.strip() != '' and b.has_key('score')])
+            print bruise_recon_score_info
+            
+            print  sum(bruise_recon_score_info.values())
             return  sum(bruise_recon_score_info.values())
         else:
             return None
