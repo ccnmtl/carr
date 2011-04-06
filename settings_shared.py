@@ -5,12 +5,6 @@ import re
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    ('CCNMTL', 'ccnmtl-sysadmin@columbia.edu'),
-)
-
-MANAGERS = ADMINS
-
 DATABASE_ENGINE = 'postgresql_psycopg2' # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = 'carr' # Or path to database file if using sqlite3.
 DATABASE_USER = 'pusher'             # Not used with sqlite3.
@@ -28,7 +22,6 @@ USE_I18N = False
 MEDIA_ROOT = '/var/www/carr/uploads/'
 MEDIA_URL = '/site_media/uploads/'
 
-SECRET_KEY = ')ng#)ef_u@_^zvvu@dxm7ql-yb^_!a6%v3v^j3b(mp+)l+5%@h'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source',
@@ -81,13 +74,11 @@ INSTALLED_APPS = (
     'template_utils',
     'tinymce',
     'typogrify',
-    'courseaffils'
+    'courseaffils',
+    'deploy_specific',
 )
 
 THUMBNAIL_SUBDIR = "thumbs"
-EMAIL_SUBJECT_PREFIX = "[carr] "
-EMAIL_HOST = 'localhost'
-SERVER_EMAIL = "carr@ccnmtl.columbia.edu"
 
 # for AuthRequirementMiddleware. this should be a list of 
 # url prefixes for paths that can be accessed by anonymous
@@ -117,12 +108,7 @@ COURSEAFFIL_AUTO_MAP_GROUPS = ['demo']
 
 # WIND settings
 AUTHENTICATION_BACKENDS = ('djangowind.auth.WindAuthBackend','django.contrib.auth.backends.ModelBackend',)
-WIND_BASE = "https://wind.columbia.edu/"
-WIND_SERVICE = "cnmtl_full_np"
-WIND_PROFILE_HANDLERS = ['djangowind.auth.CDAPProfileHandler']
-WIND_AFFIL_HANDLERS = ['djangowind.auth.AffilGroupMapper','djangowind.auth.StaffMapper','djangowind.auth.SuperuserMapper']
-WIND_STAFF_MAPPER_GROUPS = ['tlc.cunix.local:columbia.edu']
-WIND_SUPERUSER_MAPPER_GROUPS = ['anp8','jb2410','zm4','sbd12','egr2107','kmh2124','sld2131','amm8','mar227','ed2198']
+
 
 # Pageblocks/Pagetree settings 
 PAGEBLOCKS = ['pageblocks.HTMLBlock',
@@ -139,3 +125,16 @@ PAGEBLOCKS = ['pageblocks.HTMLBlock',
               #this appears to be breaking stuff:
               #'carr_main.FlashVideoBlock'
               ] 
+
+
+#if you add a 'deploy_specific' directory                                                                            
+#then you can put a settings.py file and templates/ overrides there            
+try:
+    from deploy_specific.settings import *
+    if locals().has_key('EXTRA_INSTALLED_APPS'):
+        INSTALLED_APPS = EXTRA_INSTALLED_APPS + INSTALLED_APPS
+except ImportError:
+    pass
+
+
+MANAGERS = ADMINS
