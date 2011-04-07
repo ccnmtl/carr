@@ -1,7 +1,7 @@
 import os, sys, site
 
 # enable the virtualenv
-site.addsitedir('/var/www/carr/carr/ve/lib/python2.5/site-packages')
+site.addsitedir('/var/www/carr/carr/ve/lib/python2.6/site-packages')
 
 # see http://code.google.com/p/modwsgi/wiki/ApplicationIssues#Writing_To_Standard_Output
 sys.stdout = sys.stderr
