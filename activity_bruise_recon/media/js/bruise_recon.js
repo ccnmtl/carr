@@ -58,10 +58,13 @@ function loadStateSuccess(doc)
 
    if (doc && doc[case_name])
    {
-    state_for_this_page = doc[case_name];
-    //logDebug (serializeJSON(state_for_this_page));
-    // if state is already saved you can't change your answers.
-    lock_down_answer_buttons();
+     state_for_this_page = doc[case_name];
+     //logDebug (serializeJSON(state_for_this_page));
+     // if state is already saved you can't change your answers.
+     if ( typeof(state_for_this_page['answered']) != "undefined") {
+       debug ("already answered");
+       lock_down_answer_buttons();
+     }
    }
    else {
      state_for_this_page = {}
@@ -162,6 +165,7 @@ function like_checkbox(selected_class, all_button_class, the_element) {
 
 
 function lock_down_answer_buttons() {
+  debug ("locking down answer buttons");
   forEach ($$('.answer_button'), disconnectAll);
   forEach ($$('.bruise_recon_checkbox_div'), disconnectAll);
   forEach ($$('#submit_div'), disconnectAll);
@@ -237,6 +241,7 @@ function answer_is_correct() {
 }
 
 function show_answer() {
+    debug ("show answer");
     if (!validate()) {
         alert ("Please choose yes or no.");
         return;

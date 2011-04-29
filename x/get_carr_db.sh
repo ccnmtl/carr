@@ -5,13 +5,13 @@
 # 
 
 #To see output of this script, uncomment the following line:
-#set -x
+set -x
 
 ############
 DB_BACKUPS=~
 PREFIX=carr_prod_
 DATE=$PREFIX`date +"%F_%R" | sed 's/-/_/g' | sed 's/:/_/g'`
-PROD_SERVER_HOSTNAME=care-cdm.ccnmtl.columbia.edu
+PROD_SERVER_HOSTNAME=hutz.ccnmtl.columbia.edu
 ############
 
 
@@ -22,15 +22,15 @@ PROD_SERVER_HOSTNAME=care-cdm.ccnmtl.columbia.edu
 
 echo "OK. We are downloading the database from $PROD_SERVER_HOSTNAME."
 echo "File will be backed up in: $DB_BACKUPS/$DATE"
-ssh $PROD_SERVER_HOSTNAME "sudo -u postgres pg_dump carr >  $DB_BACKUPS/$DATE.out"
+ssh $PROD_SERVER_HOSTNAME "sudo -u pusher pg_dump --no-owner --no-privileges carr >  $DB_BACKUPS/$DATE.out"
 echo "Fetching file to your backup directory, $DB_BACKUPS."
 scp $PROD_SERVER_HOSTNAME:$DATE.out $DB_BACKUPS
 echo "Dropping database carr"
-sudo -u postgres psql -Upostgres -c 'drop database carr'
+sudo -u pusher dropdb carr
 echo "Creating database on dev machine."
-sudo -u postgres createdb -O postgres carr
+sudo -u pusher createdb -O pusher carr
 echo "Adding data to the new database."
-sudo -u postgres psql -Upostgres -d carr -f $DB_BACKUPS/$DATE.out
+sudo -u pusher psql -Upusher -d carr -f $DB_BACKUPS/$DATE.out
 
 #echo "OK, done making new database $DATE. Now changing your settings to point at it."
 #sed -i "s/carr_prod_...._.._.._.._../carr/g" ./settings_shared.py
