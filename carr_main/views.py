@@ -14,8 +14,8 @@ from quiz.views import score_on_all_quizzes, all_answers_for_quizzes, scores_stu
 
 
 def background(request,  content_to_show):
-    if content_to_show not in ['help', 'contact', 'about']:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+    if content_to_show not in ['credits', 'contact', 'about']:
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
     file_name = {
         'about' : 'about.html',
         'credits' : 'credits.html',
