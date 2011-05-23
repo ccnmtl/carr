@@ -23,6 +23,9 @@ urlpatterns = patterns('',
    (r'^selenium/(?P<task>\w+)/$', 'carr_main.views.selenium'),
    (r'^stats/(?P<task>\w+)/$', 'carr_main.views.stats'),
    
+   (r'^background/(?P<content_to_show>\w+)/$', 'carr_main.views.background'),
+   
+   
    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media_root}),
    (r'^uploads/(?P<path>.*)$','django.views.static.serve',{'document_root' : settings.MEDIA_ROOT}),
    # very important that this stays last and in this order

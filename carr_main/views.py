@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
-from django.template import RequestContext
-from django.http import HttpResponseRedirect, Http404
+from django.template import RequestContext, loader
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response
 from pagetree.models import Hierarchy
 from django.contrib.auth.decorators import login_required
@@ -11,6 +11,21 @@ from quiz.models import Quiz, Question, Answer
 from activity_taking_action.models import score_on_taking_action
 from activity_bruise_recon.models import score_on_bruise_recon
 from quiz.views import score_on_all_quizzes, all_answers_for_quizzes, scores_student
+
+
+def background(request,  content_to_show):
+    if content_to_show not in ['help', 'contact', 'about']:
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
+    file_name = {
+        'about' : 'about.html',
+        'credits' : 'credits.html',
+        'contact' : 'contact.html',
+    } [content_to_show]
+    t = loader.get_template('carr_main/background/%s' % file_name)
+    c = RequestContext(request, {})
+    return HttpResponse(t.render(c))    
+    
+
 
 class rendered_with(object):
     def __init__(self, template_name):
