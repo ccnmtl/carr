@@ -154,23 +154,25 @@ function thaw_buttons() {
 function calculate_order () {
     // Returns a list of database ID's of questions in the order this quiz should display them.
     
+     my_url = location.href;
+     is_ssw = (my_url.match(/ssw/) != null) ||  (my_url.match(/64757/) != null);
+     is_cdm = (my_url.match(/cdm/) != null) ||  (my_url.match(/64756/) != null);
+
+    
      if (post_test) {
         // Show some required questions, and some questions picked at random out of a hat, in a random order.
-        //TODO move this functionality out of this file so Anders can use the quiz:
         //These questions *will* be on the quiz regardless of the order the questions are presented in:
         required_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ];
         
         // Questions that *might* be on the quiz:
         randomly_picked_questions = [23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
-     
+        
         // How many of the questions that *might* be on the quiz should we add to the ones that *will* be?
-         if (window.location.href.match(/cdm/)== null) {
+         if (is_ssw) {
             // last-minute change: the dental school professor wants to remove the randomly-picked questions:
             how_many_randomly_picked_questions = 10;
-        
         } else {
-            how_many_randomly_picked_questions = 0;   
-        
+            how_many_randomly_picked_questions = 0; 
         }
         // shuffle the randomly picked questions:
         randomly_picked_questions.sort(randomly);
