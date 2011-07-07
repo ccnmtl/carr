@@ -143,11 +143,11 @@
 		<td>
 		
             {% get_scores for 'post-test' in scores as score %}
-           {%if score%}
-			            {% if score.initial_score.quiz_score %}
+            {%if score%}
+                        {% if score.initial_score.quiz_score %}
                          First try: {{score.initial_score.quiz_score}} /  {{score.initial_score.quiz_max_score}}.
                       {%if score.all_correct and score.all_correct == "t" %}
-                          Final score: {{score.score }} / {{score.answer_count }}. The post-test is complete. 
+                          Final score: {{score.answer_count }} / {{score.answer_count }}. The post-test is complete. 
                       {% else %}
                           (incomplete)
                       {%endif %}
@@ -155,6 +155,8 @@
                       n/a
                   {%endif %}
             {%endif%}
+
+            
 		</td>
 		<td>
 		
