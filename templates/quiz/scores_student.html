@@ -154,7 +154,19 @@
                   {% else %}
                       n/a
                   {%endif %}
+                  {%if score.submit_time %}
+                    <br />Last taken:
+                    {% for stamp in score.submit_time %}
+                        {%if forloop.last %}
+                            {{stamp|date:"m/d/Y P"}}
+                        {%endif %}
+                    {% endfor %}
+                  {%endif%}
+                  
             {%endif%}
+            
+            
+            
 
             
 		</td>

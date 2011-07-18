@@ -324,6 +324,15 @@ function show_score(fresh_answers)
         }
     }
     
+    /// adding this:   
+    if ( typeof(all_quizzes_info [quiz_key]['submit_time'] ) == 'undefined') {
+        all_quizzes_info [quiz_key]['submit_time'] = [Date()];
+    }
+    else {
+        all_quizzes_info [quiz_key]['submit_time'].push (Date());
+    }
+ 
+
     if (post_test && (!hide_retake)) {
       alert ('You must score 100% on the post-test to receive credit for this training. Please click "Retake Quiz" and try again. ');
     }

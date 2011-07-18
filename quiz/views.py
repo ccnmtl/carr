@@ -18,7 +18,7 @@ from activity_taking_action.models import score_on_taking_action
 from activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
 
-import re, pdb
+import re, pdb, datetime
 
 class rendered_with(object):
     def __init__(self, template_name):
@@ -33,6 +33,10 @@ class rendered_with(object):
                 return items
 
         return rendered_func
+
+def to_python_date (timestring):
+    return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:5]), "%a %b %d %Y %H:%M:%S")
+
 
 # a couple helper functions for scoring:
 def score_on_all_quizzes (the_student):
@@ -58,10 +62,7 @@ def score_on_all_quizzes (the_student):
             except:
                 pass #eh.
 
-        # if int (a['id']) in quiz_key.keys() :
         # don't deal with questions that have since been removed from quiz.
-        
-        
         results = [{
                     'question':         int(a['id']),
                     'actual':    int(a['answer']),
@@ -73,20 +74,15 @@ def score_on_all_quizzes (the_student):
         
         ###
         #print the_student.username
-        
+            
         
         for quiz in quizzes:
             ###
-            #print 'quiz_%d' % quiz.id
             try:
                 raw_quiz_info = json_stream['quiz_%d' % quiz.id]
             except:
                 raw_quiz_info = {}
             ###
-            #print raw_quiz_info
-            
-            
-                
             answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
             
             
@@ -94,17 +90,11 @@ def score_on_all_quizzes (the_student):
                 correct_count = len([a for  a in results if a['correct'] == a['actual'] and a['quiz_number'] == quiz.id ])
                 quiz_results = { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count}
                 
-                
-                
-                
                 try:
                     if raw_quiz_info['all_correct']:
                         quiz_results ['all_correct'] =  raw_quiz_info['all_correct']
                 except:
                     pass
-                
-                
-                
                 
                 try:
                     if raw_quiz_info['initial_score']:
@@ -112,8 +102,13 @@ def score_on_all_quizzes (the_student):
                 except:
                     pass
                
+                #Add dates too:   
+                if raw_quiz_info.has_key ('submit_time'):
+                    quiz_results ['submit_time'] =  [to_python_date(x) for x in raw_quiz_info['submit_time']]
+                    
                 quiz_scores.append(quiz_results)
         
+            
         
         return quiz_scores
 
