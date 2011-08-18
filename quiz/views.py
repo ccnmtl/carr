@@ -35,7 +35,12 @@ class rendered_with(object):
         return rendered_func
 
 def to_python_date (timestring):
-    return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:5]), "%a %b %d %Y %H:%M:%S")
+    try:
+        return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:5]), "%a %b %d %Y %H:%M:%S")
+    except ValueError:
+        #sometimes JS doesn't give us the year,  which results in the date being 1900... not good but better than a 500 error...
+        return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:4]), "%a %b %d %H:%M:%S")
+
 
 
 # a couple helper functions for scoring:
