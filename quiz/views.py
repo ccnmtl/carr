@@ -51,7 +51,6 @@ def score_on_all_quizzes (the_student):
     quizzes =    tmp['quizzes']
     questions =  tmp['questions']
     
-    #pdb.set_trace()
     try:
         state = ActivityState.objects.get(user=the_student)
         #print state.json
@@ -174,9 +173,7 @@ def summarize_score_info_for_class (course_info):
             if b['quiz'].label() == 'Post-test':
                 if b.has_key ('all_correct') and b['all_correct'] == 't':
                     post_test_count = post_test_count + 1
-
-    #print course_info
-    #print  {'pre_test' : pre_test_count, 'post_test': post_test_count}
+                    
     return {'pre_test' : pre_test_count, 'post_test': post_test_count}
 
 def question_and_quiz_keys():
@@ -209,15 +206,56 @@ def question_and_quiz_keys():
     return { 'answer_key':answer_key, 'quiz_key':quiz_key, 'quizzes':quizzes, 'questions':questions }
 
 
+def training_is_complete (quizzes, bruise_recon, taking_action, site):
+    """
+    Is this student done with the training?
+    This is just a helper function as we're changing the rules for deteremining when a student is done with the training.
+    Initially, the rule was that the student was done with the training as soon the post-test was completed with with all correct answers.
+    Now we're changing this to say that students have to finish all the other activities as well.
+    """
+    try:
+        scores = dict((q['quiz'].label(), q['score']) for q in quizzes)
+        #quiz scores:    
+        if 'Pre-test' not in scores.keys():
+            return False
+        if 'Post-test' not in scores.keys():
+            return False
+        if "ssw" in site.domain:
+            if 'Case 1' not in scores.keys():
+                return False
+            if 'Case 2' not in scores.keys():
+                return False
+            if 'Case 3' not in scores.keys():
+                return False
+        #other:
+        if taking_action == 'no_data':
+            return False
+        if bruise_recon == None:
+            return False
+    except:
+       return False
+    return True
+    
+
+
 @rendered_with('quiz/scores_student.html')
 def scores_student(request):
+    ru = request.user
+    quizzes       = score_on_all_quizzes     (ru)
+    bruise_recon  = score_on_bruise_recon    (ru)
+    taking_action = score_on_taking_action   (ru)
+    site          = Site.objects.get_current ()
+    
     return {
-        'scores':  score_on_all_quizzes (request.user),
-        'score_on_bruise_recon' : score_on_bruise_recon(request.user),
-        'score_on_taking_action' : score_on_taking_action(request.user),
-        'site' : Site.objects.get_current()
+        'scores':                  quizzes,
+        'score_on_bruise_recon' :  bruise_recon,
+        'score_on_taking_action' : taking_action,
+        'training_complete'      : training_is_complete (quizzes, bruise_recon, taking_action, site),
+        'site' :                   site
     }
     
+
+
 
 @rendered_with('quiz/scores_faculty_courses.html')
 def scores_faculty_courses(request):

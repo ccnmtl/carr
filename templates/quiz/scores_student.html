@@ -126,7 +126,6 @@
       {%ifequal score_on_taking_action 'no_data' %}
         Did not complete activity
       {%endifequal%}
-      
 		</td>
 		<td>
 		  {%ifequal score_on_taking_action 'completed_form' %}
@@ -171,8 +170,7 @@
             
 		</td>
 		<td>
-		
-           {%if score%}
+               {%if score%}
 			          {%if score.all_correct and score.all_correct == "t" %}
                    <a href = "/carr/conclusion/post_test/">Go</a>
                 {% else %}
@@ -181,9 +179,36 @@
 		      {%endif%}
 		</td>
 	</tr>
+
+	
 </table>
 
-
+<table class = "scorestable">
+	<tr>
+	   <th>
+    	    Status of entire CARE training module:
+	   </th>
+	</tr>
+	<tr>
+	    <td>
+            <h2>&nbsp;&nbsp;{%if training_complete%}Complete{%else%}Incomplete{%endif%}</h2>
+        </td>
+    </tr>
+    <tr>
+	    <td>
+            {%if training_complete%}You have successfully completed the training.{%else%}To complete the training, you must:
+            <ul>
+                <li>Complete the Pre-Test </li>
+                <li>Complete the "Abuse vs. Accident" activity</li>
+                <li>Complete all 3 cases</li>
+                <li>Complete the "Taking Action" activity</li>
+                <li>Complete the Post-Test.</li>
+                <li>Answer all questions correctly on the Post-Test. (You are allowed as many tries as you need.)</li>
+            </ul>
+             {%endif%}
+        </td>
+    </tr>
+</table>
 
 {% endblock %}
 
