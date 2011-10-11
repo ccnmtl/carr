@@ -13,7 +13,6 @@
 <h3>
     Scores for students in t{{c.0}}.y{{c.1}}.s{{c.2}}.c{{c.3}}{{c.4}}.{{c.5}}:
 </h3>
-
 {% if student_info %}
     <table class="scorestable" cellspacing="0" summary="scores table">
         <tr>
@@ -26,8 +25,9 @@
             <th>Case 2</th>
             <th>Case 3</th>
             <th>Activity: Taking Action</th>
-            <th>Post-Test -- initial score</th>
-            <th>Post-Test -- status</th>
+            <th>Initial score on Post-Test</th>
+            <th>Post-Test</th>
+            <th>Entire training</th>
         </tr>
         {% for st in student_info %}
         <tr>
@@ -49,21 +49,33 @@
                 {%endif %}
             </td>
             <td>
-	            {%if st.score_on_bruise_recon  %}
-	            {{st.score_on_bruise_recon}} / 3
-	            
-            	{% if "cdm" in site_domain%}
-		            ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
-		            <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
-		            <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
-		        {%else %}
-		              ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
-		                <a href="/activity/bruise_recon/studentcase/5/user/{{st.student.id}}/">2</a>
-		                <a href="/activity/bruise_recon/studentcase/6/user/{{st.student.id}}/">3</a>) 
-		        {%endif%}
-		        {%else %}
-		            n/a
-		        {%endif%}
+                {%with st.score_on_bruise_recon as a%} 
+                   {%if a %}
+                        {{a}} / 3
+	                    {% if "cdm" in site_domain%}
+		                      ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
+		                        <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
+		                        <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
+		                {%else %}
+		                      ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
+		                        <a href="/activity/bruise_recon/studentcase/5/user/{{st.student.id}}/">2</a>
+		                        <a href="/activity/bruise_recon/studentcase/6/user/{{st.student.id}}/">3</a>) 
+		                {%endif%}
+                  {%else%}
+                            {%if a == 0 %}
+                                {{a}} / 3
+                                {% if "cdm" in site_domain%}
+	                                  ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
+	                                    <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
+	                                    <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
+	                            {%else %}
+	                                  ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
+	                                    <a href="/activity/bruise_recon/studentcase/5/user/{{st.student.id}}/">2</a>
+	                                    <a href="/activity/bruise_recon/studentcase/6/user/{{st.student.id}}/">3</a>) 
+	                            {%endif%}
+                            {%else %}Incomplete{%endif%}
+                    {%endif%}
+                {%endwith%}
             </td>
             <td>
             {% get_scores for 'Case 1' in st.scores as score %}
@@ -95,10 +107,10 @@
 	              <a href ="/activity/taking_action/student/{{st.student.id}}/">Completed activity and filled out form</a>
 		          {%endifequal%}
               {%ifequal st.score_on_taking_action 'clicked_through' %}
-	              Completed activity
+	              Complete
 		          {%endifequal%}
               {%ifequal st.score_on_taking_action 'no_data' %}
-	              Did not complete activity
+	              Incomplete
 		          {%endifequal%}
             </td>
             <td>
@@ -119,16 +131,22 @@
                         {%endif %}
                     {% endfor %}
                   {%endif%}
-
-
                 {% else %}
                     Incomplete
                 {%endif %}
             </td>
+            <td>
+                {%if st.training_complete%}
+                    Complete
+                {% else %}
+                    Incomplete
+                {%endif %}
+            </td>
+            
         </tr>
         {%endfor %}
         <tr>
-          <td colspan = "11">
+          <td colspan = "12">
           
 			<p>
 			Students in courses: 
@@ -156,6 +174,5 @@
 {%else%}
     You don't appear to be teaching any courses this semester.
 {%endif%}
-    
-    
+  
 {%endblock%}

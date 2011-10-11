@@ -53,7 +53,6 @@ def score_on_all_quizzes (the_student):
     
     try:
         state = ActivityState.objects.get(user=the_student)
-        #print state.json
     except ActivityState.DoesNotExist:
         return []
         
@@ -213,12 +212,23 @@ def training_is_complete (quizzes, bruise_recon, taking_action, site):
     Initially, the rule was that the student was done with the training as soon the post-test was completed with with all correct answers.
     Now we're changing this to say that students have to finish all the other activities as well.
     """
+    #ALSO TEST FOR #score.all_correct and score.all_correct == "t"
     try:
-        scores = dict((q['quiz'].label(), q['score']) for q in quizzes)
-        #quiz scores:    
+        scores = dict((q['quiz'].label(), (q['all_correct'], q['score'], max(q['submit_time']))) for q in quizzes)
+        if scores ['Post-test'][0] != 't':
+            #they're not done with the post-test.
+            return False
+        else:
+            # they're done with the post-test, but they forgot one of the activities.
+            # To minimize drama, if they finished the thing BEFORE October 10 2011,
+            # and they would OTHERWISE have been logged as complete, just grandfather them in as complete:
+            if scores ['Post-test'][2] < datetime.datetime(2011, 10, 10, 0, 0, 0):
+                return True
+        
+        #quiz scores:
         if 'Pre-test' not in scores.keys():
             return False
-        if 'Post-test' not in scores.keys():
+        if bruise_recon == None:
             return False
         if "ssw" in site.domain:
             if 'Case 1' not in scores.keys():
@@ -275,27 +285,27 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     
     course_info = (c1, c2, c3, c4, c5, c6)
     course_string = "t%s.y%s.s%s.c%s%s.%s.st" % course_info
-    
-
     students_to_show = students_in_class(course_info)
-    
     result = []
-
     tmp = question_and_quiz_keys()
     answer_key = tmp ['answer_key']
     quiz_key =   tmp ['quiz_key']
     questions =  tmp['questions']
     quizzes =    tmp['quizzes']
-    
-    #pdb.set_trace()
+    site          = Site.objects.get_current ()
+    #for students in []:
     for student in students_to_show:
         try:
+            quizzes       = score_on_all_quizzes     (student)
+            bruise_recon  = score_on_bruise_recon    (student)
+            taking_action = score_on_taking_action   (student)
             result.append (
                 {
-                    'student': student,
-                    'scores':  score_on_all_quizzes (student),
-                    'score_on_bruise_recon' : score_on_bruise_recon(student),
-                    'score_on_taking_action' : score_on_taking_action(student)
+                    'student':                 student,
+                    'scores':                  quizzes,
+                    'score_on_bruise_recon' :  bruise_recon,
+                    'score_on_taking_action' : taking_action,
+                    'training_complete'      : training_is_complete (quizzes, bruise_recon, taking_action, site)
                 }
             )
         except:
