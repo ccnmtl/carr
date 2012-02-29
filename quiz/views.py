@@ -14,6 +14,7 @@ from django.contrib.sites.models import Site, RequestSite
 from carr_main.models import number_of_students_in_class, students_in_class
 
 
+
 from activity_taking_action.models import score_on_taking_action
 from activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
@@ -75,9 +76,6 @@ def score_on_all_quizzes (the_student):
           
         quiz_scores = []
         
-        ###
-        #print the_student.username
-            
         
         for quiz in quizzes:
             ###

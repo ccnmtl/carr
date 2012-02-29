@@ -2,16 +2,17 @@
 {% load smartif %}
 {% spaceless %}
 
-<!--
-<div id = "task">
-  {{task}}
-</div>
--->
+<style type="text/css">
+    th, td {
+        white-space:nowrap;
+    }
+</style>
+
 
 <table border ="1px">
 
   <tr>
-    <td colspan = "11">
+    <td colspan = "12">
     </td>
         {% for question_id_string, question in questions_in_order %}
         <th >{{ question_id_string}}
@@ -19,7 +20,7 @@
         {%endfor%}
   </tr>
   <tr>
-    <td colspan = "11">
+    <td colspan = "13">
     </td>
         {% for question_id_string, question in questions_in_order %}
         <th > {{question.quiz.label}}
@@ -52,7 +53,13 @@
   
   <th>
     completed_training
+  </th>
+  
+  
+  <th>
+    when
   </th>  
+    
   <th>
     taking_action
   </th>  
@@ -106,12 +113,12 @@
    </td>
 
   <td>
-     {% get_scores for 'post-test' in row.quizzes as post_test_scores %}
-        {%if post_test_scores.all_correct and post_test_scores.all_correct == "t" %}
-            complete
-        {% else %}
-            incomplete
-        {%endif %}
+    <!-- might not need this any more -->
+     {% if row.completed_training%}Complete{%else %}Incomplete {%endif %}
+  </td>
+
+  <td>
+    {{row.completion_time}}
   </td>
 
   <td>
@@ -140,7 +147,7 @@
   </td/>
   
   <td>
-  
+      {% get_scores for 'post-test' in row.quizzes as post_test_scores %} 
       {% if post_test_scores.initial_score.quiz_score %}
       {{post_test_scores.initial_score.quiz_score}} /  {{post_test_scores.initial_score.quiz_max_score}}
       {% else %}

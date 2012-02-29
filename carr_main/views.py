@@ -10,7 +10,10 @@ from django.contrib.sites.models import Site, RequestSite
 from quiz.models import Quiz, Question, Answer
 from activity_taking_action.models import score_on_taking_action
 from activity_bruise_recon.models import score_on_bruise_recon
-from quiz.views import score_on_all_quizzes, all_answers_for_quizzes, scores_student
+from quiz.views import score_on_all_quizzes, all_answers_for_quizzes, scores_student, training_is_complete
+from django.contrib.sites.models import Site, RequestSite
+
+#import datetime
 
 
 def background(request,  content_to_show):
@@ -129,7 +132,15 @@ def selenium(request,task):
     return dict(task=task, sel_message=sel_message)    
     
     
-    
+if 1 == 3:    
+    def to_python_date (timestring):
+        try:
+            return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:5]), "%a %b %d %Y %H:%M:%S")
+        except ValueError:
+            #sometimes JS doesn't give us the year,  which results in the date being 1900... not good but better than a 500 error...
+            return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:4]), "%a %b %d %H:%M:%S")    
+
+
 
 @login_required
 @rendered_with('carr_main/stats.html')
@@ -155,7 +166,10 @@ def stats(request,task):
         pass
     
     #for now just use all users.
-    the_users = sort_users([ u for u in User.objects.all() if u.user_type() == 'student' ]) 
+    #tmp = [ u for u in User.objects.all() if 'aa' in u.username]
+    tmp = [ u for u in User.objects.all() ]
+    
+    the_users = sort_users([ u for u in tmp if u.user_type() == 'student'  ]) 
     
     pre_test_questions  = Question.objects.filter(quiz__id = 2)
     post_test_questions = Question.objects.filter(quiz__id = 3)
@@ -173,14 +187,41 @@ def stats(request,task):
     
     questions_in_order = [(str(q.id), q ) for q in blarg ]
     
+    site          = Site.objects.get_current (  )
+
     the_stats = {}
     for u in the_users:
+    
+        _quizzes       = score_on_all_quizzes     (u)
+        _bruise_recon  = score_on_bruise_recon    (u)
+        _taking_action = score_on_taking_action   (u)
+        
+        student_training_is_complete = training_is_complete (_quizzes, _bruise_recon, _taking_action, site)
+        
+        #print student_training_is_complete
         the_stats[u.username] = {}
         the_stats[u.username]['user_object'] = u
-        the_stats[u.username]['taking_action'] = score_on_taking_action(u)
-        the_stats[u.username]['bruise_recon'] = score_on_bruise_recon(u)
-        the_stats[u.username]['quizzes'] = score_on_all_quizzes(u)
+        the_stats[u.username]['completed_training'] = student_training_is_complete
+        the_stats[u.username]['taking_action'] = _taking_action
+        the_stats[u.username]['bruise_recon'] = _bruise_recon
+        student_score_on_all_quizzes = _quizzes
+        the_stats[u.username]['quizzes'] = student_score_on_all_quizzes
         
+        #get completion times (refactor)?
+        try:
+            tmp = [(z['submit_time']) for z in student_score_on_all_quizzes if  z.has_key ('quiz') and z.has_key ('submit_time') and  z['quiz'].id == 3]
+            if len (tmp) > 0:
+                all_submit_times_for_post_test = tmp [0]
+                if len(all_submit_times_for_post_test) > 0:
+                    the_stats[u.username]['completion_time'] = all_submit_times_for_post_test[-1]
+                else:
+                    the_stats[u.username]['completion_time'] = "no completion time found (length zero 1)" # this shouldn't occur.
+            else:
+                the_stats[u.username]['completion_time'] =  "(no time recorded)"
+        except  KeyError:
+             the_stats[u.username]['completion_time'] = "no completion time found (key error)" #this shouldn't occur.
+        
+                
         all_answers = all_answers_for_quizzes(u)
         the_stats[u.username]['answers_in_order'] = []
         for question_id_string, question in questions_in_order:
