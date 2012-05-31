@@ -98,6 +98,7 @@ ANONYMOUS_PATHS = ('/accounts/',
                    '/admin/',
                    '/login/',
                    '/carr/',
+                   '/_stats/',
                    re.compile(r'^/$'),
                    )
 
