@@ -10,3 +10,4 @@ requirements/src/django-tinymce-1.5.1a1.tar.gz
 requirements/src/pagetree-0.3.tar.gz
 requirements/src/pageblocks-0.2.tar.gz
 requirements/src/djangohelpers-0.1.tar.gz
+requirements/src/django-statsd-mozilla-0.3.3.tar.gz
