@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.conf import settings
+from django.views.generic.simple import direct_to_template
 import os.path
 admin.autodiscover()
 
@@ -25,7 +26,7 @@ urlpatterns = patterns('',
    
    (r'^background/(?P<content_to_show>\w+)/$', 'carr_main.views.background'),
    
-   
+   (r'^_stats/',direct_to_template, {'template': 'stats.html'}),
    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media_root}),
    (r'^uploads/(?P<path>.*)$','django.views.static.serve',{'document_root' : settings.MEDIA_ROOT}),
    # very important that this stays last and in this order
