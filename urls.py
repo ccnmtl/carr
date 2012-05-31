@@ -18,7 +18,7 @@ urlpatterns = patterns('',
    (r'^activity/taking_action/', include('carr.activity_taking_action.urls')),
    (r'^activity/quiz/', include('carr.quiz.urls')),
    ('^accounts/',include('djangowind.urls')),
-   (r'^admin/(.*)', admin.site.root),
+   (r'^admin/', include(admin.site.urls)),
    
    (r'^selenium/(?P<task>\w+)/$', 'carr_main.views.selenium'),
    (r'^stats/(?P<task>\w+)/$', 'carr_main.views.stats'),
