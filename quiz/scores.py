@@ -36,6 +36,57 @@ class rendered_with(object):
         return rendered_func
 
 
+if 1 == 0:
+   #ADDING NEW SCORE PAGES JUNE 2012:
+   
+   # a list of years
+   (r'^scores/socialwork/', 'carr.quiz.scores.socialwork_overview'),
+   
+   #a list of semesters for each year
+   (r'^scores/socialwork/year/(?P<year>\d+)/$', 'carr.quiz.scores.semesters_by_year'),
+   
+   # a list of classes for each semester
+   (r'^scores/socialwork/year/(?P<year>\d+)/semester/(?P<semester>\w+)/$', 'carr.quiz.scores.classes_by_semester'),
+   
+   # a list of students for each class
+   (r'^scores/socialwork/course/(?P<semester>\w+)/$', 'carr.quiz.scores.students_by_class'),
+
+   # a list of classes associated with a UNI
+   (r'^scores/socialwork/uni/(?P<uni>\w+)/$', 'carr.quiz.scores.classes_by_uni'),
+
+@rendered_with('quiz/scores/socialwork_overview.html')
+def socialwork_overview(request):
+    return {
+    #Tried socialwork_overview in module carr.quiz.scores.
+    #Error was: 'module' object has no attribute 'socialwork_overview'
+
+    }
+    
+@rendered_with('quiz/scores/semesters_by_year.html')
+def semesters_by_year(request):
+    return {
+    
+    }
+
+@rendered_with('quiz/scores/classes_by_semester.html')
+def classes_by_semester(request):
+    return {
+    
+    }
+
+@rendered_with('quiz/scores/students_by_class.html')
+def students_by_class(request):
+    return {
+    
+    }
+
+@rendered_with('quiz/scores/classes_by_uni.html')
+def classes_by_uni(request):
+    return {
+    
+    }
+
+
 def to_python_date (timestring):
     try:
         return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:5]), "%a %b %d %Y %H:%M:%S")
@@ -43,11 +94,6 @@ def to_python_date (timestring):
         #sometimes JS doesn't give us the year,  which results in the date being 1900... not good but better than a 500 error...
         return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:4]), "%a %b %d %H:%M:%S")
 
-
-
-    
-    
-    
 # a couple helper functions for scoring:
 def score_on_all_quizzes (the_student):
     tmp = question_and_quiz_keys()

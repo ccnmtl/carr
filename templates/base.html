@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>CARE: {% block title %}{% endblock %}</title>
-	<link rel="stylesheet" href="/site_media/css/main.css" media="screen" />
+    <link rel="stylesheet" href="/site_media/css/main.css" media="screen" />
 	{% if "cdm" in site_domain%}
     	<link rel="stylesheet" href="/site_media/css/cdm.css" media="screen" />
 	{%endif%}
@@ -37,6 +37,7 @@
 		<!-- Project title/logo -->
         <h1 id="logo_project">
             <a id="logo_school" href="/" title="CARE">Child Abuse Reporting Education</a>
+            {%block newlogo%}{%endblock%}
        </h1>
 		{% block standardnav %}
 		<ul id="standardnav">

@@ -17,6 +17,28 @@ urlpatterns = patterns('',
    (r'^main/', include('carr_main.urls')),
    (r'^activity/bruise_recon/',  include('carr.activity_bruise_recon.urls')),
    (r'^activity/taking_action/', include('carr.activity_taking_action.urls')),
+   
+   
+   #ADDING NEW SCORE PAGES JUNE 2012:
+   
+   # a list of years
+   (r'^scores/socialwork/', 'carr.quiz.scores.socialwork_overview'),
+   
+   #a list of semesters for each year
+   (r'^scores/socialwork/year/(?P<year>\d+)/$', 'carr.quiz.scores.semesters_by_year'),
+   
+   # a list of classes for each semester
+   (r'^scores/socialwork/year/(?P<year>\d+)/semester/(?P<semester>\w+)/$', 'carr.quiz.scores.classes_by_semester'),
+   
+   # a list of students for each class
+   (r'^scores/socialwork/course/(?P<semester>\w+)/$', 'carr.quiz.scores.students_by_class'),
+
+   # a list of classes associated with a UNI
+   (r'^scores/socialwork/uni/(?P<uni>\w+)/$', 'carr.quiz.scores.classes_by_uni'),
+
+
+   
+   #this includes all the quiz stuff, including old urls.   
    (r'^activity/quiz/', include('carr.quiz.urls')),
    ('^accounts/',include('djangowind.urls')),
    (r'^admin/', include(admin.site.urls)),
@@ -24,9 +46,16 @@ urlpatterns = patterns('',
    (r'^selenium/(?P<task>\w+)/$', 'carr_main.views.selenium'),
    (r'^stats/(?P<task>\w+)/$', 'carr_main.views.stats'),
    
+   
+   
+   
    (r'^background/(?P<content_to_show>\w+)/$', 'carr_main.views.background'),
    
+   
+   #analytics:
    (r'^_stats/',direct_to_template, {'template': 'stats.html'}),
+   
+   
    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media_root}),
    (r'^uploads/(?P<path>.*)$','django.views.static.serve',{'document_root' : settings.MEDIA_ROOT}),
    # very important that this stays last and in this order
