@@ -22,7 +22,7 @@ urlpatterns = patterns('',
    #ADDING NEW SCORE PAGES JUNE 2012:
    
    # a list of years
-   (r'^scores/socialwork/', 'carr.quiz.scores.socialwork_overview'),
+   (r'^scores/socialwork/$', 'carr.quiz.scores.socialwork_overview'),
    
    #a list of semesters for each year
    (r'^scores/socialwork/year/(?P<year>\d+)/$', 'carr.quiz.scores.semesters_by_year'),

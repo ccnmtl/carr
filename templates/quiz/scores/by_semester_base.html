@@ -1,0 +1,29 @@
+{% extends 'quiz/scores/scores_base.html' %}
+{% block scores_title %}
+    Score Overview
+{%endblock %}
+
+{% block scores_help_text %}
+    This is a list of all the semesters we have on record for CARE for the school of social work. Click on a year to see the semesters.
+{% endblock %}
+
+
+
+{% comment %}
+{% block nav_pills %}
+<ul class="nav nav-pills">
+  <li class="active">
+    <a href="#">Scores by semester</a>
+  </li>
+  <li><a href="#">Scores by UNI</a></li>
+</ul>
+{% endblock nav_pills %}
+{%endcomment%}
+
+{% block scores_filter %}
+    
+{% endblock %}
+
+{% block results %}
+    Results of filtering
+{% endblock %}

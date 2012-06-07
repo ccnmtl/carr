@@ -1,0 +1,29 @@
+{% extends 'quiz/scores/by_semester_base.html' %}
+{% block scores_title %}
+    Semesters for {{year}}
+{%endblock %}
+{% block scores_help_text %}
+    This is a list of all the semesters we have on record for CARE for the school of social work for {{year}}. Click on a semester to see the courses.
+{% endblock %}
+
+{% block scores_breadcrumbs %}
+    <li>
+        <a href="/scores/socialwork/" class="active" >Semesters</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+        <a href="/scores/socialwork/year/{{year}}/" class="active" >{{year}}</a>
+        <span class="divider">/</span>
+    </li>
+{% endblock scores_breadcrumbs %}
+
+
+{% block scores_filter %}
+    <ul class="nav nav-list">
+            {% for id, label in semester_map.iteritems %}
+              <li class="nav-header">
+                 <a href = "/scores/socialwork/year/{{year}}/semester/{{label}}/">{{label}} {{year}}</a>
+              </li>
+            {% endfor %}
+    </ul>
+{% endblock %}

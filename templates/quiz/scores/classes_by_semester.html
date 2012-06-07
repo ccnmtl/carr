@@ -1,0 +1,89 @@
+{% extends 'quiz/scores/by_semester_base.html' %}
+{% block scores_title %}
+    SSW courses for {{semester|capfirst}} {{year}}
+{%endblock %}
+
+{% block scores_breadcrumbs %}
+      <li>
+        <a href="/scores/socialwork/" class="active" >Semesters</a>
+            <span class="divider">/</span>
+      </li>
+
+      <li>
+        <a href="/scores/socialwork/year/{{year}}/" class="active" >{{year}}</a>
+            <span class="divider">/</span>
+      </li>
+      <li>
+        <a href="/scores/socialwork/year/{{year}}/semester/{{semester}}/" class="active" >{{semester|capfirst}}</a>
+            <span class="divider">/</span>
+      </li>
+
+{% endblock scores_breadcrumbs %}
+
+{% block scores_help_text %}
+    This is a list of all the semesters we have on record for CARE for {{semester|capfirst}} {{year}}. Click on a course to see the roster.
+{% endblock %}
+{% block scores_filter %}
+    <ul class="nav nav-list">
+            {% for id, label in semester_map.iteritems %}
+              <li class="nav-header">
+                 <a href = "/scores/socialwork/year/{{year}}/semester/{{label}}/">{{label}} {{year}}</a>
+              </li>
+            {% endfor %}
+    </ul>
+{% endblock %}
+
+
+
+{% block results %}
+
+    <table class="table table-bordered table-striped" cellspacing="0" summary="scores table">
+            <tr>
+                <th>
+                Course
+                </th>
+                <th>
+                Faculty
+                </th>
+                <th>
+                Students
+                </th>
+                <th>
+                Pre-test
+                </th>
+                <th>
+                Post-test
+                </th>
+            </tr>
+        {% for course in care_classes %}
+            <tr>
+                <td>
+                {% with course.course_info as c %}
+                        <a href = "/activity/quiz/scores/faculty/course/{{c.0}}/{{c.1}}/{{c.2}}/{{c.3}}/{{c.4}}/{{c.5}}/">{{course.course_label}}&nbsp;{{course.course_section}}</a>
+                {%endwith %}
+                </td>
+                <td>
+                    {% for u in course.faculty %}
+                        {{u.last_name}}
+                        {%if not forloop.last%},{%endif%}
+                    {% endfor %}
+                </td>
+                <td>
+                   {{course.number_of_students_in_class}}
+                </td>
+                <td>
+                  {{course.score_info_for_class.pre_test}}
+                </td>
+                <td>
+                  {{course.score_info_for_class.post_test}}  
+                </td>
+            </tr>
+        {%endfor %}
+    </table>
+    <div>
+        Note: this page is not guaranteed to be up-to-date; to see the latest information, click on the individual courses.
+    </div>
+
+
+{% endblock %}
+

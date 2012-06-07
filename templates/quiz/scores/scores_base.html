@@ -28,36 +28,38 @@
 
 {% block content %}
 
-    <ul class="nav nav-pills">
-      <li class="active">
-        <a href="#">Scores by semester</a>
-      </li>
-      <li><a href="#">Scores by UNI</a></li>
-    </ul>
+
+
+{% block nav_pills %}
+{% endblock nav_pills %}
+    
+<ul class="breadcrumb">
+    {% block scores_breadcrumbs %}
+    {% endblock scores_breadcrumbs %}
+</ul>
+    
+    
     <div class="jumbotron subhead ">
         <h1>
             {% block scores_title %}Scores title{%endblock %}
         </h1>
    </div>
     
-    
-    <div class="page-header ">
+    <div class="page-header well">
         <h1>
                 <small>{% block scores_help_text %}Help text -- describes what you can do on this page.{% endblock %}</small>
         </h1>
     </div>
-
-    
     
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span2">
+        <div class="span3 well">
           <!--Sidebar content-->
             {% block scores_filter %}
                 Filter information
             {% endblock %}
         </div>
-        <div class="span10">
+        <div class="span9 well">
           <!--Body content-->
              {% block results %}
                 Results of filtering

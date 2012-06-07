@@ -35,44 +35,79 @@ class rendered_with(object):
 
         return rendered_func
 
+def year_range (): 
+    next_year = datetime.datetime.now().year + 2
+    return range (2010, next_year)
 
-if 1 == 0:
-   #ADDING NEW SCORE PAGES JUNE 2012:
-   
-   # a list of years
-   (r'^scores/socialwork/', 'carr.quiz.scores.socialwork_overview'),
-   
-   #a list of semesters for each year
-   (r'^scores/socialwork/year/(?P<year>\d+)/$', 'carr.quiz.scores.semesters_by_year'),
-   
-   # a list of classes for each semester
-   (r'^scores/socialwork/year/(?P<year>\d+)/semester/(?P<semester>\w+)/$', 'carr.quiz.scores.classes_by_semester'),
-   
-   # a list of students for each class
-   (r'^scores/socialwork/course/(?P<semester>\w+)/$', 'carr.quiz.scores.students_by_class'),
-
-   # a list of classes associated with a UNI
-   (r'^scores/socialwork/uni/(?P<uni>\w+)/$', 'carr.quiz.scores.classes_by_uni'),
+semester_map = { 1: 'spring', 2: 'summer', 3: 'fall' }
+inv_semester_map = dict((v,k) for k, v in semester_map.iteritems())
 
 @rendered_with('quiz/scores/socialwork_overview.html')
 def socialwork_overview(request):
     return {
-    #Tried socialwork_overview in module carr.quiz.scores.
-    #Error was: 'module' object has no attribute 'socialwork_overview'
-
+        'years': year_range()
     }
     
 @rendered_with('quiz/scores/semesters_by_year.html')
-def semesters_by_year(request):
+def semesters_by_year(request, year):
     return {
-    
+        'year' : year
+        ,'semester_map': semester_map
     }
 
 @rendered_with('quiz/scores/classes_by_semester.html')
-def classes_by_semester(request):
+def classes_by_semester(request, year, semester):
+    semester_string =  't%s.y%s' % (inv_semester_map[semester], year)
+    all_affils = Group.objects.all()
+    this_semester_affils = [a for a in all_affils if semester_string in a.name and 'socw' in a.name]
+    care_classes =  find_care_classes (this_semester_affils)
+    sorted_care_classes = sorted (care_classes, cmp=lambda x, y: cmp(x['course_label'], y['course_section']) )
     return {
-    
+        'year' : year
+        ,'semester_map': semester_map
+        ,'semester': semester
+        ,'care_classes': sorted_care_classes
     }
+    
+def find_care_classes (affils):
+    course_matches = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name) for c in affils]
+    relevant_classes = []
+    results = [  ]
+    checked = [  ]
+    f_lookup = "t%s.y%s.s%s.c%s%s.%s.fc"
+    s_lookup = "t%s.y%s.s%s.c%s%s.%s.st"
+    for course_info in [a.groups()[0:6]  for a in course_matches]:
+        if course_info not in checked:            
+            checked.append (course_info)
+            saaaa = f_lookup % course_info
+            faaaa = s_lookup % course_info
+            faculty_affils_list = [a for a in affils if saaaa in a.name]
+            student_affils_list = [a for a in affils if faaaa in a.name]
+            if faculty_affils_list and student_affils_list:
+                class_info = extract_class_info (course_info, faculty_affils_list, student_affils_list)
+                if class_info != None:
+                    results.append (class_info)
+    return results
+
+def extract_class_info(course_info, faculty_affils_list, student_affils_list):
+    faculty =  faculty_affils_list[0].user_set.all()
+    students = student_affils_list[0].user_set.all()
+    if [s for s in students if s not in faculty]:
+        return {
+            'course_label':   course_label (course_info)
+            ,'course_section': course_section (course_info)
+            ,'faculty' : faculty
+            ,'course_info' : course_info
+            ,'score_info_for_class' : summarize_score_info_for_class (course_info)
+            ,'number_of_students_in_class' : number_of_students_in_class (course_info)
+        }
+    return None
+    
+def course_label (course_info):
+    return  "%s%s" % (course_info[3], course_info[4])
+
+def course_section (course_info):
+    return  "%s" % (course_info[2])
 
 @rendered_with('quiz/scores/students_by_class.html')
 def students_by_class(request):
