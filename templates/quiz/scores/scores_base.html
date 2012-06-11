@@ -51,21 +51,31 @@
         </h1>
     </div>
     
+    {% block scores_warnings %}
+        <!-- any warnings would go here -->
+    {% endblock %}
+
+    {% if not full_page_results_block %}
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span3 well">
-          <!--Sidebar content-->
             {% block scores_filter %}
                 Filter information
             {% endblock %}
         </div>
         <div class="span9 well">
-          <!--Body content-->
              {% block results %}
                 Results of filtering
             {% endblock %}
         </div>
       </div>
     </div>
+    {% else  %}
+        <div class="well">
+            {% block full_page_results %}
+            {%endblock%}
+        </div>
+   {% endif %}         
 {% endblock content%}
+
 

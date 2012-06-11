@@ -1,0 +1,12 @@
+{%spaceless %}
+    {% if score.answer_count %}
+         <span class="label label-info">{{score.score}}</span>
+            {%with score.score as actual %}
+                {%with  score.answer_count as max %}
+                    {% include "quiz/scores/chunks/tiny_btn.html" %}
+                {%endwith%}
+            {%endwith%}
+    {% else %}
+        <span class="label label-warning">inc.</span>
+    {%endif %}
+{%endspaceless %}

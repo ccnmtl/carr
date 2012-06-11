@@ -1,0 +1,14 @@
+{%spaceless %}
+    {% if score.initial_score.quiz_score %}
+        <span class="label label-info" >{{score.initial_score.quiz_score}}</span>
+        {%with 3 as quiz_id %}
+            {%with score.initial_score.quiz_score as actual %}
+                {%with  score.initial_score.quiz_max_score as max %}
+                    {% include "quiz/scores/chunks/tiny_btn.html" %}
+                {%endwith%}
+            {%endwith%}
+        {%endwith%}
+    {% else %}
+        <span class="label label-warning">inc.</span>
+    {%endif %}
+{%endspaceless %}

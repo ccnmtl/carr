@@ -1,0 +1,31 @@
+{% extends 'quiz/scores/scores_base.html' %}
+
+
+{% block scores_breadcrumbs %}
+      <li>
+        <a href="/scores/socialwork/uni/" >UNI Lookup</a>
+            <span class="divider">/</span>
+      </li>
+{% endblock scores_breadcrumbs %}
+
+
+{% block scores_title %}UNI search page{%endblock %}
+
+{% block scores_help_text %}
+   To search for a student's results, try typing the student's UNI below, then clicking on "Search".
+{% endblock %}
+
+
+{% block full_page_results %}
+    <form action ="/scores/socialwork/uni/" method="post">
+        Student UNI:<input type="text" name ="uni"></input>
+        <input type="submit" value="Search" ></input>
+    </form>
+    
+        
+     {%if found_a_student %}
+        <div class= "well">
+            asd
+        </div>
+     {%endif %}
+{%endblock%}

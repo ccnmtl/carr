@@ -30,11 +30,22 @@ urlpatterns = patterns('',
    # a list of classes for each semester
    (r'^scores/socialwork/year/(?P<year>\d+)/semester/(?P<semester>\w+)/$', 'carr.quiz.scores.classes_by_semester'),
    
+   
+   
+   #/scores/socialwork/course/{{c.0}}/{{c.1}}/{{c.2}}/{{c.3}}/{{c.4}}/{{c.5}}/ 
+   #/(?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$
+   
+   
    # a list of students for each class
-   (r'^scores/socialwork/course/(?P<semester>\w+)/$', 'carr.quiz.scores.students_by_class'),
+   (r'^scores/socialwork/course/(?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$', 'carr.quiz.scores.students_by_class'),
 
-   # a list of classes associated with a UNI
-   (r'^scores/socialwork/uni/(?P<uni>\w+)/$', 'carr.quiz.scores.classes_by_uni'),
+
+
+   # student lookup by uni -- form
+   (r'^scores/socialwork/uni/$', 'carr.quiz.scores.student_lookup_by_uni_form'),
+
+   # student lookup by uni -- results
+   (r'^scores/socialwork/uni/(?P<uni>\w+)/$', 'carr.quiz.scores.student_lookup_by_uni_results'),
 
 
    

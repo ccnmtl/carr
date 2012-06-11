@@ -20,7 +20,6 @@ from django.core.cache import cache
 
 import re, pdb, datetime
 
-
 class rendered_with(object):
     def __init__(self, template_name):
         self.template_name = template_name
@@ -69,6 +68,136 @@ def classes_by_semester(request, year, semester):
         ,'care_classes': sorted_care_classes
     }
     
+@rendered_with('quiz/scores/students_by_class.html')
+def students_by_class(request, c1, c2, c3, c4, c5, c6):
+    course_info = (c1, c2, c3, c4, c5, c6)
+    course_string = "t%s.y%s.s%s.c%s%s.%s.st" % course_info
+    students_to_show = students_in_class(course_info)
+    tmp = question_and_quiz_keys()
+    return {
+        'c'             : course_info
+        ,'semester'     : semester_map [int(course_info[0])]
+        ,'year'         : course_info[1]
+        ,'student_info' : get_student_info (students_to_show)
+        , 'full_page_results_block': True # show the results in a nice thing.
+    }
+
+
+
+@rendered_with('quiz/scores/student_lookup_by_uni.html')
+def student_lookup_by_uni_form(request):
+    return {
+        'full_page_results_block': True # show the results in a nice thing.
+    
+    }
+    
+    
+
+@rendered_with('quiz/scores/student_lookup_by_uni.html')
+def student_lookup_by_uni_results(request, uni):
+    #find student
+    
+    return {
+        'full_page_results_block': True # show the results in a nice thing.
+        ,'found_a_student': True
+        ,'uni': uni
+        ,'student': student
+    }
+
+
+
+def to_python_date (timestring):
+    try:
+        return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:5]), "%a %b %d %Y %H:%M:%S")
+    except ValueError:
+        #sometimes JS doesn't give us the year,  which results in the date being 1900... not good but better than a 500 error...
+        return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:4]), "%a %b %d %H:%M:%S")
+
+
+def get_student_info (students):
+    site          = Site.objects.get_current ()
+    result = []
+    for student in students:
+        try:
+            quizzes       = score_on_all_quizzes     (student)
+            bruise_recon  = score_on_bruise_recon    (student)
+            taking_action = score_on_taking_action   (student)
+            result.append ( {
+                'student':                 student
+                ,'scores':                  quizzes
+                ,'score_on_bruise_recon' :  bruise_recon
+                ,'score_on_taking_action' : taking_action
+                ,'training_complete'      : training_is_complete (quizzes, bruise_recon, taking_action, site)
+            } )
+        except:
+            #import pdb
+            #pdb.set_trace()
+            result.append (  {
+                'student': student
+                ,'scores':  None
+                ,'score_on_bruise_recon' : None
+                ,'score_on_taking_action' : None
+                ,'training_complete'      : False
+            } )
+    return result
+
+
+
+# a couple helper functions for scoring:
+def score_on_all_quizzes (the_student):
+    tmp = question_and_quiz_keys()
+    answer_key = tmp ['answer_key']
+    quiz_key =   tmp ['quiz_key']
+    quizzes =    tmp['quizzes']
+    questions =  tmp['questions']
+    
+    try:
+        state = ActivityState.objects.get(user=the_student)
+    except ActivityState.DoesNotExist:
+        return []
+    if (len(state.json) > 0):
+        score = []
+        json_stream = simplejson.loads(state.json)
+        for a in json_stream.values():
+            try:
+                score.extend(a['question'])
+            except:
+                pass #eh.
+        # don't deal with questions that have since been removed from quiz.
+        results = [{
+                    'question':         int(a['id']),
+                    'actual':    int(a['answer']),
+                    'correct':   answer_key[int(a['id'])],
+                    'quiz_number':      quiz_key  [int(a['id'])]
+        } for a in score if int (a['id']) in quiz_key.keys() ]
+        quiz_scores = []
+        for quiz in quizzes:
+            try:
+                raw_quiz_info = json_stream['quiz_%d' % quiz.id]
+            except:
+                raw_quiz_info = {}
+            answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
+            if answer_count or raw_quiz_info.has_key ( 'all_correct' ) or raw_quiz_info.has_key ( 'initial_score'):  
+                correct_count = len([a for  a in results if a['correct'] == a['actual'] and a['quiz_number'] == quiz.id ])
+                quiz_results = { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count}
+                try:
+                    if raw_quiz_info['all_correct']:
+                        quiz_results ['all_correct'] =  raw_quiz_info['all_correct']
+                except:
+                    pass
+                try:
+                    if raw_quiz_info['initial_score']:
+                        quiz_results ['initial_score'] =  raw_quiz_info['initial_score']
+                except:
+                    pass
+                #Add dates too:   
+                if raw_quiz_info.has_key ('submit_time'):
+                    quiz_results ['submit_time'] =  [to_python_date(x) for x in raw_quiz_info['submit_time']]
+                quiz_scores.append(quiz_results)
+        return quiz_scores
+
+
+
 def find_care_classes (affils):
     course_matches = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name) for c in affils]
     relevant_classes = []
@@ -109,94 +238,6 @@ def course_label (course_info):
 def course_section (course_info):
     return  "%s" % (course_info[2])
 
-@rendered_with('quiz/scores/students_by_class.html')
-def students_by_class(request):
-    return {
-    
-    }
-
-@rendered_with('quiz/scores/classes_by_uni.html')
-def classes_by_uni(request):
-    return {
-    
-    }
-
-
-def to_python_date (timestring):
-    try:
-        return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:5]), "%a %b %d %Y %H:%M:%S")
-    except ValueError:
-        #sometimes JS doesn't give us the year,  which results in the date being 1900... not good but better than a 500 error...
-        return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:4]), "%a %b %d %H:%M:%S")
-
-# a couple helper functions for scoring:
-def score_on_all_quizzes (the_student):
-    tmp = question_and_quiz_keys()
-    answer_key = tmp ['answer_key']
-    quiz_key =   tmp ['quiz_key']
-    quizzes =    tmp['quizzes']
-    questions =  tmp['questions']
-    
-    try:
-        state = ActivityState.objects.get(user=the_student)
-    except ActivityState.DoesNotExist:
-        return []
-        
-    if (len(state.json) > 0):
-        score = []
-        json_stream = simplejson.loads(state.json)
-        for a in json_stream.values():
-            try:
-                score.extend(a['question'])
-            except:
-                pass #eh.
-
-        # don't deal with questions that have since been removed from quiz.
-        results = [{
-                    'question':         int(a['id']),
-                    'actual':    int(a['answer']),
-                    'correct':   answer_key[int(a['id'])],
-                    'quiz_number':      quiz_key  [int(a['id'])]
-        } for a in score if int (a['id']) in quiz_key.keys() ]
-          
-        quiz_scores = []
-        
-        
-        for quiz in quizzes:
-            ###
-            try:
-                raw_quiz_info = json_stream['quiz_%d' % quiz.id]
-            except:
-                raw_quiz_info = {}
-            ###
-            answer_count = len([a for  a in results if a['quiz_number'] == quiz.id ])
-            
-            
-            if answer_count or raw_quiz_info.has_key ( 'all_correct' ) or raw_quiz_info.has_key ( 'initial_score'):  
-                correct_count = len([a for  a in results if a['correct'] == a['actual'] and a['quiz_number'] == quiz.id ])
-                quiz_results = { 'quiz': quiz, 'score': correct_count, 'answer_count' : answer_count}
-                
-                try:
-                    if raw_quiz_info['all_correct']:
-                        quiz_results ['all_correct'] =  raw_quiz_info['all_correct']
-                except:
-                    pass
-                
-                try:
-                    if raw_quiz_info['initial_score']:
-                        quiz_results ['initial_score'] =  raw_quiz_info['initial_score']
-                except:
-                    pass
-               
-                #Add dates too:   
-                if raw_quiz_info.has_key ('submit_time'):
-                    quiz_results ['submit_time'] =  [to_python_date(x) for x in raw_quiz_info['submit_time']]
-                    
-                quiz_scores.append(quiz_results)
-        
-            
-        
-        return quiz_scores
 
 
 def all_answers_for_quizzes (the_student):
@@ -305,10 +346,14 @@ def training_is_complete (quizzes, bruise_recon, taking_action, site):
         else:
             # they're done with the post-test, but they forgot one of the activities.
             # To minimize drama, if they finished the thing BEFORE October 10 2011,
-            # and they would OTHERWISE have been logged as complete, just grandfather them in as complete:
+            # and they would OTHERWISE have been logged as complete, just grandfather them in as complete:\
+            
+            
+            #NOTE: if Javascript reports no year, there's no way to tell if this is accurate.
+            # in those cases.
             if scores ['Post-test'][2] < datetime.datetime(2011, 10, 10, 0, 0, 0):
                 return True
-        
+
         #quiz scores:
         if 'Pre-test' not in scores.keys():
             return False
@@ -321,7 +366,6 @@ def training_is_complete (quizzes, bruise_recon, taking_action, site):
                 return False
             if 'Case 3' not in scores.keys():
                 return False
-        #other:
         if taking_action == 'no_data':
             return False
         if bruise_recon == None:
@@ -406,6 +450,7 @@ def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
     return { 'c' : course_info , 'student_info' : result,  'site' : Site.objects.get_current()}
 
 
+#TODO: remove. This is now obsolete. 
 @rendered_with('quiz/scores_admin.html')
 def scores_admin(request):
     """

@@ -1,0 +1,159 @@
+{% extends 'quiz/scores/by_semester_base.html' %}
+{% load quiz_template_tags %}
+{% load smartif %}
+
+{% block scores_breadcrumbs %}
+      <li>
+        <a href="/scores/socialwork/" >Semesters</a>
+            <span class="divider">/</span>
+      </li>
+      <li>
+        <a href="/scores/socialwork/year/{{year}}/" >{{year}}</a>
+            <span class="divider">/</span>
+      </li>
+      <li>
+        <a href="/scores/socialwork/year/{{year}}/semester/{{semester}}/" >{{semester|capfirst}}</a>
+        <span class="divider">/</span>
+      </li>
+    
+        <li>
+        <a href="/scores/socialwork/course/{{ c.0 }}/{{ c.1 }}/{{ c.2 }}/{{ c.3 }}/{{ c.4 }}/{{ c.5 }}/" class="active" >{{ c.3.upper }}{{ c.4 }}, section {{ c.2 }}</a>
+      </li>
+
+
+{% endblock scores_breadcrumbs %}
+
+
+{% block scores_title %}{{ c.5.upper }} {{ c.3.upper }}{{ c.4 }},  section {{ c.2 }}{%endblock %}
+
+{% block scores_help_text %}
+    Here is the info for all the students in this class we know about. These are students who either logged into CARE and started the training, or whose information was entered automatically at the beginning of the semester. Note that there might be other students in the registrar's list that are not on this list.
+{% endblock %}
+
+
+{% block full_page_results %}
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Last</th>
+        <th>First</th>
+        <th>UNI</th>
+        <th>Pre-Test</th>
+        <th>AorA</th>
+        <th>Case 1</th>
+        <th>Case 2</th>
+        <th>Case 3</th>
+        <th>TA</th>
+        <th>PT1</th>
+        <th>Passed</th>
+        <th>Done</th>
+    </tr>
+    {% for st in student_info %}
+    <tr>
+      <td>
+         {{st.student.last_name}}
+      </td>
+      <td>
+         {{st.student.first_name}}
+      </td>
+      <td>
+         {{st.student.username}}
+      </td>
+      
+        <td>
+            {% get_scores for 'pre-test' in st.scores as score %}
+            {% with 2 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{%endwith %}            
+        </td>
+        <td>
+            {%with st.score_on_bruise_recon as a%} 
+                {% include "quiz/scores/chunks/a_or_a_score.html" %}
+            {%endwith%}
+        </td>
+        <td>
+            {% get_scores for 'Case 1' in st.scores as score %}
+            {% with 6 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{%endwith %}         
+        </td>
+        <td>
+            {% get_scores for 'Case 2' in st.scores as score %}
+            {% with 7 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{%endwith %}
+        </td>
+        <td>
+            {% get_scores for 'Case 3' in st.scores as score %}
+            {% with 8 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{%endwith %}
+        </td>
+        <td>
+            {% include "quiz/scores/chunks/taking_action_score.html" %}
+        </td>
+        <td>
+            {% get_scores for 'post-test' in st.scores as score %}
+            {% include "quiz/scores/chunks/post_test_initial.html" %}
+        </td>
+        <td>
+            {% include "quiz/scores/chunks/post_test_final.html" %}
+        </td>
+        <td>
+            {%if st.training_complete%}
+               <span class="label label-success">Y</span>
+            {% else %}
+                <span class="label label-important">N</span>
+            {%endif %}
+        </td>
+        
+    </tr>
+    {%endfor %}
+    </table>
+
+    <div class = "well">
+     	<p>
+		Students in courses: 
+		</p>
+		
+	    <ul>
+	
+	        <li>
+	        <b>prior to 2011</b> may have "n/a" appear on their scores. 
+	        </li>
+	
+	        <li>
+	        <b>from 2011 onward</b> should not have "n/a" appear on their scores.    
+	        </li>
+	
+	    </ul>
+    </div>
+
+    <div class = "well">
+     	<p>
+		    Column heading abbreviations: 
+		</p>
+	    <ul>
+	        <li>
+    	        <b>Pre-test</b> The student's score on the initial test. 
+	        </li>
+	        <li>
+    	        <b>AorA</b> The student's score on the "Abuse or Accident?" activity. 
+	        </li>
+	        <li>
+    	        <b>Case 1</b> First case study
+	        </li>
+	        <li>
+    	        <b>Case 2</b> Second case study
+	        </li>
+	        <li>
+    	        <b>Case 3</b> Third case study
+	        </li>
+	        <li>
+    	        <b>TA</b> The student's score on the "Taking Action" reporting activity. If the student completed the reporting form, a button brings up a copy of the form as filled out by the student.
+	        </li>
+	        <li>
+    	        <b>PT1</b> The student's initial score on the post-test, if available.
+	        </li>
+	        <li>
+    	        <b>Passed</b> Whether the post-test was passed with all questions correctly. If a date is available for this final successful test, it is given; otherwise (usually for students prior to 2010), 'ok' simply indicates that a student was able to complete all questions correctly. 
+	        </li>
+	        <li>
+    	        <b>Done</b> To officially complete the training, the student needs to complete all the activities except TA, and successfully answer all the questions in the post-test.
+	        </li>
+	    </ul>
+    </div>
+
+
+{%endblock%}
