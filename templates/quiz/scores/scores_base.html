@@ -22,59 +22,44 @@
     <img src ="/site_media/img/logo_cussw.gif"/>
 </div>
 {%endblock%}
-
-{% block pagetitle %}
-{% endblock %}
-
+{% block pagetitle %}{% endblock %}
 {% block content %}
-
-
-
-{% block nav_pills %}
-{% endblock nav_pills %}
-    
-<ul class="breadcrumb">
-    {% block scores_breadcrumbs %}
-    {% endblock scores_breadcrumbs %}
-</ul>
-    
-    
+    <ul class="breadcrumb">
+        {% block scores_breadcrumbs %}
+        {% endblock scores_breadcrumbs %}
+    </ul>
     <div class="jumbotron subhead ">
         <h1>
             {% block scores_title %}Scores title{%endblock %}
         </h1>
    </div>
-    
-    <div class="page-header well">
+    {% if not hide_scores_help_text %}
+        <div class="page-header well">
+        <button type="button" class="close" data-dismiss="alert">×</button>
         <h1>
-                <small>{% block scores_help_text %}Help text -- describes what you can do on this page.{% endblock %}</small>
-        </h1>
-    </div>
-    
+                    <small>{% block scores_help_text %}Help text -- describes what you can do on this page.{% endblock %}</small>
+            </h1>
+        </div>
+    {% endif %}
     {% block scores_warnings %}
         <!-- any warnings would go here -->
     {% endblock %}
-
     {% if not full_page_results_block %}
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span3 well">
-            {% block scores_filter %}
-                Filter information
-            {% endblock %}
+        <div class="container-fluid">
+          <div class="row-fluid">
+            <div class="span3 well">
+                {% block scores_filter %}
+                {% endblock %}
+            </div>
+            <div class="span9 well">
+                {% block results %}
+                {% endblock %}
+            </div>
+          </div>
         </div>
-        <div class="span9 well">
-             {% block results %}
-                Results of filtering
-            {% endblock %}
-        </div>
-      </div>
-    </div>
     {% else  %}
-        <div class="well">
-            {% block full_page_results %}
-            {%endblock%}
-        </div>
+        {% block full_page_results %}
+        {% endblock%}
    {% endif %}         
 {% endblock content%}
 

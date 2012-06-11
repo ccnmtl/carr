@@ -122,6 +122,10 @@ def number_of_students_in_class (course_info):
     return len(students_in_class(course_info))
 
         
+def users_by_uni(uni_string):
+    return sort_users (User.objects.filter(username__icontains=uni_string))
+    
+        
 User.user_type = user_type
 User.classes_i_teach = classes_i_teach        
 User.classes_i_take = classes_i_take

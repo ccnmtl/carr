@@ -11,7 +11,7 @@ from django.contrib.auth.models import User, Group
 from activity_bruise_recon.models import ActivityState as bruise_recon_state
 from activity_taking_action.models import ActivityState as taking_action_state
 from django.contrib.sites.models import Site, RequestSite
-from carr_main.models import number_of_students_in_class, students_in_class
+from carr_main.models import number_of_students_in_class, students_in_class, users_by_uni
 
 
 from activity_taking_action.models import score_on_taking_action
@@ -41,6 +41,16 @@ def year_range ():
 semester_map = { 1: 'spring', 2: 'summer', 3: 'fall' }
 inv_semester_map = dict((v,k) for k, v in semester_map.iteritems())
 
+
+
+@rendered_with('quiz/scores/scores_index.html')
+def scores_index(request):
+    return {
+        'full_page_results_block': True # show the results in a nice thing.
+        ,'hide_scores_help_text': True
+    }
+
+
 @rendered_with('quiz/scores/socialwork_overview.html')
 def socialwork_overview(request):
     return {
@@ -54,13 +64,28 @@ def semesters_by_year(request, year):
         ,'semester_map': semester_map
     }
 
+
+def courses_sort_key (x, y):
+    tmp = cmp(x['course_label'], y['course_label'])
+    if tmp != 0:
+        return tmp
+    else:
+        return cmp(x['course_section'], y['course_section'])
+    
+    
+    
+def sort_courses (courses):
+    return sorted(courses, courses_sort_key)
+
+
+
 @rendered_with('quiz/scores/classes_by_semester.html')
 def classes_by_semester(request, year, semester):
     semester_string =  't%s.y%s' % (inv_semester_map[semester], year)
     all_affils = Group.objects.all()
     this_semester_affils = [a for a in all_affils if semester_string in a.name and 'socw' in a.name]
     care_classes =  find_care_classes (this_semester_affils)
-    sorted_care_classes = sorted (care_classes, cmp=lambda x, y: cmp(x['course_label'], y['course_section']) )
+    sorted_care_classes = sort_courses (care_classes)
     return {
         'year' : year
         ,'semester_map': semester_map
@@ -86,12 +111,44 @@ def students_by_class(request, c1, c2, c3, c4, c5, c6):
 
 @rendered_with('quiz/scores/student_lookup_by_uni.html')
 def student_lookup_by_uni_form(request):
+    rp = request.POST
+    if not rp.has_key ('uni'):
+        #just a get request. return the empty form.
+        return {
+            'student' : None
+            ,'full_page_results_block': True # show the results in a nice thing.
+            ,'student' : None
+        }               
+        
+    
+    uni = rp['uni']
+    if len (uni ) < 3:
+        return {
+            'student' : None
+            ,'full_page_results_block': True # show the results in a nice thing.
+            ,'found_a_student': False
+            ,'error': "Plase enter at least 3 letters from the student's UNI."
+        }
+    #ok now we have a uni. did we find any results?
+    found_students =  users_by_uni (uni)
+    if len (found_students)  == 0:
+        return {
+        'student' : None
+        ,'full_page_results_block': True # show the results in a nice thing.
+        ,'found_a_student': False
+        ,'uni': uni
+        ,'error': "A search for UNIs containing \"%s\" did not turn up any students." % uni
+        }
+    
+    student_info = get_student_info (found_students)
     return {
         'full_page_results_block': True # show the results in a nice thing.
-    
+        ,'found_a_student': True
+        ,'uni': uni
+        ,'student': 'student'
+        ,'student_info': student_info
+        ,'error': None
     }
-    
-    
 
 @rendered_with('quiz/scores/student_lookup_by_uni.html')
 def student_lookup_by_uni_results(request, uni):
@@ -199,12 +256,20 @@ def score_on_all_quizzes (the_student):
 
 
 def find_care_classes (affils):
-    course_matches = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name) for c in affils]
+    course_match_string = 't(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})'
+    tmp = [re.match( course_match_string,c.name) for c in affils]
+    course_matches = [g for g in  tmp if g!= None]
     relevant_classes = []
     results = [  ]
     checked = [  ]
     f_lookup = "t%s.y%s.s%s.c%s%s.%s.fc"
     s_lookup = "t%s.y%s.s%s.c%s%s.%s.st"
+    
+    for a in course_matches:
+        if a == None:
+            import pdb
+            pdb.set_trace()
+    
     for course_info in [a.groups()[0:6]  for a in course_matches]:
         if course_info not in checked:            
             checked.append (course_info)

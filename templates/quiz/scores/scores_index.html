@@ -1,0 +1,24 @@
+`{% extends 'quiz/scores/scores_base.html' %}
+
+{% block scores_title %}
+{% endblock %}
+
+
+{% block scores_breadcrumbs %}
+      <li>
+        <a href="/scores/" class="active" >Scores</a>
+            <span class="divider">/</span>
+      </li>
+{% endblock scores_breadcrumbs %}
+
+
+{% block full_page_results %}
+    <div class="hero-unit">
+        <h1>Score pages</h1>
+        <p>Try searching by UNI, or browsing by semester.</p>
+        <p><a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/uni/">Search by UNI</a> <a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/year/">Search by semester</a></p>
+        
+<p>A complete table of all score information is also availble:</p>
+<a class="btn btn-primary btn-large" color="white"  href = "/stats/registrar/" target="_blank">Load complete score info (slow)</a></p>
+    </div>
+{%endblock %}

@@ -24,8 +24,6 @@ urlpatterns = patterns('',
    
    
    (r'^scores/student/$', 'carr.quiz.views.scores_student'),
-   
-
 
    #these will be deprecated in favor of June, 2012 score pages.
    #deprecated:

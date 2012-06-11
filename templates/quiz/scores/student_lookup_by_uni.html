@@ -1,11 +1,13 @@
 {% extends 'quiz/scores/scores_base.html' %}
-
-
 {% block scores_breadcrumbs %}
-      <li>
+    <li>
+        <a href="/scores/" class="active" >Scores</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
         <a href="/scores/socialwork/uni/" >UNI Lookup</a>
-            <span class="divider">/</span>
-      </li>
+        <span class="divider">/</span>
+    </li>
 {% endblock scores_breadcrumbs %}
 
 
@@ -17,15 +19,20 @@
 
 
 {% block full_page_results %}
+    {% if error %}
+        <div class="alert alert-error">
+            {{error}}
+        </div>  
+    {% endif  %}
+
     <form action ="/scores/socialwork/uni/" method="post">
-        Student UNI:<input type="text" name ="uni"></input>
+        Student UNI:<input type="text" name ="uni" value="{{uni}}"></input>
         <input type="submit" value="Search" ></input>
     </form>
     
+
         
-     {%if found_a_student %}
-        <div class= "well">
-            asd
-        </div>
+     {%if student %}
+        {% include "quiz/scores/score_table.html" %}
      {%endif %}
 {%endblock%}
