@@ -1,8 +1,7 @@
 from models import Quiz, Question, Answer, ActivityState
-from django.contrib.auth.decorators import permission_required
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test 
 from django.shortcuts import render_to_response, get_object_or_404
 from pagetree.models import Hierarchy
 from django.core.urlresolvers import reverse
@@ -20,6 +19,18 @@ from django.core.cache import cache
 
 import re, pdb, datetime
 
+""" This is a series of views that in some ways belong in the Quiz module, and in others don't. Maybe they need to be moved to their own app. For now they definitely get their own module."""
+
+
+
+
+def can_see_scores (u):
+    if not u.is_authenticated():
+        return False
+    if u.user_type() not in ('faculty', 'admin'):
+        return False
+    return True
+    
 class rendered_with(object):
     def __init__(self, template_name):
         self.template_name = template_name
@@ -34,6 +45,20 @@ class rendered_with(object):
 
         return rendered_func
 
+def faculty_only (request):
+    try:
+        if request.user.user_type() == 'student':
+            print "ok going to student scores"
+            return scores_student(request)
+        else:
+            print "ok np you can see waht you asked for"
+            return False
+    except AttributeError:
+        print "ok heading to /login/"
+        return HttpResponseRedirect ('/login/')
+
+
+
 def year_range (): 
     next_year = datetime.datetime.now().year + 2
     return range (2010, next_year)
@@ -41,27 +66,25 @@ def year_range ():
 semester_map = { 1: 'spring', 2: 'summer', 3: 'fall' }
 inv_semester_map = dict((v,k) for k, v in semester_map.iteritems())
 
+@user_passes_test(can_see_scores )
 @rendered_with('quiz/scores/scores_index.html')
 def scores_index(request):
-    if request.user.user_type() == 'student':
-        return scores_student(request)
     return {
         'full_page_results_block': True
         ,'hide_scores_help_text': True
     }
 
+@user_passes_test(can_see_scores )
 @rendered_with('quiz/scores/socialwork_overview.html')
 def socialwork_overview(request):
-    if request.user.user_type() == 'student':
-        return scores_student(request)
     return {
         'years': year_range()
     }
     
+@user_passes_test(can_see_scores )
 @rendered_with('quiz/scores/semesters_by_year.html')
 def semesters_by_year(request, year):
-    if request.user.user_type() == 'student':
-        return scores_student(request)
+    faculty_only (request)
     return {
         'year' : year
         ,'semester_map': semester_map
@@ -77,6 +100,7 @@ def courses_sort_key (x, y):
 def sort_courses (courses):
     return sorted(courses, courses_sort_key)
 
+@user_passes_test(can_see_scores )
 @rendered_with('quiz/scores/classes_by_semester.html')
 def classes_by_semester(request, year, semester):
     if request.user.user_type() == 'student':
@@ -93,10 +117,9 @@ def classes_by_semester(request, year, semester):
         ,'care_classes': sorted_care_classes
     }
     
+@user_passes_test(can_see_scores )
 @rendered_with('quiz/scores/students_by_class.html')
 def students_by_class(request, c1, c2, c3, c4, c5, c6):
-    if request.user.user_type() == 'student':
-        return scores_student(request)
     course_info = (c1, c2, c3, c4, c5, c6)
     course_string = "t%s.y%s.s%s.c%s%s.%s.st" % course_info
     students_to_show = students_in_class(course_info)
@@ -109,10 +132,9 @@ def students_by_class(request, c1, c2, c3, c4, c5, c6):
         , 'full_page_results_block': True
     }
 
+@user_passes_test(can_see_scores )
 @rendered_with('quiz/scores/student_lookup_by_uni.html')
 def student_lookup_by_uni_form(request):
-    if request.user.user_type() == 'student':
-        return scores_student(request)
     rp = request.POST
     if not rp.has_key ('uni'):
         # just a get request. return the empty form.
@@ -148,6 +170,31 @@ def student_lookup_by_uni_form(request):
         ,'error': None
     }
 
+@user_passes_test(can_see_scores )
+@rendered_with('quiz/scores_student.html')
+def scores_student(request):
+    try:
+        if request.user.user_type() == 'student':
+            pass
+    except AttributeError:
+        return HttpResponseRedirect ('/')
+    
+    """ A summary of a the currently logged in user's results."""
+    ru = request.user
+    quizzes       = score_on_all_quizzes     (ru)
+    bruise_recon  = score_on_bruise_recon    (ru)
+    taking_action = score_on_taking_action   (ru)
+    site          = Site.objects.get_current ()
+    
+    return {
+        'scores':                  quizzes,
+        'score_on_bruise_recon' :  bruise_recon,
+        'score_on_taking_action' : taking_action,
+        'training_complete'      : training_is_complete (ru, quizzes, bruise_recon, taking_action, site),
+        'site' :                   site
+    }
+    
+    
 def to_python_date (timestring):
     try:
         return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:5]), "%a %b %d %Y %H:%M:%S")
@@ -170,28 +217,6 @@ def get_student_info (students):
             ,'training_complete'      : training_is_complete (student, quizzes, bruise_recon, taking_action, site)
         } )
     return result
-
-
-    if 1 == 0: #let's remove this creepy try/except.
-        try:
-            quizzes       = score_on_all_quizzes     (student)
-            bruise_recon  = score_on_bruise_recon    (student)
-            taking_action = score_on_taking_action   (student)
-            result.append ( {
-                'student':                  student
-                ,'scores':                  quizzes
-                ,'score_on_bruise_recon' :  bruise_recon
-                ,'score_on_taking_action' : taking_action
-                ,'training_complete'      : training_is_complete (student, quizzes, bruise_recon, taking_action, site)
-            } )
-        except:
-            result.append (  {
-                'student': student
-                ,'scores':  None
-                ,'score_on_bruise_recon' : None
-                ,'score_on_taking_action' : None
-                ,'training_complete'      : False
-            } )
 
 # a couple helper functions for scoring:
 def score_on_all_quizzes (the_student):
@@ -247,6 +272,9 @@ def score_on_all_quizzes (the_student):
         return quiz_scores
 
 def find_care_classes (affils):
+    """If we can find users in our DB with ST affils for a course,
+    AND users with FC affils, we consider that course a CARE course."""
+    
     course_match_string = 't(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})'
     tmp = [re.match( course_match_string,c.name) for c in affils]
     course_matches, results, checked = [x for x in  tmp if x], [], []
@@ -323,6 +351,7 @@ def all_answers_for_quizzes (the_student):
 #    students = User.objects.all()
 
 def score_info_for_class (course_info):
+    """Quick cached version of the quiz results for this class"""
     cache_key = "score_info_for_t%s.y%s.s%s.c%s%s.%s" % course_info
     if cache.get(cache_key):
         return cache.get(cache_key)
@@ -376,10 +405,9 @@ def question_and_quiz_keys():
 
 
 def grandfather (quiz_data, user):
-    """Under certain conditions, some students are considered to have completed the training even though they have not completed all the required activities. In those cases, this function should return true.
+    """Due to shifting course requirements, certain students are considered to have completed the training even though they have not completed all the now-required activities. This method applies those rules and decides whether a student is "grandfathered" in under the old rules; in that case it returns true.
     """
     result = False   
-    
     try:
         quiz_date = quiz_data [2]
     except IndexError:
@@ -398,7 +426,6 @@ def grandfather (quiz_data, user):
         if quiz_date < datetime.datetime(2011, 10, 10, 0, 0, 0):
             #print "OK this user definitely took the test before October 2011. So they're done."
             result = True
-            
     return result
 
 def quiz_dict (q):
@@ -420,6 +447,9 @@ def training_is_complete (user, quizzes, bruise_recon, taking_action, site):
     Now we're changing this to say that students have to finish all the other activities as well.
     """
     scores = dict(( q['quiz'].label(), quiz_dict (q)) for q in quizzes)
+    
+    
+    #Rule 1: Everyone has to take the post-test in order to pass the course.
     if not scores.has_key('Post-test'):
         #print "No key for post test. Definitely not done."
         return False
@@ -427,12 +457,15 @@ def training_is_complete (user, quizzes, bruise_recon, taking_action, site):
         #print "Not done."
         return False
     else:
-        #print "Took the post test..."
-        #do they qualify for a "grandfather" exception?
+        #OK -- they passed the post-test.
+        #do they qualify for a "grandfather" exception? If so, we consider the training complete.
         if grandfather (scores['Post-test'], user):
             return True
-    #print "Took the post test. Not eligible for grandfathering. So...what about everything else??"
-    #quiz scores:
+            
+            
+    # Rule 2: Successfully passed the post test, but not eligible for grandfathering.
+    # We need to check if they did all the other activities too in order to determine whether they're done.
+    
     if 'Pre-test' not in scores.keys():
         return False
     if bruise_recon == None:
@@ -449,163 +482,6 @@ def training_is_complete (user, quizzes, bruise_recon, taking_action, site):
     if bruise_recon == None:
         return False
 
+    #OK they're done with the training.
     return True
-    
 
-
-@rendered_with('quiz/scores_student.html')
-def scores_student(request):
-    ru = request.user
-    quizzes       = score_on_all_quizzes     (ru)
-    bruise_recon  = score_on_bruise_recon    (ru)
-    taking_action = score_on_taking_action   (ru)
-    site          = Site.objects.get_current ()
-    
-    return {
-        'scores':                  quizzes,
-        'score_on_bruise_recon' :  bruise_recon,
-        'score_on_taking_action' : taking_action,
-        'training_complete'      : training_is_complete (ru, quizzes, bruise_recon, taking_action, site),
-        'site' :                   site
-    }
-    
-
-
-
-#TODO: REMOVE -- DEPRECATED
-if 1 == 1:
-                    @rendered_with('quiz/scores_faculty_courses.html')
-                    def scores_faculty_courses(request):
-                        if request.user.user_type() == 'student':
-                            return scores_student(request)
-                        return {
-                            'site' : Site.objects.get_current()
-                        }
-
-
-                    #TODO: REMOVE -- DEPRECATED
-                    #show results for all students in one course.
-                    @rendered_with('quiz/scores_faculty_course.html')
-                    def scores_faculty_course(request, c1, c2, c3, c4, c5, c6):
-                        
-                        
-                        if request.user.user_type() == 'student':
-                            return scores_student(request)
-                        
-                        course_info = (c1, c2, c3, c4, c5, c6)
-                        course_string = "t%s.y%s.s%s.c%s%s.%s.st" % course_info
-                        students_to_show = students_in_class(course_info)
-                        result = []
-                        tmp = question_and_quiz_keys()
-                        answer_key = tmp ['answer_key']
-                        quiz_key =   tmp ['quiz_key']
-                        questions =  tmp['questions']
-                        quizzes =    tmp['quizzes']
-                        site          = Site.objects.get_current ()
-                        #for students in []:
-                        for student in students_to_show:
-                            try:
-                                quizzes       = score_on_all_quizzes     (student)
-                                bruise_recon  = score_on_bruise_recon    (student)
-                                taking_action = score_on_taking_action   (student)
-                                result.append (
-                                    {
-                                        'student':                 student,
-                                        'scores':                  quizzes,
-                                        'score_on_bruise_recon' :  bruise_recon,
-                                        'score_on_taking_action' : taking_action,
-                                        'training_complete'      : training_is_complete (student, quizzes, bruise_recon, taking_action, site)
-                                    }
-                                )
-                            except:
-                                 result.append (
-                                    {
-                                        'student': student,
-                                        'scores':  None,
-                                        'score_on_bruise_recon' : None,
-                                        'score_on_taking_action' : None
-                                    }
-                                )
-                        
-                        
-                        return { 'c' : course_info , 'student_info' : result,  'site' : Site.objects.get_current()}
-
-
-                    #TODO: REMOVE -- DEPRECATED
-                    @rendered_with('quiz/scores_admin.html')
-                    def scores_admin(request):
-                        """
-                        Show ALL THE SCORES, for ALL THE STUDENTS. EVER.
-                        
-                        Note: this is much more efficient than it might look at first glance,
-                        and plenty efficient for the first couple semesters.
-                        We can also come back and optimize it further once we have actual data.
-                       
-                        Faculty members are also given student wind affils for the classes they teach.
-                        Therefore,  the trick is not to show classes unless there is
-                        *at least* one student who is not also faculty.
-                        
-                        Also, if we wanted to, we could further narrow classed down for the following school codes:
-                            pedi
-                            pros
-                            regi
-                            opdn
-                            socw    
-                        """
-
-                        if request.user.user_type() == 'student':
-                            return scores_student(request)
-
-                        site = Site.objects.get_current()
-                        
-                        cache_key = "scores_admin"
-                        if cache.get(cache_key):
-                            results =  cache.get(cache_key)
-                            return { 'courses' : results, 'site' : site  }
-                        
-
-                        all_affils = Group.objects.all()
-                        tmp = [re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2})',c.name) for c in all_affils]
-                        course_matches = [a for a in tmp if a != None]
-                        relevant_classes = []
-                        launch_year = 2010
-                        results = [  ]
-                        checked = [  ]
-                        term_key = {
-                            '1': 'Spring ',
-                            '2': 'Summer ',
-                            '3': 'Fall ',
-                            '4': 'Winter '
-                        }
-                        
-                        for course_info in [a.groups()[0:6]  for a in course_matches]:
-                            f_lookup = "t%s.y%s.s%s.c%s%s.%s.fc"
-                            s_lookup = "t%s.y%s.s%s.c%s%s.%s.st"
-                            if course_info not in checked:            
-                                checked.append (course_info)
-                                if int(course_info[1]) >= launch_year:
-                                    faculty_affils_list = [a for a in all_affils if f_lookup % course_info in a.name]
-                                    student_affils_list = [a for a in all_affils if s_lookup % course_info in a.name]
-                                    if faculty_affils_list and student_affils_list:
-                                        faculty =  faculty_affils_list[0].user_set.all()
-                                        students = student_affils_list[0].user_set.all()
-                                        if [s for s in students if s not in faculty]:
-                                            #pdb.set_trace()
-                                            results.append ( {
-                                                 'course_string': "%s %s%s, section %s" % \
-                                                 (course_info[5], course_info[3], course_info[4],course_info[2]),
-                                                 'faculty' : faculty,
-                                                 'semester' : term_key[course_info[0]] + course_info[1],
-                                                 'course_info' : course_info,
-                                                 'score_info_for_class' : summarize_score_info_for_class (course_info),
-                                                 'number_of_students_in_class' : number_of_students_in_class (course_info),
-                                            })
-                                    else:
-                                        pass
-                                else:
-                                    pass
-                            else:
-                                pass
-                                
-                        cache.set(cache_key,results,60*10)
-                        return { 'courses' : results, 'site' : site  }
