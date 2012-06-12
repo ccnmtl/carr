@@ -19,23 +19,13 @@ urlpatterns = patterns('',
    #(r'^scores/$', 'carr.quiz.views.scores'), #this is just temporary for testing.
    
    
-   
-   (r'^studentquiz/(?P<quiz_id>\d+)/user/(?P<user_id>\d+)/$', 'carr.quiz.views.studentquiz'),
-   
-   
-   (r'^scores/student/$', 'carr.quiz.views.scores_student'),
-
    #these will be deprecated in favor of June, 2012 score pages.
-   #deprecated:
+   
    #list all courses for the logged-in faculty member.
-   (r'^scores/faculty/$', 'carr.quiz.views.scores_faculty_courses'),
+   #(r'^scores/faculty/$', 'carr.quiz.views.scores_faculty_courses'),
    
+   #(r'^scores/faculty/course/(?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$', \
+   #'carr.quiz.views.scores_faculty_course'),
    
-   #deprecated:
-   (r'^scores/faculty/course/(?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$', \
-   'carr.quiz.views.scores_faculty_course'),
-
-
-   #deprecated:                       
-   (r'^scores/admin/$', 'carr.quiz.views.scores_admin')
+   #(r'^scores/admin/$', 'carr.quiz.views.scores_admin')
 )

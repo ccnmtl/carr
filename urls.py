@@ -37,6 +37,12 @@ urlpatterns = patterns('',
     #/scores/socialwork/course/{{c.0}}/{{c.1}}/{{c.2}}/{{c.3}}/{{c.4}}/{{c.5}}/ 
     #/(?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$
    
+   #a faculty member wants to see the score of a student:
+   (r'^activity/quiz/studentquiz/(?P<quiz_id>\d+)/user/(?P<user_id>\d+)/$', 'carr.quiz.views.studentquiz'),
+   
+   # a student wants to see his or her own scores:
+   (r'^scores/student/$', 'carr.quiz.scores.scores_student'),
+   
    
     # a list of students for each class
     (r'^scores/socialwork/course/(?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$', 'carr.quiz.scores.students_by_class'),
