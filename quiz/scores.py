@@ -21,15 +21,8 @@ import re, pdb, datetime
 
 """ This is a series of views that in some ways belong in the Quiz module, and in others don't. Maybe they need to be moved to their own app. For now they definitely get their own module."""
 
-
-
-
 def can_see_scores (u):
-    if not u.is_authenticated():
-        return False
-    if u.user_type() not in ('faculty', 'admin'):
-        return False
-    return True
+    return ( u.is_authenticated() and u.user_type() in ('faculty', 'admin') )
     
 class rendered_with(object):
     def __init__(self, template_name):
@@ -170,7 +163,7 @@ def student_lookup_by_uni_form(request):
         ,'error': None
     }
 
-@user_passes_test(can_see_scores )
+@user_passes_test(lambda u: u.is_authenticated())
 @rendered_with('quiz/scores_student.html')
 def scores_student(request):
     try:
