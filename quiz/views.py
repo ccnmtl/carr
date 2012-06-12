@@ -11,17 +11,8 @@ from django.contrib.auth.models import User, Group
 from activity_bruise_recon.models import ActivityState as bruise_recon_state
 from activity_taking_action.models import ActivityState as taking_action_state
 from django.contrib.sites.models import Site, RequestSite
-from carr_main.models import number_of_students_in_class, students_in_class
 
-
-
-from activity_taking_action.models import score_on_taking_action
-from activity_bruise_recon.models import score_on_bruise_recon
-from django.core.cache import cache
-
-
-#separating these out:
-from scores import score_on_all_quizzes, all_answers_for_quizzes, score_info_for_class,  summarize_score_info_for_class, question_and_quiz_keys, training_is_complete, scores_student , scores_faculty_courses, scores_faculty_course,  scores_admin
+from scores import  scores_student
 
 import re, pdb, datetime
 

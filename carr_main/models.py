@@ -126,6 +126,13 @@ def users_by_uni(uni_string):
     return sort_users (User.objects.filter(username__icontains=uni_string))
     
         
+        
+#def pre_2011(uni_string):
+#    #/admin/auth/user/536/
+#    return sort_users (User.objects.filter(username__icontains=uni_string))
+
+
+        
 User.user_type = user_type
 User.classes_i_teach = classes_i_teach        
 User.classes_i_take = classes_i_take

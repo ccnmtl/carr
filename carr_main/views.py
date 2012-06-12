@@ -10,7 +10,7 @@ from django.contrib.sites.models import Site, RequestSite
 from quiz.models import Quiz, Question, Answer
 from activity_taking_action.models import score_on_taking_action
 from activity_bruise_recon.models import score_on_bruise_recon
-from quiz.views import score_on_all_quizzes, all_answers_for_quizzes, scores_student, training_is_complete
+from quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, scores_student, training_is_complete
 from django.contrib.sites.models import Site, RequestSite
 
 #import datetime
@@ -196,7 +196,7 @@ def stats(request,task):
         _bruise_recon  = score_on_bruise_recon    (u)
         _taking_action = score_on_taking_action   (u)
         
-        student_training_is_complete = training_is_complete (_quizzes, _bruise_recon, _taking_action, site)
+        student_training_is_complete = training_is_complete (u, _quizzes, _bruise_recon, _taking_action, site)
         
         #print student_training_is_complete
         the_stats[u.username] = {}
