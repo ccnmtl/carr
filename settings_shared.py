@@ -114,6 +114,8 @@ COURSEAFFILS_EXEMPT_PATHS = ANONYMOUS_PATHS
 COURSEAFFIL_AUTO_MAP_GROUPS = ['demo']
 
 
+DEFAULT_SOCIALWORK_FACULTY_USER_IDS = [ 14,  21, 30,   40,  41,  43,  44, 144,  456, 457 ]
+
 
 # WIND settings
 AUTHENTICATION_BACKENDS = ('djangowind.auth.WindAuthBackend','django.contrib.auth.backends.ModelBackend',)

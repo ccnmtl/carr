@@ -1,0 +1,38 @@
+{% extends 'carr_main/add_classes/add_classes_base.html' %}
+{% load smartif %}
+{% block breadcrumbs %}
+<!--
+    <li>
+        <a href="/scores/" class="active" >Scores</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+        <a href="/scores/socialwork/uni/" >UNI Lookup</a>
+        <span class="divider">/</span>
+    </li>
+-->
+{% endblock breadcrumbs %}
+
+
+{% block add_classes_title %}Add courses to CARE{%endblock %}
+
+{% block help_text %}
+   To add one or more courses, enter section keys below. Please enter section keys <strong>exactly</strong> as listed in <a href ="http://www.columbia.edu/cu/bulletin/uwb/" target="_blank" >the directory of classes.</a>
+{% endblock %}
+
+
+{% block full_page_results %}
+    {% if error %}
+        <div class="alert alert-error">
+            {{error}}
+        </div>  
+    {% endif  %}
+    
+    {% include 'carr_main/add_classes/form_chunk.html' %}
+
+    <div class="well">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        Default faculty: {% for df in default_faculty %}{{df.last_name}}{%if not forloop.last %}, {%endif %}{% endfor %}.
+    </div>
+{%endblock%}
+

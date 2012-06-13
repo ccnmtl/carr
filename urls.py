@@ -48,6 +48,8 @@ urlpatterns = patterns('',
     (r'^scores/socialwork/course/(?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$', 'carr.quiz.scores.students_by_class'),
 
 
+    # adding classes:
+	(r'^add_classes/$', 'carr.carr_main.views.add_classes'),
 
     # student lookup by uni -- form
     (r'^scores/socialwork/uni/$', 'carr.quiz.scores.student_lookup_by_uni_form'),

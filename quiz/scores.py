@@ -38,19 +38,6 @@ class rendered_with(object):
 
         return rendered_func
 
-def faculty_only (request):
-    try:
-        if request.user.user_type() == 'student':
-            print "ok going to student scores"
-            return scores_student(request)
-        else:
-            print "ok np you can see waht you asked for"
-            return False
-    except AttributeError:
-        print "ok heading to /login/"
-        return HttpResponseRedirect ('/login/')
-
-
 
 def year_range (): 
     next_year = datetime.datetime.now().year + 2
@@ -77,7 +64,6 @@ def socialwork_overview(request):
 @user_passes_test(can_see_scores )
 @rendered_with('quiz/scores/semesters_by_year.html')
 def semesters_by_year(request, year):
-    faculty_only (request)
     return {
         'year' : year
         ,'semester_map': semester_map
