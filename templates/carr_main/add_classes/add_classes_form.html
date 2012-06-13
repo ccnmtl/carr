@@ -28,6 +28,13 @@
         </div>  
     {% endif  %}
     
+    {% if success %}
+        <div class="alert alert-success">
+            {{success}}
+        </div>  
+    {% endif  %}
+    
+    
     {% include 'carr_main/add_classes/form_chunk.html' %}
 
     <div class="well">
