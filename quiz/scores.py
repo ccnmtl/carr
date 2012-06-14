@@ -11,11 +11,12 @@ from activity_bruise_recon.models import ActivityState as bruise_recon_state
 from activity_taking_action.models import ActivityState as taking_action_state
 from django.contrib.sites.models import Site, RequestSite
 from carr_main.models import number_of_students_in_class, students_in_class, users_by_uni
-
-
 from activity_taking_action.models import score_on_taking_action
 from activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
+from django.conf import settings
+
+
 
 import re, pdb, datetime
 
@@ -70,6 +71,7 @@ def semesters_by_year(request, year):
     }
 
 def courses_sort_key (x, y):
+    
     tmp = cmp(x['course_label'], y['course_label'])
     if tmp != 0:
         return tmp
@@ -88,6 +90,8 @@ def classes_by_semester(request, year, semester):
     all_affils = Group.objects.all()
     this_semester_affils = [a for a in all_affils if semester_string in a.name and 'socw' in a.name]
     care_classes =  find_care_classes (this_semester_affils)
+    
+    
     sorted_care_classes = sort_courses (care_classes)
     return {
         'year' : year
@@ -250,6 +254,14 @@ def score_on_all_quizzes (the_student):
                 quiz_scores.append(quiz_results)
         return quiz_scores
 
+
+
+def override ():
+    default_faculty = User.objects.filter (id__in= settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
+    
+    
+
+
 def find_care_classes (affils):
     """If we can find users in our DB with ST affils for a course,
     AND users with FC affils, we consider that course a CARE course."""
@@ -259,37 +271,65 @@ def find_care_classes (affils):
     course_matches, results, checked = [x for x in  tmp if x], [], []
     f_lookup = "t%s.y%s.s%s.c%s%s.%s.fc"
     s_lookup = "t%s.y%s.s%s.c%s%s.%s.st"
+    
     for course_info in [a.groups()[0:6] for a in course_matches]:
         if course_info not in checked:
+            #print "checking"
+            #print course_info
+            show_this_class = False
             checked.append (course_info)
             student_lookup_for_this_course = f_lookup % course_info
             faculty_lookup_for_this_course = s_lookup % course_info
             faculty_affils_list = [a for a in affils if student_lookup_for_this_course in a.name]
             student_affils_list = [a for a in affils if faculty_lookup_for_this_course in a.name]
+            
+            #print faculty_affils_list
+            #print student_affils_list
+            
             if faculty_affils_list and student_affils_list:
                 class_info = extract_class_info (course_info, faculty_affils_list, student_affils_list)
                 if class_info != None:
                     results.append (class_info)
         else:
             pass #already checked this course.
-            
+
+    
     return results
 
 def extract_class_info(course_info, faculty_affils_list, student_affils_list):
     """ Figure out what students and faculty are associated with this class based on WIND affils. If there are both students AND faculty associated with the class, we can assume it's a CARE class."""
-    faculty =  faculty_affils_list[0].user_set.all()
+    this_course_faculty =  faculty_affils_list[0].user_set.all()
     students = student_affils_list[0].user_set.all()
-    if [s for s in students if s not in faculty]:
-        return {
-            'course_label':   course_label (course_info)
-            ,'course_section': course_section (course_info)
-            ,'faculty' : faculty
-            ,'course_info' : course_info
-            ,'score_info_for_class' : summarize_score_info_for_class (course_info)
-            ,'number_of_students_in_class' : number_of_students_in_class (course_info)
-        }
-    return None
     
+    has_students = False
+    has_default_faculty = False    
+    
+    #check whether we at least have any students in this class:
+    if len ([s for s in students if s not in this_course_faculty]) > 0:
+        #All the students are also faculty. This is probably a CARE course.
+        #print "Has students"
+        has_students = True
+    
+    #Are the usual suspects teaching the class? If so let's display it even if we don't know of any students yet.
+    default_faculty = User.objects.filter (id__in= settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
+
+    default_faculty_not_teaching_this_course = [f for f in default_faculty if f not in this_course_faculty]
+    if len (default_faculty_not_teaching_this_course) == 0:
+        #print "Has default faculty"
+        has_default_faculty = True
+    
+    if not has_students and not has_default_faculty:
+        return None
+    
+    return {
+        'course_label':   course_label (course_info)
+        ,'course_section': course_section (course_info)
+        ,'faculty' : this_course_faculty #TODO Sort by last name
+        ,'course_info' : course_info
+        ,'score_info_for_class' : summarize_score_info_for_class (course_info)
+        ,'number_of_students_in_class' : number_of_students_in_class (course_info)
+    }
+
 def course_label (course_info):
     return  "%s%s" % (course_info[3], course_info[4])
 

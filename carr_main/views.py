@@ -143,10 +143,16 @@ def extract_section_keys (the_string):
     result =  [ wind_affil(dict( zip (keys, m))) for m in matches] 
     return result
 
-def get_dummy_user ():
-     return User.objects.get(username='egr2107')
+#just for testing:
+if 1 == 0:
+    def get_dummy_user ():
+         return User.objects.get(username='egr2107')
 
 def add_course (stg, fcg):
+    """ Look up the student and faculty WIND affils for a course.
+    If they don't exist, create them.
+    Add the default social work school faculty to the affils."""
+    
     default_faculty = User.objects.filter (id__in= settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
     already_existing_student_affils = Group.objects.filter(name__icontains=stg)
     already_existing_faculty_affils = Group.objects.filter(name__icontains=fcg)
@@ -170,10 +176,13 @@ def add_course (stg, fcg):
         #Student affil already exists.
         new_student_affil = already_existing_student_affils[0]    
 
-    #add a student:
-    dummy_user = get_dummy_user ()
-    dummy_user.groups.add(new_student_affil)
-    dummy_user.save()
+
+
+    #add a student: (just for testing)
+    if 1 == 0:
+        dummy_user = get_dummy_user ()
+        dummy_user.groups.add(new_student_affil)
+        dummy_user.save()
 
 
     #####################
