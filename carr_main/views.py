@@ -221,7 +221,7 @@ def add_classes(request):
     return {
         'default_faculty': sorted_default_faculty
         ,'section_keys' : section_keys
-        ,'success' : 'All set.'
+        ,'success' : True
         ,'found_section_keys' : found_section_keys
     }
 

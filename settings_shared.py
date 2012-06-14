@@ -78,6 +78,7 @@ INSTALLED_APPS = (
     'courseaffils',
     'deploy_specific',
     'django_statsd',
+    'south'
 )
 
 STATSD_CLIENT = 'statsd.client'

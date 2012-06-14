@@ -30,7 +30,7 @@
     
     {% if success %}
         <div class="alert alert-success">
-            {{success}}
+            All set!
         </div>  
     {% endif  %}
     
@@ -39,7 +39,7 @@
 
     <div class="well">
         <button type="button" class="close" data-dismiss="alert">×</button>
-        Default faculty: {% for df in default_faculty %}{{df.last_name}}{%if not forloop.last %}, {%endif %}{% endfor %}.
+        Default faculty: {% for df in default_faculty%}{{df.last_name}}{%if not forloop.last %}, {%endif %}{% endfor %}.
     </div>
 {%endblock%}
 
