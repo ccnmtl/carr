@@ -28,11 +28,6 @@ def sort_users (users):
 
 
 def user_type(self):
-    cache_key = "user_type_%d" % self.id
-    cached = cache.get(cache_key) 
-    if cached:
-        #print "user type found in cache."
-        return cached
     result = None
     if self == None:
         return None
@@ -41,10 +36,10 @@ def user_type(self):
         result = 'admin'
     elif len( [ g for g in self.groups.all() if '.fc.' in  g.name]) > 0:
         result = 'faculty'
+    elif self.id in settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS:
+        result = 'faculty'
     else:
         result = 'student'
-    cache.set(cache_key,result,60*60*24)
-    #print "user type stored in cache."
     return result
         
 def classes_i_teach(self):
