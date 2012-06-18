@@ -1,6 +1,6 @@
 {% extends 'quiz/scores/scores_base.html' %}
 {% block scores_title %}
-    SSW courses for {{semester|capfirst}} {{year}}
+    {{semester|capfirst}} {{year}} Courses
 {%endblock %}
 
 {% block scores_breadcrumbs %}
@@ -22,14 +22,10 @@
 
 {% endblock scores_breadcrumbs %}
 
-{% block scores_help_text %}
-    This is a list of all the semesters we have on record for CARE for {{semester|capfirst}} {{year}}. Click on a course to see the roster.
-{% endblock %}
 
 {% block scores_warnings %}
     <div class="alert alert-block">
         <button type="button" class="close" data-dismiss="alert">×</button>
-        <h4 class="alert-heading">This page is not guaranteed to be up to date.</h4>
         <p>To see the latest information, please click on the individual courses below.</p>
     </div>
 {% endblock %}

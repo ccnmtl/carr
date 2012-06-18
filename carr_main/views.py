@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.template import RequestContext, loader
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response
@@ -10,8 +10,10 @@ from django.contrib.sites.models import Site, RequestSite
 from quiz.models import Quiz, Question, Answer
 from activity_taking_action.models import score_on_taking_action
 from activity_bruise_recon.models import score_on_bruise_recon
-from quiz.views import score_on_all_quizzes, all_answers_for_quizzes, scores_student, training_is_complete
+from quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, scores_student, training_is_complete
 from django.contrib.sites.models import Site, RequestSite
+from django.conf import settings
+import re
 
 #import datetime
 
@@ -43,6 +45,9 @@ class rendered_with(object):
                 return items
 
         return rendered_func
+
+
+
 
 @login_required
 @rendered_with('carr_main/page.html')
@@ -107,13 +112,133 @@ def page(request,path):
                 site_domain=current_site.domain,
                 leftnav=leftnav)
 
+def wind_affil (section_key_dict):
+    d = section_key_dict
+    vals = (
+            d['term_number']
+        ,   d['year']
+        ,   d['section']
+        ,   d['term_character']
+        ,   d['course_string']
+        ,   d['department']
+    )
+    prefix = 't%s.y%s.s%s.c%s%s.%s' % vals
+    return (
+        ( '%s.st.course:columbia.edu' % prefix ).lower(),
+        ( '%s.fc.course:columbia.edu' % prefix ).lower()
+    ) 
+
+def extract_section_keys (the_string):
+    keys =  ['year', 'term_number', 'department', 'course_string', 'term_character', 'section']
+    components = [
+        '\d\d\d\d'    # year
+        ,  '\d'       # term number
+        ,  '[A-Z]{4}' # department
+        ,  '\d\d\d.'  # course_string
+        ,  '[A-Z]'    # term_character
+        ,  '\d\d\d'   # section
+    ]
+    what_to_match = ''.join ( '(' + c + ')' for c in components)
+    matches = re.findall(what_to_match, the_string)
+    result =  [ wind_affil(dict( zip (keys, m))) for m in matches] 
+    return result
+
+#just for testing:
+if 1 == 0:
+    def get_dummy_user ():
+         return User.objects.get(username='egr2107')
+
+def add_course (stg, fcg):
+    """ Look up the student and faculty WIND affils for a course.
+    If they don't exist, create them.
+    Add the default social work school faculty to the affils."""
+    
+    default_faculty = User.objects.filter (id__in= settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
+    already_existing_student_affils = Group.objects.filter(name__icontains=stg)
+    already_existing_faculty_affils = Group.objects.filter(name__icontains=fcg)
+    
+    
+    #####################
+    ##### FACULTY AFFILS:
+    if not already_existing_faculty_affils:
+        new_faculty_affil = Group (name = fcg)
+        new_faculty_affil.save()
+    else:
+        #Faculty affil already exists.
+        new_faculty_affil = already_existing_faculty_affils[0]    
+
+    #####################
+    ##### STUDENT AFFILS:
+    if not already_existing_student_affils:
+        new_student_affil = Group (name = stg)
+        new_student_affil.save()
+    else:
+        #Student affil already exists.
+        new_student_affil = already_existing_student_affils[0]    
+
+
+
+    #add a student: (just for testing)
+    if 1 == 0:
+        dummy_user = get_dummy_user ()
+        dummy_user.groups.add(new_student_affil)
+        dummy_user.save()
+
+
+    #####################
+    for instructor in default_faculty:
+        new_student_affil.user_set.add(instructor)
+        new_student_affil.save()
+        new_faculty_affil.user_set.add(instructor)
+        new_faculty_affil.save()
+        instructor.save()
+
+
+@login_required
+@rendered_with('carr_main/add_classes/add_classes_form.html')
+def add_classes(request):
+    default_faculty = User.objects.filter (id__in= settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
+    sorted_default_faculty =  sorted ( default_faculty, key=lambda x: x.last_name)
+    section_keys = ''
+    found_section_keys = {}
+    if not request.POST:
+        return  {
+            'section_keys': 'Enter course section key/s here. Sample: 20121SOCW7114T005'
+            ,'default_faculty': sorted_default_faculty
+        }
+    if not request.POST.has_key ('section_keys'):
+        return  { 
+            'default_faculty': sorted_default_faculty
+            ,'error': 'No courses found.'
+        }
+    if request.POST['section_keys'] == '':
+        return  { 
+            'default_faculty': sorted_default_faculty  
+            ,'error': 'No courses found.'
+        }
+    section_keys = request.POST['section_keys']
+    found_section_keys =  extract_section_keys (section_keys)
+    if len (found_section_keys) ==  0:
+        return  { 
+            'default_faculty': sorted_default_faculty
+            ,'error': 'No courses found.'
+        }
+    #ok we now have actual courses.
+    for stg, fcg in found_section_keys:
+        add_course (stg, fcg)
+
+    return {
+        'default_faculty': sorted_default_faculty
+        ,'section_keys' : section_keys
+        ,'success' : True
+        ,'found_section_keys' : found_section_keys
+    }
+
 
 @login_required
 @rendered_with('carr_main/selenium.html')
 def selenium(request,task):
     if task =='setup':
-        #import pdb
-        #pdb.set_trace()
         test_user = User.objects.get(username = 'student1')
         [a.delete() for a in test_user.bruise_recon_user.all()]
         [a.delete() for a in test_user.taking_action_user.all()]
@@ -196,7 +321,7 @@ def stats(request,task):
         _bruise_recon  = score_on_bruise_recon    (u)
         _taking_action = score_on_taking_action   (u)
         
-        student_training_is_complete = training_is_complete (_quizzes, _bruise_recon, _taking_action, site)
+        student_training_is_complete = training_is_complete (u, _quizzes, _bruise_recon, _taking_action, site)
         
         #print student_training_is_complete
         the_stats[u.username] = {}
@@ -242,7 +367,6 @@ def stats(request,task):
 
 @login_required
 def index(request):
-    print "index"
     try:
         ss = SiteState.objects.get(user=request.user)
         url = ss.last_location

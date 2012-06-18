@@ -1,25 +1,28 @@
- {%load smartif %}
-   <ul id="standardnav">
-      {% if user.is_authenticated %}
-           <li><a href="/logout/">Logout</a></li>
-        {% else %}
-           <li><a href="/accounts/login/?next=/welcome/">Login</a></li>
-        {% endif %}
-      <li><a href="/background/about/">About</a></li>
-      <li><a href="/background/credits/">Credits</a></li>
-      <li><a href="/background/contact/">Contact</a></li>
-      
+{%load smartif %}
+<ul id="standardnav">
+
+  <li><a href="/">Training</a></li>
+  <li><a href="/background/about/">About</a></li>
+  <li><a href="/background/credits/">Credits</a></li>
+  <li><a href="/background/contact/">Contact</a></li>
+  
+{%if user.is_authenticated %}
     {%if user.user_type == "student" %}
-        <li><a href="/activity/quiz/scores/student/">My Scores</a></li>
+        <li><a href="/scores/student/">My Scores</a></li>
+    {% else %}
+        <li><a href="/scores/">Scores</a></li>
     {% endif %}
-  
-  
-    {%if user.user_type == "faculty" %}
-	    <li><a href="/activity/quiz/scores/faculty/">My Students' Scores</a></li>
-    {% endif %}
+{%endif %}
     
-    {%if user.is_staff %}
-	    <li><a href="/activity/quiz/scores/admin/">All Scores</a></li>
-      <li><a href="/site_media/selenium/TestRunner.html?test=..%2Ftests%2FTestSuite.html">Tests</a></li>
-    {% endif %}
-   </ul>
+{%if user.is_staff %}
+  <li><a href="/site_media/selenium/TestRunner.html?test=..%2Ftests%2FTestSuite.html">Tests</a></li>
+  <li><a href="/add_classes/">Add Course</a></li>
+{% endif %}
+
+{% if user.is_authenticated %}
+   <li><a href="/logout/">Logout</a></li>
+{% else %}
+   <li><a href="/accounts/login/?next=/welcome/">Login</a></li>
+{% endif %}
+</ul>
+

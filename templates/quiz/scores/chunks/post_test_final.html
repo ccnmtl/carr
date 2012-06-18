@@ -3,7 +3,7 @@
     {%if score.submit_time %}
         {% for stamp in score.submit_time %}
             {%if forloop.last %}
-                <span class="label label-success"  title = '( {{stamp|date:"m/d/Y P"}} )'>  {{stamp|date:"M d"}}</span>
+                <span class="label label-success"  title = '( {{stamp|date:"m/d/Y P"}} )'>  {{stamp|date:"M d 'y"}}</span>
             {%endif %}
         {% endfor %}
     {%else %}    

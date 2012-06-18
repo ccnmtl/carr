@@ -39,25 +39,7 @@
 		<!-- window.href='/' -->
 		<h1 id="logo_project" onclick="window.href= '/'"><span>Project Title: CARE </span></h1>
 		{% block standardnav %}
-		<ul id="standardnav">
-			<li><a href="/about">About</a></li>
-			<li><a href="/help">Help</a></li>
-			<li><a href="/contact">Contact</a></li>
-			
-			
-            {%if user.user_type == "student" %}
-                <li><a href="/activity/quiz/scores/student">My Scores</a></li>
-            {% endif %}
-          
-            {%if user.user_type == "faculty" %}
-	            <li><a href="/activity/quiz/scores/faculty">My Students' Scores</a></li>
-            {% endif %}
-            
-            {%if user.user_type == "admin" %}
-	            <li><a href="/activity/quiz/scores/admin">All Scores</a></li>
-            {% endif %}
-   </ul>
-		</ul>
+            {%include "project_standard_nav.html" %}
 		{% endblock %}
 		<!-- CCNMTL title/logo --><h4><a id="logo_ccnmtl"href="http://ccnmtl.columbia.edu" target="_blank" title="Columbia Center for New Media Teaching and Learning"><span>Produced by the Columbia Center for New Media Teaching and Learning</span></a>
 {% if "cdm" in site_domain%}

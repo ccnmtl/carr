@@ -5,7 +5,7 @@
         <th>Last</th>
         <th>First</th>
         <th>UNI</th>
-        <th>Pre-Test</th>
+        <th>Pre-test</th>
         <th>AorA</th>
         <th>Case 1</th>
         <th>Case 2</th>
@@ -24,7 +24,7 @@
                 {{st.student.first_name}}
             </td>
             <td>
-                {{st.student.username}}
+                {{st.student.username}} 
             </td>
             <td>
                 {% get_scores for 'pre-test' in st.scores as score %}
@@ -68,11 +68,6 @@
     {%endfor %}
 </table>
 
-<div class="alert alert-block">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-    <p>Students who have not logged in to CARE might not be displayed above.</p>
-</div>
-
 <!--
     <div class="alert alert-block">
         <button type="button" class="close" data-dismiss="alert">×</button>
@@ -98,31 +93,31 @@
 	</p>
     <ul>
         <li>
-	        <b>Pre-test</b> The student's score on the initial test. The &quot;»&quot; buttons are links to the student's responses to the activities.
+	        <b>Pre-test:</b> This is the student's score on the pre-test. The &quot;»&quot; button links to the student's answers.
         </li>
         <li>
-	        <b>AorA</b> The student's score on the "Abuse or Accident?" activity. 
+	        <b>AorA:</b> This is the student's score on the "Abuse or Accident?" activity. 
         </li>
         <li>
-	        <b>Case 1</b> First case study
+	        <b>Case 1:</b> First case study
         </li>
         <li>
-	        <b>Case 2</b> Second case study
+	        <b>Case 2:</b> Second case study
         </li>
         <li>
-	        <b>Case 3</b> Third case study
+	        <b>Case 3:</b> Third case study
         </li>
         <li>
-	        <b>TA</b> The student's score on the "Taking Action" reporting activity. If the student completed the reporting form, a button brings up a copy of the form as filled out by the student.
+	        <b>TA:</b> This is the student's score on the "Taking Action" activity. If the student completed the reporting form, a button brings up a copy of the form as filled out by the student.
         </li>
         <li>
-	        <b>PT1</b> The student's initial score on the post-test, if available. If you click on the &quot;»&quot; button you will be taken to the student's actual answers.
+	        <b>PT1:</b> This is the  student's initial score on the post-test. The &quot;»&quot; button links to the student's answers.
         </li>
         <li>
-	        <b>Passed</b> Whether the post-test was passed with all questions correctly. If a date is available for this final successful test, it is given; otherwise (usually for students prior to 2010), 'ok' simply indicates that a student was able to complete all questions correctly. If you hold the mouse pointer over the abbreviated date, a complete date will appear.
+	        <b>Passed:</b> This indicates whether or not a student successfully completed the post-test. Dates of completion are provided, when available. Otherwise (usually for students prior to 2010), 'ok' indicates that a student answered all questions correctly. If you hold the mouse pointer over the abbreviated date, a complete date will appear.
         </li>
         <li>
-	        <b>Done</b> To officially complete the training, the student needs to complete all the activities except TA, and successfully answer all the questions in the post-test.
+	        <b>Done:</b> To officially complete the training, the student needs to complete all of the activities except TA, and successfully answer all of the questions in the post-test. Course completion is indicated by a  "<span class="label label-success">Y</span>" for yes or "<span class="label label-important">N</span>" for no.
         </li>
     </ul>
 </div>
