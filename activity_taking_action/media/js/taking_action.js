@@ -24,13 +24,11 @@ function maybeEnableNext()
    
    if (gonext){
      setStyle('next', {'display': 'inline'});
-     logDebug ('you can go');
      showElement($('conclusion'));
      hideElement ($('span_conclusion'));
    }
   else {
      setStyle('next', {'display': 'none'});
-     logDebug ('you cant go');
      hideElement($('conclusion'));
      showElement ($('span_conclusion'));
   }
@@ -48,7 +46,6 @@ function validate() {
 }
 
 function load_step (step_name) {
-    logDebug ("loading " + step_name);
     map (hideElement, $$('.activity_step'))
     showElement($$('div#' + step_name +  '.activity_step')[0] );
     if (steps[step_name] != undefined) {
@@ -67,8 +64,6 @@ function loadStateSuccess(doc)
 {
   game_state = doc;
   
-  debug('loadStateSuccess')
-  logDebug (serializeJSON(doc));
   //
  
   //current_step = doc['current_step'] || default_step;

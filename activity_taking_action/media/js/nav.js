@@ -1,5 +1,4 @@
 function new_load (step_name, next_step) {
-        logDebug ("Calling new load for " + step_name);
         next_button = findChildElements($(step_name), [".taking_action_next_button"])[0]
         if (next_button != undefined) {
             connect (next_button, 'onclick', partial(load_step,next_step));

@@ -93,13 +93,18 @@ function magic_field ( params, editable ){
     
     val = (game_state[field_id] == undefined) ? '': game_state[field_id] ;
     //logDebug (field_id);
+    if (val != '') {
+        val = htmlDecode (val)
+    }
+    
     new_div =  DIV ( { 'class' : 'positioner_div' }, 
     PRE({
                 'id' : field_id,
                 'contenteditable':contenteditable_str,
                 'class':'magic_form'
             },
-            val)
+            val
+            )
     );
    $('magic_fields_go_here').appendChild(new_div);   
    params = {'style':
@@ -111,4 +116,11 @@ function magic_field ( params, editable ){
    updateNodeAttributes(new_div, params  );
 }
 
+// see http://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+// for this recipe.
+function htmlDecode(input){
+  var e = document.createElement('div');
+  e.innerHTML = input;
+  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}
 
