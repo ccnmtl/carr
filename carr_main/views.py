@@ -367,7 +367,6 @@ def stats(request,task):
 
 @login_required
 def index(request):
-    print "index"
     try:
         ss = SiteState.objects.get(user=request.user)
         url = ss.last_location

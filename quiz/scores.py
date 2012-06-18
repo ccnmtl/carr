@@ -141,7 +141,7 @@ def student_lookup_by_uni_form(request):
         'student' : None
         ,'full_page_results_block': True
         ,'uni': uni
-        ,'error': "A search for UNIs containing \"%s\" did not turn up any students." % uni
+        ,'error': "The UNI you entered could not be found. Please check the UNI and try again."
         }
 
     student_info = get_student_info (found_students)
