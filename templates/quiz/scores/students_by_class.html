@@ -20,14 +20,14 @@
         <span class="divider">/</span>
     </li>
         <li>
-        <a href="/scores/socialwork/course/{{ c.0 }}/{{ c.1 }}/{{ c.2 }}/{{ c.3 }}/{{ c.4 }}/{{ c.5 }}/" class="active" >{{ c.3.upper }}{{ c.4 }}, section {{ c.2 }}</a>
+        <a href="/scores/socialwork/course/{{ c.0 }}/{{ c.1 }}/{{ c.2 }}/{{ c.3 }}/{{ c.4 }}/{{ c.5 }}/" class="active" >{{ c.3.upper }}{{ c.4 }}, Section {{ c.2 }}</a>
       </li>
 {% endblock scores_breadcrumbs %}
 
 {% block scores_title %}{{ c.5.upper }} {{ c.3.upper }}{{ c.4 }},  section {{ c.2 }}{%endblock %}
 
 {% block scores_help_text %}
-This is a list of students who either logged into CARE and started the training, or whise information was entered automatically at the start of the term. Students who have not logged into CARE might not be displayed below.
+This is a list of students who either logged into CARE and started the training, or whose information was entered automatically at the start of the term. Students who have not logged into CARE might not be displayed below.
 {% endblock %}
 
 {% block full_page_results %}

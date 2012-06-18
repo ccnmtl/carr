@@ -93,8 +93,11 @@ def classes_by_semester(request, year, semester):
     
     
     sorted_care_classes = sort_courses (care_classes)
+    
+    #don't show help text
     return {
         'year' : year
+        ,'hide_scores_help_text': True
         ,'semester_map': semester_map
         ,'semester': semester
         ,'care_classes': sorted_care_classes
