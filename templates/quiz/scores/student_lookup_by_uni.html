@@ -17,7 +17,7 @@
 
 {% block scores_help_text %}
     {%if not student %}
-     To search for a student's results, try typing the student's UNI below, then clicking on "Search".
+     To search for a student's scores, enter his/her UNI into the box below and then click on "Search."
     {%else %}
         {{student_info|length}} student{{student_info|pluralize:" was found,s were found"}}. Students who have not logged into CARE might not be displayed in these search results.
     {%endif %}
@@ -34,7 +34,7 @@
     {%if not student %}
     <form action ="/scores/socialwork/uni/" method="post" class="well form-search">
       <div class="input-append">
-               Student UNI:<input   class="span3 search-query" id="appendedInputButton" size="16" type="text" name ="uni" value="{{uni}}"></input><button class="btn" type="submit">Search</button>
+               Student UNI:  <input class="span3 search-query" id="appendedInputButton" size="16" type="text" name ="uni" value="{{uni}}"></input><button class="btn" type="submit">Search</button>
       </div>
     </form>
     {%endif %}
