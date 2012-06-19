@@ -483,6 +483,11 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
+	<td>Page 1 of 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
 	<td>You are working with a father</td>
 	<td></td>
 </tr>
@@ -499,6 +504,11 @@
 <tr>
 	<td>click</td>
 	<td>//div[@id='review_case_history']/div[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Page 2 of 6</td>
 	<td></td>
 </tr>
 <tr>
@@ -524,6 +534,11 @@
 <tr>
 	<td>click</td>
 	<td>//div[@id='analyze_action_criteria']/div[4]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Page 3 of 6</td>
 	<td></td>
 </tr>
 <tr>
@@ -553,12 +568,12 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Completed Actions</td>
+	<td>Page 4 of 6</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Page 4 of 6</td>
+	<td>Completed Actions</td>
 	<td></td>
 </tr>
 <tr>
@@ -593,8 +608,28 @@
 	<td></td>
 </tr>
 <tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
 	<td>getEval</td>
 	<td>this.browserbot.getCurrentWindow().document.getElementById('form_pre_field_346_415').innerHTML = 'Line 5 blah blah'</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>this.browserbot.getCurrentWindow().document.getElementById('form_pre_field_346_435').innerHTML = 'Line 6: Ampersand &amp; Apostrophe \' Less than &lt; Greater than &gt; '</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>5000</td>
 	<td></td>
 </tr>
 <tr>
@@ -627,15 +662,112 @@
 	<td>next</td>
 	<td></td>
 </tr>
-<!--POST TEST-->
+<!--Go back and re-navigate to the page.-->
+<tr>
+	<td>clickAndWait</td>
+	<td>id=previous</td>
+	<td></td>
+</tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Please answer the following questions</td>
+	<td>Page 1 of 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='review_case_history']/div[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Page 2 of 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='analyze_action_criteria']/div[4]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Page 3 of 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='choose_action']/div[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Page 4 of 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='next_steps']/div[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Page 5 of 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>complete_report</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>form_pre_field_346_415</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyVisible</td>
+	<td>form_pre_field_346_415</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>blah blah blah</td>
+	<td></td>
+</tr>
+<!--Assert that the text is still there.-->
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Line 6: Ampersand &amp; Apostrophe ' Less than &lt; Greater than &gt;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
+</tr>
+<!--POST TEST-->
+<tr>
+	<td>click</td>
+	<td>//div[@id='complete_report']/div[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyVisible</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>next</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForVisible</td>
 	<td>15_48</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Please answer the following questions</td>
 	<td></td>
 </tr>
 <tr>
