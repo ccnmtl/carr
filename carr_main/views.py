@@ -203,7 +203,7 @@ def add_classes(request):
     found_section_keys = {}
     if not request.POST:
         return  {
-            'section_keys': 'Enter course section key/s here. Sample: 20121SOCW7114T005'
+            'section_keys': 'Enter course section key(s) here. Sample: 20121SOCW7114T005'
             ,'default_faculty': sorted_default_faculty
         }
     if not request.POST.has_key ('section_keys'):
