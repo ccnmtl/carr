@@ -32,7 +32,7 @@
 
 a.reset_button { margin-top: -50px; }
 
-.review_case_button, a.reset_button, #show_expert_form
+#review_case_button, a.reset_button, #show_expert_form
 {
 	background-color: #eee;
 	border: 1px solid #ccc;
@@ -41,6 +41,7 @@ a.reset_button { margin-top: -50px; }
 	text-align: center;
 	color: purple;
     z-index: 100;
+    cursor : pointer;
 }
 
 .taking_action_pagenumber {

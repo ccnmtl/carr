@@ -13,7 +13,6 @@ function action_button_clicked(c) {
     logDebug (c.src());
     which_class = which_of_these_css_classes(c.src(), first_round_action_css_classes);
     logDebug (which_class);
-    logDebug ("ok");
     if (which_class == 'first_round_action_1') {
         showElement ($$('.choose_action.action_explanation.first_round_action_1')[0]);
     } else if (which_class == 'first_round_action_2') {
@@ -25,7 +24,4 @@ function action_button_clicked(c) {
     }
     
 }
-
-
-    
 

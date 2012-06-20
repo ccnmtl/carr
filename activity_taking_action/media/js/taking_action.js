@@ -6,21 +6,15 @@ game_state = {}
 
 function debug(string)
 {
-    if (false)
+    if (false) {
       log("DEBUG " + string)
+    }
 }
 
 
 function maybeEnableNext()
 {
-  /*
-  gonext = false
-  
-   if (validate()) {
-    gonext = true;
-   }
-  */
-  gonext = true; // see bug 71075
+  gonext = true;
    
    if (gonext){
      setStyle('next', {'display': 'inline'});
@@ -46,6 +40,7 @@ function validate() {
 }
 
 function load_step (step_name) {
+    
     map (hideElement, $$('.activity_step'))
     showElement($$('div#' + step_name +  '.activity_step')[0] );
     if (steps[step_name] != undefined) {
