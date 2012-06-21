@@ -1,8 +1,8 @@
 function new_load (step_name, next_step) {
-        next_button = findChildElements($(step_name), [".taking_action_next_button"])[0]
-        if (next_button != undefined) {
-            connect (next_button, 'onclick', partial(load_step,next_step));
-        }
+    next_button = findChildElements($(step_name), [".taking_action_next_button"])[0]
+    if (next_button != undefined) {
+        connect (next_button, 'onclick', partial(load_step,next_step));
+    }
 }
 
 steps = {}
@@ -11,7 +11,7 @@ observation_css_classes = [
     'observation_1',
     'observation_2',
     'observation_3',
-    'observation_4'              
+    'observation_4'
 ]
 criteria_css_classes = [
     'criteria_1',
