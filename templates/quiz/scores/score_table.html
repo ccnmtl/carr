@@ -1,7 +1,7 @@
 {% load quiz_template_tags %}
 {% load smartif %}
-<table class="table table-bordered table-striped">
-    <tr>
+<table class="table table-bordered table-striped" onclick="sortColumn(event)">
+    <thead>
         <th>Last</th>
         <th>First</th>
         <th>UNI</th>
@@ -13,8 +13,8 @@
         <th>TA</th>
         <th>PT1</th>
         <th>Passed</th>
-        <th>Done</th>
-    </tr>
+        <th class="DefaultSort">Done</th>
+    </thead>
     {% for st in student_info %}
         <tr>
             <td>

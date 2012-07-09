@@ -16,8 +16,6 @@ from activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
 from django.conf import settings
 
-
-
 import re, pdb, datetime
 
 """ This is a series of views that in some ways belong in the Quiz module, and in others don't. Maybe they need to be moved to their own app. For now they definitely get their own module."""
@@ -257,12 +255,6 @@ def score_on_all_quizzes (the_student):
                 quiz_scores.append(quiz_results)
         return quiz_scores
 
-
-
-def override ():
-    default_faculty = User.objects.filter (id__in= settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
-    
-    
 
 
 def find_care_classes (affils):

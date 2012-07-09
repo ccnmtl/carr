@@ -65,7 +65,11 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
    
     (r'^selenium/(?P<task>\w+)/$', 'carr_main.views.selenium'),
-    (r'^stats/(?P<task>\w+)/$', 'carr_main.views.stats'),
+    
+    
+    #(r'^stats/(?P<task>\w+)/$', 'carr_main.views.stats_csv'),
+   
+    (r'^stats/(?P<task>\w+)/$', 'carr_main.views.stats_csv'),
    
    
    
