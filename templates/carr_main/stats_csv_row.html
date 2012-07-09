@@ -1,0 +1,76 @@
+{% load quiz_template_tags %}{% load smartif %}{%comment %}
+
+This subtemplate is repeated for each user in the CSV dump.
+
+Note that all the carriage returns in this file are inside Django template comments.
+
+********************
+*****USER INFO:*****
+********************
+
+    {%endcomment %}"{{row.user_object.username}}",{%comment %}
+
+
+    {%endcomment %}"{{row.user_object.first_name}}",{%comment %}
+
+
+    {%endcomment %}"{{row.user_object.last_name}}",{%comment %}
+
+
+
+    {%endcomment %}"{% if row.completed_training%}Complete{%else %}Incomplete{%endif %}",{%comment %}
+
+
+    {%endcomment %}"{{row.completion_time}}",{%comment %}
+
+
+************************
+*****TAKING ACTION:*****
+************************
+
+    {%endcomment %}"{%ifequal row.taking_action 'completed_form' %}Completed activity & filled out form{%endifequal%}{%comment %}
+
+
+    {%endcomment %}{%ifequal row.taking_action 'clicked_through' %}Completed activity{%endifequal%}{%comment %}
+
+
+    {%endcomment %}{%ifequal row.taking_action 'no_data' %}Did not complete activity{%endifequal%}",{%comment %}
+
+
+****************************
+*****ABUSE OR ACCIDENT:*****
+****************************
+
+    {%endcomment %}"{%if row.bruise_recon %}{{row.bruise_recon}}{%else%}n/a{%endif%}",{%comment %}
+    
+    
+    
+******************
+*****PRETEST:*****
+******************
+
+    {%endcomment %}{% get_scores for 'pre-test' in row.quizzes as score %}{% if score.answer_count %}"{{score.score}} / {{score.answer_count}}",{%comment %}
+
+
+    {%endcomment %}{% else %}"n/a{%endif %}{%comment %}
+    
+    
+********************
+*****POST-TEST:*****
+********************
+    
+    {%endcomment %}{% get_scores for 'post-test' in row.quizzes as post_test_scores %}{%comment %}
+    
+    
+    {%endcomment %}{% if post_test_scores.initial_score.quiz_score %}"{{post_test_scores.initial_score.quiz_score}} /  {{post_test_scores.initial_score.quiz_max_score}}",{%comment %}
+    
+    
+    {%endcomment %}{% else %}"n/a",{%endif %}{%comment %}
+    
+******************
+*****ANSWERS:*****
+******************
+
+  {%endcomment %}{%for answer in row.answers_in_order %}"{{answer}}",{%endfor %}{%comment %}
+  
+{%endcomment %}
