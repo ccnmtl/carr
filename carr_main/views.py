@@ -13,11 +13,12 @@ from activity_bruise_recon.models import score_on_bruise_recon
 from quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, scores_student, training_is_complete
 from django.contrib.sites.models import Site, RequestSite
 from django.conf import settings
-
+from django.contrib.auth.decorators import user_passes_test 
+from quiz.scores import can_see_scores
 
 import re
 
-#import datetime
+import datetime
 
 
 def background(request,  content_to_show):
@@ -258,21 +259,10 @@ def selenium(request,task):
     
     return dict(task=task, sel_message=sel_message)    
     
-    
-if 1 == 3:    
-    def to_python_date (timestring):
-        try:
-            return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:5]), "%a %b %d %Y %H:%M:%S")
-        except ValueError:
-            #sometimes JS doesn't give us the year,  which results in the date being 1900... not good but better than a 500 error...
-            return datetime.datetime.strptime (' '.join (timestring.split(' ')[0:4]), "%a %b %d %H:%M:%S")    
 
-@login_required
-@rendered_with('carr_main/stats_csv.html')
+@user_passes_test(can_see_scores )
 def stats(request,task):
-    """ 
-    THIS IS IN BETA.
-
+    """
     Two tables with one row per student. This will get very large/slow and is only really intended to be run infrequently. We will cache it once a day or two once it stabilizes..
 
     TODO: add date information for quizzes
@@ -280,112 +270,13 @@ def stats(request,task):
     TODO: show initial answers for students who have them.
     """
     
-    if request.user.user_type() == 'student':
-        return scores_student(request)
-    
-    #TODO: narrow down users based on task
-    if task =='registrar_summary':
-        pass
-        
-    if task =='question_comparison':
-        pass
-    
-    #for now just use all users.
-    tmp = [ u for u in User.objects.all() if 'aaq' in u.username]
-    #tmp = [ u for u in User.objects.all() ]
-    
-    the_users = sort_users([ u for u in tmp if u.user_type() == 'student'  ]) 
-    
-    pre_test_questions  = Question.objects.filter(quiz__id = 2)
-    post_test_questions = Question.objects.filter(quiz__id = 3)
-    
-    case_1_questions =    Question.objects.filter(quiz__id = 6)
-    case_2_questions =    Question.objects.filter(quiz__id = 7)
-    case_3_questions =    Question.objects.filter(quiz__id = 8)
-    
-    blarg = []
-    blarg.extend(pre_test_questions)
-    blarg.extend(case_1_questions)
-    blarg.extend(case_2_questions)
-    blarg.extend(case_3_questions)
-    blarg.extend(post_test_questions)
-    
-    questions_in_order = [(str(q.id), q ) for q in blarg ]
-    
-    site          = Site.objects.get_current (  )
-
-    the_stats = {}
-    for u in the_users:
-    
-        _quizzes       = score_on_all_quizzes     (u)
-        _bruise_recon  = score_on_bruise_recon    (u)
-        _taking_action = score_on_taking_action   (u)
-        
-        student_training_is_complete = training_is_complete (u, _quizzes, _bruise_recon, _taking_action, site)
-        
-        #print student_training_is_complete
-        the_stats[u.username] = {}
-        the_stats[u.username]['user_object'] = u
-        the_stats[u.username]['completed_training'] = student_training_is_complete
-        the_stats[u.username]['taking_action'] = _taking_action
-        the_stats[u.username]['bruise_recon'] = _bruise_recon
-        student_score_on_all_quizzes = _quizzes
-        the_stats[u.username]['quizzes'] = student_score_on_all_quizzes
-        
-        #get completion times (refactor)?
-        try:
-            tmp = [(z['submit_time']) for z in student_score_on_all_quizzes if  z.has_key ('quiz') and z.has_key ('submit_time') and  z['quiz'].id == 3]
-            if len (tmp) > 0:
-                all_submit_times_for_post_test = tmp [0]
-                if len(all_submit_times_for_post_test) > 0:
-                    the_stats[u.username]['completion_time'] = all_submit_times_for_post_test[-1]
-                else:
-                    the_stats[u.username]['completion_time'] = "no completion time found (length zero 1)" # this shouldn't occur.
-            else:
-                the_stats[u.username]['completion_time'] =  "(no time recorded)"
-        except  KeyError:
-             the_stats[u.username]['completion_time'] = "no completion time found (key error)" #this shouldn't occur.
-        
-                
-        all_answers = all_answers_for_quizzes(u)
-        the_stats[u.username]['answers_in_order'] = []
-        for question_id_string, question in questions_in_order:
-            found = False
-            for question_id, correct_incorrect in all_answers.iteritems():
-                if question_id_string == str(question_id):
-                    the_stats[u.username]['answers_in_order'].append(correct_incorrect)
-                    found = True
-            if not found:
-                the_stats[u.username]['answers_in_order'].append("")
-            
-    return dict(task = task,
-                stats = the_stats,
-                users = the_users, 
-                questions_in_order = questions_in_order,
-                site = Site.objects.get_current())    
-    
-
-
-@login_required
-def stats_csv(request,task):
-    """ 
-    THIS IS IN BETA.
-
-    Two tables with one row per student. This will get very large/slow and is only really intended to be run infrequently. We will cache it once a day or two once it stabilizes..
-
-    TODO: add date information for quizzes
-    TODO: allow to specify semester / school via request
-    TODO: show initial answers for students who have them.
-    """
-    
-    
+    stats_csv_filename = 'care_stats_%s.csv' % datetime.datetime.now().isoformat()[:10]
     response = HttpResponse(mimetype='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=somefilename.csv'
+    response['Content-Disposition'] = 'attachment; filename=%s' % stats_csv_filename
     
     t = loader.get_template('carr_main/stats_csv.html')
 
     
-    exit
     if request.user.user_type() == 'student':
         return scores_student(request)
     
@@ -397,8 +288,9 @@ def stats_csv(request,task):
         pass
     
     #for now just use all users.
-    tmp = [ u for u in User.objects.all() if 'aa' in u.username]
-    #tmp = [ u for u in User.objects.all() ]
+    #tmp = [ u for u in User.objects.all() if 'gro' in u.username]
+    
+    tmp = [ u for u in User.objects.all() ]
     
     the_users = sort_users([ u for u in tmp if u.user_type() == 'student'  ]) 
     

@@ -1,26 +1,26 @@
 {% load quiz_template_tags %}{% load smartif %}{%comment %}
 
-
+LINE 1:
 
 {%endcomment %}"","","","","","","","","",{%comment %}
-
 
 {%endcomment %}{% for question_id_string, question in questions_in_order %}"{{ question_id_string}}",{%endfor%}
 {%comment %}
 
+LINE 2:
 
 {%endcomment %}"","","","","","","","","",{%comment %}
-
 
 {%endcomment %}{% for question_id_string, question in questions_in_order %}"{{question.quiz.label}}",{%endfor%}
 {%comment %}
 
+LINE 3:
 
 {%endcomment %}"uni","first_name","last_name","completed_training","when","taking_action","abuse_or_accient","pre-test","post-test_initial",{%comment %}
-
 
 {%endcomment %}{% for question_id_string, question in questions_in_order %}"{{question.short_text}}...",{%endfor%}
 {%comment %}
 
+STUDENT DATA:
 
 {%endcomment %}{%for row in stats.values %}{%include "carr_main/stats_csv_row.html" %}{%endfor%}

@@ -67,9 +67,7 @@ urlpatterns = patterns('',
     (r'^selenium/(?P<task>\w+)/$', 'carr_main.views.selenium'),
     
     
-    #(r'^stats/(?P<task>\w+)/$', 'carr_main.views.stats_csv'),
-   
-    (r'^stats/(?P<task>\w+)/$', 'carr_main.views.stats_csv'),
+    (r'^stats/(?P<task>\w+)/$', 'carr_main.views.stats'),
    
    
    
