@@ -15,6 +15,7 @@ from activity_taking_action.models import score_on_taking_action
 from activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
 from django.conf import settings
+from itertools import tee, izip
 
 import re, pdb, datetime
 
@@ -79,6 +80,27 @@ def courses_sort_key (x, y):
 def sort_courses (courses):
     return sorted(courses, courses_sort_key)
 
+
+def pairwise(iterable):
+    a, b = tee(iterable)
+    next(b, None)
+    return izip(a, b)
+
+
+
+def push_time (timelist):
+    print "pushing time"
+    timelist.append (datetime.datetime.now())
+
+def showdiffs (timelist):
+    if len (timelist) == 0:
+        print "Only one timestamp recorded."
+        return
+    
+    for t0, t1 in pairwise(timelist):
+        print t1 - t0
+        
+
 @user_passes_test(can_see_scores )
 @rendered_with('quiz/scores/classes_by_semester.html')
 def classes_by_semester(request, year, semester):
@@ -88,11 +110,7 @@ def classes_by_semester(request, year, semester):
     all_affils = Group.objects.all()
     this_semester_affils = [a for a in all_affils if semester_string in a.name and 'socw' in a.name]
     care_classes =  find_care_classes (this_semester_affils)
-    
-    
     sorted_care_classes = sort_courses (care_classes)
-    
-    #don't show help text
     return {
         'year' : year
         ,'hide_scores_help_text': True
@@ -225,8 +243,8 @@ def score_on_all_quizzes (the_student):
         # don't deal with questions that have since been removed from quiz.
         results = [{
                     'question':         int(a['id']),
-                    'actual':    int(a['answer']),
-                    'correct':   answer_key[int(a['id'])],
+                    'actual':           int(a['answer']),
+                    'correct':          answer_key[int(a['id'])],
                     'quiz_number':      quiz_key  [int(a['id'])]
         } for a in score if int (a['id']) in quiz_key.keys() ]
         quiz_scores = []
@@ -257,6 +275,39 @@ def score_on_all_quizzes (the_student):
 
 
 
+# a couple helper functions for scoring:
+def pre_and_post_test_results (the_student):
+    result = {'pre_test' : False, 'post_test': False}
+
+    try:
+        state = ActivityState.objects.get(user=the_student)
+    except ActivityState.DoesNotExist:
+        return result
+    
+        
+    if (len(state.json) > 0):
+        try:
+            json_stream = simplejson.loads(state.json)
+        except:
+            return result
+            
+                
+        #initial test:
+        try:
+            if json_stream['quiz_2']['initial_score']['quiz_score'] != None:
+                result ['pre_test'] = True
+        except:
+            return result
+            
+        #final test:
+        try:               
+            if json_stream['quiz_3']['all_correct'] =='t':
+                result ['post_test'] = True
+        except:
+            return result
+    
+    return result
+
 def find_care_classes (affils):
     """If we can find users in our DB with ST affils for a course,
     AND users with FC affils, we consider that course a CARE course."""
@@ -269,26 +320,20 @@ def find_care_classes (affils):
     
     for course_info in [a.groups()[0:6] for a in course_matches]:
         if course_info not in checked:
-            #print "checking"
-            #print course_info
             show_this_class = False
             checked.append (course_info)
             student_lookup_for_this_course = f_lookup % course_info
             faculty_lookup_for_this_course = s_lookup % course_info
             faculty_affils_list = [a for a in affils if student_lookup_for_this_course in a.name]
-            student_affils_list = [a for a in affils if faculty_lookup_for_this_course in a.name]
-            
-            #print faculty_affils_list
-            #print student_affils_list
-            
-            if faculty_affils_list and student_affils_list:
-                class_info = extract_class_info (course_info, faculty_affils_list, student_affils_list)
-                if class_info != None:
-                    results.append (class_info)
+            if faculty_affils_list:
+                student_affils_list = [a for a in affils if faculty_lookup_for_this_course in a.name]
+                if faculty_affils_list and student_affils_list:
+                    class_info = extract_class_info (course_info, faculty_affils_list, student_affils_list)
+                    if class_info != None:
+                        results.append (class_info)
         else:
             pass #already checked this course.
 
-    
     return results
 
 def extract_class_info(course_info, faculty_affils_list, student_affils_list):
@@ -316,14 +361,17 @@ def extract_class_info(course_info, faculty_affils_list, student_affils_list):
     if not has_students and not has_default_faculty:
         return None
     
+    the_students = [s for s in students if s not in this_course_faculty]
+    
     return {
         'course_label':   course_label (course_info)
         ,'course_section': course_section (course_info)
         ,'faculty' : this_course_faculty #TODO Sort by last name
         ,'course_info' : course_info
-        ,'score_info_for_class' : summarize_score_info_for_class (course_info)
-        ,'number_of_students_in_class' : number_of_students_in_class (course_info)
+        ,'score_info_for_this_class' : count_pretest_and_posttest_students (course_info, the_students)
+        ,'number_of_students_in_class' :  len (the_students)
     }
+
 
 def course_label (course_info):
     return  "%s%s" % (course_info[3], course_info[4])
@@ -360,32 +408,33 @@ def all_answers_for_quizzes (the_student):
         return results
 
 
+
 #SEE  http://www.columbia.edu/acis/rad/authmethods/auth-affil
 # see http://www.columbia.edu/acis/rad/authmethods/wind/ar01s06.html
 #    students = User.objects.all()
 
 def score_info_for_class (course_info):
-    """Quick cached version of the quiz results for this class"""
+    """Quick cached version of the quiz results for this class
+    NOTE: This may be obsolete.
+    
+    """
     cache_key = "score_info_for_t%s.y%s.s%s.c%s%s.%s" % course_info
     if cache.get(cache_key):
         return cache.get(cache_key)
     result = dict([(a, score_on_all_quizzes(a)) for a in students_in_class(course_info)])
     cache.set(cache_key,result,60*60)
     return result
-                
-def summarize_score_info_for_class (course_info):
+
+
+def count_pretest_and_posttest_students (course_info, the_students):
     """Count the number of students in this class who took the pretest and the post-test."""
-    info = score_info_for_class (course_info)
-    students_with_scores =  [v for v in info.values() if v]
     pre_test_count = 0
     post_test_count = 0
-    for a in students_with_scores:
-        for b in a:
-            if b['quiz'].label() == 'Pre-test':
-                pre_test_count = pre_test_count + 1
-            if b['quiz'].label() == 'Post-test':
-                if b.has_key ('all_correct') and b['all_correct'] == 't':
-                    post_test_count = post_test_count + 1
+    for a in [pre_and_post_test_results(a) for a in the_students]:
+        if a ['pre_test']:
+            pre_test_count = pre_test_count + 1
+        if a ['post_test']:
+            post_test_count = post_test_count + 1
     return {'pre_test' : pre_test_count, 'post_test': post_test_count}
 
 def question_and_quiz_keys():

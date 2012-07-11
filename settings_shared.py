@@ -13,7 +13,10 @@ DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
+#For now turn off caching
 CACHE_BACKEND = 'locmem://'
+#CACHE_BACKEND = 'dummy://'
+
 
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
@@ -86,6 +89,7 @@ STATSD_PREFIX = 'carr'
 STATSD_HOST = 'localhost'
 STATSD_PORT = 8125
 STATSD_PATCHES = ['django_statsd.patches.db', ]
+
 
 THUMBNAIL_SUBDIR = "thumbs"
 
