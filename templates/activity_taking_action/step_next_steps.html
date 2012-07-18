@@ -1,0 +1,27 @@
+<div class="activity_step" id="next_steps">
+<p>
+Your previous answers appear on the left. On the right, please choose your next steps. When you have selected the correct answer, click the "Next" button.
+</p>
+<div class="half-page">
+    {% include "activity_taking_action/snippets/your_observations.html" %}
+	{% include "activity_taking_action/snippets/criteria_for_action.html" %}
+	<p class="half-page_heading">
+		Completed Actions 
+	</p>
+	<div>
+		<div class="{{the_step_name}} action_button">
+			Call SCR 
+		</div>
+	</div>
+</div>
+<div class="half-page">
+	<p class="half-page_heading">
+		Choose Next Steps 
+	</p>
+	{% include "activity_taking_action/snippets/next_steps.html" %}
+</div>
+<div class="purple_button taking_action_next_button">
+	Next 
+</div>
+	<div class ="taking_action_pagenumber">Page 4 of 6</div>
+</div>

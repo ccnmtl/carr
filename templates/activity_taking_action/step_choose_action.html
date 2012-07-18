@@ -1,0 +1,20 @@
+
+<div class="activity_step" id="choose_action">
+	<p>
+	Your observations and selected criteria appear on the left. On the right, please select an action plan. When you have selected the correct answer, click the "Next" button.
+	</p>
+	<div class="half-page">
+        {% include "activity_taking_action/snippets/your_observations.html" %}
+	    {% include "activity_taking_action/snippets/criteria_for_action.html" %}
+	</div>
+	<div class="half-page">	
+        <p class="half-page_heading">
+            Choose an Action Plan 
+        </p>
+    	{% include "activity_taking_action/snippets/possible_actions.html" %}
+	</div>
+	<div class="purple_button taking_action_next_button">
+		Next 
+	</div>
+		<div class ="taking_action_pagenumber">Page 3 of 6</div>
+</div>
