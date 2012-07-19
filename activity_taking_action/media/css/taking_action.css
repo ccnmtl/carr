@@ -119,6 +119,245 @@ div.positioner_div {
 
 }
 
+div.ldss_form_div {
+   	background-size: contain;
+   	background-repeat: no-repeat;
+   	width : 750px;
+    position:relative; /* this allows the inputs inside this div to be positioned relative to me.*/
+}
+
+div.ldss_form_complete {
+   	background-image: url(/site_media/img/form_complete.png);
+    height : 1000px;
+}
+
+div.ldss_form_top {
+   	background-image: url(/site_media/img/form_top.png);
+    height : 500px;
+}
+
+div.ldss_form_middle {
+   	background-image: url(/site_media/img/form_middle.png);
+    height : 500px;
+}
+
+div.ldss_form_bottom {
+   	background-image: url(/site_media/img/form_bottom.png);
+    height : 500px;
+}
+
+
+input.ldss_form_input {
+    position: absolute; /* but relative to the div that i'm in. */
+    min-width: 0px;
+    min-height: 0px;
+    font-size: .7em !important;
+    height: 14px !important;
+    font-family: Courier New, monospace;
+    color: blue;
+    text-transform:uppercase;
+}
+
+
+
+
+/* top of form */
+.ldss_form_top input.top_1 {
+    top: 21px !important;
+    left:424px !important;
+    width:78px !important;
+}
+.ldss_form_top input.top_2 {
+    top: 21px !important;
+    left:514px !important;
+    width:78px !important;
+}
+.ldss_form_top input.top_3 {
+    top: 21px !important;
+    left:600px !important;
+    width:78px !important;
+}
+
+/* second line */
+.ldss_form_top input.top_4 {
+    top: 59px !important;
+    left:514px !important;
+    width:78px !important;
+}
+.ldss_form_top input.top_5 {
+    top: 59px !important;
+    left:600px !important;
+    width:78px !important;
+}
+
+/*subjects of report table */
+
+.ldss_form_top input.line_1 {
+    top: 127px !important;
+}
+
+.ldss_form_top input.line_2 {
+    top: 151px !important;
+}
+
+.ldss_form_top input.line_3 {
+    top: 175px !important;
+}
+
+.ldss_form_top input.line_4 {
+    top: 199px !important;
+}
+
+.ldss_form_top input.line_5 {
+    top: 223px !important;
+}
+
+.ldss_form_top input.line_6 {
+    top: 247px !important;
+}
+
+.ldss_form_top input.line_7 {
+    top: 271px !important;
+}
+
+
+.ldss_form_top input.name_column {
+    left: 20px !important;
+    width: 352px !important;
+}
+.ldss_form_top input.sex_column {
+    left: 379px !important;
+    width: 39px !important;
+}
+.ldss_form_top input.age_column {
+    left: 426px !important;
+    width: 54px !important;
+}
+.ldss_form_top input.race_column {
+    left: 487px !important;
+    width: 34px !important;
+}
+.ldss_form_top input.ethnicity_column {
+    left: 569px !important;
+    width: 16px !important;
+}
+.ldss_form_top input.relation_column {
+    left: 635px !important;
+    width: 31px !important;
+}
+.ldss_form_top input.role_column {
+    left: 675px !important;
+    width: 26px !important;
+}
+.ldss_form_top input.lang_column {
+    left: 711px !important;
+    width: 26px !important;
+}
+
+/* phone # and addresses */
+.ldss_form_top input.line_8 {
+    top: 345px !important;
+}
+
+.ldss_form_top input.line_9 {
+    top: 370px !important;
+}
+
+.ldss_form_top input.address_column {
+    left: 8px !important;
+    width: 580px !important;
+}
+
+.ldss_form_top input.phone_column {
+    left: 600px !important;
+}
+
+
+.ldss_form_middle input.small_input {
+    width: 30px !important;
+}
+
+
+.ldss_form_middle input.column_1 {
+    left: 6px !important;
+}
+.ldss_form_middle input.column_2 {
+    left: 334px !important;
+}
+.ldss_form_middle input.column_3 {
+    left: 521px !important;
+}
+
+
+.ldss_form_middle input.line_1 {
+    top: 35px !important;
+}
+.ldss_form_middle input.line_2 {
+    top: 56px !important;
+}
+.ldss_form_middle input.line_3 {
+    top: 80px !important;
+}
+
+.ldss_form_middle input.line_4 {
+    top: 102px !important;
+}
+
+.ldss_form_middle input.line_5 {
+    top: 126px !important;
+}
+
+.ldss_form_middle input.line_6 {
+    top: 147px !important;
+}
+
+.ldss_form_middle input.line_7 {
+    top: 168px !important;
+}
+
+
+.ldss_form_middle input.line_8 {
+    top: 190px !important;
+}
+
+/*CAUTION -- override */
+.ldss_form_middle input.column_3.line_8 {
+    left: 463px !important;
+    height: 12px !important;
+}
+
+.ldss_form_middle input.reasons_for_suspicion_1 {
+    left: 6px !important;
+    top: 254px !important;
+    width: 464px !important;
+}
+
+.ldss_form_middle input.reasons_for_suspicion_2 {
+    left: 6px !important;
+    top: 273px !important;
+    width: 464px !important;
+}
+
+.ldss_form_middle input.month {
+    left: 500px !important;
+    top: 227px !important;
+    width: 50px !important;
+    height: 10px !important;
+}
+.ldss_form_middle input.day {
+    left: 500px !important;
+    top: 242px !important;
+    width: 50px !important;
+    height: 10px !important;
+}
+.ldss_form_middle input.year {
+    left: 500px !important;
+    top: 257px !important;
+    width: 50px !important;
+    height: 10px !important;
+}
+
+
 /********/
 
 /*

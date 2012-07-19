@@ -1,6 +1,10 @@
 
-default_step = 'review_case_history';
-//default_step = 'complete_report';
+//default_step = 'review_case_history';
+
+
+//default_step = 'complete_report_overview';
+default_step = 'complete_report_middle_of_form';
+
 game_state = {}
 
 
