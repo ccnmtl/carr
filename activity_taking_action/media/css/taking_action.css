@@ -358,6 +358,191 @@ input.ldss_form_input {
 }
 
 
+.ldss_form_middle input.hour {
+    left: 500px !important;
+    top: 257px !important;
+    width: 50px !important;
+    height: 10px !important;
+}
+
+.ldss_form_middle input.minute {
+    left: 500px !important;
+    top: 257px !important;
+    width: 50px !important;
+    height: 10px !important;
+}
+
+.ldss_form_middle input.am {
+    left: 613px !important;
+    top: 277px !important;
+    width: 6px !important;
+    height: 6px !important;
+}
+.ldss_form_middle input.pm {
+    left: 649px !important;
+    top: 277px !important;
+    width: 6px !important;
+    height: 6px !important;
+}
+.ldss_form_middle input.requests_finding_yes {
+    left: 610px !important;
+    top: 292px !important;
+    width: 10px !important;
+    height: 10px !important;
+}
+.ldss_form_middle input.requests_finding_no {
+    left:689px !important;
+    top: 292px !important;
+    width: 10px !important;
+    height: 10px !important;
+}
+
+
+/* Bottom part of form */
+
+.ldss_form_bottom input.name_1 {
+    left:6px !important;
+    top: 34px !important;
+    width: 222px !important;
+    height: 10px!important;
+}
+.ldss_form_bottom input.phone_1 {
+    left:235px !important;
+    top: 34px !important;
+    width: 96px !important;
+    height: 10px!important;
+}
+.ldss_form_bottom input.address_1 {
+    left:6px !important;
+    top: 64px !important;
+    width: 325px !important;
+    height: 10px!important;
+}
+.ldss_form_bottom input.institution_1 {
+    left:6px !important;
+    top: 93px !important;
+    width: 325px !important;
+    height: 10px!important;
+}
+
+
+.ldss_form_bottom input.name_2 {
+    left:342px !important;
+    top: 34px !important;
+    width: 265px !important;
+    height: 10px!important;
+}
+.ldss_form_bottom input.phone_2 {
+    left:615px !important;
+    top: 34px !important;
+    width: 126px !important;
+    height: 8px!important;
+}
+.ldss_form_bottom input.address_2 {
+    left:342px !important;
+    top: 64px !important;
+    width: 398px !important;
+    height: 10px!important;
+}
+.ldss_form_bottom input.institution_2 {
+    left:342px !important;
+    top: 93px !important;
+    width: 398px !important;
+    height: 10px!important;
+}
+
+
+
+.ldss_form_bottom input.relationship_line_1 {
+    top: 129px !important;
+    width: 20px !important;
+}
+
+
+.ldss_form_bottom input.relationship_line_2 {
+    top: 148px !important;
+    width: 20px !important;
+}
+
+
+
+.ldss_form_bottom input.relationship_line_1.c1 {
+    left: 6px !important
+}
+.ldss_form_bottom input.relationship_line_1.c2{
+    left: 146px !important
+}
+.ldss_form_bottom input.relationship_line_1.c3{
+    left: 236px !important
+}
+.ldss_form_bottom input.relationship_line_1.c4{
+    left: 336px !important
+}
+.ldss_form_bottom input.relationship_line_1.c5{
+    left: 458px !important
+}
+.ldss_form_bottom input.relationship_line_1.c6{
+    left: 540px !important
+}
+.ldss_form_bottom input.relationship_line_1.c7{
+    left: 620px !important
+}
+
+
+
+
+.ldss_form_bottom input.relationship_line_2.c1{
+    left: 6px !important
+}
+.ldss_form_bottom input.relationship_line_2.c2{
+    left: 121px !important
+}
+.ldss_form_bottom input.relationship_line_2.c3{
+    left: 224px !important
+}
+.ldss_form_bottom input.relationship_line_2.c4{
+    left: 326px !important
+}
+.ldss_form_bottom input.relationship_line_2.c5{
+    left: 430px !important
+}
+
+
+.ldss_form_bottom input.signature_line {
+    top: 280px !important;
+}
+
+
+.ldss_form_bottom input.signature_line.c1{
+    left: 6px !important;
+    width:373px!important;
+}
+.ldss_form_bottom input.signature_line.c2{
+    left: 387px !important;
+    width:199px!important;
+}
+.ldss_form_bottom input.signature_line.c3{
+    top: 284px !important;
+    left: 619px !important;
+    height:10px!important;
+    width:30px!important;
+}
+.ldss_form_bottom input.signature_line.c4{
+    top: 284px !important;
+    left: 647px !important;
+    height:10px!important;
+    width:30px!important;
+}
+.ldss_form_bottom input.signature_line.c5{
+    top: 284px !important;
+    left: 670px !important;
+    height:10px!important;
+    width:30px!important;
+}
+
+
+
+
 /********/
 
 /*

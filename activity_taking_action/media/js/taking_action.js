@@ -3,7 +3,8 @@
 
 
 //default_step = 'complete_report_overview';
-default_step = 'complete_report_middle_of_form';
+//default_step = 'complete_report_middle_of_form';
+default_step = 'complete_report_bottom_of_form';
 
 game_state = {}
 
