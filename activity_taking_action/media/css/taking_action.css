@@ -133,12 +133,12 @@ div.ldss_form_complete {
 
 div.ldss_form_top {
    	background-image: url(/site_media/img/form_top.png);
-    height : 500px;
+    height : 399px;
 }
 
 div.ldss_form_middle {
    	background-image: url(/site_media/img/form_middle.png);
-    height : 500px;
+    height : 313px;
 }
 
 div.ldss_form_bottom {
@@ -158,8 +158,9 @@ input.ldss_form_input {
     text-transform:uppercase;
 }
 
-
-
+.form_fields_are_not_editable  .ldss_form_input {
+    color: green;
+}
 
 /* top of form */
 .ldss_form_top input.top_1 {
@@ -451,7 +452,7 @@ input.ldss_form_input {
     height: 10px!important;
 }
 
-
+/* Relationship checkboxes. */
 
 .ldss_form_bottom input.relationship_line_1 {
     top: 129px !important;
@@ -463,8 +464,6 @@ input.ldss_form_input {
     top: 148px !important;
     width: 20px !important;
 }
-
-
 
 .ldss_form_bottom input.relationship_line_1.c1 {
     left: 6px !important
@@ -507,11 +506,9 @@ input.ldss_form_input {
     left: 430px !important
 }
 
-
 .ldss_form_bottom input.signature_line {
     top: 280px !important;
 }
-
 
 .ldss_form_bottom input.signature_line.c1{
     left: 6px !important;
@@ -539,8 +536,6 @@ input.ldss_form_input {
     height:10px!important;
     width:30px!important;
 }
-
-
 
 
 /********/

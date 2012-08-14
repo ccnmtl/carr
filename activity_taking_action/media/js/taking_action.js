@@ -1,10 +1,8 @@
 
 //default_step = 'review_case_history';
-
-
 //default_step = 'complete_report_overview';
-//default_step = 'complete_report_middle_of_form';
-default_step = 'complete_report_bottom_of_form';
+default_step = 'complete_report_top_of_form';
+//default_step = 'complete_report_bottom_of_form';
 
 game_state = {}
 
@@ -94,7 +92,6 @@ function loadState()
         return;
     }
 
-
    //debug("loadState")
    url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/load/"
    deferred = loadJSONDoc(url)
@@ -109,43 +106,44 @@ function like_checkbox(selected_class, all_button_class, the_element) {
     addElementClass( $(the_element), selected_class);
 }
 
-
-
-
 function show_answer() {
       maybeEnableNext();
 }
 
-
 MochiKit.Signal.connect(window, "onload", loadState)
 //MochiKit.Signal.connect(window, "onload", setfocus)
 
-
+function new_ldss_form_fields_to_save() {
+    results = {};
+    filled_out_fields = filter (function (a) { return a.value != '';}, $$ ('.form_fields_are_editable .ldss_form_input'));
+    map( function (a) {results[the_classlist(a)] = a.value}, filled_out_fields);
+    return results;
+}
 
 function ldss_form_fields_to_save () {
-    results = {}
-    filled_out_fields = filter (function (a) { return a.innerHTML != '';}, $$('.magic_form'))
+    results = {};
+    filled_out_fields = filter (function (a) { return a.innerHTML != '';}, $$('.magic_form'));
     //logDebug (filled_out_fields);
     map( function (a) {results[a.id] = a.innerHTML}, filled_out_fields);
     return results;
 }
 
-
 function saveState()
 {
+  console.log ('saving state');
   if (typeof student_response != "undefined") {
       return;      
   }
-  url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/"
+  url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/";
 
-  doc = ldss_form_fields_to_save()
-   
+  //doc = ldss_form_fields_to_save();
+  doc = new_ldss_form_fields_to_save();
+
   if (validate()) {
        doc['complete'] = 'true' 
   }
   
-  doc ['current_step'] = current_step;
-  
+  doc ['current_step'] = current_step;  
   var sync_req = new XMLHttpRequest();  
   sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
   sync_req.open("POST", url, false);
