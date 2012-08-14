@@ -32,8 +32,7 @@
 
 a.reset_button { margin-top: -50px; }
 
-#review_case_button, a.reset_button, #show_expert_form
-{
+#review_case_button, a.reset_button, #show_expert_form, #back_to_my_version_button {
 	background-color: #eee;
 	border: 1px solid #ccc;
 	text-decoration: none;
@@ -143,9 +142,8 @@ div.ldss_form_middle {
 
 div.ldss_form_bottom {
    	background-image: url(/site_media/img/form_bottom.png);
-    height : 500px;
+   	height: 311px;
 }
-
 
 input.ldss_form_input {
     position: absolute; /* but relative to the div that i'm in. */
@@ -157,7 +155,6 @@ input.ldss_form_input {
     color: blue;
     text-transform:uppercase;
 }
-
 
 /* top of form */
 .ldss_form_top input.top_1 {

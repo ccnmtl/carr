@@ -4,7 +4,6 @@
 
 function set_up_all_form_fields () {
 
-    
     // Get all the fields on the Nice Work page:
     new_form_fields_top =    $$ ('#complete_report_top_of_form    .ldss_form_input')
     new_form_fields_middle = $$ ('#complete_report_middle_of_form .ldss_form_input')
@@ -14,7 +13,6 @@ function set_up_all_form_fields () {
     forEach (new_form_fields_middle, set_up_form_field );
     forEach (new_form_fields_bottom, set_up_form_field );
     
-
 }
 
 function the_classlist (el) {
@@ -41,42 +39,27 @@ function set_up_form_field ( field) {
 
     reporting_form_editable_textfield_connect (editable_version);
     
-    // make the not editable version read-only:
+    // make the non-editable version read-only:
     setNodeAttribute(not_editable_version, "readonly", "readonly");
-    
     
     // load and display values from game state if they exist:
     if (game_state [css_classes] != undefined) {
         editable_version.value = game_state [css_classes];
         not_editable_version.value   = game_state [css_classes];
     }
-    
-    //connect (editable_version, 
-    
-    //console.log ('ok now');
-    //console.log ($$('#complete_report_nice_work ' + the_classlist_1)[0])
-    
 }
 
 function reporting_form_editable_textfield_connect (f) {
-    // console.log ('connecting' + f);
     connect (f, 'onchange', reporting_form_editable_textfield_changed);
 }
 
 function reporting_form_editable_textfield_changed(e) {
     contents = e.src().value;
-    //console.log (contents);
-    //console.log (the_classlist(e.src()));
-    
-    
     css_classes = the_classlist (e.src());
     not_editable_version  = $$('.form_fields_are_not_editable ' + css_classes)[0];
     
-    // set the non-editable fields on the "Nice Work" page to reflect the contents.
+    // set the non-editable fields on the "Nice Work" page to reflect the new contents.
     not_editable_version.value = contents;
-    
-    //map (partial (set_contents, contents), $$('.other_observations'));
-    //   do other fun stuff with e.src() e.g. save the state of the app.
 }
 
 
@@ -115,5 +98,14 @@ steps['complete_report_nice_work'] = {
 steps['complete_report_expert'] = {
     'load': function () {
         new_load ('complete_report_expert', 'case_summary');
+        connect  ('back_to_my_version_button', 'onclick', go_back_to_my_version);
     }
 }
+
+
+
+    
+function go_back_to_my_version () {
+    load_step ('complete_report_nice_work');
+}
+

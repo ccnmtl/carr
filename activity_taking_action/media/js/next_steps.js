@@ -1,7 +1,7 @@
 
 steps['next_steps'] = {
     'load': function () {
-        new_load ('next_steps', 'complete_report');
+        new_load ('next_steps', 'complete_report_overview');
         map (connect_action_round_2,  $$('.second_round_action'));
         
     }
@@ -24,7 +24,3 @@ function action_button_clicked_round_2(c) {
         showElement($$('.action_explanation.second_round_action_4')[0]);
     }
 }
-
-
-
-
