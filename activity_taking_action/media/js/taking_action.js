@@ -31,12 +31,16 @@ function maybeEnableNext()
   }
 }
 
+// filter (function (a) { return a.value != '';}, $$ ('.form_fields_are_editable .ldss_form_input'));
+
 function validate() {
-    
-    if (filter(function (a) { return a.substring (0, 14) == 'form_pre_field' }, keys(game_state)).length > 0) {
+
+    // we have stored form info for this user:
+    if (filter(function (a) { return a.substring (0, 16) == '.ldss_form_input' }, keys(game_state)).length > 0) {
       return true
     }
-    if (filter (function(a) {return (a.innerHTML.trim() != '')}, $$('.magic_form') ).length > 0) {
+    // OR the user has typed info into the form although it's not yet stored:
+    if (filter (function(a) {return (a.value.trim() != '')}, $$('.form_fields_are_editable .ldss_form_input') ).length > 0) {
       return true;
     }
   return false;  
@@ -120,7 +124,7 @@ function new_ldss_form_fields_to_save() {
     return results;
 }
 
-function ldss_form_fields_to_save () {
+function deprecated_ldss_form_fields_to_save () {
     results = {};
     filled_out_fields = filter (function (a) { return a.innerHTML != '';}, $$('.magic_form'));
     //logDebug (filled_out_fields);

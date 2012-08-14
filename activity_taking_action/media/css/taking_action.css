@@ -158,9 +158,6 @@ input.ldss_form_input {
     text-transform:uppercase;
 }
 
-.form_fields_are_not_editable  .ldss_form_input {
-    color: green;
-}
 
 /* top of form */
 .ldss_form_top input.top_1 {

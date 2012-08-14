@@ -44,6 +44,13 @@ function set_up_form_field ( field) {
     // make the not editable version read-only:
     setNodeAttribute(not_editable_version, "readonly", "readonly");
     
+    
+    // load and display values from game state if they exist:
+    if (game_state [css_classes] != undefined) {
+        editable_version.value = game_state [css_classes];
+        not_editable_version.value   = game_state [css_classes];
+    }
+    
     //connect (editable_version, 
     
     //console.log ('ok now');
