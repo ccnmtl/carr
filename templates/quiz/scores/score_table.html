@@ -28,7 +28,7 @@
             </td>
             <td>
                 {% get_scores for 'pre-test' in st.scores as score %}
-                {% with 2 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{%endwith %}            
+                {% include "quiz/scores/chunks/initial_quiz_score.html" %}  
                 </td>
             <td>
                 {%with st.score_on_bruise_recon as a%} 
@@ -67,25 +67,6 @@
         </tr>
     {%endfor %}
 </table>
-
-<!--
-    <div class="alert alert-block">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-     	<p>
-	    Students in courses: 
-	    </p>
-	    <ul>
-            <li>
-                <b>prior to 2011</b> might have "n/a" appear on their scores. 
-            </li>
-            <li>
-                <b>from 2011 onward</b> should not have "n/a" appear on their scores.    
-            </li>
-
-        </ul>
-    </div>
--->
-
 <div class = "well">
     <button type="button" class="close" data-dismiss="alert">×</button>
  	<p>

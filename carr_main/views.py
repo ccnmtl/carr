@@ -265,9 +265,6 @@ def stats(request,task):
     """
     Two tables with one row per student. This will get very large/slow and is only really intended to be run infrequently. We will cache it once a day or two once it stabilizes..
 
-    TODO: add date information for quizzes
-    TODO: allow to specify semester / school via request
-    TODO: show initial answers for students who have them.
     """
     
     stats_csv_filename = 'care_stats_%s.csv' % datetime.datetime.now().isoformat()[:10]
@@ -287,13 +284,18 @@ def stats(request,task):
     if task =='question_comparison':
         pass
     
-    #for now just use all users.
-    #tmp = [ u for u in User.objects.all() if 'gro' in u.username]
     
+    
+    
+    #for now just use all users.
+    #tmp = [ u for u in User.objects.all() if 'e' in u.username]
     tmp = [ u for u in User.objects.all() ]
     
     the_users = sort_users([ u for u in tmp if u.user_type() == 'student'  ]) 
     
+    
+    
+    # make a list of questions:
     pre_test_questions  = Question.objects.filter(quiz__id = 2)
     post_test_questions = Question.objects.filter(quiz__id = 3)
     
@@ -301,14 +303,15 @@ def stats(request,task):
     case_2_questions =    Question.objects.filter(quiz__id = 7)
     case_3_questions =    Question.objects.filter(quiz__id = 8)
     
-    blarg = []
-    blarg.extend(pre_test_questions)
-    blarg.extend(case_1_questions)
-    blarg.extend(case_2_questions)
-    blarg.extend(case_3_questions)
-    blarg.extend(post_test_questions)
     
-    questions_in_order = [(str(q.id), q ) for q in blarg ]
+    tmp2 = []
+    tmp2.extend(pre_test_questions)
+    tmp2.extend(case_1_questions)
+    tmp2.extend(case_2_questions)
+    tmp2.extend(case_3_questions)
+    tmp2.extend(post_test_questions)
+    
+    questions_in_order = [(str(q.id), q ) for q in tmp2 ]
     
     site          = Site.objects.get_current (  )
 
@@ -322,7 +325,7 @@ def stats(request,task):
         
         student_training_is_complete = training_is_complete (u, _quizzes, _bruise_recon, _taking_action, site)
         
-        #print student_training_is_complete
+        
         the_stats[u.username] = {}
         the_stats[u.username]['user_object'] = u
         the_stats[u.username]['completed_training'] = student_training_is_complete
@@ -331,21 +334,18 @@ def stats(request,task):
         student_score_on_all_quizzes = _quizzes
         the_stats[u.username]['quizzes'] = student_score_on_all_quizzes
         
-        #get completion times (refactor)?
-        try:
-            tmp = [(z['submit_time']) for z in student_score_on_all_quizzes if  z.has_key ('quiz') and z.has_key ('submit_time') and  z['quiz'].id == 3]
-            if len (tmp) > 0:
-                all_submit_times_for_post_test = tmp [0]
-                if len(all_submit_times_for_post_test) > 0:
-                    the_stats[u.username]['completion_time'] = all_submit_times_for_post_test[-1]
-                else:
-                    the_stats[u.username]['completion_time'] = "no completion time found (length zero 1)" # this shouldn't occur.
-            else:
-                the_stats[u.username]['completion_time'] =  "(no time recorded)"
-        except  KeyError:
-             the_stats[u.username]['completion_time'] = "no completion time found (key error)" #this shouldn't occur.
+
+
+        when_training_was_started = get_quiz_time (student_score_on_all_quizzes, 2)
+        the_stats[u.username]['pre_test_time'] = when_training_was_started
+
         
-                
+        when_training_was_completed = get_quiz_time (student_score_on_all_quizzes, 3)
+        the_stats[u.username]['completion_time'] = when_training_was_completed
+        
+        
+        
+        
         all_answers = all_answers_for_quizzes(u)
         the_stats[u.username]['answers_in_order'] = []
         for question_id_string, question in questions_in_order:
@@ -356,6 +356,8 @@ def stats(request,task):
                     found = True
             if not found:
                 the_stats[u.username]['answers_in_order'].append("")
+    
+    
             
     result = dict(task = task,
                 stats = the_stats,
@@ -366,6 +368,24 @@ def stats(request,task):
     c = Context( result )
     response.write(t.render(c))
     return response
+
+
+
+def get_quiz_time (scores, quiz_id):
+    tmp = [(z['submit_time']) for z in scores if  z.has_key ('quiz') and z.has_key ('submit_time') and  z['quiz'].id == quiz_id]
+    if len (tmp) > 0:
+        all_submit_times = tmp [0]
+        if len(all_submit_times) > 0:
+            result =   all_submit_times[-1]
+        else:
+            result =  "no timestamp found"
+    else:
+        result =  "no timestamp found"
+    return result
+
+
+
+
 
 @login_required
 def index(request):
