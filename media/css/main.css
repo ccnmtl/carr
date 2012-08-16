@@ -343,7 +343,7 @@ display: block;
 	margin: 0;
 	padding: 0;
 	border: 0;
-	background: #333 url('../img/primarynav_bg.jpg') left top repeat-x;
+	/* background: #333 url('../img/primarynav_bg.jpg') left top repeat-x; */
 }
 
 #primarynav div.encase

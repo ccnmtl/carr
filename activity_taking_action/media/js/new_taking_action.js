@@ -13,6 +13,11 @@ function set_up_all_form_fields () {
     forEach (new_form_fields_middle, set_up_form_field );
     forEach (new_form_fields_bottom, set_up_form_field );
     
+    // For faculty reviewing student response to form:
+    student_response_form_fields = $$('#student_response_form .ldss_form_input');
+    forEach (student_response_form_fields, set_up_form_field );
+    
+    
 }
 
 function the_classlist (el) {
@@ -29,24 +34,30 @@ function the_classlist (el) {
 function set_up_form_field ( field) {
     // on change,  update the state and set the content on the Nice Work page to its content.
     
-    //console.log (field.classList);
+    if (field == undefined ) {
+        return;
+    }
     disconnectAll(field); // in case this gets called more than once.
-    
     css_classes = the_classlist (field);
-    
     editable_version = $$('.form_fields_are_editable '     + css_classes)[0];
     not_editable_version  = $$('.form_fields_are_not_editable ' + css_classes)[0];
 
-    reporting_form_editable_textfield_connect (editable_version);
+
+    // load and display values from game state if they exist:
+    if (editable_version != undefined ) {
+        reporting_form_editable_textfield_connect (editable_version);
+        if (game_state [css_classes] != undefined) {
+            editable_version.value = game_state [css_classes];
+        }
+    }
+    if (not_editable_version != undefined ) {
+        if (game_state [css_classes] != undefined) {
+            not_editable_version.value   = game_state [css_classes];
+        }
+    }
     
     // make the non-editable version read-only:
     setNodeAttribute(not_editable_version, "readonly", "readonly");
-    
-    // load and display values from game state if they exist:
-    if (game_state [css_classes] != undefined) {
-        editable_version.value = game_state [css_classes];
-        not_editable_version.value   = game_state [css_classes];
-    }
 }
 
 function reporting_form_editable_textfield_connect (f) {
@@ -54,11 +65,14 @@ function reporting_form_editable_textfield_connect (f) {
 }
 
 function reporting_form_editable_textfield_changed(e) {
+    
     contents = e.src().value;
     css_classes = the_classlist (e.src());
     not_editable_version  = $$('.form_fields_are_not_editable ' + css_classes)[0];
     
     // set the non-editable fields on the "Nice Work" page to reflect the new contents.
+    console.log ('css_classes');
+    console.log (contents);
     not_editable_version.value = contents;
 }
 

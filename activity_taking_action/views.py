@@ -62,9 +62,7 @@ def savestate(request):
         
     return HttpResponse(simplejson.dumps(response), 'application/json')
     
-    
 
-    
 @rendered_with('activity_taking_action/student_response.html')
 def student(request, user_id):
     # activity/taking_action/student/5/
