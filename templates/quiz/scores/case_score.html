@@ -1,7 +1,7 @@
-            {%if a %}
-                    <span class="label label-info">{{a}}</span>
-              {%else%}
-                        {%if a == 0 %}
-                            <span class="label label-info">{{a}}</span>
-                        {%else %}<span class="label label-warning">inc.</span>{%endif%}
-              {%endif%}
+{%if a %}
+    <span class="label label-info">{{a}}</span>
+{%else%}
+    {%if a == 0 %}
+        <span class="label label-info">{{a}}</span>
+    {%else %}<span class="label label-warning">inc.</span>{%endif%}
+{%endif%}

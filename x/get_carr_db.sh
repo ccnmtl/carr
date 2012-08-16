@@ -1,39 +1,11 @@
 #!/bin/bash
-
 #
 # db backup
 # 
-
 #To see output of this script, uncomment the following line:
 set -x
-
-############
-DB_BACKUPS=~
-PREFIX=carr_prod_
-DATE=$PREFIX`date +"%F_%R" | sed 's/-/_/g' | sed 's/:/_/g'`
-PROD_SERVER_HOSTNAME=hutz.ccnmtl.columbia.edu
-############
-
-
-#Note: this assumes there is a POSTGRES user on the prod server with your username, with read permission to all the tables in the database. You might need to run:
-# sudo -u postgres createuser -D -A -P eddie
-# carr=# grant all on database carr to eddie;
-# carr=# grant all on table auth_group to eddie; -- and so on, for every single table in the database.
-
-echo "OK. We are downloading the database from $PROD_SERVER_HOSTNAME."
-echo "File will be backed up in: $DB_BACKUPS/$DATE"
-ssh $PROD_SERVER_HOSTNAME "sudo -u pusher pg_dump --no-owner --no-privileges carr >  $DB_BACKUPS/$DATE.out"
-echo "Fetching file to your backup directory, $DB_BACKUPS."
-scp $PROD_SERVER_HOSTNAME:$DATE.out $DB_BACKUPS
-echo "Dropping database carr"
-sudo -u pusher dropdb carr
-echo "Creating database on dev machine."
-sudo -u pusher createdb -O pusher carr
-echo "Adding data to the new database."
-sudo -u pusher psql -Upusher -d carr -f $DB_BACKUPS/$DATE.out
-
-#echo "OK, done making new database $DATE. Now changing your settings to point at it."
-#sed -i "s/carr_prod_...._.._.._.._../carr/g" ./settings_shared.py
-
-#echo "Other settings files you might want to update are:"
-#locate settings_shared.py | grep carr | grep -v 'pyc\|_in\|~'
+ssh pusher@dolph.ccnmtl.columbia.edu "/home/pusher/dump_carr.sh"
+scp dolph.ccnmtl.columbia.edu:/tmp/carr.sql .
+dropdb carr
+createdb -O eddie  carr
+psql eddie -d carr -f ./carr.sql
