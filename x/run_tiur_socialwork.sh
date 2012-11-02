@@ -1,1 +1,1 @@
-./manage.py runserver --settings=settings_socialwork  tiur.ccnmtl.columbia.edu:8014
+./manage.py runserver --settings=settings_socialwork  localhost:8014
