@@ -3,10 +3,12 @@
 
 function showPageBlockPopup(type, title, parent_id) 
 {
-   var win = window.open('/admin/pagetree/pageblock/' + type + '/' + parent_id, title, 'height=500,width=780,resizable=yes,scrollbars=yes');
+   var the_url = '/admin/pagetree/pageblock/' + type + '/' + parent_id  + '/';
+   var win = window.open(the_url , title, 'height=500,width=780,resizable=yes,scrollbars=yes');
    win.focus();
    return false;
 }
+
 
 // The add-page-block view handler returns a reference to this function
 function dismissPageBlockPopup(window)
