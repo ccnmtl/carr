@@ -28,7 +28,7 @@
 		   {% for s in root.get_descendents %}
 					<li class="menu">
 					   {% ifnotequal s.id section.id %}
-					      <a href="../sitesection/{{s.id}}">{{s.label}}/</a>
+					      <a href="../sitesection/{{s.id}}/">{{s.label}}</a>
 					   {%else%}
 					      <b>{{s.label}}</b>
 					   {% endifnotequal %}
