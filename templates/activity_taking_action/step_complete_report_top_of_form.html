@@ -1,15 +1,5 @@
-<div class="activity_step form_fields_are_editable" id="complete_report_top_of_form">
-    <!--
-    <p>
-        Lorem ipsum re: top of form.
-    </p>
-    -->
-    
+<div class="activity_step form_fields_are_editable" id="{{the_step_name}}">
     {% include "activity_taking_action/snippets/form_top.html" %}
-    
-    
-    <div class="purple_button taking_action_next_button">
-	    Next 
-    </div>
+    {% include "activity_taking_action/snippets/back_next.html" %}
     <div class ="taking_action_pagenumber">Page 6 of 11</div>
 </div>

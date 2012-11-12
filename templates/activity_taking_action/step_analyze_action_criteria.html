@@ -1,7 +1,4 @@
-<div class="activity_step" id="analyze_action_criteria">
-	<div id="review_case_button">
-		Review Case 
-	</div>
+<div class="activity_step" id="{{the_step_name}}">
 	<p>
 	Your observations appear on the left. On the right, please check the boxes that correspond to the criteria you will use to determine whether or not you should take action. Click the "Next" button when you are done.
 	</p>
@@ -11,9 +8,6 @@
 	<div class="half-page">
 		{% include "activity_taking_action/snippets/criteria_for_action.html" %}
 	</div>
-	
-	<div class="purple_button taking_action_next_button">
-		Next 
-	</div>
+    {% include "activity_taking_action/snippets/back_next.html" %}
 	<div class ="taking_action_pagenumber">Page 2 of 11</div>
 </div>

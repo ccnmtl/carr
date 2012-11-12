@@ -1,5 +1,5 @@
 
-
+/* NO LONGER USED */
 fieldz = [ ];
 
 
@@ -11,9 +11,6 @@ steps['complete_report'] = {
         //new_load ('complete_report', 'case_summary');
         
         new_load ('complete_report', 'complete_report_overview');
-        
-        
-        
         connect ( $('show_expert_form'), 'onclick', function (a) {
             showElement ($$('.report_form.expert_form')[0]);
         });

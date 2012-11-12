@@ -1,5 +1,4 @@
-
-<div class="activity_step" id="choose_action">
+<div class="activity_step" id="{{the_step_name}}">
 	<p>
 	Your observations and selected criteria appear on the left. On the right, please select an action plan. When you have selected the correct answer, click the "Next" button.
 	</p>
@@ -13,9 +12,7 @@
         </p>
     	{% include "activity_taking_action/snippets/possible_actions.html" %}
 	</div>
-	<div class="purple_button taking_action_next_button">
-		Next 
-	</div>
+    {% include "activity_taking_action/snippets/back_next.html" %}
 	<div class ="taking_action_pagenumber">Page 3 of 11</div>
 </div>
 

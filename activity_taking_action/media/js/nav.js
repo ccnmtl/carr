@@ -1,9 +1,3 @@
-function new_load (step_name, next_step) {
-    next_button = findChildElements($(step_name), [".taking_action_next_button"])[0]
-    if (next_button != undefined) {
-        connect (next_button, 'onclick', partial(load_step,next_step));
-    }
-}
 
 steps = {}
 
@@ -51,13 +45,11 @@ function textfield_changed(e) {
     //   do other fun stuff with e.src() e.g. save the state of the app.
 }
 
-
 function observation_checkbox_clicked (e) {
    mirror_observation_checkboxes =  partial (mirror_checkboxes, observation_css_classes);
    mirror_observation_checkboxes(e);
    //   do other fun stuff with e.src() e.g. save the state of the app.
 }
-
 
 function criteria_checkbox_clicked (e) {
    mirror_criteria_checkboxes =  partial (mirror_checkboxes, criteria_css_classes);
@@ -77,20 +69,13 @@ function set_checked (checkedness, box) {
 function set_contents (contents, textarea) {
     textarea.value = contents;
 }
-//
 
 function mirror_checkboxes (relevant_css_classes, e ) {
-    //logDebug (e.src())
-    which_class = which_of_these_css_classes(e.src(), relevant_css_classes) 
-    //logDebug (which_class);
+    which_class = which_of_these_css_classes(e.src(), relevant_css_classes)
     checkedness = e.src().checked;
-    //logDebug (checkedness);
     set_to_same = partial (set_checked, checkedness)
     map (set_to_same, $$('.' + which_class));
-    //map ( , $$('.observation_1'))
 }
-
-
 
 
 function defined(x) {
@@ -102,7 +87,6 @@ function which_of_these_css_classes (the_div, classes_arr) {
     // return the first class that this element has..
     temp =  map (function(the_class){ if (hasElementClass(the_div, the_class)) return the_class },classes_arr )
     temp2 =  filter (defined, temp);
-    if (temp2.length > 0) { return temp2[0]; }
-    
+    if (temp2.length > 0) { return temp2[0]; }   
 }
 

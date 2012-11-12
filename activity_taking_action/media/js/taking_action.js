@@ -1,5 +1,7 @@
 
 default_step = 'review_case_history';
+
+//default_step = 'complete_report_overview';
 //default_step = 'complete_report_overview';
 //default_step = 'complete_report_top_of_form';
 //default_step = 'complete_report_bottom_of_form';
@@ -9,7 +11,7 @@ game_state = {}
 
 function debug(string)
 {
-    if (false) {
+    if (true) {
       log("DEBUG " + string)
     }
 }
@@ -46,18 +48,6 @@ function validate() {
   return false;  
 }
 
-function load_step (step_name) {
-    
-    map (hideElement, $$('.activity_step'))
-    showElement($$('div#' + step_name +  '.activity_step')[0] );
-    if (steps[step_name] != undefined) {
-        steps[step_name].load()
-    }
-    else {
-        logDebug("not defined.");
-    }
-    maybeEnableNext();
-}
 
 
 
@@ -66,9 +56,6 @@ function loadStateSuccess(doc)
 {
   game_state = doc;
   
-  //
- 
-  //current_step = doc['current_step'] || default_step;
   current_step = default_step;
   load_step (current_step)
   
@@ -94,9 +81,7 @@ function loadState()
         current_step = "complete_report"
         load_step ("complete_report")
         return;
-    }
-
-   //debug("loadState")
+   }
    url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
@@ -114,7 +99,7 @@ function show_answer() {
       maybeEnableNext();
 }
 
-MochiKit.Signal.connect(window, "onload", loadState)
+MochiKit.Signal.connect(window, "onload", loadState);
 //MochiKit.Signal.connect(window, "onload", setfocus)
 
 function new_ldss_form_fields_to_save() {
@@ -156,3 +141,5 @@ function saveState()
 
 
 MochiKit.Signal.connect(window, "onbeforeunload", saveState)
+
+

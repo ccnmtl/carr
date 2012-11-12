@@ -32,7 +32,7 @@
 
 a.reset_button { margin-top: -50px; }
 
-#review_case_button, a.reset_button, #show_expert_form, #back_to_my_version_button {
+#review_case_button, a.reset_button, #show_expert_form {
 	background-color: #eee;
 	border: 1px solid #ccc;
 	text-decoration: none;
@@ -57,10 +57,19 @@ div.purple_button
 	border: 3px solid #D4C9DD;
 	width: 150px;
 	margin: 3px;
-	float: right;
-	clear: both;
 	cursor: pointer;
 	text-align: center;
+}
+
+div.taking_action_prev_button
+{
+	float: left;
+	clear: left;
+}
+
+div.taking_action_next_button
+{
+	float: right;
 }
 
 div.report_form.expert_form { display: none; }
