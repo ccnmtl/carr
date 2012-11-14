@@ -78,19 +78,13 @@ var array_of_steps =  [
     'complete_report_nice_work',
     'complete_report_expert'
 ];
-/*
-set_up_nav (array_of_steps, 0);
-set_up_nav (array_of_steps, 1);
-set_up_nav (array_of_steps, 2);
-set_up_nav (array_of_steps, 3);
-set_up_nav (array_of_steps, 4);
-set_up_nav (array_of_steps, 5);
-set_up_nav (array_of_steps, 6);
-set_up_nav (array_of_steps, 7);
-set_up_nav (array_of_steps, 8);
-set_up_nav (array_of_steps, 9);
-*/
+
 var nav_ready= false;
+
+default_load =   {
+    'load': function () {
+    }
+}
 
 function load_step (step_name) {
     console.log ("load step clicked");
@@ -105,62 +99,30 @@ function load_step (step_name) {
     }
     maybeEnableNext();
     if (!nav_ready) {
-        set_up_all_navs ();
+       // this shouldn't run every time you change stpes. it chould change when you load the page.
+       forEach (list(range (array_of_steps.length)), function(a) { set_up_nav (array_of_steps, a); });
+       nav_ready = true;
     }
-}
-
-function set_up_all_navs () {
-    set_up_nav (array_of_steps, 0);
-    set_up_nav (array_of_steps, 1);
-    set_up_nav (array_of_steps, 2);
-    set_up_nav (array_of_steps, 3);
-    set_up_nav (array_of_steps, 4);
-    set_up_nav (array_of_steps, 5);
-    set_up_nav (array_of_steps, 6);
-    set_up_nav (array_of_steps, 7);
-    set_up_nav (array_of_steps, 8);
-    set_up_nav (array_of_steps, 9);
-    nav_ready = true;
 }
 
 function set_up_nav (array_of_steps, step_number) {
     var prev_step = step_name;
     var next_step = step_name;
-    
-    console.log ("Setting up nav. Step number is:");
-    console.log ("current " , step_number);
-    //console.log (array_of_steps);
-    
     var step_name = array_of_steps [step_number];
-    //console.log ("step name is");
-    console.log ("step name is ", step_name);
-    
-    //console.log (step_number);
     if (step_number >  0) {
         prev_step = array_of_steps [step_number - 1];
-        console.log ("prev ", prev_step);
     }
     if (step_number < array_of_steps.length ) {
         next_step = array_of_steps [step_number + 1];
-        console.log ("next ", next_step);
     }
-    
     next_button = findChildElements($(step_name), [".taking_action_next_button"])[0]
     if (next_button != undefined) {
         connect (next_button, 'onclick', partial(load_step, next_step ));
     }
-    else {
-        console.log('not found');
-    }
-    
     prev_button = findChildElements($(step_name), [".taking_action_prev_button"])[0]
-    //console.log( prev_button)
     if (prev_button != undefined) {
         connect (prev_button, 'onclick', partial(load_step, prev_step ));
-    } else {
-        console.log('not found');
-    }
-    
+    }  
 }
 
 function closure_thing (array_of_steps, the_number) {
@@ -169,24 +131,15 @@ function closure_thing (array_of_steps, the_number) {
     return result;
 }
 
-/*********/
-steps['review_case_history'] = {
-     
+forEach (array_of_steps, function (a) { steps[a] = default_load;})
+
+steps['review_case_history'] = {     
     'load': function () {
         map (observation_checkbox_connect,         $$('.checkbox.observation'));
         map (criteria_checkbox_connect,            $$('.checkbox.criteria'   ));
         map (other_observations_textfield_connect, $$('.other_observations'  ));
     }
 }
-
-/*********/
-
-steps['analyze_action_criteria'] = {
-    'load': function () {
-    }
-}
-
-/*********/
 
 steps['choose_action'] = {
     'load': function () {
@@ -212,17 +165,9 @@ function action_button_clicked(c) {
     }
 }
 
-/*********/
-
-
-
-//var goat = closure_thing (array_of_steps, the_number); // goat is a function
-
 steps['next_steps'] = {
     'load': function () {
-        
         map (connect_action_round_2,  $$('.second_round_action'));
-        
     }
 }
 
@@ -242,77 +187,10 @@ function action_button_clicked_round_2(c) {
         showElement($$('.action_explanation.second_round_action_4')[0]);
     }
 }
-/*
-
-*/
-/*********/
-
-
-steps['complete_report_overview'] = {
-    'load': function () {
-    }
-}
-
-/*********/
-
 
 steps['complete_report_top_of_form'] = {
     'load': function () {
         set_up_all_form_fields();
     }
 }
-
-/*********/
-
-
-steps['complete_report_middle_of_form'] = {
-    'load': function () {
-        set_up_nav (array_of_steps, the_number);
-    }
-}
-
-/*********/
-
-steps['complete_report_bottom_of_form'] = {
-    'load': function () {
-    }
-}
-
-/*********/
-
-
-steps['complete_report_nice_work'] = {
-    'load': function () {
-    }
-}
-
-/*********/
-
-
-steps['complete_report_expert'] = {
-    'load': function () {
-    }
-}
-
-/*********/
-
-
-steps['case_summary'] = {
-    'load': function () {
-    }
-}
-
-/*
-set_up_nav (array_of_steps, 0);
-set_up_nav (array_of_steps, 1);
-set_up_nav (array_of_steps, 2);
-set_up_nav (array_of_steps, 3);
-set_up_nav (array_of_steps, 4);
-set_up_nav (array_of_steps, 5);
-set_up_nav (array_of_steps, 6);
-set_up_nav (array_of_steps, 7);
-set_up_nav (array_of_steps, 8);
-set_up_nav (array_of_steps, 9);
-*/
-console.log ('done with new_');
 
