@@ -23,6 +23,7 @@ function the_classlist (el) {
 
 
 function set_up_form_field ( field) {
+    console.log ('setting up form field ' , field);
     // on change,  update the state and set the content on the Nice Work page to its content.
     
     if (field == undefined ) {
