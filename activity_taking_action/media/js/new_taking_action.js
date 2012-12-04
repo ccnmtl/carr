@@ -62,8 +62,6 @@ function reporting_form_editable_textfield_changed(e) {
     not_editable_version  = $$('.form_fields_are_not_editable ' + css_classes)[0];
     
     // set the non-editable fields on the "Nice Work" page to reflect the new contents.
-    console.log ('css_classes');
-    console.log (contents);
     not_editable_version.value = contents;
 }
 
@@ -79,6 +77,7 @@ var array_of_steps =  [
     'complete_report_nice_work',
     'complete_report_expert'
 ];
+
 
 var nav_ready= false;
 
