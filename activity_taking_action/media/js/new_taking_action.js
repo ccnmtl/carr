@@ -75,7 +75,8 @@ var array_of_steps =  [
     'complete_report_middle_of_form',
     'complete_report_bottom_of_form',
     'complete_report_nice_work',
-    'complete_report_expert'
+    'complete_report_expert',
+    'case_summary'
 ];
 
 
@@ -112,24 +113,29 @@ function set_up_nav (array_of_steps, step_number) {
     if (step_number >  0) {
         prev_step = array_of_steps [step_number - 1];
     }
-    if (step_number < array_of_steps.length ) {
+    if (step_number <= array_of_steps.length ) {
         next_step = array_of_steps [step_number + 1];
     }
-    next_button = findChildElements($(step_name), [".taking_action_next_button"])[0]
-    if (next_button != undefined) {
-        connect (next_button, 'onclick', partial(load_step, next_step ));
-    }
+
     prev_button = findChildElements($(step_name), [".taking_action_prev_button"])[0]
     if (prev_button != undefined) {
         connect (prev_button, 'onclick', partial(load_step, prev_step ));
     }  
+
+
+    next_button = findChildElements($(step_name), [".taking_action_next_button"])[0]
+    if (next_button != undefined) {
+        connect (next_button, 'onclick', partial(load_step, next_step ));
+    }
 }
 
+/*
 function closure_thing (array_of_steps, the_number) {
     console.log ("creating a function with " + the_number);
     var result = function () {  return show_step (array_of_steps, the_number);}
     return result;
 }
+*/
 
 forEach (array_of_steps, function (a) { steps[a] = default_load;})
 
