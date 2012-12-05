@@ -1,26 +1,9 @@
-
-//default_step = 'review_case_history';
-//default_step = 'complete_report_nice_work';
-
-
-default_step = 'complete_report_expert';
-
-
-//default_step = 'complete_report_overview';
-//default_step = 'complete_report_overview';
-//default_step = 'complete_report_top_of_form';
-//default_step = 'complete_report_bottom_of_form';
-
-game_state = {}
-
-
 function debug(string)
 {
     if (true) {
       log("DEBUG " + string)
     }
 }
-
 
 function maybeEnableNext()
 {
@@ -38,8 +21,6 @@ function maybeEnableNext()
   }
 }
 
-// filter (function (a) { return a.value != '';}, $$ ('.form_fields_are_editable .ldss_form_input'));
-
 function validate() {
 
     // we have stored form info for this user:
@@ -53,20 +34,17 @@ function validate() {
   return false;  
 }
 
-
-
-
-
 function loadStateSuccess(doc)
 {
-  game_state = doc;
+  init_taking_action();
+  game_state = doc; 
   
-  current_step = default_step;
-  load_step (current_step)
-  
-  //map (hideElement, $$('.activity_step'))
-  if (hide_expert_form_toggle_button) {
-     hideElement($('show_expert_form'));
+  console.log ('Current step is ' + game_state['current_step'] );
+  if (game_state['current_step'] === undefined) {
+      current_step = step_to_show_first;
+  }  else {
+    current_step = game_state['current_step'];
+    load_step (current_step);
   }
 }
 
@@ -76,7 +54,6 @@ function loadStateError(err)
    // @todo: Find a spot to display an error or decide just to fail gracefully
    // $('errorMsg').innerHTML = "An error occurred loading your state (" + err + "). Please start again."
 }
-
 
 function loadState()
 {
@@ -124,7 +101,6 @@ function deprecated_ldss_form_fields_to_save () {
 
 function saveState()
 {
-  console.log ('saving state');
   if (typeof student_response != "undefined") {
       return;      
   }
@@ -137,7 +113,7 @@ function saveState()
        doc['complete'] = 'true' 
   }
   
-  doc ['current_step'] = current_step;  
+  doc ['current_step'] = current_step;
   var sync_req = new XMLHttpRequest();  
   sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
   sync_req.open("POST", url, false);
@@ -145,6 +121,185 @@ function saveState()
 }
 
 
-MochiKit.Signal.connect(window, "onbeforeunload", saveState)
+function set_up_all_form_fields () {
+    // Get all the fields on the Nice Work page:
+    new_form_fields_top =    $$ ('#complete_report_top_of_form    .ldss_form_input')
+    new_form_fields_middle = $$ ('#complete_report_middle_of_form .ldss_form_input')
+    new_form_fields_bottom = $$ ('#complete_report_bottom_of_form .ldss_form_input')
 
+    forEach (new_form_fields_top,    set_up_form_field );
+    forEach (new_form_fields_middle, set_up_form_field );
+    forEach (new_form_fields_bottom, set_up_form_field );
+    
+    // For faculty reviewing student response to form:
+    student_response_form_fields = $$('#student_response_form .ldss_form_input');
+    forEach (student_response_form_fields, set_up_form_field );
+}
+
+function the_classlist (el) {
+    result = '';
+    for (var i = 0; i < el.classList.length; i++) {
+        result = result + '.' + el.classList[i]
+    }
+    return result;
+}
+
+
+function set_up_form_field ( field) {
+    console.log ('setting up form field ' , field);
+    // on change,  update the state and set the content on the Nice Work page to its content.
+    
+    if (field == undefined ) {
+        return;
+    }
+    disconnectAll(field); // in case this gets called more than once.
+    css_classes = the_classlist (field);
+    editable_version = $$('.form_fields_are_editable '     + css_classes)[0];
+    not_editable_version  = $$('.form_fields_are_not_editable ' + css_classes)[0];
+
+    // load and display values from game state if they exist:
+    if (editable_version != undefined ) {
+        reporting_form_editable_textfield_connect (editable_version);
+        if (game_state [css_classes] != undefined) {
+            editable_version.value = game_state [css_classes];
+        }
+    }
+    if (not_editable_version != undefined ) {
+        if (game_state [css_classes] != undefined) {
+            not_editable_version.value   = game_state [css_classes];
+        }
+    }
+    
+    // make the non-editable version read-only:
+    setNodeAttribute(not_editable_version, "readonly", "readonly");
+}
+
+function reporting_form_editable_textfield_connect (f) {
+    connect (f, 'onchange', reporting_form_editable_textfield_changed);
+}
+
+function reporting_form_editable_textfield_changed(e) {
+    
+    contents = e.src().value;
+    css_classes = the_classlist (e.src());
+    not_editable_version  = $$('.form_fields_are_not_editable ' + css_classes)[0];
+    
+    // set the non-editable fields on the "Nice Work" page to reflect the new contents.
+    not_editable_version.value = contents;
+}
+
+
+function load_step (step_name) {
+    
+    //Save the current step name.
+    console.log ("OK saving the current step as " + step_name);
+    current_step = step_name; 
+    
+    map (hideElement, $$('.activity_step'))
+    showElement($$('div#' + step_name +  '.activity_step')[0] );
+    if (steps[step_name] != undefined) {
+        steps[step_name].load()
+    }
+    else {
+        logDebug("not defined.");
+    }
+    maybeEnableNext();
+    if (!nav_ready) {
+       // this shouldn't run every time you change stpes. it chould change when you load the page.
+       forEach (list(range (array_of_steps.length)), function(a) { set_up_nav (array_of_steps, a); });
+       nav_ready = true;
+    }
+}
+
+function set_up_nav (array_of_steps, step_number) {
+    var prev_step = step_name;
+    var next_step = step_name;
+    var step_name = array_of_steps [step_number];
+    if (step_number >  0) {
+        prev_step = array_of_steps [step_number - 1];
+    }
+    if (step_number <= array_of_steps.length ) {
+        next_step = array_of_steps [step_number + 1];
+    }
+
+    prev_button = findChildElements($(step_name), [".taking_action_prev_button"])[0]
+    if (prev_button != undefined) {
+        connect (prev_button, 'onclick', partial(load_step, prev_step ));
+    }  
+
+
+    next_button = findChildElements($(step_name), [".taking_action_next_button"])[0]
+    if (next_button != undefined) {
+        connect (next_button, 'onclick', partial(load_step, next_step ));
+    }
+}
+
+function connect_action (c) {
+    connect(c,  'onclick', action_button_clicked);
+}
+
+function action_button_clicked(c) {
+    which_class = which_of_these_css_classes(c.src(), first_round_action_css_classes);
+    logDebug (which_class);
+    if (which_class == 'first_round_action_1') {
+        showElement ($$('.choose_action.action_explanation.first_round_action_1')[0]);
+    } else if (which_class == 'first_round_action_2') {
+        showElement ($$('.choose_action.action_explanation.first_round_action_2')[0]); 
+    } else if (which_class == 'first_round_action_3') {
+        showElement ($$('.choose_action.action_explanation.first_round_action_3')[0]); 
+    } else if (which_class == 'first_round_action_4') {
+        showElement ($$('.choose_action.action_explanation.first_round_action_4')[0]); 
+    }
+}
+
+function connect_action_round_2 (c) {
+    connect(c,  'onclick', action_button_clicked_round_2);
+}
+
+function action_button_clicked_round_2(c) {
+    which_class = which_of_these_css_classes(c.src(), second_round_action_css_classes);
+    if (       which_class == 'second_round_action_1') {
+        showElement($$('.action_explanation.second_round_action_1')[0]);
+    } else if (which_class == 'second_round_action_2') {
+        showElement($$('.action_explanation.second_round_action_2')[0]);
+    } else if (which_class == 'second_round_action_3') {
+        showElement($$('.action_explanation.second_round_action_3')[0]);
+    } else if (which_class == 'second_round_action_4') {
+        showElement($$('.action_explanation.second_round_action_4')[0]);
+    }
+}
+
+function init_taking_action () {
+    step_to_show_first = array_of_steps [0];
+    default_load =   {
+        'load': function () {
+        }
+    }
+    forEach (array_of_steps, function (a) { steps[a] = default_load;})
+    steps['review_case_history'] = {     
+        'load': function () {
+            map (observation_checkbox_connect,         $$('.checkbox.observation'));
+            map (criteria_checkbox_connect,            $$('.checkbox.criteria'   ));
+            map (other_observations_textfield_connect, $$('.other_observations'  ));
+        }
+    }
+    steps['choose_action'] = {
+        'load': function () {
+            map (connect_action,  $$('.first_round_action'));
+            }
+    }
+    steps['complete_report_top_of_form'] = {
+        'load': function () {
+            set_up_all_form_fields();
+        }
+    }
+    steps['next_steps'] = {
+        'load': function () {
+            map (connect_action_round_2,  $$('.second_round_action'));
+        }
+    }
+}
+
+//MochiKit.Signal.connect(window, 'onload', init_taking_action);
+MochiKit.Signal.connect(window, "onbeforeunload", saveState)
 

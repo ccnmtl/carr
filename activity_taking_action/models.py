@@ -19,6 +19,25 @@ class Block(models.Model):
     template_file = "activity_taking_action/taking_action.html"
     display_name = "Activity: Taking Action"
     
+    # list of steps
+    list_of_steps = [
+        'review_case_history',
+        'analyze_action_criteria',
+        'choose_action',
+        'next_steps',
+        'complete_report_overview',
+        'complete_report_top_of_form',
+        'complete_report_middle_of_form',
+        'complete_report_bottom_of_form',
+        'complete_report_nice_work',
+        'complete_report_expert',
+        'case_summary'
+    ];
+    
+    list_of_steps_json = simplejson.dumps (list_of_steps);
+    templates_by_step =  [(a, "activity_taking_action/step_%s.html" % a) for a in list_of_steps ]
+    
+    
     def site(self):
         return Site.objects.get_current()
     

@@ -65,17 +65,8 @@ def savestate(request):
 
 @rendered_with('activity_taking_action/student_response.html')
 def student(request, user_id):
-    # activity/taking_action/student/5/
-
-    #pdb.set_trace()
     student_user = get_object_or_404(User,id=user_id)
-    
-    #return {'student_id': user_id}
-
-    #pdb.set_trace()
     return {
         'student' : student_user,
         'student_json': state_json (student_user)
-    } 
-    #return dict(question=question)
-
+    }

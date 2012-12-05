@@ -1,49 +1,15 @@
 {% load smartif %} 
 <script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script> 
+<script type="text/javascript">
+    var array_of_steps =  {{block.list_of_steps_json|safe}};
+</script>
 <script type="text/javascript" src="/site_media/taking_action/js/nav.js"></script> 
 <script type="text/javascript" src="/site_media/taking_action/js/complete_report.js"></script>
 <script type="text/javascript" src="/site_media/taking_action/js/taking_action.js"></script> 
-<script type="text/javascript" src="/site_media/taking_action/js/new_taking_action.js"></script> 
-<script type="text/javascript" >
-    hide_expert_form_toggle_button = false;
-</script> 
 <link href="/site_media/taking_action/css/taking_action.css" rel="stylesheet" type="text/css" />
-<div id="hidden_js_info">
-</div>
 
-{% with "review_case_history" as the_step_name %}
-    {% include "activity_taking_action/step_review_case_history.html" %}
-{% endwith %}
-{% with "analyze_action_criteria" as the_step_name %}
-    {% include "activity_taking_action/step_analyze_action_criteria.html" %}
-{% endwith %}
-{% with "choose_action" as the_step_name %}
-    {% include "activity_taking_action/step_choose_action.html" %}
-{% endwith %}
-{% with "next_steps" as the_step_name %}
-    {% include "activity_taking_action/step_next_steps.html" %}
-{% endwith %}
-{% with "complete_report" as the_step_name %}
-    {% include "activity_taking_action/step_complete_report.html" %}
-{% endwith %}
-{% with "complete_report_overview" as the_step_name %}
-    {% include "activity_taking_action/step_complete_report_overview.html" %}
-{% endwith %}
-{% with "complete_report_top_of_form" as the_step_name %}
-    {% include "activity_taking_action/step_complete_report_top_of_form.html" %}
-{% endwith %}
-{% with "complete_report_middle_of_form" as the_step_name %}
-    {% include "activity_taking_action/step_complete_report_middle_of_form.html" %}
-{% endwith %}
-{% with "complete_report_bottom_of_form" as the_step_name %}
-    {% include "activity_taking_action/step_complete_report_bottom_of_form.html" %}
-{% endwith %}
-{% with "complete_report_nice_work" as the_step_name %}
-    {% include "activity_taking_action/step_complete_report_nice_work.html" %}
-{% endwith %}
-{% with "complete_report_expert" as the_step_name %}
-    {% include "activity_taking_action/step_complete_report_expert.html" %}
-{% endwith %}
-{% with "case_summary" as the_step_name %}
-    {% include "activity_taking_action/step_case_summary.html" %}
-{% endwith %}
+{%comment %} see models.py for block.templates_by_step {%endcomment %}
+{% for the_step_name, the_template in block.templates_by_step %}
+    {% include the_template %}
+{% endfor %}
+

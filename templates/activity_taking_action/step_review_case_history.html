@@ -8,7 +8,6 @@
 		</p>
 		<div id="review_case_history_copy">
 			{% if "cdm" in block.site.domain%} A mother brings her 3 year old son to your clinic for a check-up. During the exam, you notice a laceration on the child's lip, and fractured lower incisors. Upon questioning the mother, she tells you that the child hurt himself accidentally when he ran into a doorknob four days ago. {%endif%}
-			
 			{% if "ssw" in block.site.domain%} 
                 {% include "activity_taking_action/snippets/case_history_text.html" %}
 			{%endif%}
@@ -17,6 +16,6 @@
 	<div class="half-page">
 	    {% include "activity_taking_action/snippets/your_observations.html" %}
 	</div>
-    {% include "activity_taking_action/snippets/back_next.html" %}
+	<div class="purple_button taking_action_next_button">Next</div>
 	<div class ="taking_action_pagenumber">Page 1 of 11</div>
 </div>

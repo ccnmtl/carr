@@ -1,4 +1,7 @@
+//////////////////
+//////////////////
 
+/// global scope:
 steps = {}
 
 observation_css_classes = [
@@ -26,6 +29,12 @@ second_round_action_css_classes = [
     'second_round_action_3',
     'second_round_action_4',
 ]
+
+game_state = {}
+var nav_ready= false;
+
+//////////////////
+//////////////////
 
 function observation_checkbox_connect (c) {
     connect (c, 'onclick', observation_checkbox_clicked);
