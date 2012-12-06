@@ -1132,7 +1132,7 @@ float: left;
 
 #content .content-nav a
 {
-	background: #d4c9dd url('../img/bottom_button_bg.jpg') repeat-x;
+	background: #d4c9dd;
 	padding: 3px 7px;
 	text-decoration: none;
 	color: #333;

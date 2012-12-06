@@ -136,6 +136,60 @@ function set_up_all_form_fields () {
     forEach (student_response_form_fields, set_up_form_field );
 }
 
+/*
+    <div id="print_version_on">Print version</div>
+    <div id="print_version_off">Regular version</div>
+    
+*/
+
+
+function nice_work_set_up_toggle () {
+    console.log ("setting up toggle");
+    connect('print_version_on',  'onclick', set_print_version_on );
+    connect('print_version_off', 'onclick', set_print_version_off);
+    set_print_version_off();
+}
+
+function set_print_version_on () {
+    console.log ("set print version on");
+    
+    
+    showElement('print_version_off');
+    hideElement('print_version_on');
+    hideElement('sidebar_left');
+    hideElement('header');
+    hideElement('subnav');
+    hideElement($$('h2')[0]);
+    hideElement ('nice_work_blurb');
+    hideElement ($$('.content-nav')              [0]);
+    
+    hideElement ($$('#complete_report_nice_work   .taking_action_prev_button')[0]);
+    hideElement ($$('#complete_report_nice_work   .taking_action_next_button')[0]);
+
+    hideElement ($$('#complete_report_nice_work   .taking_action_pagenumber' )[0]);
+}
+
+function set_print_version_off () {
+    console.log ("set print version off");
+    
+    
+    hideElement('print_version_off');
+    showElement('print_version_on');
+    showElement('sidebar_left');
+    showElement('header');
+    showElement('subnav');
+    showElement($$('h2')[0]);
+    showElement ('nice_work_blurb');
+    showElement ($$('.content-nav')[0]);
+    
+    
+    showElement ($$('#complete_report_nice_work    .taking_action_prev_button')[0]);
+    showElement ($$('#complete_report_nice_work    .taking_action_next_button')[0]);
+    showElement ($$('#complete_report_nice_work   .taking_action_pagenumber' )[0]);
+}
+
+
+
 function the_classlist (el) {
     result = '';
     for (var i = 0; i < el.classList.length; i++) {
@@ -288,11 +342,19 @@ function init_taking_action () {
             map (connect_action,  $$('.first_round_action'));
             }
     }
-    steps['complete_report_top_of_form'] = {
+    
+    complete_report_load = {
         'load': function () {
             set_up_all_form_fields();
+            nice_work_set_up_toggle();
         }
     }
+
+    steps['complete_report_top_of_form']    = complete_report_load;
+    steps['complete_report_middle_of_form'] = complete_report_load;
+    steps['complete_report_bottom_of_form'] = complete_report_load;
+    steps['complete_report_nice_work']      = complete_report_load;
+
     steps['next_steps'] = {
         'load': function () {
             map (connect_action_round_2,  $$('.second_round_action'));
