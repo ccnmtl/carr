@@ -40,14 +40,10 @@ def loadstate(request):
     
 @login_required
 def savestate(request):
-    #import pdb
-    #pdb.set_trace()
     json = request.POST['json']
     update = simplejson.loads(json)
-    
     try: 
         state = ActivityState.objects.get(user=request.user)
-        
         obj = simplejson.loads(state.json)
         for item in update:
             obj[item] = update[item]
@@ -63,10 +59,15 @@ def savestate(request):
     return HttpResponse(simplejson.dumps(response), 'application/json')
     
     
+@login_required
 @rendered_with('activity_bruise_recon/student_response.html')
 def student(request, block_id, user_id):
-    #/activity/bruise_recon/studentcase/3/user/5/
-    student_user = get_object_or_404(User,id=user_id)
+    
+    if request.user.user_type() == "student":
+        student_user = request.user
+    else:
+        student_user = get_object_or_404(User,id=user_id)
+        
     block = Block.objects.get(pk=block_id)
     return {
         'student' : student_user,

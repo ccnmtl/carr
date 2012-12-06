@@ -128,8 +128,8 @@
       {%endifequal%}
 		</td>
 		<td>
-		  {%ifequal score_on_taking_action 'completed_form' %}
-			  <a href = "/carr/reporting_abuse/taking_action/" >Go </a>
+		    {%ifequal score_on_taking_action 'completed_form' %}
+			  <a href = "/activity/taking_action/student/{{user.id}}/" >Go </a>
 			{%endifequal%}
 		</td>
 	</tr>

@@ -63,9 +63,13 @@ def savestate(request):
     return HttpResponse(simplejson.dumps(response), 'application/json')
     
 
+@login_required
 @rendered_with('activity_taking_action/student_response.html')
 def student(request, user_id):
-    student_user = get_object_or_404(User,id=user_id)
+    if request.user.user_type() == "student":
+        student_user = request.user
+    else:
+        student_user = get_object_or_404(User,id=user_id)
     return {
         'student' : student_user,
         'student_json': state_json (student_user)

@@ -31,6 +31,8 @@ class rendered_with(object):
 
         return rendered_func
 
+
+@login_required
 @rendered_with('quiz/studentquiz.html')
 def studentquiz(request, quiz_id, user_id):
     """allows a faculty member to see the answers a student posted for a quiz.
