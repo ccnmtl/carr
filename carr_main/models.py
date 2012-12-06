@@ -31,15 +31,23 @@ def user_type(self):
     result = None
     if self == None:
         return None
+    
+    #Can run tests.
     elif len( [ g for g in self.groups.all() if 'tlcxml' in  g.name]) > 0:
-        #TODO: also give admin to all people marked such in the admin user interface.
         result = 'admin'
+        
+    #Can view all student scores: 
     elif len( [ g for g in self.groups.all() if '.fc.' in  g.name]) > 0:
+        result = 'faculty'
+    elif self.is_staff: # so we can easily grant this priviledge to people who are not actually teaching a class:
         result = 'faculty'
     elif self.id in settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS:
         result = 'faculty'
+    
+    #Can take the training, view own scores.
     else:
         result = 'student'
+        
     return result
         
 def classes_i_teach(self):
