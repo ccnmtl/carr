@@ -523,16 +523,6 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='analyze_action_criteria']/div[3]/p[3]/input</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//div[@id='analyze_action_criteria']/div[3]/p[4]/input</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
 	<td>//div[@id='analyze_action_criteria']/div[4]</td>
 	<td></td>
 </tr>
@@ -563,7 +553,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='choose_action']/div[3]</td>
+	<td>//div[@id='choose_action']/div[4]</td>
 	<td></td>
 </tr>
 <tr>
@@ -578,7 +568,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='next_steps']/div[3]</td>
+	<td>//div[@id='next_steps']/div[4]</td>
 	<td></td>
 </tr>
 <!--OK now view the blank report-->
@@ -716,6 +706,61 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
+	<td>Page 11 of 11</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#case_summary &gt; div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#complete_report_expert &gt; div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#complete_report_nice_work &gt; div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#complete_report_bottom_of_form &gt; div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#complete_report_middle_of_form &gt; div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#complete_report_top_of_form &gt; div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#complete_report_overview &gt; div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#next_steps &gt; div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#choose_action &gt; div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=div.purple_button.taking_action_prev_button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
 	<td>Page 1 of 11</td>
 	<td></td>
 </tr>
@@ -741,7 +786,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='choose_action']/div[3]</td>
+	<td>//div[@id='choose_action']/div[4]</td>
 	<td></td>
 </tr>
 <tr>
@@ -751,7 +796,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='next_steps']/div[3]</td>
+	<td>//div[@id='next_steps']/div[4]</td>
 	<td></td>
 </tr>
 <tr>
@@ -781,6 +826,11 @@
 </tr>
 <!--Assert that the text is still there.-->
 <tr>
+	<td>verifyTextPresent</td>
+	<td></td>
+	<td>(212) 123-4567</td>
+</tr>
+<tr>
 	<td>pause</td>
 	<td>5000</td>
 	<td></td>
@@ -788,7 +838,7 @@
 <!--POST TEST-->
 <tr>
 	<td>click</td>
-	<td>//div[@id='complete_report']/div[3]</td>
+	<td>css=#complete_report_nice_work &gt; div.purple_button.taking_action_next_button</td>
 	<td></td>
 </tr>
 <tr>
