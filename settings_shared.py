@@ -1,6 +1,7 @@
 # Django settings for carr project.
 import os.path
 import re
+import sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -12,6 +13,21 @@ DATABASE_USER = 'eddie'             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+
+if 'test' in sys.argv:
+    DATABASE_ENGINE = 'sqlite3'
+    DATABASE_NAME = ':memory:' # Or path to database file if using sqlite3.
+    ADMINS = ()
+
+SOUTH_TESTS_MIGRATE = False
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=carr_main,activity_bruise_recon,activity_taking_action,quiz',
+]
+
 
 #For now turn off caching
 CACHE_BACKEND = 'locmem://'
@@ -60,7 +76,7 @@ TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__),"templates"),
 )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'activity_bruise_recon',           
     'activity_taking_action',
     'django.contrib.admin',
@@ -81,8 +97,13 @@ INSTALLED_APPS = (
     'courseaffils',
     'deploy_specific',
     'django_statsd',
-    'south'
-)
+    'south',
+    'django_nose',
+]
+
+if 'test' in sys.argv:
+    # should not be required for tests
+    INSTALLED_APPS.remove('deploy_specific')
 
 STATSD_CLIENT = 'statsd.client'
 STATSD_PREFIX = 'carr'
