@@ -136,24 +136,16 @@ function set_up_all_form_fields () {
     forEach (student_response_form_fields, set_up_form_field );
 }
 
-/*
-    <div id="print_version_on">Print version</div>
-    <div id="print_version_off">Regular version</div>
-    
-*/
-
 
 function nice_work_set_up_toggle () {
-    console.log ("setting up toggle");
+    //console.log ("setting up toggle");
     connect('print_version_on',  'onclick', set_print_version_on );
     connect('print_version_off', 'onclick', set_print_version_off);
     set_print_version_off();
 }
 
 function set_print_version_on () {
-    console.log ("set print version on");
-    
-    
+    //console.log ("set print version on");
     showElement('print_version_off');
     hideElement('print_version_on');
     hideElement('sidebar_left');
@@ -170,7 +162,7 @@ function set_print_version_on () {
 }
 
 function set_print_version_off () {
-    console.log ("set print version off");
+    //console.log ("set print version off");
     
     
     hideElement('print_version_off');
@@ -200,7 +192,7 @@ function the_classlist (el) {
 
 
 function set_up_form_field ( field) {
-    console.log ('setting up form field ' , field);
+    //console.log ('setting up form field ' , field);
     // on change,  update the state and set the content on the Nice Work page to its content.
     
     if (field == undefined ) {
@@ -246,10 +238,11 @@ function reporting_form_editable_textfield_changed(e) {
 function load_step (step_name) {
     
     //Save the current step name.
-    console.log ("OK saving the current step as " + step_name);
+    //console.log ("OK saving the current step as " + step_name);
     current_step = step_name; 
     
     map (hideElement, $$('.activity_step'))
+    
     showElement($$('div#' + step_name +  '.activity_step')[0] );
     if (steps[step_name] != undefined) {
         steps[step_name].load()
@@ -262,10 +255,18 @@ function load_step (step_name) {
        // this shouldn't run every time you change stpes. it chould change when you load the page.
        forEach (list(range (array_of_steps.length)), function(a) { set_up_nav (array_of_steps, a); });
        nav_ready = true;
+    
+    }
+    if (current_step != 'case_summary') {
+        // per bug # 83956:
+        // hide the next button except on the last page.
+        //console.log ('hiding next btn.');
+        hideElement ($('next'));
     }
 }
 
 function set_up_nav (array_of_steps, step_number) {
+    // this is run on page load, but not on step load.
     var prev_step = step_name;
     var next_step = step_name;
     var step_name = array_of_steps [step_number];
@@ -286,6 +287,7 @@ function set_up_nav (array_of_steps, step_number) {
     if (next_button != undefined) {
         connect (next_button, 'onclick', partial(load_step, next_step ));
     }
+
 }
 
 function connect_action (c) {
