@@ -62,8 +62,6 @@ class Block(models.Model):
         self.save()
         
     def case(self):
-        #import pdb
-        #pdb.set_trace()
         return Case.objects.get(name=self.case_name)
 
 

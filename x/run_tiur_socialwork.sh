@@ -1,1 +1,1 @@
-./manage.py runserver --settings=settings_socialwork  localhost:8014
+./manage.py runserver --settings=settings_socialwork  128.59.159.40:8014

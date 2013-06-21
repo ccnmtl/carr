@@ -53,6 +53,10 @@ function disable_sidenav_item (item) {
 
 function loadStateSuccess(doc)
 {
+
+   // NOTE: Correct answers for these, including correct button ID's,
+   // are in the database and editable via django admin.
+   // See: /admin/activity_bruise_recon/case/
    debug('loadStateSuccess')
    case_name =  $('case_name').innerHTML.trim();
 
@@ -88,8 +92,8 @@ function loadStateSuccess(doc)
      if (factors_as_string.match(/severity/) != null) {
               addElementClass($('severity'), 'button_selected');
      }
-     if (factors_as_string.match(/location/) != null) {
-              addElementClass($('location'), 'button_selected');
+     if (factors_as_string.match(/body location/) != null) {
+              addElementClass($('body location'), 'button_selected');
      }
      if (factors_as_string.match(/explanation/) != null) {
               addElementClass($('explanation'), 'button_selected');
@@ -140,7 +144,7 @@ function loadState()
       // factors behaves like a set of checkboxes.
       connect ('patterns',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'patterns'));
       connect ('severity',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'severity'));
-      connect ('location',     'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'location'));
+      connect ('body location','onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'body location'));
       connect ('explanation',  'onclick', partial (like_checkbox, 'button_selected', 'bruise_recon_checkbox_div', 'explanation'));
 
       connect('submit_div', 'onclick', show_answer);
@@ -159,7 +163,7 @@ function like_radio(selected_class, all_button_class, the_element) {
 
 
 function like_checkbox(selected_class, all_button_class, the_element) {
-    toggleElementClass( selected_class, $(the_element));
+   toggleElementClass( selected_class, $(the_element));
 }
 
 
@@ -191,11 +195,17 @@ function numeric(field) {
 
 function answer_is_correct() {
 
-    answer_is_yes = ($('correct_answer').innerHTML.toLowerCase().match(/yes/))
-    factors_include_severity = ($('correct_factors').innerHTML.toLowerCase().match(/severity/))
-    factors_include_location = ($('correct_factors').innerHTML.toLowerCase().match(/location/))
-    factors_include_patterns = ($('correct_factors').innerHTML.toLowerCase().match(/patterns/))
-    factors_include_explanation = ($('correct_factors').innerHTML.toLowerCase().match(/explanation/))
+    answer_is_yes               = ($('correct_answer').innerHTML.toLowerCase().match(/yes/))
+
+    factors_include_severity    = ($('correct_factors').innerHTML.toLowerCase().match(/severity/))      != null
+    factors_include_location    = ($('correct_factors').innerHTML.toLowerCase().match(/body location/)) != null
+    factors_include_patterns    = ($('correct_factors').innerHTML.toLowerCase().match(/patterns/))      != null
+    factors_include_explanation = ($('correct_factors').innerHTML.toLowerCase().match(/explanation/))   != null
+
+    answer_includes_severity    = (hasElementClass($('severity'),      'button_selected'))
+    answer_includes_location    = (hasElementClass($('body location'), 'button_selected')) 
+    answer_includes_patterns    = (hasElementClass($('patterns'),      'button_selected')) 
+    answer_includes_explanation = (hasElementClass($('explanation'),   'button_selected'))
 
     if (answer_is_yes) {
         if (hasElementClass($('answer_no'), 'button_selected')) { return false };
@@ -204,33 +214,25 @@ function answer_is_correct() {
         if (hasElementClass($('answer_yes'), 'button_selected')) { return false };
     }
 
-    logDebug ("yes no answer is correct");
-    if (factors_include_severity) {
-        if (! hasElementClass($('severity'), 'button_selected')) { return false };
-    }
-    if (factors_include_location) {
-        if (! hasElementClass($('location'), 'button_selected')) { return false };
-    }
-    if (factors_include_patterns) {
-        if (! hasElementClass($('patterns'), 'button_selected')) { return false };
-    }
-    if (factors_include_explanation) {
-        if (! hasElementClass($('explanation'), 'button_selected')) { return false };
-    }
+    logDebug ("yes/no answer is correct");
+    
 
+    if (   factors_include_severity     != answer_includes_severity      ) { return false };
+    if (   factors_include_location     != answer_includes_location      ) { return false };
+    if (   factors_include_patterns     != answer_includes_patterns      ) { return false };
+    if (   factors_include_explanation  != answer_includes_explanation   ) { return false };
 
-    if (!factors_include_severity) {
-        if (hasElementClass($('severity'), 'button_selected')) { return false };
-    }
-    if (!factors_include_location) {
-        if (hasElementClass($('location'), 'button_selected')) { return false };
-    }
-    if (!factors_include_patterns) {
-        if (hasElementClass($('patterns'), 'button_selected')) { return false };
-    }
-    if (!factors_include_explanation) {
-        if (hasElementClass($('explanation'), 'button_selected')) { return false };
-    }
+    /*
+    if (   factors_include_severity     && ! answer_includes_severity      ) { return false };
+    if (   factors_include_location     && ! answer_includes_location      ) { return false };
+    if (   factors_include_patterns     && ! answer_includes_patterns      ) { return false };
+    if (   factors_include_explanation  && ! answer_includes_explanation   ) { return false };
+    if ( ! factors_include_severity     &&   answer_includes_severity      ) { return false };
+    if ( ! factors_include_location     &&   answer_includes_location      ) { return false };
+    if ( ! factors_include_patterns     &&   answer_includes_patterns      ) { return false };
+    if ( ! factors_include_explanation  &&   answer_includes_explanation   ) { return false };
+    */
+    //}
 
 
 
@@ -286,10 +288,10 @@ function saveState()
    }
 
    doc ['factors'] = []
-   if (hasElementClass($('severity'),    'button_selected')) { doc ['factors'].push (   'severity') };
-   if (hasElementClass($('location'),    'button_selected')) { doc ['factors'].push (   'location') };
-   if (hasElementClass($('patterns'),    'button_selected')) { doc ['factors'].push (   'patterns') };
-   if (hasElementClass($('explanation'), 'button_selected')) { doc ['factors'].push ('explanation') };
+   if (hasElementClass($('severity'),      'button_selected')) { doc ['factors'].push (   'severity') };
+   if (hasElementClass($('body location'), 'button_selected')) { doc ['factors'].push (   'body location') };
+   if (hasElementClass($('patterns'),      'button_selected')) { doc ['factors'].push (   'patterns') };
+   if (hasElementClass($('explanation'),   'button_selected')) { doc ['factors'].push (   'explanation') };
 
    if (answer_is_correct()) {
         doc['score'] = 1;
