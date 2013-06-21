@@ -19,7 +19,6 @@ function dismissAddSectionPopup(window)
 }
 </script>
 
-
 {% load i18n %}
 <div class="inline-group">
   <h2>{{ inline_admin_formset.opts.verbose_name_plural|title }} &nbsp; (drag and drop to reorder) </h2>
@@ -28,14 +27,13 @@ function dismissAddSectionPopup(window)
 		
 		<div id='children-order-list' class='dragparent'>
 			{% for inline_admin_form in inline_admin_formset %}
+				{% if inline_admin_form.original.child%}
 				<div id="child-{{inline_admin_form.original.child.id}}" class="draggable inline-related {% if forloop.last %}last-related{% endif %}">
 				  
 				  <h3 onmouseover="this.style.cursor='move'">
-				      {{ inline_admin_form.original.child.label }}
+				      {{ inline_admin_form.original.child.label }} ({{ inline_admin_form.original.child.id }})
 				      <span class="edit">
-				      <!--
-				         <a style="position: absolute; top: 2px; right: 100px" href="/admin/pagetree/section/{{inline_admin_form.original.child.id}}" class="changelink">{% trans 'Change' %}</a></span>
-				       -->
+
 				       
 				         <a style="position: absolute; top: 2px; right: 100px" href="/admin/carr_main/sitesection/{{inline_admin_form.original.child.id}}/" class="changelink">{% trans 'Change' %}</a></span>
 				      
@@ -52,6 +50,7 @@ function dismissAddSectionPopup(window)
 				  {{ inline_admin_form.pk_field.field }}
 				  {{ inline_admin_form.fk_field.field }}
 				</div>
+				{%endif %}
 			{% endfor %}
 		</div>
 		<br /><br /><br />
