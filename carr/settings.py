@@ -1,2 +1,2 @@
-SITE_ID = 2
+# flake8: noqa
 from settings_shared import *

@@ -6,9 +6,9 @@ from django.shortcuts import render_to_response
 from django.utils import simplejson
 from django.contrib.auth.models import User, Group
 from django.contrib.sites.models import Site
-from .carr_main.models import students_in_class, users_by_uni
-from .activity_taking_action.models import score_on_taking_action
-from .activity_bruise_recon.models import score_on_bruise_recon
+from carr.carr_main.models import students_in_class, users_by_uni
+from carr.activity_taking_action.models import score_on_taking_action
+from carr.activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
 from django.conf import settings
 from itertools import tee, izip

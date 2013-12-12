@@ -4,16 +4,16 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from pagetree.models import Hierarchy
 from django.contrib.auth.decorators import login_required
-from carr_main.models import SiteState, sort_users
+from .models import SiteState, sort_users
 from django.contrib.sites.models import Site
-from quiz.models import Question
-from activity_taking_action.models import score_on_taking_action
-from activity_bruise_recon.models import score_on_bruise_recon
-from quiz.scores import (score_on_all_quizzes, all_answers_for_quizzes,
-                         scores_student, training_is_complete)
+from carr.quiz.models import Question
+from carr.activity_taking_action.models import score_on_taking_action
+from carr.activity_bruise_recon.models import score_on_bruise_recon
+from carr.quiz.scores import (score_on_all_quizzes, all_answers_for_quizzes,
+                              scores_student, training_is_complete)
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
-from quiz.scores import can_see_scores
+from carr.quiz.scores import can_see_scores
 
 import re
 

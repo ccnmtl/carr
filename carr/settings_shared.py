@@ -6,19 +6,23 @@ import sys
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-DATABASE_ENGINE = 'postgresql_psycopg2' # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'carr' # Or path to database file if using sqlite3.
-DATABASE_USER = 'pusher'             # Not used with sqlite3.
-DATABASE_USER = 'eddie'             # Not used with sqlite3.
+# 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_ENGINE = 'postgresql_psycopg2'
+DATABASE_NAME = 'carr'  # Or path to database file if using sqlite3.
+DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+# Set to empty string for localhost. Not used with sqlite3.
+DATABASE_HOST = ''
+# Set to empty string for default. Not used with sqlite3.
+DATABASE_PORT = ''
 
 ALLOWED_HOSTS = [".ccnmtl.columbia.edu", "localhost", ]
 
+ADMINS = ()
+
 if 'test' in sys.argv:
     DATABASE_ENGINE = 'sqlite3'
-    DATABASE_NAME = ':memory:' # Or path to database file if using sqlite3.
+    DATABASE_NAME = ':memory:'  # Or path to database file if using sqlite3.
     ADMINS = ()
 
 SOUTH_TESTS_MIGRATE = False
@@ -27,11 +31,11 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=carr_main,activity_bruise_recon,activity_taking_action,quiz',
+    '--cover-package=carr',
 ]
 
 
-#For now turn off caching
+# For now turn off caching
 CACHE_BACKEND = 'locmem://'
 #CACHE_BACKEND = 'dummy://'
 
@@ -70,17 +74,13 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'carr.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    # Put application templates before these fallback ones:
-    "/var/www/carr/templates/",
-    os.path.join(os.path.dirname(__file__),"templates"),
+    "/var/www/carr/carr/templates/",
+    os.path.join(os.path.dirname(__file__), "templates"),
 )
 
 INSTALLED_APPS = [
-    'activity_bruise_recon',           
-    'activity_taking_action',
+    'carr.activity_bruise_recon',
+    'carr.activity_taking_action',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -89,23 +89,18 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'pageblocks',
     'pagetree',
-    'carr_main',
-    'quiz',
+    'carr.carr_main',
+    'carr.quiz',
     'smartif',
     'sorl.thumbnail',
     'template_utils',
     'tinymce',
     'typogrify',
     'courseaffils',
-    'deploy_specific',
     'django_statsd',
     'south',
     'django_nose',
 ]
-
-if 'test' in sys.argv:
-    # should not be required for tests
-    INSTALLED_APPS.remove('deploy_specific')
 
 STATSD_CLIENT = 'statsd.client'
 STATSD_PREFIX = 'carr'
@@ -116,7 +111,7 @@ STATSD_PATCHES = ['django_statsd.patches.db', ]
 
 THUMBNAIL_SUBDIR = "thumbs"
 
-# for AuthRequirementMiddleware. this should be a list of 
+# for AuthRequirementMiddleware. this should be a list of
 # url prefixes for paths that can be accessed by anonymous
 # users. we need to allow anonymous access to the login
 # page, and to static resources.
@@ -131,48 +126,55 @@ ANONYMOUS_PATHS = ('/accounts/',
                    )
 
 COURSEAFFILS_PATHS = (
-                      #'/carr/',
-                      #'/activity/',
-                      #re.compile(r'^/$'),
-                      )
+    #'/carr/',
+    #'/activity/',
+    # re.compile(r'^/$'),
+)
 
 NON_ANONYMOUS_PATHS = COURSEAFFILS_PATHS
 
 COURSEAFFILS_EXEMPT_PATHS = ANONYMOUS_PATHS
 COURSEAFFIL_AUTO_MAP_GROUPS = ['demo']
 
-DEFAULT_SOCIALWORK_FACULTY_USER_IDS = [ 14,  21, 30, 41,  44,   456, 1514, 1515, 1516 ]
+DEFAULT_SOCIALWORK_FACULTY_USER_IDS = [
+    14,
+    21,
+    30,
+    41,
+    44,
+    456,
+    1514,
+    1515,
+    1516]
 
+WIND_BASE = "https://wind.columbia.edu/"
+WIND_SERVICE = "cnmtl_full_np"
+WIND_PROFILE_HANDLERS = ['djangowind.auth.CDAPProfileHandler']
+WIND_AFFIL_HANDLERS = [
+    'djangowind.auth.AffilGroupMapper', 'djangowind.auth.StaffMapper',
+    'djangowind.auth.SuperuserMapper']
+WIND_STAFF_MAPPER_GROUPS = ['tlc.cunix.local:columbia.edu']
+WIND_SUPERUSER_MAPPER_GROUPS = ['anp8', 'jb2410', 'zm4', 'egr2107']
 
 # WIND settings
-AUTHENTICATION_BACKENDS = ('djangowind.auth.WindAuthBackend','django.contrib.auth.backends.ModelBackend',)
+AUTHENTICATION_BACKENDS = (
+    'djangowind.auth.WindAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 
-# Pageblocks/Pagetree settings 
+# Pageblocks/Pagetree settings
 PAGEBLOCKS = ['pageblocks.HTMLBlock',
               'pageblocks.PullQuoteBlock',
               'carr_main.PullQuoteBlock_2',
               'carr_main.PullQuoteBlock_3',
               'pageblocks.ImageBlock',
-              'carr_main.FlashVideoBlock',
-              'quiz.Quiz',
-              'activity_bruise_recon.Block',           
+              'carr.carr_main.FlashVideoBlock',
+              'carr.quiz.Quiz',
+              'activity_bruise_recon.Block',
               'activity_taking_action.Block',
-              #'activity_treatment_choice.Block',
-              #'activity_prescription_writing.Block',
-              #this appears to be breaking stuff:
-              #'carr_main.FlashVideoBlock'
-              ] 
+              ]
 
 
-#if you add a 'deploy_specific' directory                                                                            
-#then you can put a settings.py file and templates/ overrides there            
-try:
-    from deploy_specific.settings import *
-    if locals().has_key('EXTRA_INSTALLED_APPS'):
-        INSTALLED_APPS = EXTRA_INSTALLED_APPS + INSTALLED_APPS
-except ImportError:
-    pass
-
-
+SITE_ID = 1
 MANAGERS = ADMINS

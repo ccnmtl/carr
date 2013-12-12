@@ -2,8 +2,6 @@ from django.contrib import admin
 from models import SiteSection
 from models import Section
 from pagetree.models import SectionChildren, PageBlock
-from django.contrib.flatpages.models import FlatPage
-from django.contrib.flatpages.admin import FlatPageAdmin as FlatPageAdminOld
 
 
 class SectionChildrenInline(admin.StackedInline):
@@ -20,13 +18,10 @@ class PageBlockInline(admin.StackedInline):
     fields = ('label', )
     template = 'admin/pagetree/pageblock/edit_inline/stacked.html'
 
-#import pdb
-# pdb.set_trace()
-
 
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ('label', 'slug', 'template')
-    fields = ('label', 'slug', 'template', 'sites')
+    list_display = ('label', 'slug')
+    fields = ('label', 'slug', 'sites')
 
     inlines = [
         SectionChildrenInline,
@@ -35,14 +30,3 @@ class SectionAdmin(admin.ModelAdmin):
 
 admin.site.unregister(Section)
 admin.site.register(SiteSection, SectionAdmin)
-
-
-class FlatPageAdmin(FlatPageAdminOld):
-
-    class Media:
-        js = ('js/tiny_mce/tiny_mce.js',
-              'js/tiny_mce/textareas.js',)
-
-# We have to unregister it, and then reregister
-admin.site.unregister(FlatPage)
-admin.site.register(FlatPage, FlatPageAdmin)
