@@ -98,17 +98,12 @@ def pairwise(iterable):
 
 
 def push_time(timelist):
-    print "pushing time"
     timelist.append(datetime.datetime.now())
 
 
 def showdiffs(timelist):
     if len(timelist) == 0:
-        print "Only one timestamp recorded."
         return
-
-    for t0, t1 in pairwise(timelist):
-        print t1 - t0
 
 
 @user_passes_test(can_see_scores)
@@ -393,7 +388,6 @@ def extract_class_info(course_info, faculty_affils_list, student_affils_list):
     # check whether we at least have any students in this class:
     if len([s for s in students if s not in this_course_faculty]) > 0:
         # All the students are also faculty. This is probably a CARE course.
-        # print "Has students"
         has_students = True
 
     # Are the usual suspects teaching the class? If so let's display it even
@@ -404,7 +398,6 @@ def extract_class_info(course_info, faculty_affils_list, student_affils_list):
     default_faculty_not_teaching_this_course = [
         f for f in default_faculty if f not in this_course_faculty]
     if len(default_faculty_not_teaching_this_course) == 0:
-        # print "Has default faculty"
         has_default_faculty = True
 
     if not has_students and not has_default_faculty:
@@ -545,18 +538,12 @@ def grandfather(quiz_data, user):
 
     if quiz_date.year == 1900:
         # This is because the front end javascript reported no year.
-        # print '1900'
         if user.id < 880:
-            # print "OK this user's ID is < 880 so we're going to say they're
-            # done."
             result = True
         else:
-            # print "No, this user's ID > 880 so we're going to say they're not
-            # done."
             result = False
     else:
         if quiz_date < datetime.datetime(2011, 10, 10, 0, 0, 0):
-            # print "OK this user definitely took the test before October 2011.
             # So they're done."
             result = True
     return result
@@ -564,10 +551,8 @@ def grandfather(quiz_data, user):
 
 def quiz_dict(q):
     if 'submit_time' in q:
-        # print q['all_correct']
         return q['all_correct'], q['score'], max(q['submit_time'])
     if 'all_correct' in q:
-        # print q['all_correct']
         return q['all_correct'], q['score']
     return 'f', q['score']
 
@@ -586,10 +571,8 @@ def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
 
     # Rule 1: Everyone has to take the post-test in order to pass the course.
     if 'Post-test' not in scores:
-        # print "No key for post test. Definitely not done."
         return False
     if scores['Post-test'][0] != 't':
-        # print "Not done."
         return False
     else:
         # OK -- they passed the post-test.

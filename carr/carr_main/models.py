@@ -56,13 +56,9 @@ def classes_i_teach(self):
     cache_key = "classes_i_teach_%d" % self.id
     cached = cache.get(cache_key)
     if cached:
-        # print "classes_i_teach found in cache."
         return cached
 
     my_classes = [re.match(course_re, c.name) for c in self.groups.all()]
-    # print self.groups.all()
-    # print my_classes
-    # pdb.set_trace()
     result = [(a.groups()[0:6])
               for a in my_classes if a is not None and a.groups()[6] == 'fc']
     cache.set(cache_key, result, 30)
@@ -73,7 +69,6 @@ def classes_i_take(self):
     cache_key = "classes_i_take_%d" % self.id
     cached = cache.get(cache_key)
     if cached:
-        # print "classes_i_take found in cache."
         return cached
     my_classes = [re.match(course_re, c.name) for c in self.groups.all()]
     result = [(a.groups()[0:6])
@@ -86,7 +81,6 @@ def students_i_teach(self):
     cache_key = "students_i_teach_%d" % self.id
     cached = cache.get(cache_key)
     if cached:
-        # print "students_i_teach found in cache."
         return cached
     the_classes_i_teach = self.classes_i_teach()
     # yeah, the people who take more than zero of the classes I teach.
@@ -112,7 +106,6 @@ def students_in_class(course_info):
     cache_key = "students_in_t%s.y%s.s%s.c%s%s.%s" % course_info
     cached = cache.get(cache_key)
     if cached:
-        # print "students_in_class found in cache."
         return cached
     result = []
     all_affils = Group.objects.all()
@@ -179,10 +172,7 @@ class SiteState(models.Model):
     def save_last_location(self, path, section):
         if len([a for a in Site.objects.all()
                 if a not in section.section_site().sites.all()]) > 0:
-            # print "This section only exists on some of the sites, so we're
-            # not saving it."
             return
-        # print "This section is on all the sites, so we'll save it."
         self.state_object[str(section.id)] = section.label
         self.last_location = path
         self.visited = simplejson.dumps(self.state_object)
