@@ -1,8 +1,15 @@
-import unittest
+from django.test import TestCase
+
 from carr.quiz.scores import (
     can_see_scores, year_range, sort_courses, push_time,
     to_python_date, course_label, course_section,
-    quiz_dict)
+    quiz_dict, score_on_all_quizzes, pre_and_post_test_results,
+    all_answers_for_quizzes, count_pretest_and_posttest_students,
+    question_and_quiz_keys
+)
+from .factories import UserFactory
+
+import unittest
 
 
 class DummyUser(object):
@@ -57,3 +64,32 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(quiz_dict(q), (2, 3))
         q = dict(score=3)
         self.assertEqual(quiz_dict(q), ('f', 3))
+
+
+class TestHelpers(TestCase):
+    def test_score_on_all_quizzes(self):
+        u = UserFactory()
+        r = score_on_all_quizzes(u)
+        self.assertEqual(r, [])
+
+    def test_pre_and_post_test_results(self):
+        u = UserFactory()
+        r = pre_and_post_test_results(u)
+        self.assertEqual(r, {'pre_test': False, 'post_test': False})
+
+    def test_all_answers_for_quizzes(self):
+        u = UserFactory()
+        r = all_answers_for_quizzes(u)
+        self.assertEqual(r, {})
+
+    def test_count_pretest_and_posttest_students(self):
+        u = UserFactory()
+        r = count_pretest_and_posttest_students(None, [u])
+        self.assertEqual(r, {'pre_test': 0, 'post_test': 0})
+
+    def test_question_and_quiz_keys(self):
+        r = question_and_quiz_keys()
+        self.assertEqual(r['answer_key'], {})
+        self.assertEqual(r['quiz_key'], {})
+        self.assertEqual(len(r['quizzes']), 0)
+        self.assertEqual(len(r['questions']), 0)
