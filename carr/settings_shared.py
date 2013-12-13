@@ -6,24 +6,32 @@ import sys
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-# 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_ENGINE = 'postgresql_psycopg2'
-DATABASE_NAME = 'carr'  # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-# Set to empty string for localhost. Not used with sqlite3.
-DATABASE_HOST = ''
-# Set to empty string for default. Not used with sqlite3.
-DATABASE_PORT = ''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'carr',
+        'HOST': '',
+        'PORT': 5432,
+        'USER': '',
+        'PASSWORD': '',
+    }
+}
 
 ALLOWED_HOSTS = [".ccnmtl.columbia.edu", "localhost", ]
 
 ADMINS = ()
 
-if 'test' in sys.argv:
-    DATABASE_ENGINE = 'sqlite3'
-    DATABASE_NAME = ':memory:'  # Or path to database file if using sqlite3.
-    ADMINS = ()
+if 'test' in sys.argv or 'jenkins' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'HOST': '',
+            'PORT': '',
+            'USER': '',
+            'PASSWORD': '',
+        }
+    }
 
 SOUTH_TESTS_MIGRATE = False
 
@@ -49,12 +57,12 @@ MEDIA_ROOT = '/var/www/carr/uploads/'
 MEDIA_URL = '/site_media/uploads/'
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
+    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.request',
 )
@@ -94,7 +102,6 @@ INSTALLED_APPS = [
     'smartif',
     'sorl.thumbnail',
     'template_utils',
-    'tinymce',
     'typogrify',
     'courseaffils',
     'django_statsd',

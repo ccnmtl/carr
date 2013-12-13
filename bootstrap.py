@@ -7,11 +7,7 @@ import shutil
 pwd = os.path.abspath(os.path.dirname(__file__))
 vedir = os.path.abspath(os.path.join(pwd,"ve"))
 
-clear = True
-if len(sys.argv) > 1:
-    if sys.argv[1] == "--fast":
-        clear = False
-if clear and os.path.exists(vedir):
+if os.path.exists(vedir):
     shutil.rmtree(vedir)
 
 virtualenv_support_dir = os.path.abspath(os.path.join(pwd, "requirements", "virtualenv_support"))
@@ -22,20 +18,22 @@ ret = subprocess.call(["python", "virtualenv.py",
                        vedir])
 if ret: exit(ret)
 
+ret = subprocess.call(
+    [os.path.join(vedir, 'bin', 'pip'), "install",
+     "--index-url=http://pypi.ccnmtl.columbia.edu/",
+     "wheel==0.21.0"])
+
+if ret:
+    exit(ret)
+
 ret = subprocess.call([os.path.join(vedir, 'bin', 'pip'), "install",
-                       "-E", vedir,
-                       "--enable-site-packages",
-                       "--index-url=''",
-                       "--requirement",os.path.join(pwd,"requirements/apps.txt")])
+                       "--use-wheel",
+                       "--index-url=http://pypi.ccnmtl.columbia.edu/",
+                       "--requirement",os.path.join(pwd,"requirements.txt")])
 if ret: exit(ret)
 
-def has_eggs():
-    return ".egg" in [os.path.splitext(f)[1] 
-                      for f 
-                      in os.listdir(os.path.join(pwd,"requirements/eggs/"))]
+ret = subprocess.call(["python","virtualenv.py","--relocatable",vedir])
+# --relocatable always complains about activate.csh, which we don't really
+# care about. but it means we need to ignore its error messages
 
-if has_eggs():
-    # only try to easy install eggs if there actually are some
-    ret = subprocess.call([os.path.join(vedir,"bin/easy_install"),
-                           '-f',os.path.join(pwd,"requirements/eggs/")])
-    exit(ret)
+
