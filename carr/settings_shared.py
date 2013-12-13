@@ -108,6 +108,7 @@ INSTALLED_APPS = [
     'south',
     'django_nose',
     'django_jenkins',
+    'smoketest',
 ]
 
 JENKINS_TASKS = (

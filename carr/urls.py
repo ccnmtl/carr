@@ -87,7 +87,7 @@ urlpatterns = patterns(
     # analytics:
     (r'^_stats/', direct_to_template,
      {'template': 'stats.html'}),
-
+    ('^smoketest/$', include('smoketest.urls')),
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
      {'document_root': site_media_root}),
     (r'^uploads/(?P<path>.*)$', 'django.views.static.serve',
