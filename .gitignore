@@ -6,3 +6,4 @@ deploy_specific
 .DS_STORE
 local_settings*
 .coverage
+reports/
