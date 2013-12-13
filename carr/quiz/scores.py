@@ -79,7 +79,6 @@ def semesters_by_year(request, year):
 
 
 def courses_sort_key(x, y):
-
     tmp = cmp(x['course_label'], y['course_label'])
     if tmp != 0:
         return tmp
@@ -91,19 +90,8 @@ def sort_courses(courses):
     return sorted(courses, courses_sort_key)
 
 
-def pairwise(iterable):
-    a, b = tee(iterable)
-    next(b, None)
-    return izip(a, b)
-
-
 def push_time(timelist):
     timelist.append(datetime.datetime.now())
-
-
-def showdiffs(timelist):
-    if len(timelist) == 0:
-        return
 
 
 @user_passes_test(can_see_scores)
