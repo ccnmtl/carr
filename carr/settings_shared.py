@@ -118,7 +118,12 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.run_pyflakes',
 )
 
-PROJECT_APPS = ['carr', ]
+PROJECT_APPS = [
+    'carr.carr_main',
+    'carr.activity_bruise_recon',
+    'carr.activity_taking_action',
+    'carr.quiz',
+]
 
 STATSD_CLIENT = 'statsd.client'
 STATSD_PREFIX = 'carr'
