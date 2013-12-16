@@ -76,6 +76,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
     'courseaffils.middleware.CourseManagerMiddleware',
     'carr.someutils.AuthRequirementMiddleware',
+    'waffle.middleware.WaffleMiddleware',
     'djangohelpers.middleware.HttpDeleteMiddleware',
 )
 
@@ -109,6 +110,7 @@ INSTALLED_APPS = [
     'django_nose',
     'django_jenkins',
     'smoketest',
+    'waffle',
 ]
 
 JENKINS_TASKS = (
