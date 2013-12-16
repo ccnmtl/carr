@@ -1,8 +1,6 @@
 from models import Quiz, Question, ActivityState
-from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import render_to_response
 from django.utils import simplejson
 from django.contrib.auth.models import User, Group
 from django.contrib.sites.models import Site
@@ -11,6 +9,7 @@ from carr.activity_taking_action.models import score_on_taking_action
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
 from django.conf import settings
+from annoying.decorators import render_to
 
 import re
 import datetime
@@ -24,27 +23,6 @@ def can_see_scores(u):
     return (u.is_authenticated() and u.user_type() in ('faculty', 'admin'))
 
 
-class rendered_with(object):
-
-    def __init__(self, template_name):
-        self.template_name = template_name
-
-    def __call__(self, func):
-        def rendered_func(request, *args, **kwargs):
-            items = func(request, *args, **kwargs)
-            if isinstance(items, type({})):
-                return (
-                    render_to_response(
-                        self.template_name,
-                        items,
-                        context_instance=RequestContext(request))
-                )
-            else:
-                return items
-
-        return rendered_func
-
-
 def year_range():
     next_year = datetime.datetime.now().year + 2
     return range(2010, next_year)
@@ -54,7 +32,7 @@ inv_semester_map = dict((v, k) for k, v in semester_map.iteritems())
 
 
 @user_passes_test(can_see_scores)
-@rendered_with('quiz/scores/scores_index.html')
+@render_to('quiz/scores/scores_index.html')
 def scores_index(request):
     return {
         'full_page_results_block': True, 'hide_scores_help_text': True
@@ -62,7 +40,7 @@ def scores_index(request):
 
 
 @user_passes_test(can_see_scores)
-@rendered_with('quiz/scores/socialwork_overview.html')
+@render_to('quiz/scores/socialwork_overview.html')
 def socialwork_overview(request):
     return {
         'years': year_range()
@@ -70,7 +48,7 @@ def socialwork_overview(request):
 
 
 @user_passes_test(can_see_scores)
-@rendered_with('quiz/scores/semesters_by_year.html')
+@render_to('quiz/scores/semesters_by_year.html')
 def semesters_by_year(request, year):
     return {
         'year': year, 'semester_map': semester_map
@@ -94,7 +72,7 @@ def push_time(timelist):
 
 
 @user_passes_test(can_see_scores)
-@rendered_with('quiz/scores/classes_by_semester.html')
+@render_to('quiz/scores/classes_by_semester.html')
 def classes_by_semester(request, year, semester):
     if request.user.user_type() == 'student':
         return scores_student(request)
@@ -112,7 +90,7 @@ def classes_by_semester(request, year, semester):
 
 
 @user_passes_test(can_see_scores)
-@rendered_with('quiz/scores/students_by_class.html')
+@render_to('quiz/scores/students_by_class.html')
 def students_by_class(request, c1, c2, c3, c4, c5, c6):
     course_info = (c1, c2, c3, c4, c5, c6)
     students_to_show = students_in_class(course_info)
@@ -125,7 +103,7 @@ def students_by_class(request, c1, c2, c3, c4, c5, c6):
 
 
 @user_passes_test(can_see_scores)
-@rendered_with('quiz/scores/student_lookup_by_uni.html')
+@render_to('quiz/scores/student_lookup_by_uni.html')
 def student_lookup_by_uni_form(request):
     rp = request.POST
     if 'uni' not in rp:
@@ -162,7 +140,7 @@ def student_lookup_by_uni_form(request):
 
 
 @user_passes_test(lambda u: u.is_authenticated())
-@rendered_with('quiz/scores_student.html')
+@render_to('quiz/scores_student.html')
 def scores_student(request):
     try:
         if request.user.user_type() == 'student':

@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User, Group
 from django.template import RequestContext, Context, loader
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response
 from pagetree.models import Hierarchy
 from django.contrib.auth.decorators import login_required
 from .models import SiteState, sort_users
@@ -14,6 +13,7 @@ from carr.quiz.scores import (score_on_all_quizzes, all_answers_for_quizzes,
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from carr.quiz.scores import can_see_scores
+from annoying.decorators import render_to
 
 import re
 
@@ -33,29 +33,8 @@ def background(request, content_to_show):
     return HttpResponse(t.render(c))
 
 
-class rendered_with(object):
-
-    def __init__(self, template_name):
-        self.template_name = template_name
-
-    def __call__(self, func):
-        def rendered_func(request, *args, **kwargs):
-            items = func(request, *args, **kwargs)
-            if isinstance(items, type({})):
-                return (
-                    render_to_response(
-                        self.template_name,
-                        items,
-                        context_instance=RequestContext(request))
-                )
-            else:
-                return items
-
-        return rendered_func
-
-
 @login_required
-@rendered_with('carr_main/page.html')
+@render_to('carr_main/page.html')
 def page(request, path):
     h = Hierarchy.get_hierarchy('main')
     current_root = h.get_section_from_path(path)
@@ -197,7 +176,7 @@ def add_course(stg, fcg):
 
 
 @login_required
-@rendered_with('carr_main/add_classes/add_classes_form.html')
+@render_to('carr_main/add_classes/add_classes_form.html')
 def add_classes(request):
     default_faculty = User.objects.filter(
         id__in=settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
@@ -241,7 +220,7 @@ def add_classes(request):
 
 
 @login_required
-@rendered_with('carr_main/selenium.html')
+@render_to('carr_main/selenium.html')
 def selenium(request, task):
     if task == 'setup':
         test_user = User.objects.get(username='student1')

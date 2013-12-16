@@ -1,39 +1,18 @@
 from models import Quiz, Question, Answer, ActivityState
-from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404
 from pagetree.models import Hierarchy
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.contrib.auth.models import User
+from annoying.decorators import render_to
 
 from scores import scores_student
 
 
-class rendered_with(object):
-
-    def __init__(self, template_name):
-        self.template_name = template_name
-
-    def __call__(self, func):
-        def rendered_func(request, *args, **kwargs):
-            items = func(request, *args, **kwargs)
-            if isinstance(items, type({})):
-                return (
-                    render_to_response(
-                        self.template_name,
-                        items,
-                        context_instance=RequestContext(request))
-                )
-            else:
-                return items
-
-        return rendered_func
-
-
 @login_required
-@rendered_with('quiz/studentquiz.html')
+@render_to('quiz/studentquiz.html')
 def studentquiz(request, quiz_id, user_id):
     """allows a faculty member to see the answers a student posted for a quiz.
     URL, btw, is: /activity/quiz/studentquiz/2/user/5/ """
@@ -58,7 +37,7 @@ def get_hierarchy():
     )
 
 
-@rendered_with('quiz/edit_quiz.html')
+@render_to('quiz/edit_quiz.html')
 def edit_quiz(request, id):
     quiz = get_object_or_404(Quiz, id=id)
     section = quiz.pageblock().section
@@ -125,7 +104,7 @@ def add_question_to_quiz(request, id):
     return HttpResponseRedirect(reverse("edit-quiz", args=[quiz.id]))
 
 
-@rendered_with('quiz/edit_question.html')
+@render_to('quiz/edit_question.html')
 def edit_question(request, id):
     question = get_object_or_404(Question, id=id)
     return dict(question=question)
@@ -142,7 +121,7 @@ def add_answer_to_question(request, id):
     return HttpResponseRedirect(reverse("edit-question", args=[question.id]))
 
 
-@rendered_with('quiz/edit_answer.html')
+@render_to('quiz/edit_answer.html')
 def edit_answer(request, id):
     answer = get_object_or_404(Answer, id=id)
     return dict(answer=answer)
