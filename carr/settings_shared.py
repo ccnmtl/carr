@@ -180,7 +180,7 @@ WIND_AFFIL_HANDLERS = [
     'djangowind.auth.AffilGroupMapper', 'djangowind.auth.StaffMapper',
     'djangowind.auth.SuperuserMapper']
 WIND_STAFF_MAPPER_GROUPS = ['tlc.cunix.local:columbia.edu']
-WIND_SUPERUSER_MAPPER_GROUPS = ['anp8', 'jb2410', 'zm4', 'egr2107']
+WIND_SUPERUSER_MAPPER_GROUPS = ['anp8', 'jb2410', 'zm4', 'sld2131']
 
 # WIND settings
 AUTHENTICATION_BACKENDS = (
@@ -201,6 +201,8 @@ PAGEBLOCKS = ['pageblocks.HTMLBlock',
               'activity_taking_action.Block',
               ]
 
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+SESSION_COOKIE_HTTPONLY = True
 
 SITE_ID = 1
 MANAGERS = ADMINS
