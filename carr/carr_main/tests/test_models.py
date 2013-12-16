@@ -1,6 +1,7 @@
 from django.test import TestCase
-from carr.carr_main.models import user_type
-from .factories import SiteStateFactory
+from carr.carr_main.models import (
+    user_type, new_get_children)
+from .factories import SiteStateFactory, SiteSectionFactory
 
 
 class SimpleModelTest(TestCase):
@@ -43,3 +44,16 @@ class SiteStateTest(TestCase):
         s.save_last_location("/foo/", DummySection())
         self.assertFalse(s.get_has_visited(DummySection()))
         self.assertEqual(s.last_location, "/")
+
+
+class SiteSectionTest(TestCase):
+    def test_create(self):
+        SiteSectionFactory()
+
+    def test_unicode(self):
+        s = SiteSectionFactory()
+        self.assertEqual(str(s), s.label)
+
+    def test_new_get_children(self):
+        s = SiteSectionFactory()
+        self.assertEqual(new_get_children(s), [])
