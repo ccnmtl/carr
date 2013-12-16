@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
 var saveOrder = function() {
-    var url = "{% url reorder-questions quiz.id %}?";
+    var url = "{% url 'reorder-questions' quiz.id %}?";
     var p = $('questions');
     var lis = p.getElementsByTagName('li');
     var cnt = 0;
@@ -34,9 +34,9 @@ var saveOrder = function() {
 <ul id="questions" class="dragparent">
 {% for question in quiz.question_set.all %}
 <li class="draggable" id="question-{{question.id}}">
-[<a href="{% url delete-question question.id %}">delete</a>] 
+[<a href="{% url 'delete-question' question.id %}">delete</a>] 
 Question {{ question.ordinality }}: 
-<a href="{% url edit-question question.id %}">{{question.text|truncatewords:20}}</a></li>
+<a href="{% url 'edit-question' question.id %}">{{question.text|truncatewords:20}}</a></li>
 {% endfor %}
 </ul>
 

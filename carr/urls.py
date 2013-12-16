@@ -1,7 +1,8 @@
 from django.conf.urls.defaults import patterns, include
 from django.contrib import admin
 from django.conf import settings
-from django.views.generic.simple import direct_to_template
+from django.views.generic import TemplateView
+from django.views.generic import RedirectView
 import os.path
 admin.autodiscover()
 
@@ -10,8 +11,7 @@ site_media_root = os.path.join(os.path.dirname(__file__), "../media")
 urlpatterns = patterns(
     '',
 
-    (r'^welcome/$', 'django.views.generic.simple.redirect_to',
-     {'url': '/carr'}),
+    (r'^welcome/$', RedirectView.as_view(url='/carr')),
     (r'^crossdomain.xml$', 'django.views.static.serve',
      {'document_root': os.path.abspath(os.path.dirname(__file__)),
       'path': 'crossdomain.xml'}),
@@ -85,8 +85,7 @@ urlpatterns = patterns(
      'carr.carr_main.views.background'),
 
     # analytics:
-    (r'^_stats/', direct_to_template,
-     {'template': 'stats.html'}),
+    (r'^_stats/', TemplateView.as_view(template_name="stats.html")),
     ('^smoketest/$', include('smoketest.urls')),
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
      {'document_root': site_media_root}),

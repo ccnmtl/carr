@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_modify adminmedia %}
+{% load i18n admin_modify %}
 
 {% block extrahead %}{{ block.super }}
 <link rel="stylesheet" href="/admin/pagetree/media/css/pagetree.css" media="screen" />
@@ -61,7 +61,7 @@ var saveOrderOfPageBlocks = function() {
 {{ media }}
 {% endblock %}
 
-{% block stylesheet %}{% admin_media_prefix %}css/forms.css{% endblock %}
+{% block stylesheet %}/media/admin/css/forms.css{% endblock %}
 
 {% block coltype %}{% if ordered_objects %}colMS{% else %}colM{% endif %}{% endblock %}
 

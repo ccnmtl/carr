@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_modify adminmedia %}
+{% load i18n admin_modify %}
 
 {% block extrahead %}{{ block.super }}
 <link rel="stylesheet" href="/admin/pagetree/media/css/pagetree.css" media="screen" />
@@ -32,7 +32,7 @@ MochiKit.Signal.connect(window, "onload", selectPageBlock)
 {{ media }}
 {% endblock %}
 
-{% block stylesheet %}{% admin_media_prefix %}css/forms.css{% endblock %}
+{% block stylesheet %}/media/admin/css/forms.css{% endblock %}
 
 {% block coltype %}{% if ordered_objects %}colMS{% else %}colM{% endif %}{% endblock %}
 
@@ -67,7 +67,7 @@ Type: <select id="blocktype" name="blocktype" onchange="showForm(this)">
 <br /><br />
 {% for blocktype in section.available_pageblocks %}
 	{% if blocktype %}
-			<form action="{% url add-pageblock section.id %}" id="form_{{blocktype.display_name|slugify}}" {% ifnotequal forloop.counter 1 %}style="display: none" {% endifnotequal %}
+			<form action="{% url 'add-pageblock' section.id %}" id="form_{{blocktype.display_name|slugify}}" {% ifnotequal forloop.counter 1 %}style="display: none" {% endifnotequal %}
 				{% if blocktype.add_form.is_multipart %}
 				   enctype="multipart/form-data"
 				{% endif %}

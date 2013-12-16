@@ -206,3 +206,11 @@ SESSION_COOKIE_HTTPONLY = True
 
 SITE_ID = 1
 MANAGERS = ADMINS
+
+SECRET_KEY = 'dummy'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+}
