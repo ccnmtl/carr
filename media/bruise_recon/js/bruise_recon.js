@@ -300,14 +300,18 @@ function saveState()
         doc['score'] = 0;
    }
 
-  var sync_req = new XMLHttpRequest();
-  sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }
-  sync_req.open("POST", url, false);
-
   what_to_send = {}
   what_to_send [case_name ] = doc
 
-  sync_req.send(queryString({'json':JSON.stringify(what_to_send , null)}));
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(queryString({'json':JSON.stringify(what_to_send , null)}));
 
 }
 
