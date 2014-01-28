@@ -46,7 +46,6 @@ def savestate(request):
     return HttpResponse(simplejson.dumps(response), 'application/json')
 
 
-
 @login_required
 @render_to('activity_taking_action/student_response.html')
 def student(request, user_id):
