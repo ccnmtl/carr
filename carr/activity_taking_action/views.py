@@ -25,7 +25,7 @@ def loadstate(request):
 
 @login_required
 def savestate(request):
-    json = request.POST['json']
+    json = request.POST.get('json', '{}')
     update = simplejson.loads(json)
 
     try:
@@ -44,6 +44,7 @@ def savestate(request):
     response['success'] = 1
 
     return HttpResponse(simplejson.dumps(response), 'application/json')
+
 
 
 @login_required

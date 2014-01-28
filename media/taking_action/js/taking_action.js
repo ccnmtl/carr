@@ -114,10 +114,16 @@ function saveState()
   }
   
   doc ['current_step'] = current_step;
-  var sync_req = new XMLHttpRequest();  
-  sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
-  sync_req.open("POST", url, false);
-  sync_req.send(queryString({'json':JSON.stringify(doc , null)})); 
+
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(queryString({'json':JSON.stringify(doc , null)}));
 }
 
 
