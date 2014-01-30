@@ -441,12 +441,16 @@ function saveState()
                  what_to_send [quiz_key ]['question'] = collect_question_info();
              }
    }
-   var sync_req = new XMLHttpRequest();  
-   sync_req.onreadystatechange= function() { if (sync_req.readyState!=4) return false; }         
-   sync_req.open("POST", url, false);
-   sync_req.send(queryString({'json':serializeJSON(what_to_send)}));
-   //logDebug ("Just sent:");
-   //logDebug (serializeJSON(what_to_send));
+
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(queryString({'json':serializeJSON(what_to_send)}));
 }
 
 function retakeQuiz()
