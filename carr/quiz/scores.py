@@ -32,6 +32,21 @@ inv_semester_map = dict((v, k) for k, v in semester_map.iteritems())
 
 
 @user_passes_test(can_see_scores)
+@render_to('quiz/scores/access_list.html')
+def access_list(request):
+    whitelist = settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS
+    allowed = []
+    for u in User.objects.all().order_by('last_name'):
+        groups = [g.name for g in u.groups.all()]
+        u.whitelist = u.id in whitelist
+        u.admin = any([('tlcxml' in g) for g in groups])
+        u.faculty = any([('.fc.' in g) for g in groups]) or u.is_staff
+        if any([u.whitelist, u.admin, u.faculty]):
+            allowed.append(u)
+    return dict(allowed=allowed)
+
+
+@user_passes_test(can_see_scores)
 @render_to('quiz/scores/scores_index.html')
 def scores_index(request):
     return {

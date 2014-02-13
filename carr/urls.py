@@ -57,6 +57,8 @@ urlpatterns = patterns(
     (r'^scores/socialwork/uni/$',
      'carr.quiz.scores.student_lookup_by_uni_form'),
 
+    (r'^scores/access/$', 'carr.quiz.scores.access_list'),
+
     # a faculty member wants to see the score of a student:
     (r'^activity/quiz/studentquiz/(?P<quiz_id>\d+)/user/(?P<user_id>\d+)/$',
      'carr.quiz.views.studentquiz'),

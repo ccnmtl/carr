@@ -1,0 +1,15 @@
+{% extends 'quiz/scores/scores_base.html' %}
+
+{% block content %}
+
+<ul>
+{% for user in allowed %}
+<li><b>{{user.last_name}}, {{user.first_name}}</b> ({{user.username}})
+{% if user.faculty %}<span class="label label-success">FACULTY</span>{% endif %}
+{% if user.admin %}<span class="label label-danger">ADMIN</span>{% endif %}
+{% if user.whitelist %}<span class="label label-warning">WHITELIST</span>{% endif %}
+</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

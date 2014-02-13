@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 
 from carr.quiz.scores import (
     can_see_scores, year_range, sort_courses, push_time,
@@ -93,3 +93,17 @@ class TestHelpers(TestCase):
         self.assertEqual(r['quiz_key'], {})
         self.assertEqual(len(r['quizzes']), 0)
         self.assertEqual(len(r['questions']), 0)
+
+
+class TestViews(TestCase):
+    def setUp(self):
+        self.u = UserFactory(is_staff=True)
+        self.u.set_password("test")
+        self.u.save()
+        self.c = Client()
+        self.c.login(username=self.u.username, password="test")
+
+    def test_access_list(self):
+        r = self.c.get("/scores/access/")
+        self.assertEqual(r.status_code, 200)
+        self.assertTrue("FACULTY" in r.content)
