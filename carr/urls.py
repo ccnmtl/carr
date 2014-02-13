@@ -30,10 +30,8 @@ urlpatterns = patterns(
     (r'^scores$', 'carr.quiz.scores.scores_index'),
     # honi soit qui mal y pense
     (r'^scores/$', 'carr.quiz.scores.scores_index'),
-    (r'^scores/socialwork$',
-     'carr.quiz.scores.scores_index'),
-    (r'^scores/socialwork/$',
-     'carr.quiz.scores.scores_index'),
+    (r'^scores/socialwork$', 'carr.quiz.scores.scores_index'),
+    (r'^scores/socialwork/$', 'carr.quiz.scores.scores_index'),
 
     # a list of years
     (r'^scores/socialwork/year/$',
@@ -47,28 +45,24 @@ urlpatterns = patterns(
     (r'^scores/socialwork/year/(?P<year>\d+)/semester/(?P<semester>\w+)/$',
      'carr.quiz.scores.classes_by_semester'),
 
-    #/scores/socialwork/course/{{c.0}}/{{c.1}}/{{c.2}}/{{c.3}}/{{c.4}}/{{c.5}}/
-    #/(?P<c1>\w+)/(?P<c2>\w+)/(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$
-
-    # a faculty member wants to see the score of a student:
-    (r'^activity/quiz/studentquiz/(?P<quiz_id>\d+)/user/(?P<user_id>\d+)/$',
-     'carr.quiz.views.studentquiz'),
-
     # a student wants to see his or her own scores:
-    (r'^scores/student/$',
-     'carr.quiz.scores.scores_student'),
+    (r'^scores/student/$', 'carr.quiz.scores.scores_student'),
 
     # a list of students for each class
     ((r'^scores/socialwork/course/(?P<c1>\w+)/(?P<c2>\w+)/'
       r'(?P<c3>\w+)/(?P<c4>\w+)/(?P<c5>\w+)/(?P<c6>\w+)/$'),
      'carr.quiz.scores.students_by_class'),
 
-    # adding classes:
-    (r'^add_classes/$', 'carr.carr_main.views.add_classes'),
-
     # student lookup by uni -- form
     (r'^scores/socialwork/uni/$',
      'carr.quiz.scores.student_lookup_by_uni_form'),
+
+    # a faculty member wants to see the score of a student:
+    (r'^activity/quiz/studentquiz/(?P<quiz_id>\d+)/user/(?P<user_id>\d+)/$',
+     'carr.quiz.views.studentquiz'),
+
+    # adding classes:
+    (r'^add_classes/$', 'carr.carr_main.views.add_classes'),
 
     # this includes all the quiz stuff, including old urls.
     (r'^activity/quiz/', include('carr.quiz.urls')),
