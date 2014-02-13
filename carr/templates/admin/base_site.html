@@ -4,14 +4,14 @@
 {% block title %}{{ title }} | {% trans "Django Admin" %}{% endblock %}
 
 {% block extrahead %}
-  <script type="text/javascript" src="/site_media/js/tiny_mce/tiny_mce.js"></script>
+  <script type="text/javascript" src="{{STATIC_URL}}js/tiny_mce/tiny_mce.js"></script>
   <script type="text/javascript">
      tinyMCE.init({
           // General options
           mode : "textareas",
           width: "100%",
           theme : "advanced",
-          content_css : '/site_media/css/tiny_mce.css',
+          content_css : '{{STATIC_URL}}css/tiny_mce.css',
           plugins : "safari,searchreplace,paste,table",
           
           

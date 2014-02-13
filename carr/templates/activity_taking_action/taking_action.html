@@ -1,10 +1,11 @@
+{% load staticfiles %}
 {% load smartif %} 
-<script type="text/javascript" src="/site_media/js/mochikit/MochiKit/MochiKit.js"></script> 
+<script type="text/javascript" src="{% static 'js/mochikit/MochiKit/MochiKit.js' %}"></script> 
 <script type="text/javascript">var array_of_steps =  {{block.list_of_steps_json|safe}};</script>
-<script type="text/javascript" src="/site_media/taking_action/js/nav.js"></script> 
-<script type="text/javascript" src="/site_media/taking_action/js/complete_report.js"></script>
-<script type="text/javascript" src="/site_media/taking_action/js/taking_action.js"></script> 
-<link href="/site_media/taking_action/css/taking_action.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{% static 'taking_action/js/nav.js' %}"></script> 
+<script type="text/javascript" src="{% static 'taking_action/js/complete_report.js' %}"></script>
+<script type="text/javascript" src="{% static 'taking_action/js/taking_action.js' %}"></script> 
+<link href="{% static 'taking_action/css/taking_action.css' %}" rel="stylesheet" type="text/css" />
 {% for the_step_name, the_template in block.templates_by_step %}
     {% include the_template %}
 {% endfor %}

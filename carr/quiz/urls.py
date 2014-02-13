@@ -5,8 +5,6 @@ media_root = os.path.join(os.path.dirname(__file__), "media")
 
 urlpatterns = patterns(
     '',
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-     {'document_root': media_root}),
     (r'^edit_quiz/(?P<id>\d+)/$',
      'carr.quiz.views.edit_quiz', {}, 'edit-quiz'),
     (r'^edit_quiz/(?P<id>\d+)/add_question/$',
