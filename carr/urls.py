@@ -90,5 +90,6 @@ urlpatterns = patterns(
     (r'^uploads/(?P<path>.*)$', 'django.views.static.serve',
      {'document_root': settings.MEDIA_ROOT}),
     # very important that this stays last and in this order
+    (r'^edit/(?P<path>.*)$', 'carr.carr_main.views.edit_page'),
     (r'^(?P<path>.*)$', 'carr.carr_main.views.page'),
 )

@@ -20,6 +20,33 @@ import re
 import datetime
 
 
+def get_hierarchy():
+    return Hierarchy.objects.get_or_create(
+        name="main", defaults=dict(base_url="/"))[0]
+
+
+def get_section_from_path(path):
+    h = get_hierarchy()
+    return h.get_section_from_path(path)
+
+
+def get_module(section):
+    """ get the top level module that the section is in"""
+    if section.is_root:
+        return None
+    return section.get_ancestors()[1]
+
+
+@user_passes_test(can_see_scores)
+@render_to('carr_main/edit_page.html')
+def edit_page(request, path):
+    section = get_section_from_path(path)
+    h = get_hierarchy()
+    return dict(section=section,
+                module=get_module(section),
+                root=h.get_root())
+
+
 def background(request, content_to_show):
     if content_to_show not in ['credits', 'contact', 'about']:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
@@ -126,11 +153,6 @@ def extract_section_keys(the_string):
     result = [wind_affil(dict(zip(keys, m))) for m in matches]
     return result
 
-# just for testing:
-if 1 == 0:
-    def get_dummy_user():
-        return User.objects.get(username='egr2107')
-
 
 def add_course(stg, fcg):
     """ Look up the student and faculty WIND affils for a course.
@@ -159,12 +181,6 @@ def add_course(stg, fcg):
     else:
         # Student affil already exists.
         new_student_affil = already_existing_student_affils[0]
-
-    # add a student: (just for testing)
-    if 1 == 0:
-        dummy_user = get_dummy_user()
-        dummy_user.groups.add(new_student_affil)
-        dummy_user.save()
 
     #####################
     for instructor in default_faculty:

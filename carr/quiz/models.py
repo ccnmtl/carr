@@ -45,19 +45,14 @@ class Quiz(models.Model):
     def unlocked(self, user):
         # meaning that the user can proceed *past* this one,
         # not that they can access this one. careful.
-        if 1 == 0:
-            if (self.rhetorical):
+        # we're not keeping Submissions-- just check for the existence of
+        # an ActivityState referring to this quiz.
+        try:
+            state = ActivityState.objects.get(user=user)
+            if (len(state.json) > 0):
                 return True
-            return Submission.objects.filter(quiz=self, user=user).count() > 0
-        else:
-            # we're not keeping Submissions-- just check for the existence of
-            # an ActivityState referring to this quiz.
-            try:
-                state = ActivityState.objects.get(user=user)
-                if (len(state.json) > 0):
-                    return True
-            except ActivityState.DoesNotExist:
-                return False
+        except ActivityState.DoesNotExist:
+            return False
 
     def edit_form(self):
         class EditForm(forms.Form):
