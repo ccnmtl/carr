@@ -54,13 +54,13 @@ steps['complete_report'] = {
 
 function show_expert_form() {
     map (hideElement , $$('.positioner_div'))
-    updateNodeAttributes($('scrolling_ldss_form'), {'style': { 'background-image': 'url(/site_media/img/expert_ldss.png)'}});
+    updateNodeAttributes($('scrolling_ldss_form'), {'style': { 'background-image': 'url(/media/img/expert_ldss.png)'}});
     $('show_or_hide').innerHTML = "Hide"
 }
 
 function hide_expert_form () {
     map (showElement , $$('.positioner_div'))
-    updateNodeAttributes($('scrolling_ldss_form'), {'style': { 'background-image': 'url(/site_media/img/ldss.png)'}});
+    updateNodeAttributes($('scrolling_ldss_form'), {'style': { 'background-image': 'url(/media/img/ldss.png)'}});
     $('show_or_hide').innerHTML = "Show"
 }
 
