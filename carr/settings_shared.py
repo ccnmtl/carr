@@ -54,7 +54,7 @@ USE_I18N = False
 
 
 MEDIA_ROOT = '/var/www/carr/uploads/'
-MEDIA_URL = '/site_media/uploads/'
+MEDIA_URL = '/media/uploads/'
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
