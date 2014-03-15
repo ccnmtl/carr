@@ -4,7 +4,8 @@ from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.quiz.models import Question
 from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
-    scores_student, training_is_complete, has_dental_affiliation, can_see_scores
+    scores_student, training_is_complete, has_dental_affiliation, \
+    can_see_scores
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group

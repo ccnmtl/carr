@@ -193,113 +193,38 @@ img, img a
 }
 
 /* ---- Header (Banner) block elements ---------- */
-#header
-{
-	width: 900px;
-	height: 100px;
-	min-width: 900px;
-	margin: 0;
-	padding: 0;
-	border: 0;
-	position: relative;
+
+#logos {
+    clear: both;
+    display: block;
+    float: left;
+    width: 98%;
+    margin: 0 1em 0 1em;
 }
 
-#header h1#logo_project
-{
-	width: 220px;
-	height: 100px;
-	margin: 0;
-	padding: 0;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	background-image: url('../img/logo_project.jpg'); 
-	background-repeat: no-repeat;
-	background-position: left center;
-    z-index: 1;
+#logo_care {
+	
 }
 
-#header h1#logo_project a#logo_school
-{
-	display: block;
-	width: 220px;
-	height: 100px;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	text-indent: -2000px;
+#logo_ccnmtl {
+    clear: both;    
+    display: block;
+    float: right;
+    margin-top: 15px;
+    margin-left: 10px;
 }
 
-#header h4 
-
-{
-
-position: absolute;
-height:67px;
-width: 99%;
-min-width: 987px;
-top: 28px;
-left: 10px;
-display: block;
-
-
+#logo_school {    
+    display: block;
+    float: right;
+    margin-top: 20px;
 }
 
-#header #logo_ccnmtl
-{
-	display: block;
-	float: right;
-	width: 180px;
-	height: 67px;
-	overflow: hidden;
-	/* margin: 34px 10px 0 0;*/
-	margin: 0;
-	padding: 0;
-	border: none;
-	background: transparent url('../img/logo_ccnmtl.gif') right top no-repeat;
-	margin-right: 10px;
+#logo_ccnmtl img,
+#logo_school img {
+    height: 60px;
 }
 
-#header #logo_school
-{
-	display: block;
-	float: right;
-	width: 280px;
-	height: 67px;
-	overflow: hidden;
-	/* margin: 34px 10px 0 0;*/
-	margin: 0;
-	padding: 0;
-    border: none;	
-}
-
-
-#header #logo_ccnmtl a
-{
-	display: block;
-	width: 180px;
-	height: 67px;
-	margin: 0;
-	padding: 0;
-	border: 0;
-}
-
-#header #logo_dental a
-{
-	display: block;
-	width: 280px;
-	height: 67px;
-	margin: 0;
-	padding: 0;
-	border: 0;
-}
-
-#header #logo_project span,
-#header #logo_ccnmtl span,
-#header #logo_dental span
-{
-	display: none;
-}
 
 /* ---- Standard navigation block elements ---------- */
 #standardnav
