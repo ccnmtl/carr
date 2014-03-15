@@ -5,6 +5,7 @@ from courseaffils.models import Course
 
 register = template.Library()
 
+
 class GetCourses(TemplateTagNode):
     noun_for = {"for": "user"}
 

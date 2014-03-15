@@ -1,23 +1,20 @@
-from django.contrib.auth.models import User, Group
-from django.template import RequestContext, Context, loader
-from django.http import HttpResponseRedirect, HttpResponse
-from pagetree.models import Hierarchy
-from django.contrib.auth.decorators import login_required
 from .models import SiteState, sort_users
-from django.contrib.sites.models import Site
-from carr.quiz.models import Question
-from carr.activity_taking_action.models import score_on_taking_action
-from carr.activity_bruise_recon.models import score_on_bruise_recon
-from carr.quiz.scores import (score_on_all_quizzes, all_answers_for_quizzes,
-                              scores_student, training_is_complete)
-from django.conf import settings
-from django.contrib.auth.decorators import user_passes_test
-from carr.quiz.scores import can_see_scores
 from annoying.decorators import render_to
-
-import re
-
+from carr.activity_bruise_recon.models import score_on_bruise_recon
+from carr.activity_taking_action.models import score_on_taking_action
+from carr.quiz.models import Question
+from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
+    scores_student, training_is_complete, has_dental_affiliation, \
+    can_see_scores
+from django.conf import settings
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User, Group
+from django.contrib.sites.models import Site
+from django.http import HttpResponseRedirect, HttpResponse
+from django.template import RequestContext, Context, loader
+from pagetree.models import Hierarchy
 import datetime
+import re
 
 
 def get_hierarchy():
@@ -199,8 +196,7 @@ def add_classes(request):
     sorted_default_faculty = sorted(
         default_faculty,
         key=lambda x: x.last_name)
-    section_keys = ''
-    found_section_keys = {}
+
     if not request.POST:
         return {
             'section_keys':
@@ -277,13 +273,6 @@ def stats(request, task):
     if request.user.user_type() == 'student':
         return scores_student(request)
 
-    # TODO: narrow down users based on task
-    if task == 'registrar_summary':
-        pass
-
-    if task == 'question_comparison':
-        pass
-
     # for now just use all users.
     #tmp = [ u for u in User.objects.all() if 'e' in u.username]
     tmp = [u for u in User.objects.all()]
@@ -312,6 +301,10 @@ def stats(request, task):
     the_stats = {}
     for u in the_users:
 
+        affiliation = 'dental' if has_dental_affiliation(u) else 'ssw'
+        if affiliation != task:
+            continue
+
         _quizzes = score_on_all_quizzes(u)
         _bruise_recon = score_on_bruise_recon(u)
         _taking_action = score_on_taking_action(u)
@@ -325,6 +318,7 @@ def stats(request, task):
 
         the_stats[u.username] = {}
         the_stats[u.username]['user_object'] = u
+        the_stats[u.username]['affiliation'] = affiliation
         the_stats[u.username][
             'completed_training'] = student_training_is_complete
         the_stats[u.username]['taking_action'] = _taking_action

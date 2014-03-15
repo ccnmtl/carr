@@ -7,3 +7,5 @@ deploy_specific
 local_settings*
 .coverage
 reports/
+.project
+.pydevproject

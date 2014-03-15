@@ -19,6 +19,10 @@ Note that all the carriage returns in this file are inside Django template comme
 
 
     {%endcomment %}"{{row.user_object.last_name|safe}}",{%comment %}
+    
+
+
+    {%endcomment %}"{{row.affiliation|safe}}",{%comment %}
 
 
 
@@ -61,7 +65,7 @@ Note that all the carriage returns in this file are inside Django template comme
 
 
 
-    {%endcomment %}{% if score.answer_count %}"{{score.score}} / {{score.answer_count}}",{%comment %}
+    {%endcomment %}{% if score.answer_count %}"{{score.score}} of {{score.answer_count}}",{%comment %}
 
 
     {%endcomment %}{% else %}"n/a",{%endif %}{%comment %}
@@ -74,7 +78,7 @@ Note that all the carriage returns in this file are inside Django template comme
     {%endcomment %}{% get_scores for 'post-test' in row.quizzes as post_test_scores %}{%comment %}
     
     
-    {%endcomment %}{% if post_test_scores.initial_score.quiz_score %}"{{post_test_scores.initial_score.quiz_score}} /  {{post_test_scores.initial_score.quiz_max_score}}",{%comment %}
+    {%endcomment %}{% if post_test_scores.initial_score.quiz_score %}"{{post_test_scores.initial_score.quiz_score}} of  {{post_test_scores.initial_score.quiz_max_score}}",{%comment %}
     
     
     {%endcomment %}{% else %}"n/a",{%endif %}{%comment %}

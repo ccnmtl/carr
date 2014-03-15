@@ -537,10 +537,22 @@ def quiz_dict(q):
     return 'f', q['score']
 
 
+def has_dental_affiliation(user):
+    ''' Pull out the list of schools the user is affiliated with
+    t1.y2004.s001.ct6009.socw.st.course:columbia.edu
+    0term, 1year, 2section, 3term character, 4school, 5department'''
+    for g in user.groups.all():
+        pieces = g.name.split('.')
+        if len(pieces) > 4 and pieces[4] == 'intc':
+            return True
+
+    return False
+
+
 def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
     """
     Is this student done with the training?  This is just a helper
-    function as we're changing the rules for deteremining when a
+    function as we're changing the rules for determining when a
     student is done with the training.  Initially, the rule was that
     the student was done with the training as soon the post-test was
     completed with with all correct answers.  Now we're changing this
@@ -568,7 +580,7 @@ def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
         return False
     if bruise_recon is None:
         return False
-    if "ssw" in site.domain:
+    if not has_dental_affiliation(user):
         if 'Case 1' not in scores.keys():
             return False
         if 'Case 2' not in scores.keys():

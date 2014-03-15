@@ -1,4 +1,3 @@
-import courseaffils.listener
 # we need to make sure that the registration code
 # gets imported, so we import it from models.py
 # which will definitely be imported if the app
@@ -7,6 +6,7 @@ import courseaffils.listener
 from django.db import models
 from django.contrib.auth.models import Group
 import re
+
 
 class Course(models.Model):
     group = models.OneToOneField(Group)
@@ -25,7 +25,7 @@ class Course(models.Model):
 
     @property
     def students(self):
-        members =  self.group.user_set.all()
+        members = self.group.user_set.all()
         if not self.faculty_group:
             return members
         else:
@@ -38,7 +38,7 @@ class Course(models.Model):
             return self.faculty_group.user_set.all()
         else:
             return tuple()
-        
+
     @property
     def user_set(self):
         if self.group_id:
@@ -48,33 +48,34 @@ class Course(models.Model):
 
     @property
     def faculty_filter(self):
-        return reduce(lambda x,y:x|y, #composable Q's
+        return reduce(lambda x, y: x | y,  # composable Q's
                       [models.Q(author=f) for f in self.faculty],
-                      models.Q(author= -1)#impossible
+                      models.Q(author=-1)  # impossible
                       ) & models.Q(course=self)
-        
-        
-    def is_faculty(self,user):
+
+    def is_faculty(self, user):
         return (user.is_staff or user in self.faculty)
-    
+
     @property
     def slug(self):
-        course_string = re.match('t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4})',self.group.name)
+        course_string = re.match(
+            't(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4})', self.group.name)
         if course_string:
-            t,y,s,let,num,dept = course_string.groups()
-            return '%s%s%s' % ('CU',dept,num)
+            t, y, s, let, num, dept = course_string.groups()
+            return '%s%s%s' % ('CU', dept, num)
         else:
-            return re.sub('\W','',re.sub(' ','_',self.title))
+            return re.sub('\W', '', re.sub(' ', '_', self.title))
 
 
 class CourseSettings(models.Model):
     course = models.OneToOneField(Course, related_name='settings')
-    
+
     custom_headers = models.TextField(blank=True, null=True,
-                                      help_text="""Replaces main.css link in header.  You need to add this as full HTML (<link rel="stylesheet" href="...." />) but the advantage is you can add custom javascript here, too.""")
-    
+                                      help_text="Replaces main.css link in "
+                                      "header.  You need to add this as full "
+                                      "HTML (<link rel='stylesheet' href='...'"
+                                      "/>) but the advantage is you can add "
+                                      "custom javascript here, too.")
+
     def __unicode__(self):
         return u'Settings for %s' % self.course.title
-
-
-    

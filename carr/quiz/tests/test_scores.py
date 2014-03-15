@@ -1,14 +1,11 @@
-from django.test import TestCase, Client
-
-from carr.quiz.scores import (
-    can_see_scores, year_range, sort_courses, push_time,
-    to_python_date, course_label, course_section,
-    quiz_dict, score_on_all_quizzes, pre_and_post_test_results,
-    all_answers_for_quizzes, count_pretest_and_posttest_students,
-    question_and_quiz_keys
-)
 from .factories import UserFactory
-
+from carr.quiz.scores import can_see_scores, year_range, sort_courses, \
+    push_time, to_python_date, course_label, course_section, quiz_dict, \
+    score_on_all_quizzes, pre_and_post_test_results, all_answers_for_quizzes, \
+    count_pretest_and_posttest_students, question_and_quiz_keys, \
+    has_dental_affiliation
+from django.contrib.auth.models import Group
+from django.test import TestCase, Client
 import unittest
 
 
@@ -64,6 +61,24 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(quiz_dict(q), (2, 3))
         q = dict(score=3)
         self.assertEqual(quiz_dict(q), ('f', 3))
+
+    def test_has_dental_affiliation(self):
+        dental_user = UserFactory()
+        ssw_user = UserFactory()
+
+        dental_group = Group.objects.create(
+            name='t1.y2012.s082.cd6025.intc.st.course:columbia.edu')
+        ssw_group = Group.objects.create(
+            name='t1.y2004.s001.ct6009.socw.st.course:columbia.edu')
+        all_cu = Group.objects.create(
+            name='ALL_CUR')
+
+        all_cu.user_set.add(dental_user)
+        dental_group.user_set.add(dental_user)
+        self.assertTrue(has_dental_affiliation(dental_user))
+
+        ssw_group.user_set.add(ssw_user)
+        self.assertFalse(has_dental_affiliation(ssw_user))
 
 
 class TestHelpers(TestCase):

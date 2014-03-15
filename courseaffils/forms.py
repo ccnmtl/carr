@@ -2,22 +2,21 @@ from django import forms
 from django.contrib.auth.models import User
 from courseaffils.models import Course
 
+
 class CourseAdminForm(forms.ModelForm):
     class Meta:
         model = Course
-    
+
     add_user = forms.CharField(
         required=False,
         widget=forms.Textarea,
-        label="Add users to group (one per line)"
-        )
+        label="Add users to group (one per line)")
 
     users_to_remove = forms.ModelMultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
         queryset=User.objects.all(),
-        label="Remove users from group",
-        )
+        label="Remove users from group")
 
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
@@ -25,7 +24,6 @@ class CourseAdminForm(forms.ModelForm):
         if self.instance.user_set:
             field.queryset = field._choices = self.instance.user_set.all()
 
-        
     def clean_users_to_remove(self):
         users = self.cleaned_data['users_to_remove']
         if self.instance.group_id:
@@ -51,4 +49,3 @@ class CourseAdminForm(forms.ModelForm):
             user.groups.add(self.instance.group)
 
         return usernames
-
