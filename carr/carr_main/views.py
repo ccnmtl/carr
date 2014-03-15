@@ -4,13 +4,13 @@ from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.quiz.models import Question
 from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
-    scores_student, training_is_complete, has_dental_affiliation, \
-    can_see_scores
+    scores_student, training_is_complete, has_dental_affiliation, can_see_scores
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from django.contrib.sites.models import Site
 from django.http import HttpResponseRedirect, HttpResponse
+from django.http.response import HttpResponseNotFound
 from django.template import RequestContext, Context, loader
 from pagetree.models import Hierarchy
 import datetime
@@ -261,6 +261,8 @@ def stats(request, task):
     it once a day or two once it stabilizes..
 
     """
+    if task not in ['ssw', 'dental']:
+        return HttpResponseNotFound()
 
     stats_csv_filename = ('care_stats_%s.csv' %
                           datetime.datetime.now().isoformat()[:10])

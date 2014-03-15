@@ -16,9 +16,24 @@
     <div>
         <h1>Student Scores</h1>
         <p>To find a student's scores, click one of the buttons below.</p>
-        <p><a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/uni/">Search by UNI</a> <a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/year/">Browse by Semester/Course</a></p>
+        <p><a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/uni/">Search by UNI</a>
         
-<p>Click the button below to view a table of all students' scores. Note that this will take some time to load.</p>
-<a class="btn btn-primary btn-large" color="white"  href = "/stats/registrar/" target="_blank">View All Scores</a></p>
+        {% if "ssw" in site.domain %}
+            <a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/year/">Browse by Semester/Course</a></p>
+        {% endif %}
+        
+        <br /><br />
+        <p>Click the button below to view a table of all students' scores. Note that this will take some time to load.</p>
+
+        <p>
+        {% if "ssw" in site.domain %}
+            <a class="btn btn-primary btn-large" color="white" href = "/stats/ssw/" target="_blank">All SSW Scores <i class="icon-download-alt icon-white"></i></a>
+        {% else %}{% if "cdm" in site.domain %}
+            <a class="btn btn-primary btn-large" color="white" href = "/stats/dental/" target="_blank">All Dental Scores <i class="icon-download-alt icon-white"></i></a>
+        {% else %}{% if user.is_superuser %}
+            <a class="btn btn-primary btn-large" color="white" href = "/stats/ssw/" target="_blank">All SSW Scores <i class="icon-download-alt icon-white"></i></a>
+            <a class="btn btn-primary btn-large" color="white" href = "/stats/dental/" target="_blank">All Dental Scores <i class="icon-download-alt icon-white"></i></a>
+        {% endif %}{% endif %}{% endif %}
+        </p>
     </div>
 {%endblock %}
