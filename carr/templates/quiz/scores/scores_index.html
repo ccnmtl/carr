@@ -15,14 +15,15 @@
 {% block full_page_results %}
     <div>
         <h1>Student Scores</h1>
-        <p>To find a student's scores, click one of the buttons below.</p>
-        <p><a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/uni/">Search by UNI</a>
+        <br />
+        {% if user.is_superuser or "ssw" in site.domain %}
+            <p>To find a student's scores, click one of the buttons below.</p>
+            <p><a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/uni/">Search by UNI</a>
         
-        {% if "ssw" in site.domain %}
             <a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/year/">Browse by Semester/Course</a></p>
+            <br />
         {% endif %}
         
-        <br /><br />
         <p>Click the button below to view a table of all students' scores. Note that this will take some time to load.</p>
 
         <p>
