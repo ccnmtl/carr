@@ -133,7 +133,7 @@ PROJECT_APPS = [
 
 STATSD_CLIENT = 'statsd.client'
 STATSD_PREFIX = 'carr'
-STATSD_HOST = 'localhost'
+STATSD_HOST = '127.0.0.1'
 STATSD_PORT = 8125
 STATSD_PATCHES = ['django_statsd.patches.db', ]
 
