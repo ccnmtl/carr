@@ -301,6 +301,19 @@ def stats(request, task):
 
     site = Site.objects.get_current()
 
+    the_stats = generate_user_stats(the_users, site, task, questions_in_order)
+    result = dict(task=task,
+                  stats=the_stats,
+                  users=the_users,
+                  questions_in_order=questions_in_order,
+                  site=Site.objects.get_current())
+
+    c = Context(result)
+    response.write(t.render(c))
+    return response
+
+
+def generate_user_stats(the_users, site, task, questions_in_order):
     the_stats = {}
     for u in the_users:
 
@@ -350,16 +363,7 @@ def stats(request, task):
                     found = True
             if not found:
                 the_stats[u.username]['answers_in_order'].append("")
-
-    result = dict(task=task,
-                  stats=the_stats,
-                  users=the_users,
-                  questions_in_order=questions_in_order,
-                  site=Site.objects.get_current())
-
-    c = Context(result)
-    response.write(t.render(c))
-    return response
+    return the_stats
 
 
 def get_quiz_time(scores, quiz_id):

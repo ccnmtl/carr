@@ -567,32 +567,27 @@ def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
     # Rule 1: Everyone has to take the post-test in order to pass the course.
     if 'Post-test' not in scores:
         return False
+
     if scores['Post-test'][0] != 't':
+        # Failed the post test
         return False
-    else:
-        # OK -- they passed the post-test.
-        # do they qualify for a "grandfather" exception? If so, we consider the
-        # training complete.
-        if grandfather(scores['Post-test'], user):
-            return True
+
+    # do they qualify for a "grandfather" exception? If so, we consider the
+    # training complete.
+    if grandfather(scores['Post-test'], user):
+        return True
 
     # Rule 2: Successfully passed the post test, but not eligible for
     # grandfathering.  We need to check if they did all the other
     # activities too in order to determine whether they're done.
-    if 'Pre-test' not in scores.keys():
-        return False
-    if bruise_recon is None:
+    if 'Pre-test' not in scores.keys() or bruise_recon is None:
         return False
     if not has_dental_affiliation(user):
-        if 'Case 1' not in scores.keys():
+        if any([c not in scores.keys()
+                for c in ['Case 1', 'Case 2', 'Case 3']]):
             return False
-        if 'Case 2' not in scores.keys():
-            return False
-        if 'Case 3' not in scores.keys():
-            return False
-    if taking_action == 'no_data':
-        return False
-    if bruise_recon is None:
+
+    if taking_action == 'no_data' or bruise_recon is None:
         return False
 
     # OK they're done with the training.
