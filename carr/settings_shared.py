@@ -95,7 +95,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.markup',
     'django.contrib.sessions',
     'django.contrib.sites',
     'pageblocks',
@@ -114,12 +113,12 @@ INSTALLED_APPS = [
     'smoketest',
     'waffle',
     'django.contrib.staticfiles',
+    'django_markwhat',
 ]
 
 JENKINS_TASKS = (
     'django_jenkins.tasks.run_pylint',
     'django_jenkins.tasks.with_coverage',
-    'django_jenkins.tasks.django_tests',
     'django_jenkins.tasks.run_pep8',
     'django_jenkins.tasks.run_pyflakes',
 )
@@ -135,7 +134,7 @@ STATSD_CLIENT = 'statsd.client'
 STATSD_PREFIX = 'carr'
 STATSD_HOST = '127.0.0.1'
 STATSD_PORT = 8125
-STATSD_PATCHES = ['django_statsd.patches.db', ]
+#STATSD_PATCHES = ['django_statsd.patches.db', ]
 
 STATIC_URL = "/media/"
 STATICFILES_DIRS = (
