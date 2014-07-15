@@ -174,16 +174,9 @@ NON_ANONYMOUS_PATHS = COURSEAFFILS_PATHS
 COURSEAFFILS_EXEMPT_PATHS = ANONYMOUS_PATHS
 COURSEAFFIL_AUTO_MAP_GROUPS = ['demo']
 
-DEFAULT_SOCIALWORK_FACULTY_USER_IDS = [
-    14,
-    21,
-    30,
-    41,
-    44,
-    456,
-    1514,
-    1515,
-    1516]
+DEFAULT_SOCIALWORK_FACULTY_UNIS = [
+    'amo1', 'dls3', 'vc2162', 'jkt4'
+]
 
 WIND_BASE = "https://wind.columbia.edu/"
 WIND_SERVICE = "cnmtl_full_np"

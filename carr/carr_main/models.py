@@ -42,7 +42,7 @@ def user_type(self):
     # teaching a class:
     elif self.is_staff:
         result = 'faculty'
-    elif self.id in settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS:
+    elif self.username in settings.DEFAULT_SOCIALWORK_FACULTY_UNIS:
         result = 'faculty'
 
     # Can take the training, view own scores.

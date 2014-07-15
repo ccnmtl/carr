@@ -158,7 +158,7 @@ def add_course(stg, fcg):
     Add the default social work school faculty to the affils."""
 
     default_faculty = User.objects.filter(
-        id__in=settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
+        username__in=settings.DEFAULT_SOCIALWORK_FACULTY_UNIS)
     already_existing_student_affils = Group.objects.filter(name__icontains=stg)
     already_existing_faculty_affils = Group.objects.filter(name__icontains=fcg)
 
@@ -193,7 +193,7 @@ def add_course(stg, fcg):
 @render_to('carr_main/add_classes/add_classes_form.html')
 def add_classes(request):
     default_faculty = User.objects.filter(
-        id__in=settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
+        username__in=settings.DEFAULT_SOCIALWORK_FACULTY_UNIS)
     sorted_default_faculty = sorted(
         default_faculty,
         key=lambda x: x.last_name)

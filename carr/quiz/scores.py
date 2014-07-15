@@ -34,11 +34,11 @@ inv_semester_map = dict((v, k) for k, v in semester_map.iteritems())
 @user_passes_test(can_see_scores)
 @render_to('quiz/scores/access_list.html')
 def access_list(request):
-    whitelist = settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS
+    whitelist = settings.DEFAULT_SOCIALWORK_FACULTY_UNIS
     allowed = []
     for u in User.objects.all().order_by('last_name'):
         groups = [g.name for g in u.groups.all()]
-        u.whitelist = u.id in whitelist
+        u.whitelist = u.username in whitelist
         u.admin = any([('tlcxml' in g) for g in groups])
         u.faculty = any([('.fc.' in g) for g in groups]) or u.is_staff
         if any([u.whitelist, u.admin, u.faculty]):
@@ -376,7 +376,7 @@ def extract_class_info(course_info, faculty_affils_list, student_affils_list):
     # Are the usual suspects teaching the class? If so let's display it even
     # if we don't know of any students yet.
     default_faculty = User.objects.filter(
-        id__in=settings.DEFAULT_SOCIALWORK_FACULTY_USER_IDS)
+        username__in=settings.DEFAULT_SOCIALWORK_FACULTY_UNIS)
 
     default_faculty_not_teaching_this_course = [
         f for f in default_faculty if f not in this_course_faculty]
