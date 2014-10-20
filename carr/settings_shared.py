@@ -66,6 +66,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.static',
     'django.core.context_processors.request',
+    'djangowind.context.context_processor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -178,8 +179,6 @@ DEFAULT_SOCIALWORK_FACULTY_UNIS = [
     'amo1', 'dls3', 'vc2162', 'jkt4'
 ]
 
-WIND_BASE = "https://wind.columbia.edu/"
-WIND_SERVICE = "cnmtl_full_np"
 WIND_PROFILE_HANDLERS = ['djangowind.auth.CDAPProfileHandler']
 WIND_AFFIL_HANDLERS = [
     'djangowind.auth.AffilGroupMapper', 'djangowind.auth.StaffMapper',
@@ -189,10 +188,10 @@ WIND_SUPERUSER_MAPPER_GROUPS = ['anp8', 'jb2410', 'zm4', 'sld2131']
 
 # WIND settings
 AUTHENTICATION_BACKENDS = (
-    'djangowind.auth.WindAuthBackend',
+    'djangowind.auth.SAMLAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
-
+CAS_BASE = "https://cas.columbia.edu/"
 
 # Pageblocks/Pagetree settings
 PAGEBLOCKS = ['pageblocks.HTMLBlock',

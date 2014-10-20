@@ -17,9 +17,8 @@
 
 	<div>
 		
-		<form method="get" action="{{ wind_base }}login">
-		<input type="hidden" name="service" value="{{ wind_service }}" />
-		<input type="hidden" name="destination" value="http://{{ request.get_host }}/accounts/windlogin/?next={{ next }}" />
+		<form method="get" action="{{ CAS_BASE }}cas/login">
+		<input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/caslogin/?next={{ next }}" />
 		
 		<p style="font-weight: bold;">Columbia Users:</p>
 		
