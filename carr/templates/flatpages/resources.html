@@ -24,7 +24,7 @@
 	
 	<h3>Documents</h3>
    <ul class="menu">
-      <li><a href="http://{{request.get_host}}/main/media/pdf/PharmacotherapyTable.pdf">Pharmacotherapy table: quick reference guide</a></li>
+      <li><a href="http{% if request.is_secure %}s{% endif %}://{{request.get_host}}/main/media/pdf/PharmacotherapyTable.pdf">Pharmacotherapy table: quick reference guide</a></li>
    </ul>
 
    <h3 class="title">Videos</h3>
@@ -37,14 +37,14 @@
 		   <param name='allowfullscreen' value="true">
 		   <param name='bgcolor' value='efc48d'>
 		   <param name='allowscriptaccess' value="always">
-	      <param name='flashvars' value='skin=http://{{request.get_host}}/main/media/swf/simple.swf&playlistsize=180&playlist=bottom&file=http://ccnmtl.columbia.edu/broadcast/projects/carr/videos/carr_playlist.xml&&frontcolor=FFFFFF&backcolor=333333&lightcolor=eaa141&screencolor=FFFFFF'>
+	      <param name='flashvars' value='skin=http{% if request.is_secure %}s{% endif %}://{{request.get_host}}/main/media/swf/simple.swf&playlistsize=180&playlist=bottom&file=http://ccnmtl.columbia.edu/broadcast/projects/carr/videos/carr_playlist.xml&&frontcolor=FFFFFF&backcolor=333333&lightcolor=eaa141&screencolor=FFFFFF'>
 		   <embed src="http://ccnmtl.columbia.edu/remote/media_controllers/jw_media/player.swf"
 			   width="640"
 			   height="560"
 			   bgcolor="efc48d"
 			   allowscriptaccess="always"
 			   allowfullscreen="true"
-			   flashvars="skin=http://{{request.get_host}}/main/media/swf/simple.swf&playlistsize=180&playlist=bottom&file=http://ccnmtl.columbia.edu/broadcast/projects/carr/videos/carr_playlist.xml&&frontcolor=FFFFFF&backcolor=333333&lightcolor=eaa141&screencolor=FFFFFF">
+			   flashvars="skin=http{% if request.is_secure %}s{% endif %}://{{request.get_host}}/main/media/swf/simple.swf&playlistsize=180&playlist=bottom&file=http://ccnmtl.columbia.edu/broadcast/projects/carr/videos/carr_playlist.xml&&frontcolor=FFFFFF&backcolor=333333&lightcolor=eaa141&screencolor=FFFFFF">
 		   </embed>
 	   </object>
 	</div>
