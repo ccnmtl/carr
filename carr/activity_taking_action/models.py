@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import simplejson
+import json
 from django.contrib.contenttypes import generic
 from pagetree.models import PageBlock
 from django import forms
@@ -14,7 +14,7 @@ class Case(models.Model):
 class Block(models.Model):
     pageblocks = generic.GenericRelation(
         PageBlock,
-        related_name="taking_action_pageblocks")
+        related_query_name="taking_action_pageblocks")
     case_name = models.CharField(max_length=25)
     show_correct = models.BooleanField(default=False)
     template_file = "activity_taking_action/taking_action.html"
@@ -35,7 +35,7 @@ class Block(models.Model):
         'case_summary'
     ]
 
-    list_of_steps_json = simplejson.dumps(list_of_steps)
+    list_of_steps_json = json.dumps(list_of_steps)
     templates_by_step = [(a, "activity_taking_action/step_%s.html" % a)
                          for a in list_of_steps]
 
@@ -88,7 +88,7 @@ def score_on_taking_action(the_student):
         #import pdb
         # pdb.set_trace()
         if len(the_student.taking_action_user.all()) > 0:
-            if 'complete' in simplejson.loads(
+            if 'complete' in json.loads(
                     the_student.taking_action_user.all()[0].json):
                 return 'completed_form'  # did they complete the form?
             else:

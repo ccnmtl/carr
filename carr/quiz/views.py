@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from pagetree.models import Hierarchy
 from django.core.urlresolvers import reverse
-from django.utils import simplejson
+import json
 from django.contrib.auth.models import User
 from annoying.decorators import render_to
 
@@ -146,15 +146,15 @@ def loadstate(request):
 
 @login_required
 def savestate(request):
-    json = request.POST['json']
+    jsn = request.POST['json']
     try:
         state = ActivityState.objects.get(user=request.user)
-        state.json = json
+        state.json = jsn
         state.save()
     except ActivityState.DoesNotExist:
-        state = ActivityState.objects.create(user=request.user, json=json)
+        state = ActivityState.objects.create(user=request.user, json=jsn)
 
     response = {}
     response['success'] = 1
 
-    return HttpResponse(simplejson.dumps(response), 'application/json')
+    return HttpResponse(json.dumps(response), 'application/json')

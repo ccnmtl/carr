@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from carr.activity_bruise_recon.models import ActivityState, User, Block
-from django.utils import simplejson
+import json
 from annoying.decorators import render_to
 
 
@@ -25,23 +25,23 @@ def loadstate(request):
 
 @login_required
 def savestate(request):
-    json = request.POST['json']
-    update = simplejson.loads(json)
+    jsn = request.POST['json']
+    update = json.loads(jsn)
     try:
         state = ActivityState.objects.get(user=request.user)
-        obj = simplejson.loads(state.json)
+        obj = json.loads(state.json)
         for item in update:
             obj[item] = update[item]
 
-        state.json = simplejson.dumps(obj)
+        state.json = json.dumps(obj)
         state.save()
     except ActivityState.DoesNotExist:
-        state = ActivityState.objects.create(user=request.user, json=json)
+        state = ActivityState.objects.create(user=request.user, json=jsn)
 
     response = {}
     response['success'] = 1
 
-    return HttpResponse(simplejson.dumps(response), 'application/json')
+    return HttpResponse(json.dumps(response), 'application/json')
 
 
 @login_required

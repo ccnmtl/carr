@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import simplejson
+import json
 from django.contrib.contenttypes import generic
 from pagetree.models import PageBlock
 from django import forms
@@ -32,7 +32,7 @@ class Case(models.Model):
 class Block(models.Model):
     pageblocks = generic.GenericRelation(
         PageBlock,
-        related_name="bruise_recon_pageblocks")
+        related_query_name="bruise_recon_pageblocks")
     case_name = models.CharField(max_length=25)
     show_correct = models.BooleanField(default=False)
     template_file = "activity_bruise_recon/bruise_recon.html"
@@ -83,7 +83,7 @@ class ActivityState (models.Model):
 def score_on_bruise_recon(the_student):
     try:
         if len(the_student.bruise_recon_user.all()) > 0:
-            recon_json = simplejson.loads(
+            recon_json = json.loads(
                 the_student.bruise_recon_user.all()[0].json)
             bruise_recon_score_info = dict(
                 [(a.strip(), b['score'])
