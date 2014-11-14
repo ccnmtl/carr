@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from django.utils import simplejson
+import json
 from django.contrib.contenttypes import generic
 from django.contrib.sites.models import Site
 from pagetree.models import PageBlock, Section, SectionChildren
@@ -154,7 +154,7 @@ class SiteState(models.Model):
         super(SiteState, self).__init__(*args, **kwargs)
 
         if (len(self.visited) > 0):
-            self.state_object = simplejson.loads(self.visited)
+            self.state_object = json.loads(self.visited)
         else:
             self.state_object = {}
 
@@ -166,7 +166,7 @@ class SiteState(models.Model):
         for s in sections:
             self.state_object[str(s.id)] = s.label
 
-        self.visited = simplejson.dumps(self.state_object)
+        self.visited = json.dumps(self.state_object)
         self.save()
 
     def save_last_location(self, path, section):
@@ -175,7 +175,7 @@ class SiteState(models.Model):
             return
         self.state_object[str(section.id)] = section.label
         self.last_location = path
-        self.visited = simplejson.dumps(self.state_object)
+        self.visited = json.dumps(self.state_object)
         self.save()
 
 

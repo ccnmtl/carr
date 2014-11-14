@@ -1,7 +1,7 @@
 from models import Quiz, Question, ActivityState
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import user_passes_test
-from django.utils import simplejson
+import json
 from django.contrib.auth.models import User, Group
 from django.contrib.sites.models import Site
 from carr.carr_main.models import students_in_class, users_by_uni
@@ -237,7 +237,7 @@ def score_on_all_quizzes(the_student):
         return []
     if (len(state.json) > 0):
         score = []
-        json_stream = simplejson.loads(state.json)
+        json_stream = json.loads(state.json)
         for a in json_stream.values():
             try:
                 score.extend(a['question'])
@@ -301,7 +301,7 @@ def pre_and_post_test_results(the_student):
 
     if (len(state.json) > 0):
         try:
-            json_stream = simplejson.loads(state.json)
+            json_stream = json.loads(state.json)
         except:
             return result
 
@@ -421,7 +421,7 @@ def all_answers_for_quizzes(the_student):
         return {}
     if (len(state.json) > 0):
         score = []
-        for a in simplejson.loads(state.json).values():
+        for a in json.loads(state.json).values():
             try:
                 score.extend(a['question'])
             except:
