@@ -6,5 +6,7 @@ sys.path.append('/var/www/carr/carr/')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'carr.settings_dental'
 
 import django.core.handlers.wsgi
+import django
+django.setup()
 
 application = django.core.handlers.wsgi.WSGIHandler()
