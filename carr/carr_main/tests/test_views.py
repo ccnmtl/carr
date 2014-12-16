@@ -14,6 +14,10 @@ class TestViews(TestCase):
         r = self.c.get("/")
         self.assertEqual(r.status_code, 302)
 
+    def test_smoketest(self):
+        r = self.c.get("/smoketest/")
+        self.assertEqual(r.status_code, 200)
+
     def test_selenium(self):
         UserFactory(username="student1")
         r = self.c.get("/selenium/setup/")
