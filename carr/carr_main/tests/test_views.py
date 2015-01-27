@@ -55,3 +55,7 @@ class TestViews(TestCase):
     def test_add_classes_invalid(self):
         r = self.c.post("/add_classes/", dict(section_keys="foo"))
         self.assertEqual(r.status_code, 200)
+
+    def test_404(self):
+        r = self.c.get("/this/is/a/404/")
+        self.assertEqual(r.status_code, 404)
