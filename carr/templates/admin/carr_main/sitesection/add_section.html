@@ -6,7 +6,7 @@
 {{ media }}
 {% endblock %}
 
-{% block stylesheet %}/media/admin/css/forms.css{% endblock %}
+{% block stylesheet %}{{STATIC_URL}}admin/css/forms.css{% endblock %}
 
 {% block coltype %}{% if ordered_objects %}colMS{% else %}colM{% endif %}{% endblock %}
 

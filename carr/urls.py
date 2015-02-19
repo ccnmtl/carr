@@ -18,7 +18,6 @@ urlpatterns = patterns(
     (r'^$', 'carr.carr_main.views.index'),
     (r'^logout/$', 'django.contrib.auth.views.logout',
      {'template_name': 'logged_out.html'}),
-    (r'^main/', include('carr.carr_main.urls')),
     (r'^activity/bruise_recon/',
      include('carr.activity_bruise_recon.urls')),
     (r'^activity/taking_action/',
