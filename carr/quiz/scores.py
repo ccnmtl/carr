@@ -299,28 +299,28 @@ def pre_and_post_test_results(the_student):
     except ActivityState.DoesNotExist:
         return result
 
-    if (len(state.json) > 0):
-        try:
-            json_stream = json.loads(state.json)
-        except:
-            return result
+    if len(state.json) == 0:
+        return result
 
-        # initial test:
-        try:
-            if json_stream['quiz_2'][
-                    'initial_score']['quiz_score'] is not None:
-                result['pre_test'] = True
-        except:
-            return result
+    try:
+        json_stream = json.loads(state.json)
+    except:
+        return result
 
-        # final test:
-        try:
-            if json_stream['quiz_3']['all_correct'] == 't':
-                result['post_test'] = True
-        except:
-            return result
+    # initial test:
+    try:
+        if json_stream['quiz_2'][
+                'initial_score']['quiz_score'] is not None:
+            result['pre_test'] = True
+    except:
+        return result
 
-    return result
+    # final test:
+    try:
+        if json_stream['quiz_3']['all_correct'] == 't':
+            result['post_test'] = True
+    except:
+        return result
 
 
 def find_care_classes(affils):
