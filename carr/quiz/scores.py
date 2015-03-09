@@ -235,59 +235,62 @@ def score_on_all_quizzes(the_student):
         state = ActivityState.objects.get(user=the_student)
     except ActivityState.DoesNotExist:
         return []
-    if (len(state.json) > 0):
-        score = []
-        json_stream = json.loads(state.json)
-        for a in json_stream.values():
+
+    if len(state.json) == 0:
+        return []
+
+    score = []
+    json_stream = json.loads(state.json)
+    for a in json_stream.values():
+        try:
+            score.extend(a['question'])
+        except:
+            pass  # eh.
+    # don't deal with questions that have since been removed from quiz.
+    results = [{
+        'question': int(a['id']),
+        'actual': int(a['answer']),
+        'correct': answer_key[int(a['id'])],
+        'quiz_number': quiz_key[int(a['id'])]
+    } for a in score if int(a['id']) in quiz_key.keys()]
+    quiz_scores = []
+    for quiz in quizzes:
+        try:
+            raw_quiz_info = json_stream['quiz_%d' % quiz.id]
+        except:
+            raw_quiz_info = {}
+        answer_count = len(
+            [a for a in results if a['quiz_number'] == quiz.id])
+        if (answer_count or
+                'all_correct' in raw_quiz_info or
+                'initial_score' in raw_quiz_info):
+            correct_count = len(
+                [a for a in results
+                 if a['correct'] == a['actual'] and
+                 a['quiz_number'] == quiz.id])
+            quiz_results = {
+                'quiz': quiz,
+                'score': correct_count,
+                'answer_count': answer_count}
             try:
-                score.extend(a['question'])
+                if raw_quiz_info['all_correct']:
+                    quiz_results[
+                        'all_correct'] = raw_quiz_info['all_correct']
             except:
-                pass  # eh.
-        # don't deal with questions that have since been removed from quiz.
-        results = [{
-            'question': int(a['id']),
-            'actual': int(a['answer']),
-            'correct': answer_key[int(a['id'])],
-            'quiz_number': quiz_key[int(a['id'])]
-        } for a in score if int(a['id']) in quiz_key.keys()]
-        quiz_scores = []
-        for quiz in quizzes:
+                pass
             try:
-                raw_quiz_info = json_stream['quiz_%d' % quiz.id]
+                if raw_quiz_info['initial_score']:
+                    quiz_results[
+                        'initial_score'] = raw_quiz_info['initial_score']
             except:
-                raw_quiz_info = {}
-            answer_count = len(
-                [a for a in results if a['quiz_number'] == quiz.id])
-            if (answer_count or
-                    'all_correct' in raw_quiz_info or
-                    'initial_score' in raw_quiz_info):
-                correct_count = len(
-                    [a for a in results
-                     if a['correct'] == a['actual'] and
-                     a['quiz_number'] == quiz.id])
-                quiz_results = {
-                    'quiz': quiz,
-                    'score': correct_count,
-                    'answer_count': answer_count}
-                try:
-                    if raw_quiz_info['all_correct']:
-                        quiz_results[
-                            'all_correct'] = raw_quiz_info['all_correct']
-                except:
-                    pass
-                try:
-                    if raw_quiz_info['initial_score']:
-                        quiz_results[
-                            'initial_score'] = raw_quiz_info['initial_score']
-                except:
-                    pass
-                # Add dates too:
-                if 'submit_time' in raw_quiz_info:
-                    quiz_results['submit_time'] = [
-                        to_python_date(x)
-                        for x in raw_quiz_info['submit_time']]
-                quiz_scores.append(quiz_results)
-        return quiz_scores
+                pass
+            # Add dates too:
+            if 'submit_time' in raw_quiz_info:
+                quiz_results['submit_time'] = [
+                    to_python_date(x)
+                    for x in raw_quiz_info['submit_time']]
+            quiz_scores.append(quiz_results)
+    return quiz_scores
 
 
 def load_state_json(the_student):
