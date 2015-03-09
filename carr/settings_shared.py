@@ -43,7 +43,6 @@ NOSE_ARGS = [
 
 # For now turn off caching
 CACHE_BACKEND = 'locmem://'
-#CACHE_BACKEND = 'dummy://'
 
 
 TIME_ZONE = 'America/New_York'
@@ -130,7 +129,6 @@ STATSD_CLIENT = 'statsd.client'
 STATSD_PREFIX = 'carr'
 STATSD_HOST = '127.0.0.1'
 STATSD_PORT = 8125
-#STATSD_PATCHES = ['django_statsd.patches.db', ]
 
 STATIC_URL = "/media/"
 STATICFILES_DIRS = (
@@ -160,9 +158,6 @@ ANONYMOUS_PATHS = ('/accounts/',
                    )
 
 COURSEAFFILS_PATHS = (
-    #'/carr/',
-    #'/activity/',
-    # re.compile(r'^/$'),
 )
 
 NON_ANONYMOUS_PATHS = COURSEAFFILS_PATHS

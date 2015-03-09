@@ -300,7 +300,6 @@ class FlashVideoBlock(models.Model):
 
 class PullQuoteBlock_2 (PullQuoteBlock):
     template_file = "admin/pageblocks/pullquoteblock_2.html"
-    #template_file = "pageblocks/pullquoteblock_2.html"
     display_name = "Pull Quote Type 2"
 
     @classmethod
@@ -313,7 +312,6 @@ class PullQuoteBlock_2 (PullQuoteBlock):
 class PullQuoteBlock_3 (PullQuoteBlock):
     template_file = "admin/pageblocks/pullquoteblock_3.html"
 
-    #template_file = "pageblocks/pullquoteblock_3.html"
     display_name = "Pull Quote Type 3"
 
     @classmethod

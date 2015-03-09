@@ -225,6 +225,40 @@ def get_student_info(students):
 # a couple helper functions for scoring:
 
 
+def get_quiz_score(quiz, json_stream, results):
+    try:
+        raw_quiz_info = json_stream['quiz_%d' % quiz.id]
+    except:
+        raw_quiz_info = {}
+    answer_count = len(
+        [a for a in results if a['quiz_number'] == quiz.id])
+    if not (answer_count or
+            'all_correct' in raw_quiz_info or
+            'initial_score' in raw_quiz_info):
+        return None
+
+    correct_count = len(
+        [a for a in results
+         if a['correct'] == a['actual'] and
+         a['quiz_number'] == quiz.id])
+    quiz_results = {
+        'quiz': quiz,
+        'score': correct_count,
+        'answer_count': answer_count}
+    if 'all_correct' in raw_quiz_info:
+        quiz_results[
+            'all_correct'] = raw_quiz_info['all_correct']
+    if 'initial_score' in raw_quiz_info:
+        quiz_results[
+            'initial_score'] = raw_quiz_info['initial_score']
+    # Add dates too:
+    if 'submit_time' in raw_quiz_info:
+        quiz_results['submit_time'] = [
+            to_python_date(x)
+            for x in raw_quiz_info['submit_time']]
+    return quiz_results
+
+
 def score_on_all_quizzes(the_student):
     tmp = question_and_quiz_keys()
     answer_key = tmp['answer_key']
@@ -235,92 +269,69 @@ def score_on_all_quizzes(the_student):
         state = ActivityState.objects.get(user=the_student)
     except ActivityState.DoesNotExist:
         return []
-    if (len(state.json) > 0):
-        score = []
-        json_stream = json.loads(state.json)
-        for a in json_stream.values():
-            try:
-                score.extend(a['question'])
-            except:
-                pass  # eh.
-        # don't deal with questions that have since been removed from quiz.
-        results = [{
-            'question': int(a['id']),
-            'actual': int(a['answer']),
-            'correct': answer_key[int(a['id'])],
-            'quiz_number': quiz_key[int(a['id'])]
-        } for a in score if int(a['id']) in quiz_key.keys()]
-        quiz_scores = []
-        for quiz in quizzes:
-            try:
-                raw_quiz_info = json_stream['quiz_%d' % quiz.id]
-            except:
-                raw_quiz_info = {}
-            answer_count = len(
-                [a for a in results if a['quiz_number'] == quiz.id])
-            if (answer_count
-                    or 'all_correct' in raw_quiz_info
-                    or 'initial_score' in raw_quiz_info):
-                correct_count = len(
-                    [a for a in results
-                     if a['correct'] == a['actual']
-                     and a['quiz_number'] == quiz.id])
-                quiz_results = {
-                    'quiz': quiz,
-                    'score': correct_count,
-                    'answer_count': answer_count}
-                try:
-                    if raw_quiz_info['all_correct']:
-                        quiz_results[
-                            'all_correct'] = raw_quiz_info['all_correct']
-                except:
-                    pass
-                try:
-                    if raw_quiz_info['initial_score']:
-                        quiz_results[
-                            'initial_score'] = raw_quiz_info['initial_score']
-                except:
-                    pass
-                # Add dates too:
-                if 'submit_time' in raw_quiz_info:
-                    quiz_results['submit_time'] = [
-                        to_python_date(x)
-                        for x in raw_quiz_info['submit_time']]
-                quiz_scores.append(quiz_results)
-        return quiz_scores
+
+    if len(state.json) == 0:
+        return []
+
+    score = []
+    json_stream = json.loads(state.json)
+    for a in json_stream.values():
+        try:
+            score.extend(a['question'])
+        except:
+            pass  # eh.
+    # don't deal with questions that have since been removed from quiz.
+    results = [{
+        'question': int(a['id']),
+        'actual': int(a['answer']),
+        'correct': answer_key[int(a['id'])],
+        'quiz_number': quiz_key[int(a['id'])]
+    } for a in score if int(a['id']) in quiz_key.keys()]
+    quiz_scores = []
+    for quiz in quizzes:
+        r = get_quiz_score(quiz, json_stream, results)
+        if r:
+            quiz_scores.append(r)
+    return quiz_scores
+
+
+def load_state_json(the_student):
+    try:
+        state = ActivityState.objects.get(user=the_student)
+    except ActivityState.DoesNotExist:
+        return None
+
+    if len(state.json) == 0:
+        return None
+
+    try:
+        return json.loads(state.json)
+    except:
+        return None
 
 
 # a couple helper functions for scoring:
 def pre_and_post_test_results(the_student):
     result = {'pre_test': False, 'post_test': False}
 
-    try:
-        state = ActivityState.objects.get(user=the_student)
-    except ActivityState.DoesNotExist:
+    json_stream = load_state_json(the_student)
+    if json_stream is None:
         return result
 
-    if (len(state.json) > 0):
-        try:
-            json_stream = json.loads(state.json)
-        except:
-            return result
+    # initial test:
+    try:
+        if json_stream['quiz_2'][
+                'initial_score']['quiz_score'] is not None:
+            result['pre_test'] = True
+    except:
+        return result
 
-        # initial test:
-        try:
-            if json_stream['quiz_2'][
-                    'initial_score']['quiz_score'] is not None:
-                result['pre_test'] = True
-        except:
-            return result
-
-        # final test:
-        try:
-            if json_stream['quiz_3']['all_correct'] == 't':
-                result['post_test'] = True
-        except:
-            return result
-
-    return result
+    # final test:
+    try:
+        if json_stream['quiz_3']['all_correct'] == 't':
+            result['post_test'] = True
+    except:
+        return result
 
 
 def find_care_classes(affils):
