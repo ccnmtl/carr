@@ -81,7 +81,7 @@ def page(request, path):
     can_access = _unlocked(section, request.user, prev, ss)
     if can_access:
         # just to avoid drama, only save last location if the section
-        #is available on both sites.  import pdb pdb.set_trace()
+        # is available on both sites.  import pdb pdb.set_trace()
         ss.save_last_location(request.path, section)
 
     module = None
@@ -277,7 +277,6 @@ def stats(request, task):
         return scores_student(request)
 
     # for now just use all users.
-    #tmp = [ u for u in User.objects.all() if 'e' in u.username]
     tmp = [u for u in User.objects.all()]
 
     the_users = sort_users([u for u in tmp if u.user_type() == 'student'])
@@ -368,9 +367,9 @@ def generate_user_stats(the_users, site, task, questions_in_order):
 
 def get_quiz_time(scores, quiz_id):
     tmp = [(z['submit_time'])
-           for z in scores if 'quiz' in z
-           and 'submit_time' in z
-           and z['quiz'].id == quiz_id]
+           for z in scores if 'quiz' in z and
+           'submit_time' in z and
+           z['quiz'].id == quiz_id]
     if len(tmp) > 0:
         all_submit_times = tmp[0]
         if len(all_submit_times) > 0:

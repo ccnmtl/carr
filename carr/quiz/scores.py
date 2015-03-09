@@ -258,13 +258,13 @@ def score_on_all_quizzes(the_student):
                 raw_quiz_info = {}
             answer_count = len(
                 [a for a in results if a['quiz_number'] == quiz.id])
-            if (answer_count
-                    or 'all_correct' in raw_quiz_info
-                    or 'initial_score' in raw_quiz_info):
+            if (answer_count or
+                    'all_correct' in raw_quiz_info or
+                    'initial_score' in raw_quiz_info):
                 correct_count = len(
                     [a for a in results
-                     if a['correct'] == a['actual']
-                     and a['quiz_number'] == quiz.id])
+                     if a['correct'] == a['actual'] and
+                     a['quiz_number'] == quiz.id])
                 quiz_results = {
                     'quiz': quiz,
                     'score': correct_count,
