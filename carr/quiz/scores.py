@@ -290,21 +290,27 @@ def score_on_all_quizzes(the_student):
         return quiz_scores
 
 
+def load_state_json(the_student):
+    try:
+        state = ActivityState.objects.get(user=the_student)
+    except ActivityState.DoesNotExist:
+        return None
+
+    if len(state.json) == 0:
+        return None
+
+    try:
+        return json.loads(state.json)
+    except:
+        return None
+
+
 # a couple helper functions for scoring:
 def pre_and_post_test_results(the_student):
     result = {'pre_test': False, 'post_test': False}
 
-    try:
-        state = ActivityState.objects.get(user=the_student)
-    except ActivityState.DoesNotExist:
-        return result
-
-    if len(state.json) == 0:
-        return result
-
-    try:
-        json_stream = json.loads(state.json)
-    except:
+    json_stream = load_state_json(the_student)
+    if json_stream is None:
         return result
 
     # initial test:
