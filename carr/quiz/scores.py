@@ -225,6 +225,45 @@ def get_student_info(students):
 # a couple helper functions for scoring:
 
 
+def get_quiz_score(quiz, json_stream, results):
+    try:
+        raw_quiz_info = json_stream['quiz_%d' % quiz.id]
+    except:
+        raw_quiz_info = {}
+    answer_count = len(
+        [a for a in results if a['quiz_number'] == quiz.id])
+    if (answer_count or
+            'all_correct' in raw_quiz_info or
+            'initial_score' in raw_quiz_info):
+        correct_count = len(
+            [a for a in results
+             if a['correct'] == a['actual'] and
+             a['quiz_number'] == quiz.id])
+        quiz_results = {
+            'quiz': quiz,
+            'score': correct_count,
+            'answer_count': answer_count}
+        try:
+            if raw_quiz_info['all_correct']:
+                quiz_results[
+                    'all_correct'] = raw_quiz_info['all_correct']
+        except:
+            pass
+        try:
+            if raw_quiz_info['initial_score']:
+                quiz_results[
+                    'initial_score'] = raw_quiz_info['initial_score']
+        except:
+            pass
+        # Add dates too:
+        if 'submit_time' in raw_quiz_info:
+            quiz_results['submit_time'] = [
+                to_python_date(x)
+                for x in raw_quiz_info['submit_time']]
+        return quiz_results
+    return None
+
+
 def score_on_all_quizzes(the_student):
     tmp = question_and_quiz_keys()
     answer_key = tmp['answer_key']
@@ -255,41 +294,9 @@ def score_on_all_quizzes(the_student):
     } for a in score if int(a['id']) in quiz_key.keys()]
     quiz_scores = []
     for quiz in quizzes:
-        try:
-            raw_quiz_info = json_stream['quiz_%d' % quiz.id]
-        except:
-            raw_quiz_info = {}
-        answer_count = len(
-            [a for a in results if a['quiz_number'] == quiz.id])
-        if (answer_count or
-                'all_correct' in raw_quiz_info or
-                'initial_score' in raw_quiz_info):
-            correct_count = len(
-                [a for a in results
-                 if a['correct'] == a['actual'] and
-                 a['quiz_number'] == quiz.id])
-            quiz_results = {
-                'quiz': quiz,
-                'score': correct_count,
-                'answer_count': answer_count}
-            try:
-                if raw_quiz_info['all_correct']:
-                    quiz_results[
-                        'all_correct'] = raw_quiz_info['all_correct']
-            except:
-                pass
-            try:
-                if raw_quiz_info['initial_score']:
-                    quiz_results[
-                        'initial_score'] = raw_quiz_info['initial_score']
-            except:
-                pass
-            # Add dates too:
-            if 'submit_time' in raw_quiz_info:
-                quiz_results['submit_time'] = [
-                    to_python_date(x)
-                    for x in raw_quiz_info['submit_time']]
-            quiz_scores.append(quiz_results)
+        r = get_quiz_score(quiz, json_stream, results)
+        if r:
+            quiz_scores.append(r)
     return quiz_scores
 
 
