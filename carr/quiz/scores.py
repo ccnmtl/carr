@@ -245,18 +245,12 @@ def get_quiz_score(quiz, json_stream, results):
         'quiz': quiz,
         'score': correct_count,
         'answer_count': answer_count}
-    try:
-        if raw_quiz_info['all_correct']:
-            quiz_results[
-                'all_correct'] = raw_quiz_info['all_correct']
-    except:
-        pass
-    try:
-        if raw_quiz_info['initial_score']:
-            quiz_results[
-                'initial_score'] = raw_quiz_info['initial_score']
-    except:
-        pass
+    if 'all_correct' in raw_quiz_info:
+        quiz_results[
+            'all_correct'] = raw_quiz_info['all_correct']
+    if 'initial_score' in raw_quiz_info:
+        quiz_results[
+            'initial_score'] = raw_quiz_info['initial_score']
     # Add dates too:
     if 'submit_time' in raw_quiz_info:
         quiz_results['submit_time'] = [
