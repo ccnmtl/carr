@@ -16,6 +16,14 @@
 	{% endwith %}
 {% endblock %}
 
+{% block subnav %}
+    {% if request.user.is_superuser %}      
+        <li>
+            <a href="/edit{{section.get_absolute_url}}">Edit Page</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
    {% if not accessible %}
       This page is not currently accessible. Please complete your current section before moving onto a new section.
