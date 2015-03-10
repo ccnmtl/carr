@@ -85,8 +85,6 @@ def score_on_taking_action(the_student):
     """For now just report complete if the user has attempted to fill
     out LDSS form."""
     try:
-        #import pdb
-        # pdb.set_trace()
         if len(the_student.taking_action_user.all()) > 0:
             if 'complete' in json.loads(
                     the_student.taking_action_user.all()[0].json):
