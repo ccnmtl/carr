@@ -78,6 +78,8 @@ urlpatterns = patterns(
     (r'^background/(?P<content_to_show>\w+)/$',
      'carr.carr_main.views.background'),
 
+    (r'^pagetree/', include('pagetree.urls')),
+
     # analytics:
     (r'^_stats/', TemplateView.as_view(template_name="stats.html")),
     ('^smoketest/$', include('smoketest.urls')),
