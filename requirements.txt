@@ -33,6 +33,6 @@ django-jenkins==0.16.3
 django-smoketest==0.3.0
 raven==5.1.1
 factory_boy==2.4.1
-django-waffle==0.10
+django-waffle==0.10.1
 django-annoying==0.8.0
 django-markwhat==2014.9.20
