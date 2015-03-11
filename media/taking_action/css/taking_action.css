@@ -103,7 +103,7 @@ p.action_explanation { display: none; }
 
 
 div#scrolling_ldss_form {
-   	background-image: url(../img/ldss.png);
+   	background-image: url(../../img/ldss.png);
 	width: 650px;
 	height: 870px;
 }
@@ -135,22 +135,22 @@ div.ldss_form_div {
 }
 
 div.ldss_form_complete {
-   	background-image: url(../img/form_complete.png);
+   	background-image: url(../../img/form_complete.png);
     height : 1000px;
 }
 
 div.ldss_form_top {
-   	background-image: url(../img/form_top.png);
+   	background-image: url(../../img/form_top.png);
     height : 399px;
 }
 
 div.ldss_form_middle {
-   	background-image: url(../img/form_middle.png);
+   	background-image: url(../../img/form_middle.png);
     height : 313px;
 }
 
 div.ldss_form_bottom {
-   	background-image: url(../img/form_bottom.png);
+   	background-image: url(../../img/form_bottom.png);
    	height: 311px;
 }
 
