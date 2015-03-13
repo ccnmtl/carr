@@ -267,7 +267,7 @@ def stats(request, task):
 
     stats_csv_filename = ('care_stats_%s.csv' %
                           datetime.datetime.now().isoformat()[:10])
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse(content_type='text/csv')
     response[
         'Content-Disposition'] = 'attachment; filename=%s' % stats_csv_filename
 
