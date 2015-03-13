@@ -331,7 +331,8 @@ def pre_and_post_test_results(the_student):
         if json_stream['quiz_3']['all_correct'] == 't':
             result['post_test'] = True
     except:
-        return result
+        pass
+    return result
 
 
 def find_care_classes(affils):
