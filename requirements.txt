@@ -16,7 +16,7 @@ pep8==1.6.2
 flake8==2.3.0
 logilab-common==0.59.0
 logilab-astng==0.24.1
-pylint==0.26.0
+pylint==1.4.1
 
 django-courseaffils==1.0.0
 django-smartif==0.1
