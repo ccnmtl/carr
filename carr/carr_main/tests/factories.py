@@ -6,24 +6,28 @@ from pagetree.models import Hierarchy
 
 
 class SiteStateFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = SiteState
+    class Meta:
+        model = SiteState
     user = factory.SubFactory(UserFactory)
     last_location = "/"
     visited = "{}"
 
 
 class SiteFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Site
+    class Meta:
+        model = Site
 
 
 class HierarchyFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Hierarchy
+    class Meta:
+        model = Hierarchy
     name = "main"
     base_url = "/"
 
 
 class SiteSectionFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = SiteSection
+    class Meta:
+        model = SiteSection
     label = "test section"
     slug = "test"
     hierarchy = factory.SubFactory(HierarchyFactory)

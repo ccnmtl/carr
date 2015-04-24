@@ -3,5 +3,6 @@ import factory
 
 
 class UserFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = User
+    class Meta:
+        model = User
     username = factory.Sequence(lambda n: "user%d" % n)

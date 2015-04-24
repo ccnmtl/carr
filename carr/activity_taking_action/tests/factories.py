@@ -1,5 +1,5 @@
 import factory
-from carr.activity_bruise_recon.models import (
+from carr.activity_taking_action.models import (
     Case, Block, ActivityState)
 from django.contrib.auth.models import User
 
@@ -8,7 +8,6 @@ class CaseFactory(factory.DjangoModelFactory):
     class Meta:
         model = Case
     name = "test"
-    case_history = ""
 
 
 class BlockFactory(factory.DjangoModelFactory):
