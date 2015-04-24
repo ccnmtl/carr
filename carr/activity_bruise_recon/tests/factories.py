@@ -5,22 +5,26 @@ from django.contrib.auth.models import User
 
 
 class CaseFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Case
+    class Meta:
+        model = Case
     name = "test"
     case_history = ""
 
 
 class BlockFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Block
+    class Meta:
+        model = Block
     case_name = "test"
 
 
 class UserFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = User
+    class Meta:
+        model = User
     username = factory.Sequence(lambda n: "user%03d" % n)
 
 
 class ActivityStateFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = ActivityState
+    class Meta:
+        model = ActivityState
     user = factory.SubFactory(UserFactory)
     json = "{}"
