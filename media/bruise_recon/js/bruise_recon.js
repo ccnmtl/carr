@@ -127,7 +127,7 @@ function loadState()
         return;
     }
 
-   url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/load/"
+   url = "/activity/bruise_recon/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
 
@@ -274,7 +274,7 @@ function saveState()
 
    case_name =  $('case_name').innerHTML.trim();
 
-   url = 'http://' + location.hostname + ':' + location.port + "/activity/bruise_recon/save/"
+   url = "/activity/bruise_recon/save/"
 
    debug("saveState");
    doc = {}

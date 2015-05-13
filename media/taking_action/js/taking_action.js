@@ -64,7 +64,7 @@ function loadState()
         load_step ("complete_report")
         return;
    }
-   url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/load/"
+   url = "/activity/taking_action/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError)
    
@@ -104,7 +104,7 @@ function saveState()
   if (typeof student_response != "undefined") {
       return;      
   }
-  url = 'http://' + location.hostname + ':' + location.port + "/activity/taking_action/save/";
+  url = "/activity/taking_action/save/";
 
   //doc = ldss_form_fields_to_save();
   doc = new_ldss_form_fields_to_save();

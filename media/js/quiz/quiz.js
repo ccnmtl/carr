@@ -81,10 +81,6 @@ function show_initial_score(this_quiz, quiz_key) {
 }
 
 
-//http://kodos.ccnmtl.columbia.edu:64757/carr/recognizing_abuse/cases_activity/case_1/
-
-
-
 function loadStateSuccess(doc)
 {
 
@@ -357,7 +353,7 @@ function loadState()
         return;
     }
 
-   url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/load/"
+   url = "/activity/quiz/load/"
    deferred = loadJSONDoc(url)
    deferred.addCallbacks(loadStateSuccess, loadStateError);
 }
@@ -387,7 +383,7 @@ function saveState()
     }
 
     what_to_send = all_quizzes_info;
-    url = 'http://' + location.hostname + ':' + location.port + "/activity/quiz/save/"
+    url = "/activity/quiz/save/"
     //quiz_id = $('quiz_id').value;
    quiz_key =  'quiz_' + $('quiz_id').value;
    
