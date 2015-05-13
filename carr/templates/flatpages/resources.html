@@ -33,12 +33,12 @@
 		   codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0' 
 		   width="640"
 		   height="560">
-		   <param name='movie' value="http://ccnmtl.columbia.edu/remote/media_controllers/jw_media/player.swf">
+		   <param name='movie' value="{{STATIC_URL}}swf/player.swf">
 		   <param name='allowfullscreen' value="true">
 		   <param name='bgcolor' value='efc48d'>
 		   <param name='allowscriptaccess' value="always">
 	      <param name='flashvars' value='skin={{STATIC_URL}}main/swf/simple.swf&playlistsize=180&playlist=bottom&file=http://ccnmtl.columbia.edu/broadcast/projects/carr/videos/carr_playlist.xml&&frontcolor=FFFFFF&backcolor=333333&lightcolor=eaa141&screencolor=FFFFFF'>
-		   <embed src="http://ccnmtl.columbia.edu/remote/media_controllers/jw_media/player.swf"
+		   <embed src="{{STATIC_URL}}swf/player.swf"
 			   width="640"
 			   height="560"
 			   bgcolor="efc48d"
