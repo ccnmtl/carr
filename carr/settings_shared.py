@@ -33,13 +33,7 @@ if 'test' in sys.argv or 'jenkins' in sys.argv:
         }
     }
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=carr',
-]
-
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # For now turn off caching
 CACHE_BACKEND = 'locmem://'
@@ -105,7 +99,6 @@ INSTALLED_APPS = [
     'typogrify',
     'courseaffils',
     'django_statsd',
-    'django_nose',
     'django_jenkins',
     'smoketest',
     'waffle',
