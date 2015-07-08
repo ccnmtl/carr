@@ -96,7 +96,6 @@ INSTALLED_APPS = [
     'smartif',
     'sorl.thumbnail',
     'template_utils',
-    'typogrify',
     'courseaffils',
     'django_statsd',
     'django_jenkins',
