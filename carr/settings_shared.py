@@ -95,7 +95,6 @@ INSTALLED_APPS = [
     'carr.quiz',
     'smartif',
     'sorl.thumbnail',
-    'template_utils',
     'courseaffils',
     'django_statsd',
     'django_jenkins',
