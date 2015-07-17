@@ -18,7 +18,7 @@ pyasn1==0.1.8
 pyOpenSSL==0.15.1
 ndg-httpsclient==0.4.0
 
-django-courseaffils==1.0.0
+django-courseaffils==2.0.2
 django-smartif==0.1
 djangowind==0.13.3
 sorl==3.1
