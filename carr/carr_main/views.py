@@ -130,8 +130,11 @@ def wind_affil(section_key_dict):
         ('%s.fc.course:columbia.edu' % prefix).lower()
     )
 
-
 def extract_section_keys(the_string):
+    ##
+    ## Note: this function doesn't currently validate the section keys.
+    ##       If at least one of them is valid, this function extracts it won't complain if the others are malformed.
+    ## 
     keys = ['year',
             'term_number',
             'department',
@@ -144,7 +147,7 @@ def extract_section_keys(the_string):
         '[A-Z]{4}',  # department
         '\d\d\d.',  # course_string
         '[A-Z]',    # term_character
-        '\d\d\d',   # section
+        '\w\w\w',   # section
     ]
     what_to_match = ''.join('(' + c + ')' for c in components)
     matches = re.findall(what_to_match, the_string)
