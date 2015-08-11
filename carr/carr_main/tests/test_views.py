@@ -49,12 +49,16 @@ class TestViews(TestCase):
 
     def test_add_classes_post(self):
         r = self.c.post("/add_classes/",
-                        dict(section_keys="20121SOCW7114T005"))
+                        dict(section_keys="20121SOCW7114T005,20153SOCW0006TD21"
+                             )
+                        )
         self.assertEqual(r.status_code, 200)
+        self.assertContains(r, "alert-success")
 
     def test_add_classes_invalid(self):
         r = self.c.post("/add_classes/", dict(section_keys="foo"))
         self.assertEqual(r.status_code, 200)
+        self.assertContains(r, "alert-error")
 
     def test_404(self):
         r = self.c.get("/this/is/a/404/")
