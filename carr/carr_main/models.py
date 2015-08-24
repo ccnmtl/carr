@@ -12,7 +12,7 @@ from django.contrib.auth.models import User, Group
 
 import re
 
-course_re = '.*t(\d).y(\d{4}).s(\d{3}).c(\w)(\d{4}).(\w{4}).(\w{2}).*'
+course_re = '.*t(\d).y(\d{4}).s(\w{3}).c(\w)(\d{4}).(\w{4}).(\w{2}).*'
 
 
 def user_sort_key(student):

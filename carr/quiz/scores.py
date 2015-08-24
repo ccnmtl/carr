@@ -339,7 +339,7 @@ def find_care_classes(affils):
     """If we can find users in our DB with ST affils for a course,
     AND users with FC affils, we consider that course a CARE course."""
 
-    course_match_string = ('t(\d).y(\d{4}).s(\d{3}).c(\w)'
+    course_match_string = ('t(\d).y(\d{4}).s(\w{3}).c(\w)'
                            '(\d{4}).(\w{4}).(\w{2})')
     tmp = [re.match(course_match_string, c.name) for c in affils]
     course_matches, results, checked = [x for x in tmp if x], [], []
