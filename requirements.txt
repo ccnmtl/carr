@@ -12,7 +12,7 @@ pyflakes==0.8.1
 pep8==1.6.2
 flake8==2.3.0
 logilab-common==1.0.2
-logilab-astng==0.24.1
+logilab-astng==0.24.3
 pylint==1.4.1
 pyasn1==0.1.8
 pyOpenSSL==0.15.1
