@@ -9,3 +9,4 @@ local_settings*
 reports/
 .project
 .pydevproject
+node_modules
