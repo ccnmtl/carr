@@ -1,4 +1,4 @@
-function randomly(){
+function randomly() {
     return 0.5 - Math.random();
 }
 
@@ -15,228 +15,234 @@ var hide_retake = false;
 function disable_all_sidenav_items_after_current_one() {
     var all_sidenav_items =  $$('#sidebar_left ul li');
     var selected_sidenav_item =  $$('#sidebar_left ul li.selected')[0];
-    all_sidenav_items.slice(all_sidenav_items.indexOf(selected_sidenav_item) + 1);
-    var sidenav_items_to_disable = all_sidenav_items.slice(all_sidenav_items.indexOf(selected_sidenav_item) + 1);
-    forEach (sidenav_items_to_disable, disable_sidenav_item);
+    all_sidenav_items.slice(all_sidenav_items
+                            .indexOf(selected_sidenav_item) + 1);
+    var sidenav_items_to_disable = all_sidenav_items.slice(
+        all_sidenav_items.indexOf(selected_sidenav_item) + 1);
+    forEach(sidenav_items_to_disable, disable_sidenav_item);
 }
 
-function disable_sidenav_item (item) {
+function disable_sidenav_item(item) {
     forEach(getElementsByTagAndClassName('a', null, item), hideElement);
     forEach(getElementsByTagAndClassName('span', null, item), showElement);
 }
 
-
-function maybeEnableNext()
-{
+function maybeEnableNext() {
     var gonext = false;
- 
-   if (all_done_with_quiz()) {
-    gonext = true;
-   }
-   
-   if (gonext){
-      if ($('next') !== null) {
-         setStyle('next', {'display': 'inline'});
-      }
-  }
-  else  {
-    if ($('next') !== null ) {
-      setStyle('next', {'display': 'none'});
+    if (all_done_with_quiz()) {
+        gonext = true;
     }
-    disable_all_sidenav_items_after_current_one();
-  }
-}
-
-function all_done_with_quiz() {  
-    if (post_test) {
-      return hide_retake;
-   }
-    return filter (function(f) { return (f.style.display === 'block'); }, $$('.answer')).length > 0;
-}
-
-function show_previous_answers_to_quiz( quiz_info) {
-    var question_ids_as_loaded = map (function (a) { return parseInt(a.id.split('_')[1]); }, $$('.cases.really'));
-    var question_ids_as_needed = map (parseInt, map (itemgetter('id'), quiz_info));
-    var order = map (function(a) { return findValue (question_ids_as_loaded, a); }, question_ids_as_needed);
-  forEach(quiz_info ,
-     function(question)
-     {  
-        //debug (serializeJSON(question));
-        if ($(question.id + "_" + question.answer)) {
-          //logDebug ("setting a question");
-            $(question.id + "_" + question.answer).checked = true;
+    if (gonext) {
+        if ($('next') !== null) {
+            setStyle('next', {'display': 'inline'});
         }
-     });
-  reorder_questions(order);
+    } else {
+        if ($('next') !== null) {
+            setStyle('next', {'display': 'none'});
+        }
+        disable_all_sidenav_items_after_current_one();
+    }
+}
+
+function all_done_with_quiz() {
+    if (post_test) {
+        return hide_retake;
+    }
+    return filter(function(f) {
+        return (f.style.display === 'block');
+    }, $$('.answer')).length > 0;
+}
+
+function show_previous_answers_to_quiz(quiz_info) {
+    var question_ids_as_loaded = map(function(a) {
+        return parseInt(a.id.split('_')[1]);
+    }, $$('.cases.really'));
+    var question_ids_as_needed = map(parseInt,
+                                      map(itemgetter('id'), quiz_info));
+    var order = map(function(a) {
+        return findValue(question_ids_as_loaded, a);
+    }, question_ids_as_needed);
+    forEach(quiz_info ,
+            function(question) {
+                //debug (serializeJSON(question));
+                if ($(question.id + '_' + question.answer)) {
+                    //logDebug ('setting a question');
+                    $(question.id + '_' + question.answer).checked = true;
+                }
+            });
+    reorder_questions(order);
 }
 
 var initialScoreKey = 'initial_score';
 var answersGivenKey = 'answers_given';
 var allCorrectKey = 'all_correct';
 function show_initial_score(this_quiz, quiz_key) {
-  // only show initial results for the post-test.
-  return (
+    // only show initial results for the post-test.
+    return (
         // we have the answers
         this_quiz[initialScoreKey] &&
-        this_quiz[initialScoreKey][answersGivenKey] && 
-        // the post test has been completed with perfect answers, therefore training is complete
-        this_quiz[allCorrectKey] === 't' &&
-        quiz_key === 'quiz_3'
-      ) ;
+            this_quiz[initialScoreKey][answersGivenKey] &&
+            // the post test has been completed with perfect answers, therefore training is complete
+            this_quiz[allCorrectKey] === 't' &&
+            quiz_key === 'quiz_3'
+   ) ;
 }
 
-
-function loadStateSuccess(doc)
-{
-
-   if (!post_test) {
+function loadStateSuccess(doc) {
+    if (!post_test) {
         // post test is the only test you are allowed to retake.
         hide_retake = true;
-   }
-   
-   all_quizzes_info = doc;
-   hideElement($('initially'));
-   
+    }
+
+    all_quizzes_info = doc;
+    hideElement($('initially'));
+
     var quiz_key = 'quiz_' + $('quiz_id').value;
     var this_quiz = doc[quiz_key];
-   
-   
-    var test_already_taken = (this_quiz && this_quiz.question &&  this_quiz.question.length > 0);
-   
-   logDebug ("test already taken is " + test_already_taken);
-   
+
+    var test_already_taken = (this_quiz && this_quiz.question &&
+                              this_quiz.question.length > 0);
+
+    logDebug('test already taken is ' + test_already_taken);
+
     var the_answers;
     var order;
-   if (test_already_taken) {
-      if (show_initial_score(this_quiz, quiz_key)) {
-        //logDebug ('show_initial_score');
-          the_answers = this_quiz[initialScoreKey][answersGivenKey];
-        setDisplayForElement('inline', $('initially'));
-        hide_retake = true;
-      } else {
-       the_answers = this_quiz.question;
-      }
-      show_previous_answers_to_quiz (the_answers);
-      show_score(false);
-      freeze_buttons();
-   }
-   else {
-      //logDebug ("starting from scratch as no quiz found.");
-       order = calculate_order();
-       forEach ( $$('input.question'), function (a) {a.checked = false;});
-      thaw_buttons();
-      reorder_questions(order);
-   }
-   
-   
-   
-   if (order.length === 1) {
-        map (hideElement, $$('.casetitle'));
+    if (test_already_taken) {
+        if (show_initial_score(this_quiz, quiz_key)) {
+            //logDebug('show_initial_score');
+            the_answers = this_quiz[initialScoreKey][answersGivenKey];
+            setDisplayForElement('inline', $('initially'));
+            hide_retake = true;
+        } else {
+            the_answers = this_quiz.question;
+        }
+        show_previous_answers_to_quiz(the_answers);
+        show_score(false);
+        freeze_buttons();
+    } else {
+        order = calculate_order();
+        forEach($$('input.question'), function(a) {a.checked = false;});
+        thaw_buttons();
+        reorder_questions(order);
+    }
+
+    if (order.length === 1) {
+        map(hideElement, $$('.casetitle'));
         $('show_score_link').innerHTML = 'Submit Your Response';
-   }
-   
-   maybeEnableNext();
-   
-   if (hide_retake) {
-      hideElement ($('retake_quiz_div'));
-   }
+    }
+
+    maybeEnableNext();
+
+    if (hide_retake) {
+        hideElement($('retake_quiz_div'));
+    }
 }
 
-
 function freeze_buttons() {
-  logDebug ('freezing buttons');
-    forEach($$('input.question'), function (i) {i.disabled = true;});
+    logDebug('freezing buttons');
+    forEach($$('input.question'), function(i) {i.disabled = true;});
 }
 
 function thaw_buttons() {
-    forEach($$('input.question'), function (i) {i.disabled = false;});
+    forEach($$('input.question'), function(i) {i.disabled = false;});
 }
 
-
-function calculate_order () {
+function calculate_order() {
     // Returns a list of database ID's of questions in the order this quiz should display them.
- 	 
-    var ten_exactly = post_test ||  (pre_test && window.location.href.match(/cdm/)!== null);
+
+    var ten_exactly = post_test || (pre_test &&
+                                    window.location.href.match(/cdm/) !== null);
     var how_many_randomly_picked_questions;
-     if (ten_exactly) {
+    if (ten_exactly) {
         // Show some required questions, and some questions picked at random out of a hat, in a random order.
         //TODO move this functionality out of this file so Anders can use the quiz:
         //These questions *will* be on the quiz regardless of the order the questions are presented in:
-        var required_questions = [13 , 14 , 15 , 16 , 17 , 18 , 19 , 20 , 21 , 22 ];
-        
+        var required_questions = [13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+
         // Questions that *might* be on the quiz:
-         var randomly_picked_questions = [23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
-     
+        var randomly_picked_questions = [
+            23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+            40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
+
         // How many of the questions that *might* be on the quiz should we add to the ones that *will* be?
-         if (window.location.href.match(/cdm/) === null) {
+        if (window.location.href.match(/cdm/) === null) {
             // last-minute change: the dental school professor wants to remove the randomly-picked questions:
-             how_many_randomly_picked_questions = 10;
-        
+            how_many_randomly_picked_questions = 10;
+
         } else {
-            how_many_randomly_picked_questions = 0;   
-        
+            how_many_randomly_picked_questions = 0;
+
         }
 
         // shuffle the randomly picked questions:
         randomly_picked_questions.sort(randomly);
 
-        // ok, pick a certain number out of the urn-- assign length in order to pick.        
+        // ok, pick a certain number out of the urn-- assign length in order to pick.
         randomly_picked_questions.length = how_many_randomly_picked_questions;
-        
-         var final_list_of_questions = required_questions.concat ( randomly_picked_questions);
-        
-        // reshuffle all questions together:
-         final_list_of_questions.sort(randomly);
-         
-         var question_ids_as_loaded = map (function (a) { return parseInt(a.id.split('_')[1]); },  $$('.cases.really'));
-        
-         var question_ids_as_needed = final_list_of_questions;
 
-         var order = map (function(a) { return findValue (question_ids_as_loaded, a); }, question_ids_as_needed);
+        var final_list_of_questions = required_questions.concat(
+            randomly_picked_questions);
+
+        // reshuffle all questions together:
+        final_list_of_questions.sort(randomly);
+
+        var question_ids_as_loaded = map(function(a) {
+            return parseInt(a.id.split('_')[1]);
+        },  $$('.cases.really'));
+
+        var question_ids_as_needed = final_list_of_questions;
+
+        var order = map(function(a) {
+            return findValue(question_ids_as_loaded, a);
+        }, question_ids_as_needed);
         return order;
-     }
-     else {
-         return list(range( $$('.cases.really').length)).sort(randomly);
-     }
+    } else {
+        return list(range($$('.cases.really').length)).sort(randomly);
+    }
 }
 
 function reorder_questions(order) {
-    
+
     var nums = list(range(order.length));
-    
     //create placeholders for the sorted questions
-    $('sorted_questions').appendChild (DIV ({id : "sorted_questions_div"}, map (DIV, nums)));
-    
+    $('sorted_questions').appendChild(
+        DIV({id: 'sorted_questions_div'}, map(DIV, nums)));
+
     var existing_case_divs =  $$('.cases.really');
-    
+
     // source_divs is a new ordering of the existing, currently hidden divs.
-    var source_divs = map (function(a) { return existing_case_divs[a];}, order);
+    var source_divs = map(function(a) { return existing_case_divs[a];}, order);
 
     //destination_divs is a bunch of empty placeholder divs:
     var destination_divs = $('sorted_questions_div').childNodes;
 
     // swap the questions and the placeholders:
-    map (function f (a) { swapDOM (a[0], a[1]);}, zip (destination_divs, source_divs));
-    
+    map(function f(a) {
+        swapDOM(a[0], a[1]);
+    }, zip(destination_divs, source_divs));
+
     // show the resulting sorted divs, leaving the un-chosen ones hidden as per the CSS file.
-    map (function f (a) { setStyle (a, {'display': 'block'}); }, $$('#sorted_questions_div div.cases'));
+    map(function f(a) {
+        setStyle(a, {'display': 'block'});
+    }, $$('#sorted_questions_div div.cases'));
 
     // number the questions according to their new position:
-    map (function f (a) { a[0].innerHTML = a[1] + 1;}, zip ($$('#sorted_questions_div .question_order'), nums));
+    map(function f(a) {
+        a[0].innerHTML = a[1] + 1;
+    }, zip($$('#sorted_questions_div .question_order'), nums));
 }
 
-
 function cheat()  {
-    var right_answers = filter (function f(a) {
-        return getNodeAttribute (a, 'right_answer') === 'True';},  $$('#sorted_questions_div .question'));
+    var right_answers = filter(function f(a) {
+        return getNodeAttribute(a, 'right_answer') === 'True';
+    },  $$('#sorted_questions_div .question'));
     forEach(right_answers, function f(a)  { a.checked = true; });
 }
 
-
 function debug(string) {
-   if (true) {
-       log("DEBUG " + string);
-   }
+    if (true) {
+        log('DEBUG ' + string);
+    }
 }
 
 // default behavior, called from the show score button when the user first submits the quiz.
@@ -247,223 +253,224 @@ function showScore() {
 function show_score(fresh_answers) {
     // all visible answers:
     var all_answers = $$('#sorted_questions_div input.question');
-    var quiz_key =  'quiz_' + $('quiz_id').value;    
+    var quiz_key =  'quiz_' + $('quiz_id').value;
 
     // all chosen answers:
-    var chosen_answers = filter (function f(a) {return a.checked;}, all_answers);
-    
-    var number_of_questions_to_answer = $$('#sorted_questions_div .cases').length;
-    
+    var chosen_answers = filter(function f(a) {return a.checked;}, all_answers);
+
+    var number_of_questions_to_answer = $$('#sorted_questions_div .cases')
+        .length;
+
     // If the user just took the quiz, do basic_validation before scoring.
     if (fresh_answers) {
         if (chosen_answers.length < number_of_questions_to_answer) {
-            alert ('Please answer all the questions.');
+            alert('Please answer all the questions.');
             return;
         }
-        
-        if (!confirm ('Are you done?')) {
+
+        if (!confirm('Are you done?')) {
             return;
         }
     }
-    
+
     // show all the correct answers:
-    map (showElement , $$('.answer'));
-    hideElement ('show_score');
+    map(showElement, $$('.answer'));
+    hideElement('show_score');
     var max_score = chosen_answers.length;
-    var actual_score = filter (function f(a) {return getNodeAttribute (a, 'right_answer') === 'True';}, chosen_answers).length;
-    
+    var actual_score = filter(function f(a) {
+        return getNodeAttribute(a, 'right_answer') === 'True';
+    }, chosen_answers).length;
+
     if (actual_score === max_score) {
-      hide_retake = true;
-      // used in the final quiz to determine whether you can advance to the next page.
+        hide_retake = true;
+        // used in the final quiz to determine whether you can advance to the next page.
     }
-   
-    var make_these_green = filter (function f(a) {
-        return getNodeAttribute (a, 'right_answer') === 'True';
+
+    var make_these_green = filter(function f(a) {
+        return getNodeAttribute(a, 'right_answer') === 'True';
     }, $$('.question'));
-    
-    forEach (make_these_green, function(a) { addElementClass (a.parentNode, 'correct_answer');});
-    
+
+    forEach(make_these_green, function(a) {
+        addElementClass(a.parentNode, 'correct_answer');
+    });
+
     if (max_score > 1) {
         $('quiz_score').innerHTML = actual_score;
         $('quiz_max_score').innerHTML = max_score;
         showElement('show_quiz_results');
     }
-    
+
     //store the first score; for diagnostic tests that might be taken several times:
     //quiz_id = $('quiz_id').value;
-    if (  typeof(all_quizzes_info [quiz_key]) === 'undefined') {
+    if (typeof(all_quizzes_info [quiz_key]) === 'undefined') {
         all_quizzes_info [quiz_key] = {};
     }
-    if ( typeof(all_quizzes_info [quiz_key][initialScoreKey] ) === 'undefined') {
-       logDebug ("Initial score not found; saving:");
-        all_quizzes_info [quiz_key][initialScoreKey]  = { 
-            'quiz_score': actual_score, 
-            'quiz_max_score': max_score, 
+    if (typeof(all_quizzes_info [quiz_key][initialScoreKey]) === 'undefined') {
+        logDebug('Initial score not found; saving:');
+        all_quizzes_info [quiz_key][initialScoreKey]  = {
+            'quiz_score': actual_score,
+            'quiz_max_score': max_score,
             // store the answers:
-            answersGivenKey : collect_question_info()
+            answersGivenKey: collect_question_info()
         };
-        //logDebug (all_quizzes_info);
+        //logDebug(all_quizzes_info);
     }
-    
-    if  (actual_score > 0 && actual_score === max_score) {
+
+    if (actual_score > 0 && actual_score === max_score) {
         all_quizzes_info [quiz_key][allCorrectKey] = 't';
         // You got all the answers right; no need to retake the test.
-        hideElement ('retake_quiz_div');
-        
+        hideElement('retake_quiz_div');
+
     } else {
         all_quizzes_info [quiz_key][allCorrectKey] = 'f';
     }
     var submitTimeKey = 'submit_time';
-    if ( typeof(all_quizzes_info [quiz_key][submitTimeKey] ) === 'undefined') {
+    if (typeof(all_quizzes_info [quiz_key][submitTimeKey]) === 'undefined') {
         all_quizzes_info [quiz_key][submitTimeKey] = [Date()];
     } else {
-        all_quizzes_info [quiz_key][submitTimeKey].push (Date());
+        all_quizzes_info [quiz_key][submitTimeKey].push(Date());
     }
-    
+
     if (!pre_test) {
         if (!hide_retake)  {
-            showElement ('retake_quiz_div');
+            showElement('retake_quiz_div');
         } else {
             // set this to true to indicate that the training is complete.
             all_quizzes_info [quiz_key][allCorrectKey] = 't';
         }
     }
-    
+
     if (post_test && (!hide_retake)) {
-      alert ('You must score 100% on the post-test to receive credit for this training. Please click "Retake Quiz" and try again. ');
+        alert('You must score 100% on the post-test to receive credit ' +
+              'for this training. Please click "Retake Quiz" and try again. ');
     }
-    
-   freeze_buttons();
-   maybeEnableNext();
+
+    freeze_buttons();
+    maybeEnableNext();
 }
 
 function loadStateError(err) {
-    debug("loadStateError");
-   // @todo: Find a spot to display an error or decide just to fail gracefully
+    debug('loadStateError');
+    // @todo: Find a spot to display an error or decide just to fail gracefully
 }
 
 function loadState() {
-    debug("loadState");
-    if (typeof student_quiz !== "undefined") {
+    debug('loadState');
+    if (typeof student_quiz !== 'undefined') {
         hide_retake = true; // no reason for a faculty member to be interested in the "retake quiz" link.
         loadStateSuccess(student_quiz);
         return;
     }
 
-    var url = "/activity/quiz/load/";
+    var url = '/activity/quiz/load/';
     var deferred = loadJSONDoc(url);
     deferred.addCallbacks(loadStateSuccess, loadStateError);
 }
 
-
 function collect_question_info() {
-  var question_info = [];
-  forEach(getElementsByTagAndClassName('*', 'question'),
-    function(question) {
-      if (question.checked)
-      {
-         var a = question.id.split('_');
-          var q = {};
-         q.id = a[0];
-         q.answer = a[1];
-         question_info.push(q);
-      }
-    });
-  return question_info;
+    var question_info = [];
+    forEach(getElementsByTagAndClassName('*', 'question'),
+            function(question) {
+                if (question.checked) {
+                    var a = question.id.split('_');
+                    var q = {};
+                    q.id = a[0];
+                    q.answer = a[1];
+                    question_info.push(q);
+                }
+            });
+    return question_info;
 }
 
-
-function saveState()
-{   
-    if (typeof student_response !== "undefined") {
-      return;
+function saveState() {
+    if (typeof student_response !== 'undefined') {
+        return;
     }
 
     var what_to_send = all_quizzes_info;
-    var url = "/activity/quiz/save/";
+    var url = '/activity/quiz/save/';
     //quiz_id = $('quiz_id').value;
     var quiz_key =  'quiz_' + $('quiz_id').value;
-   
+
     var all_answers = $$('#sorted_questions_div input.question');
-    var chosen_answers = filter (function f(a) {return a.checked;}, all_answers);
-    var number_of_questions_to_answer = $$('#sorted_questions_div .cases').length;
-   
-   
-   // don't delete initial score:
+    var chosen_answers = filter(function f(a) {return a.checked;}, all_answers);
+    var number_of_questions_to_answer = $$('#sorted_questions_div .cases')
+        .length;
+
+    // don't delete initial score:
     var initial_score_found = null;
-   
-   if (all_quizzes_info !== undefined &&
-       all_quizzes_info [quiz_key] !== undefined &&
-       all_quizzes_info [quiz_key][initialScoreKey] !== undefined) {
-       initial_score_found = all_quizzes_info [quiz_key][initialScoreKey];
-   }
-   
-   
-   if (chosen_answers.length < number_of_questions_to_answer) {
-      // only saving state if all the questions are answered.
-      return;
-   }
-   
-   
-   if (show_initial_score(all_quizzes_info [quiz_key], quiz_key)) {
-      // do not overwrite state with the displayed initial answers:
-      //logDebug (JSON.stringify ( what_to_send [quiz_key ]));
-      
-      //alert ('keeping existing state.');
-      what_to_send [quiz_key ].question = collect_question_info();
-      
-      // keep everything as is and save.
-   }
-   else {
-             if  (kill_this_quiz_flag) {
-                logDebug ("Do save the initial results, but delete all question and answer info.");
+
+    if (all_quizzes_info !== undefined &&
+        all_quizzes_info [quiz_key] !== undefined &&
+        all_quizzes_info [quiz_key][initialScoreKey] !== undefined) {
+        initial_score_found = all_quizzes_info [quiz_key][initialScoreKey];
+    }
+
+    if (chosen_answers.length < number_of_questions_to_answer) {
+        // only saving state if all the questions are answered.
+        return;
+    }
+
+    if (show_initial_score(all_quizzes_info [quiz_key], quiz_key)) {
+        // do not overwrite state with the displayed initial answers:
+        //logDebug(JSON.stringify (what_to_send [quiz_key ]));
+
+        //alert('keeping existing state.');
+        what_to_send [quiz_key ].question = collect_question_info();
+
+        // keep everything as is and save.
+    } else {
+        if (kill_this_quiz_flag) {
+            logDebug('Do save the initial results, but delete ' +
+                     'all question and answer info.');
+            delete what_to_send [quiz_key].question;
+        } else {
+            if (what_to_send [quiz_key] !== undefined) {
+                logDebug('Deleting all info for quiz, so it can be ' +
+                         'replaced with the quiz you just took.');
                 delete what_to_send [quiz_key].question;
-             }
-             else {
-                 if (what_to_send [quiz_key] !== undefined) {
-                   logDebug ("Deleting all info for quiz, so it can be replaced with the quiz you just took.");
-                     delete what_to_send [quiz_key].question;
-                 }else {
-                   logDebug ("No info found on this quiz.");
-                   what_to_send [quiz_key] = {};
-                 }
-                 if (initial_score_found !== null) {
-                     logDebug ("Found an initial score, so preserving it.");
-                     what_to_send  [quiz_key][initialScoreKey] = initial_score_found;
-                 }
-                 what_to_send [quiz_key ].question = collect_question_info();
-             }
-   }
+            }else {
+                logDebug('No info found on this quiz.');
+                what_to_send [quiz_key] = {};
+            }
+            if (initial_score_found !== null) {
+                logDebug('Found an initial score, so preserving it.');
+                what_to_send  [quiz_key][initialScoreKey] = initial_score_found;
+            }
+            what_to_send [quiz_key ].question = collect_question_info();
+        }
+    }
     var xmlhttp;
     if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
     } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
     }
-    xmlhttp.open("POST", url, false);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send(queryString({'json':serializeJSON(what_to_send)}));
+    xmlhttp.open('POST', url, false);
+    xmlhttp.setRequestHeader('Content-type',
+                             'application/x-www-form-urlencoded');
+    xmlhttp.send(queryString({'json': serializeJSON(what_to_send)}));
 }
 
-function retakeQuiz()
-{
-    if (!confirm ('Are you sure you want to start the quiz again? This will erase your answers.'))  {
+function retakeQuiz() {
+    if (!confirm('Are you sure you want to start the quiz again? ' +
+                 'This will erase your answers.'))  {
         return;
     }
-    hideElement ('show_quiz_results');
-    
+    hideElement('show_quiz_results');
+
     kill_this_quiz();
     window.location.reload();
 }
 
-function kill_state()  {   
+function kill_state()  {
     kill_state_flag = true;
-   
+
 }
 
-function kill_this_quiz()  {   
+function kill_this_quiz()  {
     kill_this_quiz_flag = true;
 }
 
-MochiKit.Signal.connect(window, "onload", loadState);
-MochiKit.Signal.connect(window, "onbeforeunload", saveState);
+MochiKit.Signal.connect(window, 'onload', loadState);
+MochiKit.Signal.connect(window, 'onbeforeunload', saveState);
