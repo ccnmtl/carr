@@ -1,5 +1,8 @@
 import os, sys, site
 
+# http://bugs.python.org/issue7980
+import _strptime
+
 # paths we might need to pick up the project's settings
 sys.path.append('/var/www/carr/carr/')
 
