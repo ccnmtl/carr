@@ -23,7 +23,7 @@ six==1.10.0
 
 django-courseaffils==2.0.2
 django-smartif==0.1
-djangowind==0.14.1
+djangowind==0.14.3
 sorl==3.1
 pagetree==0.5.9
 django-pageblocks==1.0.2
