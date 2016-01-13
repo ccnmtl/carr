@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import user_passes_test
 import json
 from django.contrib.auth.models import User, Group
 from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
 from carr.carr_main.models import students_in_class, users_by_uni
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.activity_bruise_recon.models import score_on_bruise_recon
@@ -49,7 +50,7 @@ def access_list(request):
 @user_passes_test(can_see_scores)
 @render_to('quiz/scores/scores_index.html')
 def scores_index(request):
-    current_site = Site.objects.get_current()
+    current_site = get_current_site(request)
     return {
         'full_page_results_block': True,
         'hide_scores_help_text': True,
@@ -171,7 +172,7 @@ def scores_student(request):
     quizzes = score_on_all_quizzes(ru)
     bruise_recon = score_on_bruise_recon(ru)
     taking_action = score_on_taking_action(ru)
-    site = Site.objects.get_current()
+    site = get_current_site(request)
 
     return {
         'scores': quizzes,
