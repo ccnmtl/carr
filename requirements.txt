@@ -20,6 +20,7 @@ pyOpenSSL==0.15.1
 ndg-httpsclient==0.4.0
 sqlparse==0.1.18
 six==1.10.0
+contextlib2==0.5.1
 
 django-courseaffils==2.0.2
 django-smartif==0.1
@@ -31,7 +32,7 @@ djangohelpers==0.18.1
 django-statsd-mozilla==0.3.16
 django-jenkins==0.18.1
 django-smoketest==0.3.0
-raven==5.8.1
+raven==5.10.1
 fake-factory==0.5.3
 factory_boy==2.6.0
 django-waffle==0.11
