@@ -445,18 +445,23 @@ def all_answers_for_quizzes(the_student):
             score.extend(a['question'])
         except:
             pass  # eh.
-    results = {}
     quiz_keys_to_consider = [
         a for a in score if int(a['id']) in quiz_key.keys()]
+    results = {}
     for a in quiz_keys_to_consider:
         question_id = int(a['id'])
         actual_answer_id = int(a['answer'])
         correct_answer_id = answer_key[int(a['id'])]
-        if actual_answer_id == correct_answer_id:
-            results[question_id] = 'c'  # correct.
-        else:
-            results[question_id] = 'i'  # incorrect.
+        results[question_id] = correct_token(actual_answer_id,
+                                             correct_answer_id)
     return results
+
+
+def correct_token(actual, correct):
+    if actual == correct:
+        return 'c'  # correct.
+    else:
+        return 'i'  # incorrect.
 
 
 # SEE  http://www.columbia.edu/acis/rad/authmethods/auth-affil
