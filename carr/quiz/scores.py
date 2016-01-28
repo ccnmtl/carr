@@ -288,6 +288,10 @@ def score_on_all_quizzes(the_student):
         'correct': answer_key[int(a['id'])],
         'quiz_number': quiz_key[int(a['id'])]
     } for a in score if int(a['id']) in quiz_key.keys()]
+    return get_quiz_scores(quizzes, json_stream, results)
+
+
+def get_quiz_scores(quizzes, json_stream, results):
     quiz_scores = []
     for quiz in quizzes:
         r = get_quiz_score(quiz, json_stream, results)
