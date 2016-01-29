@@ -14,6 +14,7 @@ MIDDLEWARE_CLASSES += [  # noqa
     'courseaffils.middleware.CourseManagerMiddleware',
     'carr.someutils.AuthRequirementMiddleware',
     'djangohelpers.middleware.HttpDeleteMiddleware',
+    'carr.middleware.SiteIdMiddleware',
 ]
 
 INSTALLED_APPS += [  # noqa

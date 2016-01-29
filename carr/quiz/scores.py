@@ -3,8 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import user_passes_test
 import json
 from django.contrib.auth.models import User, Group
-from django.contrib.sites.models import Site
-from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.sites.requests import RequestSite
 from carr.carr_main.models import students_in_class, users_by_uni
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.activity_bruise_recon.models import score_on_bruise_recon
@@ -50,7 +49,7 @@ def access_list(request):
 @user_passes_test(can_see_scores)
 @render_to('quiz/scores/scores_index.html')
 def scores_index(request):
-    current_site = get_current_site(request)
+    current_site = RequestSite(request)
     return {
         'full_page_results_block': True,
         'hide_scores_help_text': True,
@@ -116,7 +115,7 @@ def students_by_class(request, c1, c2, c3, c4, c5, c6):
     return {
         'c': course_info, 'semester':
         semester_map[int(course_info[0])], 'year': course_info[1],
-        'student_info': get_student_info(students_to_show),
+        'student_info': get_student_info(students_to_show, request),
         'full_page_results_block': True
     }
 
@@ -151,7 +150,7 @@ def student_lookup_by_uni_form(request):
              "Please check the UNI and try again.")
         }
 
-    student_info = get_student_info(found_students)
+    student_info = get_student_info(found_students, request)
     return {
         'full_page_results_block': True, 'uni': uni, 'student':
         'student', 'student_info': student_info, 'error': None
@@ -172,7 +171,7 @@ def scores_student(request):
     quizzes = score_on_all_quizzes(ru)
     bruise_recon = score_on_bruise_recon(ru)
     taking_action = score_on_taking_action(ru)
-    site = get_current_site(request)
+    site = RequestSite(request)
 
     return {
         'scores': quizzes,
@@ -206,8 +205,8 @@ def to_python_date(timestring):
         )
 
 
-def get_student_info(students):
-    site = Site.objects.get_current()
+def get_student_info(students, request):
+    site = RequestSite(request)
     result = []
     for student in students:
         quizzes = score_on_all_quizzes(student)
