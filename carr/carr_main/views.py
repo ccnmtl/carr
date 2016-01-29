@@ -9,7 +9,7 @@ from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
-from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.sites.requests import RequestSite
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http.response import HttpResponseNotFound
 from django.template import RequestContext, Context, loader
@@ -66,7 +66,7 @@ def page(request, path):
     section = h.get_first_leaf(current_root)
     ancestors = section.get_ancestors()
     ss = SiteState.objects.get_or_create(user=request.user)[0]
-    current_site = get_current_site(request)
+    current_site = RequestSite(request)
 
     # Skip to the first leaf, make sure to mark these sections as visited
     if (current_root != section):
@@ -303,7 +303,7 @@ def stats(request, task):
 
     questions_in_order = [(str(q.id), q) for q in tmp2]
 
-    site = get_current_site(request)
+    site = RequestSite(request)
 
     the_stats = generate_user_stats(the_users, site, task, questions_in_order)
     result = dict(task=task,
@@ -404,7 +404,7 @@ def index(request):
 
 def _construct_menu(request, parent, section, ss):
     menu = []
-    current_site = get_current_site(request)
+    current_site = RequestSite(request)
     siblings = [a for a in parent.get_children() if current_site in a.sites()]
 
     for s in siblings:
