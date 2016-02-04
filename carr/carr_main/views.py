@@ -10,7 +10,9 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import (
+    HttpResponseRedirect, HttpResponse, StreamingHttpResponse
+)
 from django.http.response import HttpResponseNotFound
 from django.template import RequestContext, Context, loader
 from pagetree.models import Hierarchy
@@ -272,7 +274,7 @@ def stats(request, task):
 
     stats_csv_filename = ('care_stats_%s.csv' %
                           datetime.datetime.now().isoformat()[:10])
-    response = HttpResponse(content_type='text/csv')
+    response = StreamingHttpResponse(content_type='text/csv')
     response[
         'Content-Disposition'] = 'attachment; filename=%s' % stats_csv_filename
 
