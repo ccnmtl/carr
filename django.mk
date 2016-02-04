@@ -34,7 +34,7 @@ runserver: check
 	$(MANAGE) runserver $(INTERFACE):$(RUNSERVER_PORT)
 
 gunicorn: check
-	$(VE)/bin/gunicorn carr.wsgi:application
+	$(VE)/bin/gunicorn $(APP).wsgi:application
 
 migrate: check jenkins
 	$(MANAGE) migrate
