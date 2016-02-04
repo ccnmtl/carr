@@ -1,4 +1,4 @@
-from .models import SiteState, sort_users
+from .models import SiteState
 from annoying.decorators import render_to
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
@@ -281,10 +281,13 @@ def stats(request, task):
     if request.user.user_type() == 'student':
         return scores_student(request)
 
-    # for now just use all users.
-    tmp = [u for u in User.objects.all()]
-
-    the_users = sort_users([u for u in tmp if u.user_type() == 'student'])
+    the_users = User.objects.filter(is_staff=False).exclude(
+        groups__name__contains='tlcxml'
+    ).exclude(
+        groups__name__contains='.fc.'
+    ).exclude(
+        username__in=settings.DEFAULT_SOCIALWORK_FACULTY_UNIS
+    ).order_by('last_name', 'username')
 
     # make a list of questions:
     pre_test_questions = Question.objects.filter(quiz__id=2)
