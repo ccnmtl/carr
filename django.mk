@@ -33,6 +33,9 @@ flake8: $(PY_SENTINAL)
 runserver: check
 	$(MANAGE) runserver $(INTERFACE):$(RUNSERVER_PORT)
 
+gunicorn: check
+	$(VE)/bin/gunicorn carr.wsgi:application
+
 migrate: check jenkins
 	$(MANAGE) migrate
 
