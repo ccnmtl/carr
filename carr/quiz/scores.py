@@ -288,6 +288,10 @@ def score_on_all_quizzes(the_student):
         'correct': answer_key[int(a['id'])],
         'quiz_number': quiz_key[int(a['id'])]
     } for a in score if int(a['id']) in quiz_key.keys()]
+    return get_quiz_scores(quizzes, json_stream, results)
+
+
+def get_quiz_scores(quizzes, json_stream, results):
     quiz_scores = []
     for quiz in quizzes:
         r = get_quiz_score(quiz, json_stream, results)
@@ -432,25 +436,32 @@ def all_answers_for_quizzes(the_student):
         state = ActivityState.objects.get(user=the_student)
     except ActivityState.DoesNotExist:
         return {}
-    if (len(state.json) > 0):
-        score = []
-        for a in json.loads(state.json).values():
-            try:
-                score.extend(a['question'])
-            except:
-                pass  # eh.
-        results = {}
-        quiz_keys_to_consider = [
-            a for a in score if int(a['id']) in quiz_key.keys()]
-        for a in quiz_keys_to_consider:
-            question_id = int(a['id'])
-            actual_answer_id = int(a['answer'])
-            correct_answer_id = answer_key[int(a['id'])]
-            if actual_answer_id == correct_answer_id:
-                results[question_id] = 'c'  # correct.
-            else:
-                results[question_id] = 'i'  # incorrect.
-        return results
+    if (len(state.json) == 0):
+        # TODO: this returns nothing. that's probably not right.
+        return
+    score = []
+    for a in json.loads(state.json).values():
+        try:
+            score.extend(a['question'])
+        except:
+            pass  # eh.
+    quiz_keys_to_consider = [
+        a for a in score if int(a['id']) in quiz_key.keys()]
+    results = {}
+    for a in quiz_keys_to_consider:
+        question_id = int(a['id'])
+        actual_answer_id = int(a['answer'])
+        correct_answer_id = answer_key[int(a['id'])]
+        results[question_id] = correct_token(actual_answer_id,
+                                             correct_answer_id)
+    return results
+
+
+def correct_token(actual, correct):
+    if actual == correct:
+        return 'c'  # correct.
+    else:
+        return 'i'  # incorrect.
 
 
 # SEE  http://www.columbia.edu/acis/rad/authmethods/auth-affil
