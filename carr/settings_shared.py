@@ -7,8 +7,12 @@ project = 'carr'
 base = os.path.dirname(__file__)
 locals().update(common(project=project, base=base))
 
-# For now turn off caching
-CACHE_BACKEND = 'locmem://'
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'carr',
+    }
+}
 
 MIDDLEWARE_CLASSES += [  # noqa
     'courseaffils.middleware.CourseManagerMiddleware',
