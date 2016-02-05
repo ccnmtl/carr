@@ -1,11 +1,10 @@
-from .models import SiteState, sort_users
+from .models import SiteState
 from annoying.decorators import render_to
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.quiz.models import Question
 from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
-    scores_student, training_is_complete, has_dental_affiliation, \
-    can_see_scores
+    scores_student, training_is_complete, can_see_scores
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
@@ -281,10 +280,13 @@ def stats(request, task):
     if request.user.user_type() == 'student':
         return scores_student(request)
 
-    # for now just use all users.
-    tmp = [u for u in User.objects.all()]
-
-    the_users = sort_users([u for u in tmp if u.user_type() == 'student'])
+    the_users = User.objects.filter(is_staff=False).exclude(
+        groups__name__contains='tlcxml'
+    ).exclude(
+        groups__name__contains='.fc.'
+    ).exclude(
+        username__in=settings.DEFAULT_SOCIALWORK_FACULTY_UNIS
+    ).order_by('last_name', 'username')
 
     # make a list of questions:
     pre_test_questions = Question.objects.filter(quiz__id=2)
@@ -319,12 +321,16 @@ def stats(request, task):
 
 def generate_user_stats(the_users, site, task, questions_in_order):
     the_stats = {}
-    for u in the_users:
 
-        affiliation = 'dental' if has_dental_affiliation(u) else 'ssw'
-        if affiliation != task:
-            continue
+    regex = r'^\w+\.\w+\.\w+\.\w+\.intc.*'
+    if task == 'dental':
+        affiliation = 'dental'
+        site_users = the_users.filter(groups__name__regex=regex)
+    else:
+        affiliation = 'ssw'
+        site_users = the_users.exclude(groups__name__regex=regex)
 
+    for u in site_users:
         _quizzes = score_on_all_quizzes(u)
         _bruise_recon = score_on_bruise_recon(u)
         _taking_action = score_on_taking_action(u)
