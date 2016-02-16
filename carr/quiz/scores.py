@@ -315,6 +315,13 @@ def load_state_json(the_student):
         return None
 
 
+def set_pre_test(json_stream, result):
+    if json_stream['quiz_2'][
+            'initial_score']['quiz_score'] is not None:
+        result['pre_test'] = True
+    return result
+
+
 # a couple helper functions for scoring:
 def pre_and_post_test_results(the_student):
     result = {'pre_test': False, 'post_test': False}
@@ -325,9 +332,7 @@ def pre_and_post_test_results(the_student):
 
     # initial test:
     try:
-        if json_stream['quiz_2'][
-                'initial_score']['quiz_score'] is not None:
-            result['pre_test'] = True
+        result = set_pre_test(json_stream, result)
     except:
         return result
 
