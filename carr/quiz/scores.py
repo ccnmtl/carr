@@ -625,9 +625,9 @@ def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
     # activities too in order to determine whether they're done.
     if 'Pre-test' not in scores.keys() or bruise_recon is None:
         return False
-    if not has_dental_affiliation(user):
-        if unfinished_activities(user, scores):
-            return False
+    if not has_dental_affiliation(user) and unfinished_activities(
+            user, scores):
+        return False
 
     if taking_action == 'no_data' or bruise_recon is None:
         return False
