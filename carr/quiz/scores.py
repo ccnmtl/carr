@@ -590,6 +590,11 @@ def has_dental_affiliation(user):
     return False
 
 
+def unfinished_activities(user, scores):
+    return any([c not in scores.keys()
+                for c in ['Case 1', 'Case 2', 'Case 3']])
+
+
 def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
     """
     Is this student done with the training?  This is just a helper
@@ -621,8 +626,7 @@ def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
     if 'Pre-test' not in scores.keys() or bruise_recon is None:
         return False
     if not has_dental_affiliation(user):
-        if any([c not in scores.keys()
-                for c in ['Case 1', 'Case 2', 'Case 3']]):
+        if unfinished_activities(user, scores):
             return False
 
     if taking_action == 'no_data' or bruise_recon is None:
