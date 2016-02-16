@@ -436,6 +436,17 @@ def course_section(course_info):
     return "%s" % (course_info[2])
 
 
+def results_for_quiz_keys(quiz_keys_to_consider, answer_key):
+    results = {}
+    for a in quiz_keys_to_consider:
+        question_id = int(a['id'])
+        actual_answer_id = int(a['answer'])
+        correct_answer_id = answer_key[int(a['id'])]
+        results[question_id] = correct_token(actual_answer_id,
+                                             correct_answer_id)
+    return results
+
+
 def all_answers_for_quizzes(the_student):
     """ For all the quizzes the student took, list whether the student
     answered correctly or not."""
@@ -457,14 +468,7 @@ def all_answers_for_quizzes(the_student):
             pass  # eh.
     quiz_keys_to_consider = [
         a for a in score if int(a['id']) in quiz_key.keys()]
-    results = {}
-    for a in quiz_keys_to_consider:
-        question_id = int(a['id'])
-        actual_answer_id = int(a['answer'])
-        correct_answer_id = answer_key[int(a['id'])]
-        results[question_id] = correct_token(actual_answer_id,
-                                             correct_answer_id)
-    return results
+    return results_for_quiz_keys(quiz_keys_to_consider, answer_key)
 
 
 def correct_token(actual, correct):
