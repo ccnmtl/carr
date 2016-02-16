@@ -322,6 +322,12 @@ def set_pre_test(json_stream, result):
     return result
 
 
+def set_post_test(json_stream, result):
+    if json_stream['quiz_3']['all_correct'] == 't':
+        result['post_test'] = True
+    return result
+
+
 # a couple helper functions for scoring:
 def pre_and_post_test_results(the_student):
     result = {'pre_test': False, 'post_test': False}
@@ -338,8 +344,7 @@ def pre_and_post_test_results(the_student):
 
     # final test:
     try:
-        if json_stream['quiz_3']['all_correct'] == 't':
-            result['post_test'] = True
+        result = set_post_test(json_stream, result)
     except:
         pass
     return result
