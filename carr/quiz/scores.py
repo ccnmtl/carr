@@ -315,6 +315,19 @@ def load_state_json(the_student):
         return None
 
 
+def set_pre_test(json_stream, result):
+    if json_stream['quiz_2'][
+            'initial_score']['quiz_score'] is not None:
+        result['pre_test'] = True
+    return result
+
+
+def set_post_test(json_stream, result):
+    if json_stream['quiz_3']['all_correct'] == 't':
+        result['post_test'] = True
+    return result
+
+
 # a couple helper functions for scoring:
 def pre_and_post_test_results(the_student):
     result = {'pre_test': False, 'post_test': False}
@@ -325,16 +338,13 @@ def pre_and_post_test_results(the_student):
 
     # initial test:
     try:
-        if json_stream['quiz_2'][
-                'initial_score']['quiz_score'] is not None:
-            result['pre_test'] = True
+        result = set_pre_test(json_stream, result)
     except:
         return result
 
     # final test:
     try:
-        if json_stream['quiz_3']['all_correct'] == 't':
-            result['post_test'] = True
+        result = set_post_test(json_stream, result)
     except:
         pass
     return result
@@ -426,6 +436,17 @@ def course_section(course_info):
     return "%s" % (course_info[2])
 
 
+def results_for_quiz_keys(quiz_keys_to_consider, answer_key):
+    results = {}
+    for a in quiz_keys_to_consider:
+        question_id = int(a['id'])
+        actual_answer_id = int(a['answer'])
+        correct_answer_id = answer_key[int(a['id'])]
+        results[question_id] = correct_token(actual_answer_id,
+                                             correct_answer_id)
+    return results
+
+
 def all_answers_for_quizzes(the_student):
     """ For all the quizzes the student took, list whether the student
     answered correctly or not."""
@@ -447,14 +468,7 @@ def all_answers_for_quizzes(the_student):
             pass  # eh.
     quiz_keys_to_consider = [
         a for a in score if int(a['id']) in quiz_key.keys()]
-    results = {}
-    for a in quiz_keys_to_consider:
-        question_id = int(a['id'])
-        actual_answer_id = int(a['answer'])
-        correct_answer_id = answer_key[int(a['id'])]
-        results[question_id] = correct_token(actual_answer_id,
-                                             correct_answer_id)
-    return results
+    return results_for_quiz_keys(quiz_keys_to_consider, answer_key)
 
 
 def correct_token(actual, correct):
@@ -576,6 +590,11 @@ def has_dental_affiliation(user):
     return False
 
 
+def unfinished_activities(user, scores):
+    return any([c not in scores.keys()
+                for c in ['Case 1', 'Case 2', 'Case 3']])
+
+
 def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
     """
     Is this student done with the training?  This is just a helper
@@ -606,10 +625,9 @@ def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
     # activities too in order to determine whether they're done.
     if 'Pre-test' not in scores.keys() or bruise_recon is None:
         return False
-    if not has_dental_affiliation(user):
-        if any([c not in scores.keys()
-                for c in ['Case 1', 'Case 2', 'Case 3']]):
-            return False
+    if not has_dental_affiliation(user) and unfinished_activities(
+            user, scores):
+        return False
 
     if taking_action == 'no_data' or bruise_recon is None:
         return False
