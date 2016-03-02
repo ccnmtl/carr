@@ -1,3 +1,4 @@
+# flake8: noqa
 # Django settings for carr project.
 import os.path
 import re
@@ -81,3 +82,7 @@ PAGEBLOCKS = ['pageblocks.HTMLBlock',
               ]
 
 SITE_ID = 1
+
+TEMPLATE_CONTEXT_PROCESSORS += [  # noqa
+    'carr.carr_main.views.context_processor',
+]
