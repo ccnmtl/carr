@@ -18,6 +18,10 @@ import datetime
 import re
 
 
+def context_processor(request):
+    return dict(MEDIA_URL=settings.MEDIA_URL)
+
+
 def get_hierarchy():
     return Hierarchy.objects.get_or_create(
         name="main", defaults=dict(base_url="/"))[0]
