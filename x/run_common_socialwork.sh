@@ -1,1 +1,0 @@
-./manage.py runserver --settings=settings_socialwork  128.59.152.95:19923
