@@ -6,7 +6,6 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/mochikit/MochiKit/MochiKit.js"></script> 
 <script type="text/javascript" src="{{STATIC_URL}}taking_action/js/nav.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}taking_action/js/taking_action.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}taking_action/js/new_taking_action.js"></script>
 <script type="text/javascript">addLoadEvent(set_up_all_form_fields);</script>
 {% endblock %}
 
@@ -18,7 +17,7 @@
 
 {% block content %}
     <script language="javascript">
-        student_response = {{student_json|safe}};
+        var student_response = {{student_json|safe}};
     </script>
     <div class="form_fields_are_not_editable" id="student_response_form">
         <div>
