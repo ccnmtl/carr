@@ -1,6 +1,9 @@
 from django import template
-from quiz.templatetags import GetScores
+from django.conf import settings
 
 register = template.Library()
 
-register.tag('get_scores', GetScores.process_tag)
+
+@register.simple_tag
+def media_url():
+    return settings.MEDIA_URL

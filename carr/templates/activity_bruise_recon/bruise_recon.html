@@ -1,5 +1,7 @@
 {% load smartif %}
 {% load staticfiles %}
+{% load carr_main_template_tags %}
+
 <link href="{% static 'bruise_recon/css/bruise_recon.css' %}" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="{% static 'js/mochikit/MochiKit/MochiKit.js' %}"></script>
@@ -16,7 +18,7 @@
 <div id="case_info_div">
 
 	<div id="bruise_recon_photo_container">
-		<img class="bruise_recon_img" src="{{MEDIA_URL}}uploads/{{block.case.image}}" />
+		<img class="bruise_recon_img" src="{% media_url %}{{block.case.image}}" />
 	</div>
 	
 	<div id="bruise_recon_history_container">
