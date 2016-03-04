@@ -10,7 +10,7 @@
 
 {% block content %}
     <script language="javascript">
-        student_response = {{student_json|safe}};
+        var student_response = {{student_json|safe}};
     </script>
     <div>
         Responses for  {{student.first_name }} {{student.last_name }}:

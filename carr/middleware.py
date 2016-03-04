@@ -7,4 +7,4 @@ class SiteIdMiddleware(object):
         if 'ssw' in RequestSite(request).domain:
             settings.SITE_ID = 2
         else:
-            settings.SITE_ID = 1
+            settings.SITE_ID = 2
