@@ -29,7 +29,6 @@ INSTALLED_APPS += [  # noqa
     'pagetree',
     'carr.carr_main',
     'carr.quiz',
-    'smartif',
     'sorl.thumbnail',
     'courseaffils',
 ]
