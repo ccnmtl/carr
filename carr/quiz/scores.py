@@ -10,7 +10,7 @@ from carr.activity_taking_action.models import score_on_taking_action
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
 from django.conf import settings
-from annoying.decorators import render_to
+from django.shortcuts import render
 
 import re
 import datetime
@@ -33,7 +33,6 @@ inv_semester_map = dict((v, k) for k, v in semester_map.iteritems())
 
 
 @user_passes_test(can_see_scores)
-@render_to('quiz/scores/access_list.html')
 def access_list(request):
     whitelist = settings.DEFAULT_SOCIALWORK_FACULTY_UNIS
     allowed = []
@@ -44,34 +43,32 @@ def access_list(request):
         u.faculty = any([('.fc.' in g) for g in groups]) or u.is_staff
         if any([u.whitelist, u.admin, u.faculty]):
             allowed.append(u)
-    return dict(allowed=allowed)
+    return render(request, 'quiz/scores/access_list.html',
+                  dict(allowed=allowed))
 
 
 @user_passes_test(can_see_scores)
-@render_to('quiz/scores/scores_index.html')
 def scores_index(request):
     current_site = get_current_site(request)
-    return {
+    return render(request, 'quiz/scores/scores_index.html', {
         'full_page_results_block': True,
         'hide_scores_help_text': True,
         'site_domain': current_site.domain
-    }
+    })
 
 
 @user_passes_test(can_see_scores)
-@render_to('quiz/scores/socialwork_overview.html')
 def socialwork_overview(request):
-    return {
+    return render(request, 'quiz/scores/socialwork_overview.html', {
         'years': year_range()
-    }
+    })
 
 
 @user_passes_test(can_see_scores)
-@render_to('quiz/scores/semesters_by_year.html')
 def semesters_by_year(request, year):
-    return {
+    return render(request, 'quiz/scores/semesters_by_year.html', {
         'year': year, 'semester_map': semester_map
-    }
+    })
 
 
 def courses_sort_key(x, y):
@@ -91,7 +88,6 @@ def push_time(timelist):
 
 
 @user_passes_test(can_see_scores)
-@render_to('quiz/scores/classes_by_semester.html')
 def classes_by_semester(request, year, semester):
     if request.user.user_type() == 'student':
         return scores_student(request)
@@ -102,64 +98,62 @@ def classes_by_semester(request, year, semester):
         if semester_string in a.name and 'socw' in a.name]
     care_classes = find_care_classes(this_semester_affils)
     sorted_care_classes = sort_courses(care_classes)
-    return {
+    return request(request, 'quiz/scores/classes_by_semester.html', {
         'year': year, 'hide_scores_help_text': True, 'semester_map':
         semester_map, 'semester': semester, 'care_classes': sorted_care_classes
-    }
+    })
 
 
 @user_passes_test(can_see_scores)
-@render_to('quiz/scores/students_by_class.html')
 def students_by_class(request, c1, c2, c3, c4, c5, c6):
     course_info = (c1, c2, c3, c4, c5, c6)
     students_to_show = students_in_class(course_info)
-    return {
+    return render(request, 'quiz/scores/students_by_class.html', {
         'c': course_info, 'semester':
         semester_map[int(course_info[0])], 'year': course_info[1],
         'student_info': get_student_info(students_to_show),
         'full_page_results_block': True
-    }
+    })
 
 
 @user_passes_test(can_see_scores)
-@render_to('quiz/scores/student_lookup_by_uni.html')
 def student_lookup_by_uni_form(request):
+    template_name = 'quiz/scores/student_lookup_by_uni.html'
     rp = request.POST
     if 'uni' not in rp:
         # just a get request. return the empty form.
-        return {
+        return render(request, template_name, {
             'student': None, 'full_page_results_block':
             True, 'student': None
-        }
+        })
 
     uni = rp['uni']
     if len(uni) < 3:
-        return {
+        return render(request, template_name, {
             'student': None,
             'full_page_results_block': True,
             'error':
             "Plase enter at least 3 letters from the student's UNI."
-        }
+        })
 
     found_students = users_by_uni(uni)
     if len(found_students) == 0:
-        return {
+        return render(request, template_name, {
             'student': None, 'full_page_results_block':
             True, 'uni': uni,
             'error':
             ("The UNI you entered could not be found. "
              "Please check the UNI and try again.")
-        }
+        })
 
     student_info = get_student_info(found_students)
-    return {
+    return render(request, template_name, {
         'full_page_results_block': True, 'uni': uni, 'student':
         'student', 'student_info': student_info, 'error': None
-    }
+    })
 
 
 @user_passes_test(lambda u: u.is_authenticated())
-@render_to('quiz/scores_student.html')
 def scores_student(request):
     try:
         if request.user.user_type() == 'student':
@@ -174,7 +168,7 @@ def scores_student(request):
     taking_action = score_on_taking_action(ru)
     site = get_current_site(request)
 
-    return {
+    return render(request, 'quiz/scores_student.html', {
         'scores': quizzes,
         'score_on_bruise_recon': bruise_recon,
         'score_on_taking_action': taking_action,
@@ -186,7 +180,7 @@ def scores_student(request):
             taking_action,
             site),
         'site': site
-    }
+    })
 
 
 def to_python_date(timestring):

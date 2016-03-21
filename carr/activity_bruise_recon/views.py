@@ -1,9 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from carr.activity_bruise_recon.models import ActivityState, User, Block
 import json
-from annoying.decorators import render_to
 
 
 def state_json(user):
@@ -45,7 +44,6 @@ def savestate(request):
 
 
 @login_required
-@render_to('activity_bruise_recon/student_response.html')
 def student(request, block_id, user_id):
 
     if request.user.user_type() == "student":
@@ -54,8 +52,8 @@ def student(request, block_id, user_id):
         student_user = get_object_or_404(User, id=user_id)
 
     block = Block.objects.get(pk=block_id)
-    return {
+    return render(request, 'activity_bruise_recon/student_response.html', {
         'student': student_user,
         'bruise_recon_block': block,
         'student_json': state_json(student_user)
-    }
+    })
