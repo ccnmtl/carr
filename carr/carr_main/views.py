@@ -1,5 +1,4 @@
 from .models import SiteState
-from annoying.decorators import render_to
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.quiz.models import Question
@@ -11,6 +10,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http.response import HttpResponseNotFound
+from django.shortcuts import render
 from django.template import RequestContext, Context, loader
 from pagetree.models import Hierarchy
 import datetime
@@ -39,13 +39,13 @@ def get_module(section):
 
 
 @user_passes_test(can_see_scores)
-@render_to('carr_main/edit_page.html')
 def edit_page(request, path):
     section = get_section_from_path(path)
     h = get_hierarchy()
-    return dict(section=section,
-                module=get_module(section),
-                root=h.get_root())
+    return render(request, 'carr_main/edit_page.html',
+                  dict(section=section,
+                       module=get_module(section),
+                       root=h.get_root()))
 
 
 def background(request, content_to_show):
@@ -62,7 +62,6 @@ def background(request, content_to_show):
 
 
 @login_required
-@render_to('carr_main/page.html')
 def page(request, path):
     h = Hierarchy.get_hierarchy('main')
     current_root = h.get_section_from_path(path)
@@ -109,16 +108,17 @@ def page(request, path):
     # ok let's try this
     ss.set_has_visited([section])
 
-    return dict(section=section,
-                accessible=can_access,
-                module=module,
-                root=ancestors[0],
-                previous=prev,
-                next=next,
-                subnav=subnav,
-                depth=depth,
-                site_domain=current_site.domain,
-                leftnav=leftnav)
+    return render(request, 'carr_main/page.html',
+                  dict(section=section,
+                       accessible=can_access,
+                       module=module,
+                       root=ancestors[0],
+                       previous=prev,
+                       next=next,
+                       subnav=subnav,
+                       depth=depth,
+                       site_domain=current_site.domain,
+                       leftnav=leftnav))
 
 
 def wind_affil(section_key_dict):
@@ -198,8 +198,8 @@ def add_course(stg, fcg):
 
 
 @login_required
-@render_to('carr_main/add_classes/add_classes_form.html')
 def add_classes(request):
+    template_name = 'carr_main/add_classes/add_classes_form.html'
     default_faculty = User.objects.filter(
         username__in=settings.DEFAULT_SOCIALWORK_FACULTY_UNIS)
     sorted_default_faculty = sorted(
@@ -207,41 +207,40 @@ def add_classes(request):
         key=lambda x: x.last_name)
 
     if not request.POST:
-        return {
+        return render(request, template_name, {
             'section_keys':
             'Enter course section key(s) here. Sample: 20121SOCW7114T005',
             'default_faculty': sorted_default_faculty
-        }
+        })
     if 'section_keys' not in request.POST:
-        return {
+        return render(request, template_name, {
             'default_faculty': sorted_default_faculty,
             'error': 'No courses found.'
-        }
+        })
     if request.POST['section_keys'] == '':
-        return {
+        return render(request, template_name, {
             'default_faculty': sorted_default_faculty,
             'error': 'No courses found.'
-        }
+        })
     section_keys = request.POST['section_keys']
     found_section_keys = extract_section_keys(section_keys)
     if len(found_section_keys) == 0:
-        return {
+        return render(request, template_name, {
             'default_faculty': sorted_default_faculty,
             'error': 'No courses found.'
-        }
+        })
     # ok we now have actual courses.
     for stg, fcg in found_section_keys:
         add_course(stg, fcg)
 
-    return {
+    return render(request, template_name, {
         'default_faculty': sorted_default_faculty,
         'section_keys': section_keys, 'success':
         True, 'found_section_keys': found_section_keys
-    }
+    })
 
 
 @login_required
-@render_to('carr_main/selenium.html')
 def selenium(request, task):
     if task == 'setup':
         test_user = User.objects.get(username='student1')
@@ -259,7 +258,8 @@ def selenium(request, task):
     if task == 'teardown':
         pass
 
-    return dict(task=task, sel_message=sel_message)
+    return render(request, 'carr_main/selenium.html',
+                  dict(task=task, sel_message=sel_message))
 
 
 @user_passes_test(can_see_scores)
