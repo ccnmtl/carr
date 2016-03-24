@@ -98,7 +98,7 @@ def classes_by_semester(request, year, semester):
         if semester_string in a.name and 'socw' in a.name]
     care_classes = find_care_classes(this_semester_affils)
     sorted_care_classes = sort_courses(care_classes)
-    return request(request, 'quiz/scores/classes_by_semester.html', {
+    return render(request, 'quiz/scores/classes_by_semester.html', {
         'year': year, 'hide_scores_help_text': True, 'semester_map':
         semester_map, 'semester': semester, 'care_classes': sorted_care_classes
     })
