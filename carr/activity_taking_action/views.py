@@ -9,8 +9,10 @@ import json
 
 
 class LoadStateView(LoggedInMixin, View):
+    state_class = ActivityState
+
     def get(self, request):
-        response = HttpResponse(state_json(ActivityState, request.user),
+        response = HttpResponse(state_json(self.state_class, request.user),
                                 'application/json')
         response['Cache-Control'] = 'max-age=0,no-cache,no-store'
         return response
@@ -41,6 +43,7 @@ class SaveStateView(LoggedInMixin, View):
 
 class StudentView(LoggedInMixin, View):
     template_name = 'activity_taking_action/student_response.html'
+    state_class = ActivityState
 
     def get(self, request, user_id):
         if request.user.user_type() == "student":
@@ -49,5 +52,5 @@ class StudentView(LoggedInMixin, View):
             student_user = get_object_or_404(User, id=user_id)
         return render(request, self.template_name, {
             'student': student_user,
-            'student_json': state_json(ActivityState, student_user)
+            'student_json': state_json(self.state_class, student_user)
         })
