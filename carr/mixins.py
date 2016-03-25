@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
@@ -20,3 +22,29 @@ class BaseLoadStateView(View):
                                 'application/json')
         response['Cache-Control'] = 'max-age=0,no-cache,no-store'
         return response
+
+
+class BaseSaveStateView(View):
+    state_class = None  # this must be overridden
+
+    def post(self, request):
+        jsn = request.POST.get('json', '{}')
+        update = json.loads(jsn)
+
+        try:
+            state = self.state_class.objects.get(user=request.user)
+
+            obj = json.loads(state.json)
+            for item in update:
+                obj[item] = update[item]
+
+            state.json = json.dumps(obj)
+            state.save()
+        except self.state_class.DoesNotExist:
+            state = self.state_class.objects.create(
+                user=request.user, json=jsn)
+
+        response = {}
+        response['success'] = 1
+
+        return HttpResponse(json.dumps(response), 'application/json')
