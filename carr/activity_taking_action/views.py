@@ -18,11 +18,14 @@ class StudentView(LoggedInMixin, View):
     template_name = 'activity_taking_action/student_response.html'
     state_class = ActivityState
 
-    def get(self, request, user_id):
+    def get_student_user(self, request, user_id):
         if request.user.user_type() == "student":
-            student_user = request.user
+            return request.user
         else:
-            student_user = get_object_or_404(User, id=user_id)
+            return get_object_or_404(User, id=user_id)
+
+    def get(self, request, user_id):
+        student_user = self.get_student_user(request, user_id)
         return render(request, self.template_name, {
             'student': student_user,
             'student_json': state_json(self.state_class, student_user)
