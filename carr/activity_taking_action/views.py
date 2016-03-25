@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic.base import View
@@ -40,13 +39,15 @@ class SaveStateView(LoggedInMixin, View):
         return HttpResponse(json.dumps(response), 'application/json')
 
 
-@login_required
-def student(request, user_id):
-    if request.user.user_type() == "student":
-        student_user = request.user
-    else:
-        student_user = get_object_or_404(User, id=user_id)
-    return render(request, 'activity_taking_action/student_response.html', {
-        'student': student_user,
-        'student_json': state_json(ActivityState, student_user)
-    })
+class StudentView(LoggedInMixin, View):
+    template_name = 'activity_taking_action/student_response.html'
+
+    def get(self, request, user_id):
+        if request.user.user_type() == "student":
+            student_user = request.user
+        else:
+            student_user = get_object_or_404(User, id=user_id)
+        return render(request, self.template_name, {
+            'student': student_user,
+            'student_json': state_json(ActivityState, student_user)
+        })
