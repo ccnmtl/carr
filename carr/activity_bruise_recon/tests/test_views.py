@@ -1,6 +1,6 @@
 from django.test import TestCase, RequestFactory
 from carr.activity_bruise_recon.views import (
-    LoadStateView, SaveStateView, student)
+    LoadStateView, SaveStateView, StudentView)
 from .factories import UserFactory, BlockFactory
 
 
@@ -39,5 +39,6 @@ class StudentTest(TestCase):
         b = BlockFactory()
         r = self.factory.get("/student")
         r.user = u
-        response = student(r, b.id, u.id)
+        v = StudentView.as_view()
+        response = v(r, b.id, u.id)
         self.assertEqual(response.status_code, 200)
