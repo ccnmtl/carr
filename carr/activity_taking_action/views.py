@@ -3,19 +3,13 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic.base import View
 
 from carr.activity_taking_action.models import ActivityState, User
-from carr.mixins import LoggedInMixin
+from carr.mixins import LoggedInMixin, BaseLoadStateView
 from carr.utils import state_json
 import json
 
 
-class LoadStateView(LoggedInMixin, View):
+class LoadStateView(LoggedInMixin, BaseLoadStateView):
     state_class = ActivityState
-
-    def get(self, request):
-        response = HttpResponse(state_json(self.state_class, request.user),
-                                'application/json')
-        response['Cache-Control'] = 'max-age=0,no-cache,no-store'
-        return response
 
 
 class SaveStateView(LoggedInMixin, View):
