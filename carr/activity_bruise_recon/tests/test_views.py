@@ -1,6 +1,6 @@
 from django.test import TestCase, RequestFactory
 from carr.activity_bruise_recon.views import (
-    loadstate, savestate, student)
+    LoadStateView, SaveStateView, student)
 from .factories import UserFactory, BlockFactory
 
 
@@ -12,7 +12,8 @@ class LoadStateTest(TestCase):
         u = UserFactory()
         r = self.factory.get("/loadstate")
         r.user = u
-        response = loadstate(r)
+        v = LoadStateView.as_view()
+        response = v(r)
         self.assertEqual(response.status_code, 200)
 
 
@@ -24,7 +25,8 @@ class SaveStateTest(TestCase):
         u = UserFactory()
         r = self.factory.post("/savestate", dict(json='{}'))
         r.user = u
-        response = savestate(r)
+        v = SaveStateView.as_view()
+        response = v(r)
         self.assertEqual(response.status_code, 200)
 
 

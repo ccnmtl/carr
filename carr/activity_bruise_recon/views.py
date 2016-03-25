@@ -1,38 +1,16 @@
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from carr.activity_bruise_recon.models import ActivityState, User, Block
+from carr.mixins import LoggedInMixin, BaseLoadStateView, BaseSaveStateView
 from carr.utils import state_json
-import json
 
 
-@login_required
-def loadstate(request):
-    response = HttpResponse(state_json(ActivityState, request.user),
-                            'application/json')
-    response['Cache-Control'] = 'max-age=0,no-cache,no-store'
-    return response
+class LoadStateView(LoggedInMixin, BaseLoadStateView):
+    state_class = ActivityState
 
 
-@login_required
-def savestate(request):
-    jsn = request.POST['json']
-    update = json.loads(jsn)
-    try:
-        state = ActivityState.objects.get(user=request.user)
-        obj = json.loads(state.json)
-        for item in update:
-            obj[item] = update[item]
-
-        state.json = json.dumps(obj)
-        state.save()
-    except ActivityState.DoesNotExist:
-        state = ActivityState.objects.create(user=request.user, json=jsn)
-
-    response = {}
-    response['success'] = 1
-
-    return HttpResponse(json.dumps(response), 'application/json')
+class SaveStateView(LoggedInMixin, BaseSaveStateView):
+    state_class = ActivityState
 
 
 @login_required
