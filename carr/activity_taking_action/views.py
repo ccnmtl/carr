@@ -2,22 +2,14 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from carr.activity_taking_action.models import ActivityState, User
+from carr.utils import state_json
 import json
-
-
-def state_json(user):
-    try:
-        state = ActivityState.objects.get(user=user)
-        if (len(state.json) > 0):
-            doc = state.json
-    except ActivityState.DoesNotExist:
-        doc = "{}"
-    return doc
 
 
 @login_required
 def loadstate(request):
-    response = HttpResponse(state_json(request.user), 'application/json')
+    response = HttpResponse(state_json(ActivityState, request.user),
+                            'application/json')
     response['Cache-Control'] = 'max-age=0,no-cache,no-store'
     return response
 
@@ -53,5 +45,5 @@ def student(request, user_id):
         student_user = get_object_or_404(User, id=user_id)
     return render(request, 'activity_taking_action/student_response.html', {
         'student': student_user,
-        'student_json': state_json(student_user)
+        'student_json': state_json(ActivityState, student_user)
     })
