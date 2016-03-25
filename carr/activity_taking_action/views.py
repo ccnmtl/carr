@@ -17,27 +17,27 @@ class LoadStateView(LoggedInMixin, View):
         return response
 
 
-@login_required
-def savestate(request):
-    jsn = request.POST.get('json', '{}')
-    update = json.loads(jsn)
+class SaveStateView(LoggedInMixin, View):
+    def post(self, request):
+        jsn = request.POST.get('json', '{}')
+        update = json.loads(jsn)
 
-    try:
-        state = ActivityState.objects.get(user=request.user)
+        try:
+            state = ActivityState.objects.get(user=request.user)
 
-        obj = json.loads(state.json)
-        for item in update:
-            obj[item] = update[item]
+            obj = json.loads(state.json)
+            for item in update:
+                obj[item] = update[item]
 
-        state.json = json.dumps(obj)
-        state.save()
-    except ActivityState.DoesNotExist:
-        state = ActivityState.objects.create(user=request.user, json=jsn)
+            state.json = json.dumps(obj)
+            state.save()
+        except ActivityState.DoesNotExist:
+            state = ActivityState.objects.create(user=request.user, json=jsn)
 
-    response = {}
-    response['success'] = 1
+        response = {}
+        response['success'] = 1
 
-    return HttpResponse(json.dumps(response), 'application/json')
+        return HttpResponse(json.dumps(response), 'application/json')
 
 
 @login_required

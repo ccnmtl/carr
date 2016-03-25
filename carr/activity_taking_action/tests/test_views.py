@@ -1,6 +1,6 @@
 from django.test import TestCase, RequestFactory
 from carr.activity_taking_action.views import (
-    LoadStateView, savestate, student)
+    LoadStateView, SaveStateView, student)
 from .factories import UserFactory
 
 
@@ -25,7 +25,8 @@ class SaveStateTest(TestCase):
         u = UserFactory()
         r = self.factory.post("/savestate", dict(json='{}'))
         r.user = u
-        response = savestate(r)
+        v = SaveStateView.as_view()
+        response = v(r)
         self.assertEqual(response.status_code, 200)
 
 
