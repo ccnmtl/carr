@@ -13,12 +13,14 @@ class LoadStateView(LoggedInMixin, BaseLoadStateView):
 
 
 class SaveStateView(LoggedInMixin, View):
+    state_class = ActivityState
+
     def post(self, request):
         jsn = request.POST.get('json', '{}')
         update = json.loads(jsn)
 
         try:
-            state = ActivityState.objects.get(user=request.user)
+            state = self.state_class.objects.get(user=request.user)
 
             obj = json.loads(state.json)
             for item in update:
@@ -26,8 +28,9 @@ class SaveStateView(LoggedInMixin, View):
 
             state.json = json.dumps(obj)
             state.save()
-        except ActivityState.DoesNotExist:
-            state = ActivityState.objects.create(user=request.user, json=jsn)
+        except self.state_class.DoesNotExist:
+            state = self.state_class.objects.create(
+                user=request.user, json=jsn)
 
         response = {}
         response['success'] = 1
