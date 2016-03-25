@@ -24,9 +24,13 @@ class StudentView(LoggedInMixin, View):
         else:
             return get_object_or_404(User, id=user_id)
 
-    def get(self, request, user_id):
+    def get_context_data(self, request, user_id):
         student_user = self.get_student_user(request, user_id)
-        return render(request, self.template_name, {
+        return {
             'student': student_user,
             'student_json': state_json(self.state_class, student_user)
-        })
+        }
+
+    def get(self, request, user_id):
+        return render(request, self.template_name,
+                      self.get_context_data(request, user_id))
