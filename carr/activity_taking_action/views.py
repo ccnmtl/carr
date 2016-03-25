@@ -1,17 +1,20 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.contrib.auth.decorators import login_required
+from django.views.generic.base import View
+
 from carr.activity_taking_action.models import ActivityState, User
+from carr.mixins import LoggedInMixin
 from carr.utils import state_json
 import json
 
 
-@login_required
-def loadstate(request):
-    response = HttpResponse(state_json(ActivityState, request.user),
-                            'application/json')
-    response['Cache-Control'] = 'max-age=0,no-cache,no-store'
-    return response
+class LoadStateView(LoggedInMixin, View):
+    def get(self, request):
+        response = HttpResponse(state_json(ActivityState, request.user),
+                                'application/json')
+        response['Cache-Control'] = 'max-age=0,no-cache,no-store'
+        return response
 
 
 @login_required

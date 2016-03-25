@@ -1,6 +1,6 @@
 from django.test import TestCase, RequestFactory
 from carr.activity_taking_action.views import (
-    loadstate, savestate, student)
+    LoadStateView, savestate, student)
 from .factories import UserFactory
 
 
@@ -12,7 +12,8 @@ class LoadStateTest(TestCase):
         u = UserFactory()
         r = self.factory.get("/loadstate")
         r.user = u
-        response = loadstate(r)
+        v = LoadStateView.as_view()
+        response = v(r)
         self.assertEqual(response.status_code, 200)
 
 
