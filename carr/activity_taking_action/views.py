@@ -1,57 +1,16 @@
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
-from django.contrib.auth.decorators import login_required
-from carr.activity_taking_action.models import ActivityState, User
-import json
+from carr.activity_taking_action.models import ActivityState
+from carr.mixins import (
+    LoggedInMixin, BaseLoadStateView, BaseSaveStateView, BaseStudentView)
 
 
-def state_json(user):
-    try:
-        state = ActivityState.objects.get(user=user)
-        if (len(state.json) > 0):
-            doc = state.json
-    except ActivityState.DoesNotExist:
-        doc = "{}"
-    return doc
+class LoadStateView(LoggedInMixin, BaseLoadStateView):
+    state_class = ActivityState
 
 
-@login_required
-def loadstate(request):
-    response = HttpResponse(state_json(request.user), 'application/json')
-    response['Cache-Control'] = 'max-age=0,no-cache,no-store'
-    return response
+class SaveStateView(LoggedInMixin, BaseSaveStateView):
+    state_class = ActivityState
 
 
-@login_required
-def savestate(request):
-    jsn = request.POST.get('json', '{}')
-    update = json.loads(jsn)
-
-    try:
-        state = ActivityState.objects.get(user=request.user)
-
-        obj = json.loads(state.json)
-        for item in update:
-            obj[item] = update[item]
-
-        state.json = json.dumps(obj)
-        state.save()
-    except ActivityState.DoesNotExist:
-        state = ActivityState.objects.create(user=request.user, json=jsn)
-
-    response = {}
-    response['success'] = 1
-
-    return HttpResponse(json.dumps(response), 'application/json')
-
-
-@login_required
-def student(request, user_id):
-    if request.user.user_type() == "student":
-        student_user = request.user
-    else:
-        student_user = get_object_or_404(User, id=user_id)
-    return render(request, 'activity_taking_action/student_response.html', {
-        'student': student_user,
-        'student_json': state_json(student_user)
-    })
+class StudentView(LoggedInMixin, BaseStudentView):
+    template_name = 'activity_taking_action/student_response.html'
+    state_class = ActivityState
