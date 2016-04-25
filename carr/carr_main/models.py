@@ -167,15 +167,16 @@ class SiteSection(Section):
     def get_previous_site_section(self):
         return self.site_section_nav(lambda x: x.get_previous_leaf())
 
-Section.section_site = lambda x: SiteSection.objects.get(
-    section_ptr=x)
-Section.sites = lambda x: x.section_site().sites.all()
-Section.get_previous_site_section = lambda x: x.section_site(
-).get_previous_site_section(
-)
-Section.get_next_site_section = lambda x: x.section_site(
-).get_next_site_section(
-)
+
+def section_site(x):
+    return SiteSection.objects.get(section_ptr=x)
+
+
+Section.sites = lambda x: section_site(x).sites.all()
+Section.get_previous_site_section = lambda x: section_site(
+    x).get_previous_site_section()
+Section.get_next_site_section = lambda x: section_site(
+    x).get_next_site_section()
 Section.in_site = lambda x: settings.SITE_ID in [
     s.id for s in x.sites()]
 
