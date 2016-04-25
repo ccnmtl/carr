@@ -172,9 +172,11 @@ def section_site(x):
     return SiteSection.objects.get(section_ptr=x)
 
 
+def get_previous_site_section(x):
+    return section_site(x).get_previous_site_section()
+
+
 Section.sites = lambda x: section_site(x).sites.all()
-Section.get_previous_site_section = lambda x: section_site(
-    x).get_previous_site_section()
 Section.get_next_site_section = lambda x: section_site(
     x).get_next_site_section()
 Section.in_site = lambda x: settings.SITE_ID in [
