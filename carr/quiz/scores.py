@@ -5,7 +5,7 @@ import json
 from django.contrib.auth.models import User, Group
 from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
-from carr.carr_main.models import students_in_class, users_by_uni
+from carr.carr_main.models import students_in_class, users_by_uni, user_type
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from django.core.cache import cache
@@ -21,7 +21,7 @@ app. For now they definitely get their own module."""
 
 
 def can_see_scores(u):
-    return (u.is_authenticated() and u.user_type() in ('faculty', 'admin'))
+    return (u.is_authenticated() and user_type(u) in ('faculty', 'admin'))
 
 
 def year_range():
@@ -89,7 +89,7 @@ def push_time(timelist):
 
 @user_passes_test(can_see_scores)
 def classes_by_semester(request, year, semester):
-    if request.user.user_type() == 'student':
+    if user_type(request.user) == 'student':
         return scores_student(request)
     semester_string = 't%s.y%s' % (inv_semester_map[semester], year)
     all_affils = Group.objects.all()
@@ -156,7 +156,7 @@ def student_lookup_by_uni_form(request):
 @user_passes_test(lambda u: u.is_authenticated())
 def scores_student(request):
     try:
-        if request.user.user_type() == 'student':
+        if user_type(request.user) == 'student':
             pass
     except AttributeError:
         return HttpResponseRedirect('/')

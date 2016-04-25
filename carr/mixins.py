@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 
 from carr.utils import state_json
+from carr.carr_main.models import user_type
 
 
 class LoggedInMixin(object):
@@ -57,7 +58,7 @@ class BaseStudentView(View):
     state_class = None
 
     def get_student_user(self, request, user_id):
-        if request.user.user_type() == "student":
+        if user_type(request.user) == "student":
             return request.user
         else:
             return get_object_or_404(User, id=user_id)

@@ -6,6 +6,7 @@ from pagetree.models import Hierarchy
 from django.core.urlresolvers import reverse
 import json
 from django.contrib.auth.models import User
+from carr.carr_main.models import user_type
 
 from scores import scores_student
 
@@ -15,7 +16,7 @@ def studentquiz(request, quiz_id, user_id):
     """allows a faculty member to see the answers a student posted for a quiz.
     URL, btw, is: /activity/quiz/studentquiz/2/user/5/ """
     template_name = 'quiz/studentquiz.html'
-    if request.user.user_type() == 'student':
+    if user_type(request.user) == 'student':
         return scores_student(request)
 
     student = get_object_or_404(User, id=user_id)

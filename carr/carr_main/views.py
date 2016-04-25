@@ -1,4 +1,4 @@
-from .models import SiteState
+from .models import SiteState, user_type
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.quiz.models import Question
@@ -281,7 +281,7 @@ def stats(request, task):
 
     t = loader.get_template('carr_main/stats_csv.html')
 
-    if request.user.user_type() == 'student':
+    if user_type(request.user) == 'student':
         return scores_student(request)
 
     the_users = User.objects.filter(is_staff=False).exclude(

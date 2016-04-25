@@ -9,12 +9,25 @@ from django.test import TestCase, Client
 import unittest
 
 
+class DummyGroup(object):
+    name = 'tlcxml'
+
+
+class DummyGroupsQuery(object):
+    def all(self):
+        return [DummyGroup()]
+
+
 class DummyUser(object):
     def is_authenticated(self):
         return True
 
     def user_type(self):
         return 'admin'
+
+    @property
+    def groups(self):
+        return DummyGroupsQuery()
 
 
 class TestFunctions(unittest.TestCase):

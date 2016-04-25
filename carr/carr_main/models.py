@@ -26,23 +26,23 @@ def sort_users(users):
     return sorted(users, key=user_sort_key)
 
 
-def user_type(self):
+def user_type(u):
     result = None
-    if self is None:
+    if u is None:
         return None
 
     # Can run tests.
-    elif len([g for g in self.groups.all() if 'tlcxml' in g.name]) > 0:
+    elif len([g for g in u.groups.all() if 'tlcxml' in g.name]) > 0:
         result = 'admin'
 
     # Can view all student scores:
-    elif len([g for g in self.groups.all() if '.fc.' in g.name]) > 0:
+    elif len([g for g in u.groups.all() if '.fc.' in g.name]) > 0:
         result = 'faculty'
     # so we can easily grant this priviledge to people who are not actually
     # teaching a class:
-    elif self.is_staff:
+    elif u.is_staff:
         result = 'faculty'
-    elif self.username in settings.DEFAULT_SOCIALWORK_FACULTY_UNIS:
+    elif u.username in settings.DEFAULT_SOCIALWORK_FACULTY_UNIS:
         result = 'faculty'
 
     # Can take the training, view own scores.
@@ -137,7 +137,6 @@ def users_by_uni(uni_string):
 # def pre_2011(uni_string):
 # /admin/auth/user/536/
 #    return sort_users (User.objects.filter(username__icontains=uni_string))
-User.user_type = user_type
 User.classes_i_teach = classes_i_teach
 User.classes_i_take = classes_i_take
 User.students_i_teach = students_i_teach
