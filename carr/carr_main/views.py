@@ -1,4 +1,6 @@
-from .models import SiteState, user_type, get_previous_site_section
+from .models import (
+    SiteState, user_type, get_previous_site_section,
+    get_next_site_section)
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.quiz.models import Question
@@ -77,7 +79,7 @@ def page(request, path):
 
     # the previous node is the last leaf, if one exists.
     prev = get_previous_site_section(section)
-    next = section.get_next_site_section()
+    next = get_next_site_section(section)
 
     # Is this section unlocked now?
     can_access = _unlocked(section, request.user, prev, ss)
