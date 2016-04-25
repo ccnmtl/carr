@@ -1,4 +1,5 @@
 {% load quiz_template_tags %}
+{% load carr_main_template_tags %}
 {% spaceless %}
 
 <style type="text/css">
@@ -89,22 +90,23 @@
   <td>
   {{row.user_object.last_name}}
    </td>
-  <td>
-  {%for c in row.user_object.classes_i_take%}
+   <td>
+       {% classes_i_take row.user_object as cit %}
+  {% for c in cit %}
     {%ifequal c.4 '6010'%}
       {{c.0}}
     {%endifequal%}
   {%endfor %}
    </td>
   <td>
-  {%for c in row.user_object.classes_i_take%}
+  {%for c in cit %}
     {%ifequal c.4 '6010'%}
       {{c.1}} 
     {%endifequal%}
   {%endfor %}
    </td>
   <td>
-  {%for c in row.user_object.classes_i_take%}
+  {%for c in cit %}
     {%ifequal c.4 '6010'%}
       {{c.2}}
     {%endifequal%}
