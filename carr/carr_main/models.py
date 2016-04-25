@@ -77,15 +77,6 @@ def classes_i_take(u):
     return result
 
 
-def is_taking(self, course_info):
-    course_string = "t%s.y%s.s%s.c%s%s.%s" % course_info
-    list_of_wind_affils = [g.name for g in self.groups.all()]
-    for w in list_of_wind_affils:
-        if course_string in w:
-            return True
-    return False
-
-
 def students_in_class(course_info):
     cache_key = "students_in_t%s.y%s.s%s.c%s%s.%s" % course_info
     cached = cache.get(cache_key)
@@ -116,12 +107,6 @@ def number_of_students_in_class(course_info):
 
 def users_by_uni(uni_string):
     return sort_users(User.objects.filter(username__icontains=uni_string))
-
-
-# def pre_2011(uni_string):
-# /admin/auth/user/536/
-#    return sort_users (User.objects.filter(username__icontains=uni_string))
-User.is_taking = is_taking
 
 
 class SiteState(models.Model):
