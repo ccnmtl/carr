@@ -181,14 +181,16 @@ def get_next_site_section(x):
 
 
 Section.sites = lambda x: section_site(x).sites.all()
-Section.in_site = lambda x: settings.SITE_ID in [
-    s.id for s in x.sites()]
+
+
+def in_site(x):
+    return settings.SITE_ID in [s.id for s in x.sites()]
 
 
 def new_get_children(self):
     return (
         [sc.child for sc in SectionChildren.objects.filter(
-            parent=self).order_by("ordinality") if sc.child.in_site()]
+            parent=self).order_by("ordinality") if in_site(sc)]
     )
 Section.get_children = new_get_children
 
@@ -196,7 +198,7 @@ Section.get_children = new_get_children
 def new_get_siblings(self):
     return (
         [sc.child for sc in SectionChildren.objects.filter(
-            parent=self.get_parent()) if sc.child.in_site()]
+            parent=self.get_parent()) if in_site(sc.child)]
     )
 Section.get_siblings = new_get_siblings
 
