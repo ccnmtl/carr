@@ -77,22 +77,6 @@ def classes_i_take(u):
     return result
 
 
-def students_i_teach(user):
-    cache_key = "students_i_teach_%d" % user.id
-    cached = cache.get(cache_key)
-    if cached:
-        return cached
-    the_classes_i_teach = classes_i_teach(user)
-    # yeah, the people who take more than zero of the classes I teach.
-
-    result = sort_users([u for u in User.objects.all() if len(
-        [c for c in classes_i_take(u)
-         if c in the_classes_i_teach]) > 0 and u != user])
-
-    cache.set(cache_key, result, 30)
-    return result
-
-
 def is_taking(self, course_info):
     course_string = "t%s.y%s.s%s.c%s%s.%s" % course_info
     list_of_wind_affils = [g.name for g in self.groups.all()]
