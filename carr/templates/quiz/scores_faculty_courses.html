@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load quiz_template_tags %}
+{% load carr_main_template_tags %}
+
 {% block sidebarleft %}
     <ul>
         <li>
@@ -12,7 +14,8 @@
     <div>
         Your classes:
     </div>
-    {%for c in user.classes_i_teach %}
+    {% classes_i_teach user as cit %}
+    {% for c in cit %}
     <div>
         <a href = "/activity/quiz/scores/faculty/course/{{c.0}}/{{c.1}}/{{c.2}}/{{c.3}}/{{c.4}}/{{c.5}}/">
 t{{c.0}}.y{{c.1}}.s{{c.2}}.c{{c.3}}{{c.4}}.{{c.5}}</a>

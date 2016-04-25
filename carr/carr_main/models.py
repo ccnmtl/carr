@@ -52,13 +52,13 @@ def user_type(u):
     return result
 
 
-def classes_i_teach(self):
-    cache_key = "classes_i_teach_%d" % self.id
+def classes_i_teach(u):
+    cache_key = "classes_i_teach_%d" % u.id
     cached = cache.get(cache_key)
     if cached:
         return cached
 
-    my_classes = [re.match(course_re, c.name) for c in self.groups.all()]
+    my_classes = [re.match(course_re, c.name) for c in u.groups.all()]
     result = [(a.groups()[0:6])
               for a in my_classes if a is not None and a.groups()[6] == 'fc']
     cache.set(cache_key, result, 30)
@@ -82,7 +82,7 @@ def students_i_teach(self):
     cached = cache.get(cache_key)
     if cached:
         return cached
-    the_classes_i_teach = self.classes_i_teach()
+    the_classes_i_teach = classes_i_teach(self)
     # yeah, the people who take more than zero of the classes I teach.
 
     result = sort_users([u for u in User.objects.all() if len(
@@ -137,7 +137,6 @@ def users_by_uni(uni_string):
 # def pre_2011(uni_string):
 # /admin/auth/user/536/
 #    return sort_users (User.objects.filter(username__icontains=uni_string))
-User.classes_i_teach = classes_i_teach
 User.classes_i_take = classes_i_take
 User.students_i_teach = students_i_teach
 User.is_taking = is_taking
