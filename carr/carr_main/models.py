@@ -156,7 +156,7 @@ class SiteSection(Section):
         on the current site"""
         x = self
         while traversal_function(x):
-            x = section_site(traversal_function(x.id))
+            x = section_site(traversal_function(x).id)
             if settings.SITE_ID in [s.id for s in x.sites.all()]:
                 return x
         return None
