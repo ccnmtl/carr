@@ -2,7 +2,7 @@ import factory
 from django.contrib.sites.models import Site
 from carr.quiz.tests.factories import UserFactory
 from carr.carr_main.models import SiteState, SiteSection
-from pagetree.models import Hierarchy
+from pagetree.models import Hierarchy, Section
 
 
 class SiteStateFactory(factory.DjangoModelFactory):
@@ -28,6 +28,14 @@ class HierarchyFactory(factory.DjangoModelFactory):
 class SiteSectionFactory(factory.DjangoModelFactory):
     class Meta:
         model = SiteSection
+    label = "test section"
+    slug = "test"
+    hierarchy = factory.SubFactory(HierarchyFactory)
+
+
+class SectionFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Section
     label = "test section"
     slug = "test"
     hierarchy = factory.SubFactory(HierarchyFactory)

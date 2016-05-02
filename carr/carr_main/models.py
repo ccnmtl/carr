@@ -136,7 +136,7 @@ class SiteState(models.Model):
 
     def save_last_location(self, path, section):
         if len([a for a in Site.objects.all()
-                if a not in section.section_site().sites.all()]) > 0:
+                if a not in section_site(section.id).sites.all()]) > 0:
             return
         self.state_object[str(section.id)] = section.label
         self.last_location = path
@@ -156,7 +156,7 @@ class SiteSection(Section):
         on the current site"""
         x = self
         while traversal_function(x):
-            x = traversal_function(x).section_site()
+            x = section_site(traversal_function(x.id))
             if settings.SITE_ID in [s.id for s in x.sites.all()]:
                 return x
         return None
@@ -190,7 +190,7 @@ def in_site(x):
 def new_get_children(self):
     return (
         [sc.child for sc in SectionChildren.objects.filter(
-            parent=self).order_by("ordinality") if in_site(sc)]
+            parent=self).order_by("ordinality") if in_site(sc.child)]
     )
 Section.get_children = new_get_children
 
