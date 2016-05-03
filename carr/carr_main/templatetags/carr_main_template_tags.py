@@ -12,16 +12,16 @@ def media_url():
     return settings.MEDIA_URL
 
 
-@register.simple_tag
+@register.assignment_tag
 def user_type(user, *args):
     return user_type_f(user)
 
 
-@register.simple_tag
+@register.assignment_tag
 def classes_i_teach(user, *args):
     return classes_i_teach_f(user)
 
 
-@register.simple_tag
+@register.assignment_tag
 def classes_i_take(user, *args):
     return classes_i_take_f(user)
