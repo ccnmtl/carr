@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 import json
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.sites.models import Site
 from pagetree.models import PageBlock, Section, SectionChildren
 from pageblocks.models import PullQuoteBlock
@@ -246,7 +246,7 @@ post_save.connect(find_or_add_site_section, Section)
 
 
 class FlashVideoBlock(models.Model):
-    pageblocks = generic.GenericRelation(PageBlock)
+    pageblocks = GenericRelation(PageBlock)
     file_url = models.CharField(max_length=512)
     image_url = models.CharField(max_length=512)
     width = models.IntegerField()
