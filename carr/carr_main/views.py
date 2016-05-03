@@ -1,4 +1,6 @@
-from .models import SiteState
+from .models import (
+    SiteState, user_type, get_previous_site_section,
+    get_next_site_section)
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.quiz.models import Question
@@ -76,8 +78,8 @@ def page(request, path):
         return HttpResponseRedirect(section.get_absolute_url())
 
     # the previous node is the last leaf, if one exists.
-    prev = section.get_previous_site_section()
-    next = section.get_next_site_section()
+    prev = get_previous_site_section(section)
+    next = get_next_site_section(section)
 
     # Is this section unlocked now?
     can_access = _unlocked(section, request.user, prev, ss)
@@ -281,7 +283,7 @@ def stats(request, task):
 
     t = loader.get_template('carr_main/stats_csv.html')
 
-    if request.user.user_type() == 'student':
+    if user_type(request.user) == 'student':
         return scores_student(request)
 
     the_users = User.objects.filter(is_staff=False).exclude(

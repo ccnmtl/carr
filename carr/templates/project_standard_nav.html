@@ -1,3 +1,4 @@
+{% load carr_main_template_tags %}
 <ul id="standardnav">
 
   <li><a href="/">Training</a></li>
@@ -5,12 +6,13 @@
   <li><a href="/background/credits/">Credits</a></li>
   <li><a href="/background/contact/">Contact</a></li>
   
-{%if user.is_authenticated %}
-    {%if user.user_type == "student" %}
-        <li><a href="/scores/student/">My Scores</a></li>
-    {% else %}
-        <li><a href="/scores/">Scores</a></li>
-    {% endif %}
+  {% if user.is_authenticated %}
+      {% user_type user as ut %}
+      {% if ut == "student" %}
+          <li><a href="/scores/student/">My Scores</a></li>
+      {% else %}
+          <li><a href="/scores/">Scores</a></li>
+      {% endif %}
 {%endif %}
     
 {%if user.is_staff %}

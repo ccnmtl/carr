@@ -24,7 +24,6 @@ class TestViews(TestCase):
         self.assertEqual(r.status_code, 200)
 
     def test_stats(self):
-        self.u.user_type = lambda x: 'faculty'
         r = self.c.get("/stats/registrar_summary/")
         self.assertEqual(r.status_code, 302)
 

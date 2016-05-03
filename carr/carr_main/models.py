@@ -26,23 +26,23 @@ def sort_users(users):
     return sorted(users, key=user_sort_key)
 
 
-def user_type(self):
+def user_type(u):
     result = None
-    if self is None:
+    if u is None:
         return None
 
     # Can run tests.
-    elif len([g for g in self.groups.all() if 'tlcxml' in g.name]) > 0:
+    elif len([g for g in u.groups.all() if 'tlcxml' in g.name]) > 0:
         result = 'admin'
 
     # Can view all student scores:
-    elif len([g for g in self.groups.all() if '.fc.' in g.name]) > 0:
+    elif len([g for g in u.groups.all() if '.fc.' in g.name]) > 0:
         result = 'faculty'
     # so we can easily grant this priviledge to people who are not actually
     # teaching a class:
-    elif self.is_staff:
+    elif u.is_staff:
         result = 'faculty'
-    elif self.username in settings.DEFAULT_SOCIALWORK_FACULTY_UNIS:
+    elif u.username in settings.DEFAULT_SOCIALWORK_FACULTY_UNIS:
         result = 'faculty'
 
     # Can take the training, view own scores.
@@ -52,54 +52,29 @@ def user_type(self):
     return result
 
 
-def classes_i_teach(self):
-    cache_key = "classes_i_teach_%d" % self.id
+def classes_i_teach(u):
+    cache_key = "classes_i_teach_%d" % u.id
     cached = cache.get(cache_key)
     if cached:
         return cached
 
-    my_classes = [re.match(course_re, c.name) for c in self.groups.all()]
+    my_classes = [re.match(course_re, c.name) for c in u.groups.all()]
     result = [(a.groups()[0:6])
               for a in my_classes if a is not None and a.groups()[6] == 'fc']
     cache.set(cache_key, result, 30)
     return result
 
 
-def classes_i_take(self):
-    cache_key = "classes_i_take_%d" % self.id
+def classes_i_take(u):
+    cache_key = "classes_i_take_%d" % u.id
     cached = cache.get(cache_key)
     if cached:
         return cached
-    my_classes = [re.match(course_re, c.name) for c in self.groups.all()]
+    my_classes = [re.match(course_re, c.name) for c in u.groups.all()]
     result = [(a.groups()[0:6])
               for a in my_classes if a is not None and a.groups()[6] == 'st']
     cache.set(cache_key, result, 30)
     return result
-
-
-def students_i_teach(self):
-    cache_key = "students_i_teach_%d" % self.id
-    cached = cache.get(cache_key)
-    if cached:
-        return cached
-    the_classes_i_teach = self.classes_i_teach()
-    # yeah, the people who take more than zero of the classes I teach.
-
-    result = sort_users([u for u in User.objects.all() if len(
-        [c for c in u.classes_i_take()
-         if c in the_classes_i_teach]) > 0 and u != self])
-
-    cache.set(cache_key, result, 30)
-    return result
-
-
-def is_taking(self, course_info):
-    course_string = "t%s.y%s.s%s.c%s%s.%s" % course_info
-    list_of_wind_affils = [g.name for g in self.groups.all()]
-    for w in list_of_wind_affils:
-        if course_string in w:
-            return True
-    return False
 
 
 def students_in_class(course_info):
@@ -134,16 +109,6 @@ def users_by_uni(uni_string):
     return sort_users(User.objects.filter(username__icontains=uni_string))
 
 
-# def pre_2011(uni_string):
-# /admin/auth/user/536/
-#    return sort_users (User.objects.filter(username__icontains=uni_string))
-User.user_type = user_type
-User.classes_i_teach = classes_i_teach
-User.classes_i_take = classes_i_take
-User.students_i_teach = students_i_teach
-User.is_taking = is_taking
-
-
 class SiteState(models.Model):
     user = models.ForeignKey(User, related_name="application_user")
     last_location = models.CharField(max_length=255)
@@ -171,7 +136,7 @@ class SiteState(models.Model):
 
     def save_last_location(self, path, section):
         if len([a for a in Site.objects.all()
-                if a not in section.section_site().sites.all()]) > 0:
+                if a not in section_site(section.id).sites.all()]) > 0:
             return
         self.state_object[str(section.id)] = section.label
         self.last_location = path
@@ -191,7 +156,7 @@ class SiteSection(Section):
         on the current site"""
         x = self
         while traversal_function(x):
-            x = traversal_function(x).section_site()
+            x = section_site(traversal_function(x).id)
             if settings.SITE_ID in [s.id for s in x.sites.all()]:
                 return x
         return None
@@ -202,23 +167,30 @@ class SiteSection(Section):
     def get_previous_site_section(self):
         return self.site_section_nav(lambda x: x.get_previous_leaf())
 
-Section.section_site = lambda x: SiteSection.objects.get(
-    section_ptr=x)
-Section.sites = lambda x: x.section_site().sites.all()
-Section.get_previous_site_section = lambda x: x.section_site(
-).get_previous_site_section(
-)
-Section.get_next_site_section = lambda x: x.section_site(
-).get_next_site_section(
-)
-Section.in_site = lambda x: settings.SITE_ID in [
-    s.id for s in x.sites()]
+
+def section_site(x):
+    return SiteSection.objects.get(section_ptr=x)
+
+
+def get_previous_site_section(x):
+    return section_site(x).get_previous_site_section()
+
+
+def get_next_site_section(x):
+    return section_site(x).get_next_site_section()
+
+
+Section.sites = lambda x: section_site(x).sites.all()
+
+
+def in_site(x):
+    return settings.SITE_ID in [s.id for s in x.sites()]
 
 
 def new_get_children(self):
     return (
         [sc.child for sc in SectionChildren.objects.filter(
-            parent=self).order_by("ordinality") if sc.child.in_site()]
+            parent=self).order_by("ordinality") if in_site(sc.child)]
     )
 Section.get_children = new_get_children
 
@@ -226,7 +198,7 @@ Section.get_children = new_get_children
 def new_get_siblings(self):
     return (
         [sc.child for sc in SectionChildren.objects.filter(
-            parent=self.get_parent()) if sc.child.in_site()]
+            parent=self.get_parent()) if in_site(sc.child)]
     )
 Section.get_siblings = new_get_siblings
 
