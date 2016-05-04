@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import json
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation
 from pagetree.models import PageBlock
 from django import forms
 from django.contrib.sites.models import Site
@@ -12,7 +12,7 @@ class Case(models.Model):
 
 
 class Block(models.Model):
-    pageblocks = generic.GenericRelation(
+    pageblocks = GenericRelation(
         PageBlock,
         related_query_name="taking_action_pageblocks")
     case_name = models.CharField(max_length=25)
