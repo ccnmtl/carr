@@ -78,6 +78,7 @@ urlpatterns = patterns(
     (r'^background/(?P<content_to_show>\w+)/$',
      'carr.carr_main.views.background'),
 
+    (r'^pagetimer/', include('pagetimer.urls')),
     (r'^pagetree/', include('pagetree.urls')),
 
     # analytics:

@@ -2,6 +2,7 @@
 # Django settings for carr project.
 import os.path
 import re
+from datetime import timedelta
 
 from ccnmtlsettings.shared import common
 project = 'carr'
@@ -31,6 +32,7 @@ INSTALLED_APPS += [  # noqa
     'carr.quiz',
     'sorl.thumbnail',
     'courseaffils',
+    'pagetimer',
 ]
 
 PROJECT_APPS = [
@@ -85,3 +87,5 @@ SITE_ID = 1
 TEMPLATE_CONTEXT_PROCESSORS += [  # noqa
     'carr.carr_main.views.context_processor',
 ]
+
+PAGETIMER_MAX_RETENTION_INTERVAL = timedelta(days=60)
