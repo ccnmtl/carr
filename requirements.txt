@@ -23,6 +23,7 @@ six==1.10.0
 contextlib2==0.5.3
 rcssmin==1.0.6
 rjsmin==1.0.12
+ipaddress==1.0.16
 
 django-courseaffils==2.1.5
 djangowind==0.14.3
@@ -34,7 +35,7 @@ django-statsd-mozilla==0.3.16
 django-jenkins==0.18.1
 django-smoketest==1.0.0
 raven==5.18.0
-fake-factory==0.5.3
+fake-factory==0.5.7
 factory_boy==2.6.1
 django-waffle==0.11
 django-markwhat==1.5
