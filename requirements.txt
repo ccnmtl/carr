@@ -34,7 +34,7 @@ djangohelpers==0.18.1
 django-statsd-mozilla==0.3.16
 django-jenkins==0.18.1
 django-smoketest==1.0.0
-raven==5.18.0
+raven==5.19.0
 fake-factory==0.5.7
 factory_boy==2.7.0
 django-waffle==0.11
