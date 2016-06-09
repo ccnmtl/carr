@@ -83,7 +83,7 @@ urlpatterns = patterns(
 
     # analytics:
     (r'^_stats/', TemplateView.as_view(template_name="stats.html")),
-    ('^smoketest/$', include('smoketest.urls')),
+    ('^smoketest/', include('smoketest.urls')),
     (r'^uploads/(?P<path>.*)$', 'django.views.static.serve',
      {'document_root': settings.MEDIA_ROOT}),
     # very important that this stays last and in this order
