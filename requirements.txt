@@ -54,4 +54,4 @@ django-cacheds3storage==0.1.2
 python-memcached==1.58
 django-pagetimer==0.2.0
 
-ccnmtlsettings==0.2.0
+ccnmtlsettings==0.3.0
