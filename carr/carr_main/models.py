@@ -27,29 +27,23 @@ def sort_users(users):
 
 
 def user_type(u):
-    result = None
     if u is None:
         return None
-
     # Can run tests.
-    elif len([g for g in u.groups.all() if 'tlcxml' in g.name]) > 0:
-        result = 'admin'
-
+    elif u.groups.filter(name__contains='tlcxml').count() > 0:
+        return 'admin'
     # Can view all student scores:
-    elif len([g for g in u.groups.all() if '.fc.' in g.name]) > 0:
-        result = 'faculty'
-    # so we can easily grant this priviledge to people who are not actually
+    elif u.groups.filter(name__contains='.fc.').count() > 0:
+        return 'faculty'
+    # so we can easily grant this privilege to people who are not actually
     # teaching a class:
     elif u.is_staff:
-        result = 'faculty'
+        return 'faculty'
     elif u.username in settings.DEFAULT_SOCIALWORK_FACULTY_UNIS:
-        result = 'faculty'
-
+        return 'faculty'
     # Can take the training, view own scores.
     else:
-        result = 'student'
-
-    return result
+        return 'student'
 
 
 def classes_i_teach(u):
