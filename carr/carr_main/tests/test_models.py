@@ -4,10 +4,9 @@ from django.test import TestCase
 
 from carr.carr_main.models import (
     user_type, new_get_children)
-from carr.carr_main.tests.factories import GroupFactory
-from carr.quiz.tests.factories import UserFactory
 
-from .factories import SiteStateFactory, SiteSectionFactory, SectionFactory
+from .factories import (SiteStateFactory, SiteSectionFactory, SectionFactory,
+                        UserFactory, GroupFactory)
 
 
 class SimpleModelTest(TestCase):
