@@ -1,11 +1,6 @@
-from .models import (
-    SiteState, user_type, get_previous_site_section,
-    get_next_site_section)
-from carr.activity_bruise_recon.models import score_on_bruise_recon
-from carr.activity_taking_action.models import score_on_taking_action
-from carr.quiz.models import Question
-from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
-    scores_student, training_is_complete, can_see_scores
+import datetime
+import re
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
@@ -14,30 +9,22 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.http.response import HttpResponseNotFound
 from django.shortcuts import render
 from django.template import RequestContext, Context, loader
+from pagetree.helpers import get_hierarchy, get_section_from_path, get_module
 from pagetree.models import Hierarchy
-import datetime
-import re
+
+from carr.activity_bruise_recon.models import score_on_bruise_recon
+from carr.activity_taking_action.models import score_on_taking_action
+from carr.quiz.models import Question
+from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
+    scores_student, training_is_complete, can_see_scores
+
+from .models import (
+    SiteState, user_type, get_previous_site_section,
+    get_next_site_section)
 
 
 def context_processor(request):
     return dict(MEDIA_URL=settings.MEDIA_URL)
-
-
-def get_hierarchy():
-    return Hierarchy.objects.get_or_create(
-        name="main", defaults=dict(base_url="/"))[0]
-
-
-def get_section_from_path(path):
-    h = get_hierarchy()
-    return h.get_section_from_path(path)
-
-
-def get_module(section):
-    """ get the top level module that the section is in"""
-    if section.is_root:
-        return None
-    return section.get_ancestors()[1]
 
 
 @user_passes_test(can_see_scores)

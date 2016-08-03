@@ -1,13 +1,14 @@
-from models import Quiz, Question, Answer, ActivityState
-from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render
-from pagetree.models import Hierarchy
-from django.core.urlresolvers import reverse
 import json
-from django.contrib.auth.models import User
-from carr.carr_main.models import user_type
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404, render
+from pagetree.helpers import get_hierarchy
+
+from carr.carr_main.models import user_type
+from models import Quiz, Question, Answer, ActivityState
 from scores import scores_student
 
 
@@ -29,14 +30,6 @@ def studentquiz(request, quiz_id, user_id):
     })
 
 
-def get_hierarchy():
-    return (
-        Hierarchy.objects.get_or_create(
-            name="main",
-            defaults=dict(base_url="/"))[0]
-    )
-
-
 def edit_quiz(request, id):
     quiz = get_object_or_404(Quiz, id=id)
     section = quiz.pageblock().section
@@ -53,7 +46,7 @@ def delete_question(request, id):
         question.delete()
         return HttpResponseRedirect(reverse("edit-quiz", args=[quiz.id]))
     return HttpResponse("""
-<html><body><form action="." method="post">Are you Sure?
+<html><body><form action="." method="post">Are you sure?
 <input type="submit" value="Yes, delete it" /></form></body></html>
 """)
 
@@ -67,7 +60,7 @@ def delete_answer(request, id):
             HttpResponseRedirect(reverse("edit-question", args=[question.id]))
         )
     return HttpResponse("""
-<html><body><form action="." method="post">Are you Sure?
+<html><body><form action="." method="post">Are you sure?
 <input type="submit" value="Yes, delete it" /></form></body></html>
 """)
 

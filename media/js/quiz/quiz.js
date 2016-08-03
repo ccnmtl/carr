@@ -6,7 +6,6 @@ var all_quizzes_info = {};
 
 var post_test = window.location.href.match(/post_test/) !== null;
 var pre_test = window.location.href.match(/pretest/) !== null;
-var faculty_view = window.location.href.match(/studentquiz/) !== null;
 
 var kill_state_flag = false;
 var kill_this_quiz_flag = false;
