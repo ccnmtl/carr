@@ -1,38 +1,20 @@
-from .factories import UserFactory
+import unittest
+
+from django.contrib.auth.models import Group
+from django.test import TestCase, Client
+
+from carr.carr_main.tests.factories import UserFactory, GroupFactory
 from carr.quiz.scores import can_see_scores, year_range, sort_courses, \
     push_time, to_python_date, course_label, course_section, quiz_dict, \
     score_on_all_quizzes, pre_and_post_test_results, all_answers_for_quizzes, \
     count_pretest_and_posttest_students, question_and_quiz_keys, \
     has_dental_affiliation
-from django.contrib.auth.models import Group
-from django.test import TestCase, Client
-import unittest
-
-
-class DummyGroup(object):
-    name = 'tlcxml'
-
-
-class DummyGroupsQuery(object):
-    def all(self):
-        return [DummyGroup()]
-
-
-class DummyUser(object):
-    def is_authenticated(self):
-        return True
-
-    def user_type(self):
-        return 'admin'
-
-    @property
-    def groups(self):
-        return DummyGroupsQuery()
 
 
 class TestFunctions(unittest.TestCase):
     def test_can_see_scores(self):
-        u = DummyUser()
+        u = UserFactory()
+        u.groups.add(GroupFactory(name='tlcxml'))
         self.assertTrue(can_see_scores(u))
 
     def test_year_range(self):

@@ -1,15 +1,36 @@
-from django.contrib.sites.models import Site
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.test import TestCase
+
 from carr.carr_main.models import (
     user_type, new_get_children)
+from carr.carr_main.tests.factories import GroupFactory
+from carr.quiz.tests.factories import UserFactory
+
 from .factories import SiteStateFactory, SiteSectionFactory, SectionFactory
 
 
 class SimpleModelTest(TestCase):
     def test_user_type(self):
-        r = user_type(None)
-        self.assertEqual(r, None)
+        self.assertEqual(user_type(None), None)
+
+        u = UserFactory()
+        self.assertEqual(user_type(u), 'student')
+
+        u = UserFactory(is_staff=True)
+        self.assertEqual(user_type(u), 'faculty')
+
+        u = UserFactory()
+        with self.settings(DEFAULT_SOCIALWORK_FACULTY_UNIS=[u.username]):
+            self.assertEqual(user_type(u), 'faculty')
+
+        u = UserFactory()
+        u.groups.add(GroupFactory(name='tlcxml'))
+        self.assertEqual(user_type(u), 'admin')
+
+        u = UserFactory()
+        u.groups.add(GroupFactory(name='t1.y2010.s001.cf1000.scnc.fc.course'))
+        self.assertEqual(user_type(u), 'faculty')
 
 
 class SiteStateTest(TestCase):
