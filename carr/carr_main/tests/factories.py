@@ -4,7 +4,20 @@ import factory
 from pagetree.models import Hierarchy, Section
 
 from carr.carr_main.models import SiteState, SiteSection
-from carr.quiz.tests.factories import UserFactory
+
+
+class UserFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = User
+    username = factory.Sequence(lambda n: "user%d" % n)
+    password = factory.PostGenerationMethodCall('set_password', 'test')
+
+
+class GroupFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Group
+    name = factory.Sequence(
+        lambda n: 't1.y2010.s001.cf1000.scnc.st.course:%d.columbia.edu' % n)
 
 
 class SiteStateFactory(factory.DjangoModelFactory):
@@ -41,17 +54,3 @@ class SectionFactory(factory.DjangoModelFactory):
     label = "test section"
     slug = "test"
     hierarchy = factory.SubFactory(HierarchyFactory)
-
-
-class UserFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = User
-    username = factory.Sequence(lambda n: "user%d" % n)
-    password = factory.PostGenerationMethodCall('set_password', 'test')
-
-
-class GroupFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = Group
-    name = factory.Sequence(
-        lambda n: 't1.y2010.s001.cf1000.scnc.st.course:%d.columbia.edu' % n)
