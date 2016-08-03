@@ -16,7 +16,8 @@ from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.quiz.models import Question
 from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
-    scores_student, training_is_complete, can_see_scores
+    training_is_complete, can_see_scores, scores_student
+from carr.utils import filter_users_by_affiliation, get_students
 
 from .models import (
     SiteState, user_type, get_previous_site_section,
@@ -273,13 +274,7 @@ def stats(request, task):
     if user_type(request.user) == 'student':
         return scores_student(request)
 
-    the_users = User.objects.filter(is_staff=False).exclude(
-        groups__name__contains='tlcxml'
-    ).exclude(
-        groups__name__contains='.fc.'
-    ).exclude(
-        username__in=settings.DEFAULT_SOCIALWORK_FACULTY_UNIS
-    ).order_by('last_name', 'username')
+    the_users = get_students()
 
     # make a list of questions:
     pre_test_questions = Question.objects.filter(quiz__id=2)
@@ -312,16 +307,10 @@ def stats(request, task):
     return response
 
 
-def generate_user_stats(the_users, site, task, questions_in_order):
+def generate_user_stats(the_users, site, affiliation, questions_in_order):
     the_stats = {}
 
-    regex = r'^\w+\.\w+\.\w+\.\w+\.intc.*'
-    if task == 'dental':
-        affiliation = 'dental'
-        site_users = the_users.filter(groups__name__regex=regex)
-    else:
-        affiliation = 'ssw'
-        site_users = the_users.exclude(groups__name__regex=regex)
+    site_users = filter_users_by_affiliation(affiliation, the_users)
 
     for u in site_users:
         _quizzes = score_on_all_quizzes(u)

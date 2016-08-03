@@ -1,14 +1,18 @@
+from json import dumps
 import unittest
 
 from django.contrib.auth.models import Group
+from django.core.urlresolvers import reverse
 from django.test import TestCase, Client
 
-from carr.carr_main.tests.factories import UserFactory, GroupFactory
+from carr.carr_main.tests.factories import UserFactory, GroupFactory, \
+    HierarchyFactory
+from carr.quiz.models import Quiz, Question, Answer, ActivityState
 from carr.quiz.scores import can_see_scores, year_range, sort_courses, \
     push_time, to_python_date, course_label, course_section, quiz_dict, \
     score_on_all_quizzes, pre_and_post_test_results, all_answers_for_quizzes, \
     count_pretest_and_posttest_students, question_and_quiz_keys, \
-    has_dental_affiliation
+    has_dental_affiliation, PostTestAnalysisView
 
 
 class TestFunctions(unittest.TestCase):
@@ -117,3 +121,113 @@ class TestViews(TestCase):
         r = self.c.get("/scores/access/")
         self.assertEqual(r.status_code, 200)
         self.assertTrue("FACULTY" in r.content)
+
+
+class TestPostTestAnalysisView(TestCase):
+
+    def setUp(self):
+        self.quiz = Quiz.objects.create()
+        self.question1 = Question.objects.create(
+            quiz=self.quiz, text='foo', question_type='single choice',
+            ordinality=1)
+        self.correct = Answer.objects.create(
+            question=self.question1, value='1', label='one thing',
+            correct=True, ordinality=1)
+        self.incorrect = Answer.objects.create(
+            question=self.question1, value='2', label='another thing',
+            ordinality=2)
+
+        quiz_id = 'quiz_{}'.format(self.quiz.id)
+        self.incorrect_state = {
+            quiz_id: {
+                'initial_score': {
+                    'answers_given': [{
+                         'answer': str(self.incorrect.id),
+                         'id': str(self.question1.id)
+                        }
+                    ]
+                }
+            }
+        }
+
+        self.correct_state = {
+            quiz_id: {
+                'initial_score': {
+                    'answers_given': [{
+                         'answer': str(self.correct.id),
+                         'id': str(self.question1.id)
+                        }
+                    ]
+                }
+            }
+        }
+
+        self.h = HierarchyFactory()
+        root = self.h.get_root()
+        section = root.append_child('One', 'one')
+        section.append_pageblock('Post-test', content_object=self.quiz)
+
+    def test_dispatch(self):
+        # not logged in
+        url = reverse('post-test-analysis')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 403)
+
+        # accessing as student
+        student = UserFactory()
+        self.client.login(username=student.username, password='test')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 403)
+
+        # using get
+        faculty = UserFactory(is_staff=True)
+        self.client.login(username=faculty.username, password='test')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 405)
+
+    def test_get_posttest(self):
+        self.assertEquals(PostTestAnalysisView().get_posttest(), self.quiz)
+
+    def test_correct_answer(self):
+        view = PostTestAnalysisView()
+        self.assertEquals(view.correct_answer_id(self.question1),
+                          str(self.correct.id))
+
+    def test_initialize(self):
+        view = PostTestAnalysisView()
+        results = view.initialize(self.quiz)
+
+        key = str(self.question1.id)
+        self.assertTrue(key in results)
+        self.assertEquals(results[key]['id'], self.question1.id)
+        self.assertEquals(results[key]['text'], 'foo')
+        self.assertEquals(results[key]['answer'], str(self.correct.id))
+
+    def test_analyze(self):
+        u = UserFactory()
+        ActivityState.objects.create(user=u, json=dumps(self.incorrect_state))
+        u = UserFactory()
+        ActivityState.objects.create(user=u, json='')
+        UserFactory()
+
+        view = PostTestAnalysisView()
+        results = view.initialize(self.quiz)
+        results = view.analyze(self.quiz, results)
+
+        key = str(self.question1.id)
+        self.assertEquals(results[key]['responses'], 1)
+        self.assertEquals(results[key]['correct'], 0)
+
+    def test_post(self):
+        ActivityState.objects.create(user=UserFactory(),
+                                     json=dumps(self.incorrect_state))
+        ActivityState.objects.create(user=UserFactory(),
+                                     json=dumps(self.correct_state))
+
+        faculty = UserFactory(is_staff=True)
+        self.client.login(username=faculty.username, password='test')
+
+        url = reverse('post-test-analysis')
+        response = self.client.post(url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue('q1,foo,50.0' in response.content)

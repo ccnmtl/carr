@@ -8,7 +8,7 @@ from carr.carr_main.tests.factories import UserFactory, HierarchyFactory
 from carr.quiz.models import Quiz, Question, Answer, ActivityState
 from carr.quiz.views import studentquiz, edit_quiz, delete_question, \
     delete_answer, reorder_answers, reorder_questions, add_question_to_quiz, \
-    edit_question, edit_answer, add_answer_to_question, state_json
+    edit_question, edit_answer, add_answer_to_question
 
 
 class TestQuizViews(TestCase):
@@ -182,20 +182,6 @@ class TestQuizViews(TestCase):
 
         self.assertEquals(response.status_code, 302)
         self.assertEquals(self.question1.answer_set.count(), 3)
-
-    def test_state_json(self):
-        u = UserFactory()
-
-        # no state
-        self.assertEquals(state_json(ActivityState, u), '{}')
-
-        # empty state
-        state = ActivityState.objects.create(user=u, json='')
-        self.assertEquals(state_json(ActivityState, u), '{}')
-
-        state.json = dumps(self.json_state)
-        state.save()
-        self.assertEquals(state_json(ActivityState, u), state.json)
 
     def test_load_state(self):
         u = UserFactory()

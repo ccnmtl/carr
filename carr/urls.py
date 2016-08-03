@@ -1,16 +1,17 @@
-import carr.carr_main.views as main_views
-import carr.quiz.scores as scores_views
-import carr.quiz.views as quiz_views
-
-import django.views.static
 import os.path
 
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.views import logout
-from django.conf import settings
-from django.views.generic import TemplateView
 from django.views.generic import RedirectView
+from django.views.generic import TemplateView
+import django.views.static
+
+import carr.carr_main.views as main_views
+from carr.quiz.scores import PostTestAnalysisView
+import carr.quiz.scores as scores_views
+import carr.quiz.views as quiz_views
 
 
 admin.autodiscover()
@@ -36,6 +37,9 @@ urlpatterns = [
     url(r'^scores/socialwork/$', scores_views.scores_index),
 
     # a list of years
+    url(r'^scores/socialwork/analysis/$',
+        PostTestAnalysisView.as_view(), name='post-test-analysis'),
+
     url(r'^scores/socialwork/year/$', scores_views.socialwork_overview),
 
     # a list of semesters for each year
