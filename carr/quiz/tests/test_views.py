@@ -1,5 +1,6 @@
-from json import dumps
+from json import dumps, loads
 
+from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
 
@@ -7,7 +8,7 @@ from carr.carr_main.tests.factories import UserFactory, HierarchyFactory
 from carr.quiz.models import Quiz, Question, Answer, ActivityState
 from carr.quiz.views import studentquiz, edit_quiz, delete_question, \
     delete_answer, reorder_answers, reorder_questions, add_question_to_quiz, \
-    edit_question, edit_answer
+    edit_question, edit_answer, add_answer_to_question, state_json
 
 
 class TestQuizViews(TestCase):
@@ -29,7 +30,7 @@ class TestQuizViews(TestCase):
             ordinality=2)
 
         quiz_id = 'quiz_{}'.format(self.quiz.id)
-        self.state = {
+        self.json_state = {
             quiz_id: {
                 'all_correct': 't',
                 'initial_score': {
@@ -49,7 +50,7 @@ class TestQuizViews(TestCase):
 
     def test_studentquiz(self):
         student = UserFactory()
-        ActivityState.objects.create(user=student, json=dumps(self.state))
+        ActivityState.objects.create(user=student, json=dumps(self.json_state))
         request = RequestFactory().get('/')
 
         request.user = student
@@ -104,6 +105,10 @@ class TestQuizViews(TestCase):
         self.assertEquals(self.question1.answer_set.count(), 1)
 
     def test_reorder_answers(self):
+        url = reverse('reorder-answer', args=[self.question1.id])
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 403)
+
         self.assertEquals(self.correct.ordinality, 1)
         self.assertEquals(self.incorrect.ordinality, 2)
 
@@ -121,6 +126,10 @@ class TestQuizViews(TestCase):
         self.assertEquals(self.incorrect.ordinality, 1)
 
     def test_reorder_questions(self):
+        url = reverse('reorder-questions', args=[self.quiz.id])
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 403)
+
         self.assertEquals(self.question1.ordinality, 1)
         self.assertEquals(self.question2.ordinality, 2)
 
@@ -162,3 +171,67 @@ class TestQuizViews(TestCase):
         response = edit_answer(request, self.incorrect.id)
         self.assertEquals(response.status_code, 200)
         self.assertTrue('Answer 2' in response.content)
+
+    def test_add_answer_to_question(self):
+        data = {u'explanation': [u'the explanation'],
+                u'value': [u'2'],
+                u'label': [u'Maybe']}
+        request = RequestFactory().post('/', data)
+        request.user = UserFactory(is_staff=True)
+        response = add_answer_to_question(request, self.question1.id)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(self.question1.answer_set.count(), 3)
+
+    def test_state_json(self):
+        u = UserFactory()
+
+        # no state
+        self.assertEquals(state_json(ActivityState, u), '{}')
+
+        # empty state
+        state = ActivityState.objects.create(user=u, json='')
+        self.assertEquals(state_json(ActivityState, u), '{}')
+
+        state.json = dumps(self.json_state)
+        state.save()
+        self.assertEquals(state_json(ActivityState, u), state.json)
+
+    def test_load_state(self):
+        u = UserFactory()
+        state = ActivityState.objects.create(user=u,
+                                             json=dumps(self.json_state))
+
+        self.client.login(username=u.username, password='test')
+        response = self.client.get('/activity/quiz/load/')
+        self.assertEquals(response.status_code, 200)
+
+        self.assertEquals(response.content, state.json)
+
+    def test_save_state_created(self):
+        # when no state exists
+        u = UserFactory()
+
+        self.client.login(username=u.username, password='test')
+
+        data = {'json': dumps(self.json_state)}
+        response = self.client.post('/activity/quiz/save/', data)
+        self.assertEquals(response.status_code, 200)
+
+        self.assertEquals(loads(response.content)['success'], 1)
+
+        n = ActivityState.objects.filter(user=u, json=data['json']).count()
+        self.assertEquals(n, 1)
+
+    def test_save_state_updated(self):
+        # when no state exists
+        u = UserFactory()
+        ActivityState.objects.create(user=u, json=dumps(self.json_state))
+        self.client.login(username=u.username, password='test')
+
+        data = {'json': '{}'}
+        response = self.client.post('/activity/quiz/save/', data)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(loads(response.content)['success'], 1)
+        n = ActivityState.objects.filter(user=u, json='{}').count()
+        self.assertEquals(n, 1)
