@@ -1,13 +1,16 @@
-from models import Quiz, Question, Answer, ActivityState
-from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render
-from pagetree.models import Hierarchy
-from django.core.urlresolvers import reverse
 import json
-from django.contrib.auth.models import User
-from carr.carr_main.models import user_type
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect, HttpResponse
+from django.http.response import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, render
+from pagetree.helpers import get_hierarchy
+
+from carr.carr_main.models import user_type
+from carr.utils import state_json
+from models import Quiz, Question, Answer, ActivityState
 from scores import scores_student
 
 
@@ -25,16 +28,8 @@ def studentquiz(request, quiz_id, user_id):
     return render(request, template_name, {
         'student': student,
         'quiz': quiz,
-        'student_json': state_json(student)
+        'student_json': state_json(ActivityState, student)
     })
-
-
-def get_hierarchy():
-    return (
-        Hierarchy.objects.get_or_create(
-            name="main",
-            defaults=dict(base_url="/"))[0]
-    )
 
 
 def edit_quiz(request, id):
@@ -53,7 +48,7 @@ def delete_question(request, id):
         question.delete()
         return HttpResponseRedirect(reverse("edit-quiz", args=[quiz.id]))
     return HttpResponse("""
-<html><body><form action="." method="post">Are you Sure?
+<html><body><form action="." method="post">Are you sure?
 <input type="submit" value="Yes, delete it" /></form></body></html>
 """)
 
@@ -67,14 +62,14 @@ def delete_answer(request, id):
             HttpResponseRedirect(reverse("edit-question", args=[question.id]))
         )
     return HttpResponse("""
-<html><body><form action="." method="post">Are you Sure?
+<html><body><form action="." method="post">Are you sure?
 <input type="submit" value="Yes, delete it" /></form></body></html>
 """)
 
 
 def reorder_answers(request, id):
     if request.method != "POST":
-        return HttpResponse("only use POST for this")
+        return HttpResponseForbidden()
     question = get_object_or_404(Question, id=id)
     keys = sorted(request.GET.keys())
     answers = [int(request.GET[k]) for k in keys if k.startswith('answer_')]
@@ -84,7 +79,7 @@ def reorder_answers(request, id):
 
 def reorder_questions(request, id):
     if request.method != "POST":
-        return HttpResponse("only use POST for this")
+        return HttpResponseForbidden()
     quiz = get_object_or_404(Quiz, id=id)
     keys = sorted(request.GET.keys())
     questions = [int(request.GET[k])
@@ -125,19 +120,10 @@ def edit_answer(request, id):
     return render(request, 'quiz/edit_answer.html', dict(answer=answer))
 
 
-def state_json(user):
-    try:
-        state = ActivityState.objects.get(user=user)
-        if (len(state.json) > 0):
-            doc = state.json
-    except ActivityState.DoesNotExist:
-        doc = "{}"
-    return doc
-
-
 @login_required
 def loadstate(request):
-    response = HttpResponse(state_json(request.user), 'application/json')
+    response = HttpResponse(state_json(ActivityState, request.user),
+                            'application/json')
     response['Cache-Control'] = 'max-age=0,no-cache,no-store'
     return response
 
