@@ -34,12 +34,11 @@ urlpatterns = [
     # honi soit qui mal y pense
     url(r'^scores/$', scores_views.scores_index),
     url(r'^scores/socialwork$', scores_views.scores_index),
-    url(r'^scores/socialwork/$', scores_views.scores_index),
 
-    # a list of years
     url(r'^scores/socialwork/analysis/$',
         PostTestAnalysisView.as_view(), name='post-test-analysis'),
 
+    # a list of years
     url(r'^scores/socialwork/year/$', scores_views.socialwork_overview),
 
     # a list of semesters for each year
