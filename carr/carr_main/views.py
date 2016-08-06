@@ -81,7 +81,7 @@ def page(request, path):
         module = ancestors[1]
 
     # construct the subnav up here. it's too heavy on the client side
-    subnav = _construct_menu(request, module, section, ss)
+    subnav = _construct_menu(current_site, request.user, module, section, ss)
 
     # construct the left nav up here too.
     depth = section.depth()
@@ -93,7 +93,7 @@ def page(request, path):
     elif depth == 5:
         parent = section.get_parent().get_parent().get_parent()
 
-    leftnav = _construct_menu(request, parent, section, ss)
+    leftnav = _construct_menu(current_site, request.user, parent, section, ss)
 
     # ok let's try this
     ss.set_has_visited([section])
@@ -379,10 +379,10 @@ def index(request):
     try:
         ss = SiteState.objects.get(user=request.user)
         url = ss.last_location
-        if url == '':
+        if url == '' or url == '/':
             url = '/carr'
     except SiteState.DoesNotExist:
-        url = "/carr"
+        url = '/carr'
 
     return HttpResponseRedirect(url)
 
@@ -390,9 +390,8 @@ def index(request):
 #####################################################################
 # View Utility Methods
 
-def _construct_menu(request, parent, section, ss):
+def _construct_menu(current_site, user, parent, section, ss):
     menu = []
-    current_site = get_current_site(request)
     siblings = [a for a in parent.get_children() if current_site in a.sites()]
 
     for s in siblings:
@@ -409,7 +408,7 @@ def _construct_menu(request, parent, section, ss):
 
         previous = s.get_previous_leaf()
 
-        if _unlocked(s, request.user, previous, ss):
+        if _unlocked(s, user, previous, ss):
             entry['accessible'] = True
 
         menu.append(entry)

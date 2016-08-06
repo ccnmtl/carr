@@ -178,6 +178,8 @@ Section.sites = lambda x: section_site(x).sites.all()
 
 
 def in_site(x):
+    # settings.SITE_ID is set dynamically in carr.SiteIdMiddleware
+    # the SiteSections are weeded out as ssw or dental based on the site id
     return settings.SITE_ID in [s.id for s in x.sites()]
 
 
