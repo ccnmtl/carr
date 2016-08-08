@@ -1,6 +1,7 @@
-from models import Quiz, Question, Answer
-
 from django.contrib import admin
+
+from carr.quiz.models import ActivityState
+from models import Quiz, Question, Answer
 
 
 class AnswerAdmin(admin.ModelAdmin):
@@ -21,3 +22,10 @@ class QuestionAdmin(admin.ModelAdmin):
 admin.site.register(Quiz)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
+
+
+class ActivityStateAdmin(admin.ModelAdmin):
+    list_display = ['user', 'submitted', 'json']
+    search_fields = ['user__username']
+
+admin.site.register(ActivityState, ActivityStateAdmin)

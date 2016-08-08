@@ -3,14 +3,12 @@
 {% block scores_title %}
 {% endblock %}
 
-
 {% block scores_breadcrumbs %}
       <li>
         <a href="/scores/" class="active" >Scores</a>
             <span class="divider">/</span>
       </li>
 {% endblock scores_breadcrumbs %}
-
 
 {% block full_page_results %}
     <div>
@@ -19,11 +17,11 @@
         {% if "ssw" in site_domain %}
             <p>To find a student's scores, click one of the buttons below.</p>
             <p><a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/uni/">Search by UNI</a>
-        
+
             <a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/year/">Browse by Semester/Course</a></p>
             <br />
         {% endif %}
-        
+
         <p>Click the button below to download a table of all students' scores. This operation may take a few minutes.</p>
         <p>
         {% if "ssw" in site_domain %}
@@ -32,5 +30,15 @@
             <a class="btn btn-primary btn-large" color="white" href = "/stats/dental/" target="_blank">All Dental Scores <i class="icon-download-alt icon-white"></i></a>
         {% endif %}{% endif %}
         </p>
+
+        {% if "ssw" in site_domain %}
+            <br />
+            <p>Download a question by question analysis of the post-test.</p>
+            <form method="post" action="/scores/socialwork/analysis/">
+                <button class="btn btn-primary btn-large" color="white" type="submit">
+                    Post-test Analysis <i class="icon-download-alt icon-white"></i>
+                </button>
+            </form>
+        {% endif %}
     </div>
 {%endblock %}

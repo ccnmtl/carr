@@ -1,23 +1,29 @@
-from models import Quiz, Question, ActivityState
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import user_passes_test
-import json
-from django.contrib.auth.models import User, Group
-from django.contrib.sites.models import Site
-from django.contrib.sites.shortcuts import get_current_site
-from carr.carr_main.models import students_in_class, users_by_uni, user_type
-from carr.activity_taking_action.models import score_on_taking_action
-from carr.activity_bruise_recon.models import score_on_bruise_recon
-from django.core.cache import cache
-from django.conf import settings
-from django.shortcuts import render
-
-import re
-import datetime
-
 """ This is a series of views that in some ways belong in the Quiz
 module, and in others don't. Maybe they need to be moved to their own
 app. For now they definitely get their own module."""
+
+import csv
+import datetime
+import json
+import re
+
+from django.conf import settings
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User, Group
+from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.cache import cache
+from django.http import HttpResponseRedirect
+from django.http.response import HttpResponseForbidden, HttpResponse
+from django.shortcuts import render
+from django.views.generic.base import View
+from pagetree.models import PageBlock
+
+from carr.activity_bruise_recon.models import score_on_bruise_recon
+from carr.activity_taking_action.models import score_on_taking_action
+from carr.carr_main.models import students_in_class, users_by_uni, user_type
+from carr.utils import get_students, filter_users_by_affiliation
+from models import Quiz, Question, ActivityState
 
 
 def can_see_scores(u):
@@ -628,3 +634,76 @@ def training_is_complete(user, quizzes, bruise_recon, taking_action, site):
 
     # OK they're done with the training.
     return True
+
+
+class PostTestAnalysisView(View):
+
+    def dispatch(self, *args, **kwargs):
+        if not can_see_scores(self.request.user):
+            return HttpResponseForbidden('forbidden')
+        return super(PostTestAnalysisView, self).dispatch(*args, **kwargs)
+
+    def get_social_work_students(self):
+        return filter_users_by_affiliation('ssw', get_students())
+
+    def get_posttest(self):
+        return PageBlock.objects.get(label='Post-test').block()
+
+    def correct_answer_id(self, question):
+        return str(question.answer_set.filter(correct=True).first().id)
+
+    def initialize(self, quiz):
+        results = {}
+        for q in quiz.question_set.all().prefetch_related('answer_set'):
+            results[str(q.id)] = {
+                'id': q.id,
+                'text': q.text,
+                'responses': 0,
+                'correct': 0,
+                'answer': self.correct_answer_id(q)}
+        return results
+
+    def analyze(self, posttest, results):
+        key = 'quiz_{}'.format(posttest.id)
+        states = ActivityState.objects.filter(
+            user__in=self.get_social_work_students())
+
+        for state in states:
+            if not state or len(state.json) == 0:
+                continue
+
+            strm = json.loads(state.json)
+            if (key not in strm or
+                'initial_score' not in strm[key] or
+                    'answers_given' not in strm[key]['initial_score']):
+                continue
+
+            for a in strm[key]['initial_score']['answers_given']:
+                qid = a['id']
+                results[qid]['responses'] += 1
+                if a['answer'] == results[qid]['answer']:
+                    results[qid]['correct'] += 1
+
+        return results
+
+    def post(self, request):
+        quiz = self.get_posttest()
+
+        results = self.initialize(quiz)
+        results = self.analyze(quiz, results)
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = \
+            'attachment; filename=posttest_analysis.csv'
+        writer = csv.writer(response)
+
+        writer.writerow(['q', 'text', '% initial correct'])
+
+        for key in sorted(results.keys()):
+            value = results[key]
+            writer.writerow([
+                'q{}'.format(value['id']), value['text'],
+                value['correct'] / float(value['responses']) * 100
+            ])
+
+        return response
