@@ -1,5 +1,13 @@
-from .factories import UserFactory
+from django.contrib.sites.models import Site
 from django.test import TestCase, Client
+from pagetree.models import SectionChildren
+
+from carr.carr_main.tests.factories import HierarchyFactory, \
+    SiteStateFactory, SiteSectionFactory, SiteFactory
+from carr.carr_main.views import _unlocked, _construct_menu
+from carr.quiz.models import Quiz, Question
+
+from .factories import UserFactory
 
 
 class TestViews(TestCase):
@@ -13,6 +21,27 @@ class TestViews(TestCase):
     def test_index(self):
         r = self.c.get("/")
         self.assertEqual(r.status_code, 302)
+
+    def test_index_logged_in(self):
+        h = HierarchyFactory()
+        root = h.get_root()
+        site = Site.objects.get(id=1)  # available by default.
+
+        section1 = SiteSectionFactory(hierarchy=h, label='CARR', slug='carr')
+        section1.sites.add(site)
+        SectionChildren.objects.create(
+            parent=root, child=section1, ordinality=1)
+        section2 = SiteSectionFactory(hierarchy=h)
+        section2.sites.add(site)
+        SectionChildren.objects.create(
+            parent=root, child=section2, ordinality=2)
+
+        with self.settings(SITE_ID=site.id):
+            ss = SiteStateFactory()
+            self.client.login(username=ss.user.username, password='test')
+            r = self.client.get('/', follow=True)
+            self.assertEqual(r.status_code, 200)
+            self.assertEqual(r.redirect_chain, [('/carr', 302)])
 
     def test_smoketest(self):
         r = self.c.get("/smoketest/")
@@ -62,3 +91,56 @@ class TestViews(TestCase):
     def test_404(self):
         r = self.c.get("/this/is/a/404/")
         self.assertEqual(r.status_code, 404)
+
+    def test_unlocked(self):
+        self.h = HierarchyFactory()
+        root = self.h.get_root()
+        section1 = root.append_child('One', 'one')
+        section2 = root.append_child('Two', 'two')
+        section3 = root.append_child('Three', 'three')
+
+        quiz = Quiz.objects.create()
+        Question.objects.create(
+            quiz=quiz, text='foo', question_type='short text')
+        section1.append_pageblock('child', content_object=quiz)
+        site = SiteStateFactory()
+
+        self.assertTrue(_unlocked(None, site.user, None, site))
+        self.assertTrue(_unlocked(section1, site.user, None, site))
+        self.assertFalse(_unlocked(section2, site.user, section1, site))
+        self.assertFalse(_unlocked(section3, site.user, section2, site))
+
+    def test_construct_menu(self):
+        h = HierarchyFactory()
+        root = h.get_root()
+        site = SiteFactory()
+
+        section1 = SiteSectionFactory(hierarchy=h)
+        section1.sites.add(site)
+        SectionChildren.objects.create(
+            parent=root, child=section1, ordinality=1)
+
+        section2 = SiteSectionFactory(hierarchy=h)
+        section2.sites.add(site)
+        SectionChildren.objects.create(
+            parent=root, child=section2, ordinality=2)
+
+        section3 = SiteSectionFactory(hierarchy=h)
+        section3.sites.add(site)
+        SectionChildren.objects.create(
+            parent=root, child=section3, ordinality=3)
+
+        with self.settings(SITE_ID=site.id):
+            ss = SiteStateFactory()
+            menu = _construct_menu(site, ss.user, root, section3, ss)
+            self.assertEquals(len(menu), 3)
+
+            self.assertEquals(menu[0]['section'].label, section1.label)
+            self.assertTrue(menu[0]['accessible'])
+
+            self.assertEquals(menu[1]['section'].label, section2.label)
+            self.assertFalse(menu[1]['accessible'])
+
+            self.assertEquals(menu[2]['section'].label, section3.label)
+            self.assertFalse(menu[2]['accessible'])
+            self.assertTrue(menu[2]['selected'])

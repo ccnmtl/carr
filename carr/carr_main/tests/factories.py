@@ -43,8 +43,8 @@ class HierarchyFactory(factory.DjangoModelFactory):
 class SiteSectionFactory(factory.DjangoModelFactory):
     class Meta:
         model = SiteSection
-    label = "test section"
-    slug = "test"
+    label = factory.Sequence(lambda n: "test section %d" % n)
+    slug = factory.Sequence(lambda n: "test%d" % n)
     hierarchy = factory.SubFactory(HierarchyFactory)
 
 
