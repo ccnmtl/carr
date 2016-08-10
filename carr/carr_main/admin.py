@@ -1,7 +1,9 @@
 from django.contrib import admin
-from models import SiteSection
-from models import Section
 from pagetree.models import SectionChildren, PageBlock
+
+from carr.carr_main.models import SiteState
+from models import Section
+from models import SiteSection
 
 
 class SectionChildrenInline(admin.StackedInline):
@@ -30,3 +32,10 @@ class SectionAdmin(admin.ModelAdmin):
 
 admin.site.unregister(Section)
 admin.site.register(SiteSection, SectionAdmin)
+
+
+class SiteStateAdmin(admin.ModelAdmin):
+    list_display = ['user', 'last_location']
+    search_fields = ['user__username']
+
+admin.site.register(SiteState, SiteStateAdmin)
