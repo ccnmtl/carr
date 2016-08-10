@@ -81,7 +81,7 @@ def page(request, path):
         module = ancestors[1]
 
     # construct the subnav up here. it's too heavy on the client side
-    subnav = _construct_menu(current_site, request.user, module, section, ss)
+    subnav = _construct_menu(request.user, module, section, ss)
 
     # construct the left nav up here too.
     depth = section.depth()
@@ -93,7 +93,7 @@ def page(request, path):
     elif depth == 5:
         parent = section.get_parent().get_parent().get_parent()
 
-    leftnav = _construct_menu(current_site, request.user, parent, section, ss)
+    leftnav = _construct_menu(request.user, parent, section, ss)
 
     # ok let's try this
     ss.set_has_visited([section])
@@ -390,11 +390,10 @@ def index(request):
 #####################################################################
 # View Utility Methods
 
-def _construct_menu(current_site, user, parent, section, ss):
+def _construct_menu(user, parent, section, ss):
     menu = []
-    siblings = [a for a in parent.get_children() if current_site in a.sites()]
 
-    for s in siblings:
+    for s in parent.get_children():
         entry = {
             'section': s,
             'selected': False,

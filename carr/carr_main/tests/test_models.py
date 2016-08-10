@@ -2,8 +2,7 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.test import TestCase
 
-from carr.carr_main.models import (
-    user_type, new_get_children)
+from carr.carr_main.models import user_type, new_get_children
 
 from .factories import (SiteStateFactory, SiteSectionFactory, SectionFactory,
                         UserFactory, GroupFactory)
@@ -57,8 +56,6 @@ class SiteStateTest(TestCase):
 
 
 class SiteSectionTest(TestCase):
-    def test_create(self):
-        SiteSectionFactory()
 
     def test_unicode(self):
         s = SiteSectionFactory()

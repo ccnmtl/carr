@@ -118,8 +118,7 @@ class SiteState(models.Model):
             self.state_object = {}
 
     def get_has_visited(self, section):
-        has_visited = str(section.id) in self.state_object
-        return has_visited
+        return str(section.id) in self.state_object
 
     def set_has_visited(self, sections):
         for s in sections:
@@ -150,8 +149,8 @@ class SiteSection(Section):
         on the current site"""
         x = self
         while traversal_function(x):
-            x = section_site(traversal_function(x).id)
-            if settings.SITE_ID in [s.id for s in x.sites.all()]:
+            x = traversal_function(x).sitesection
+            if in_site(x):
                 return x
         return None
 
@@ -167,11 +166,11 @@ def section_site(x):
 
 
 def get_previous_site_section(x):
-    return section_site(x).get_previous_site_section()
+    return x.sitesection.get_previous_site_section()
 
 
 def get_next_site_section(x):
-    return section_site(x).get_next_site_section()
+    return x.sitesection.get_next_site_section()
 
 
 Section.sites = lambda x: section_site(x).sites.all()
@@ -180,21 +179,24 @@ Section.sites = lambda x: section_site(x).sites.all()
 def in_site(x):
     # settings.SITE_ID is set dynamically in carr.SiteIdMiddleware
     # the SiteSections are weeded out as ssw or dental based on the site id
-    return settings.SITE_ID in [s.id for s in x.sites()]
+    return x.sitesection.sites.filter(id=settings.SITE_ID).exists()
 
 
 def new_get_children(self):
+    qs = SectionChildren.objects.filter(
+        parent=self, child__sitesection__sites__id=settings.SITE_ID)
     return (
-        [sc.child for sc in SectionChildren.objects.filter(
-            parent=self).order_by("ordinality") if in_site(sc.child)]
+        [sc.child for sc in qs.select_related('child').order_by("ordinality")]
     )
 Section.get_children = new_get_children
 
 
 def new_get_siblings(self):
+    qs = SectionChildren.objects.filter(
+        parent=self.get_parent(),
+        child__sitesection__sites__id=settings.SITE_ID)
     return (
-        [sc.child for sc in SectionChildren.objects.filter(
-            parent=self.get_parent()) if in_site(sc.child)]
+        [sc.child for sc in qs.select_related('child').order_by("ordinality")]
     )
 Section.get_siblings = new_get_siblings
 

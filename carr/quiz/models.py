@@ -96,6 +96,9 @@ class Quiz(models.Model):
             question.ordinality = i + 1
             question.save()
 
+    def questions(self):
+        return self.question_set.all().prefetch_related('answer_set')
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz)
@@ -132,6 +135,12 @@ class Question(models.Model):
                 model = Answer
                 exclude = ("question", "ordinality")
         return AddAnswerForm(request)
+
+    def correct_answer(self):
+        if self.question_type != "single choice":
+            return None
+
+        return self.answer_set.filter(correct=True).first()
 
     def correct_answer_number(self):
         if self.question_type != "single choice":
@@ -172,6 +181,9 @@ class Answer(models.Model):
 
     def __unicode__(self):
         return self.label
+
+    def letter(self):
+        return chr(ord('A') + self.ordinality - 1)
 
 
 class Submission(models.Model):

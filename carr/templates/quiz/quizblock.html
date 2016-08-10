@@ -28,9 +28,7 @@
 <span id="sorted_questions">
 </span>
 
-
-
-{% for question in block.question_set.all %}
+{% for question in block.questions %}
 <div class="cases really" id = "case_{{question.id}}" >
      {{question.intro_text|markdown}}
 
@@ -43,20 +41,21 @@
                        <ol type="A">
                          {% for answer in question.answer_set.all %}
                           <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" right_answer="{{answer.correct}}"/>{{answer.label}}</li>
-
                          {% endfor %}
                       </ol>
                  </form>
            </div>
 
+           {% with correct_answer=question.correct_answer %}
            <div class="casesanswerdisplay">
               <div id="{{question.id}}_answer" class="well answer" style="display: none;">
-                    {% if question.correct_answer_letter %}
-                        <b> The correct answer is {{question.correct_answer_letter}}:</b> {{question.correct_answer_value}}
+                    {% if correct_answer %}
+                        <b> The correct answer is {{correct_answer.letter}}:</b> {{correct_answer.value}}
                     {% endif %}
                     <p>{{question.explanation|markdown}}</p>
               </div>
            </div>
+           {% endwith %}
      </div>
 </div> 
 {% endfor %}
