@@ -222,11 +222,14 @@ function show_answer() {
     }
     hideElement('submit_div');
     if (answer_is_correct()) {
-        $('your_answer_was').innerHTML = 'Your answer is correct.';
+        $('your_answer_was').innerHTML = 'Your answers are correct';
+        addElementClass($('your_answer_was'), 'alert-success');
     } else {
-        $('your_answer_was').innerHTML = 'Your answer is incorrect.';
+        $('your_answer_was').innerHTML = 'Your answers are incorrect';
+        addElementClass($('your_answer_was'), 'alert-danger');
 
     }
+    showElement('your_answer_was');
     showElement('feedback_div');
     lock_down_answer_buttons();
     maybeEnableNext();

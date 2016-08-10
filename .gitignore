@@ -11,3 +11,4 @@ reports/
 .pydevproject
 node_modules
 uploads
+.settings

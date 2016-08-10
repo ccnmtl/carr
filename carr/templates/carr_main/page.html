@@ -35,35 +35,39 @@
 {% endblock %}
 
 {% block contentnav %}
-    <table>
-        <tr>
-            <td>
-                {% if previous %}
-                    <a href="{{previous.get_absolute_url}}" id="previous">« {{previous.label}}</a>
-                {% endif %}
-            </td>
-            <td width="100%" align="center">
-                <div id="page_numbering">
-                    {% ifequal depth 4 %}
-                        {% with section.get_siblings as siblings %}
-                        {% with section.get_parent as parent %}
-                             {% for sibling in siblings %}
-                                {% ifequal sibling section %}
-                                   {{parent.label}} | Page {{forloop.counter}} of {{siblings|length}}
-                                {% endifequal %}
-                             {% endfor %}
-                        {% endwith %}
-                        {% endwith %} 
-                    {% endifequal %}
+    <div class="content-nav">
+    <nav>
+        <ul class="pager">
+            {% if previous %}
+                <li class="previous">
+                    <a href="{{previous.get_absolute_url}}" id="previous">« Previous</a>
+                </li>
+            {% endif %}
+            <li>
+                <div class="page-numbers">
+                {% spaceless %}
+                {% ifequal depth 4 %}
+                    {% with section.get_siblings as siblings %}
+                    {% with section.get_parent as parent %}
+                         {% for sibling in siblings %}
+                            {% ifequal sibling section %}
+                               {{parent.label}} | Page {{forloop.counter}} of {{siblings|length}}
+                            {% endifequal %}
+                         {% endfor %}
+                    {% endwith %}
+                    {% endwith %} 
+                {% endifequal %}
+                {% endspaceless %}
                 </div>
-            </td>
-            <td>
-                {% if next %}
+            </li>
+            {% if next %}
+                <li class="next">
                     <!-- added to allow javascript access to the menu links. hack for the js activities enabling/disabling of links -->
                     <input type="hidden" id="next_section_slug" name="next_section_slug" value="{{next.slug}}"/>
-                    <a href="{{next.get_absolute_url}}" id="next">{{next.label}} »</a>
-                {% endif %}
-            </td>
-        </tr>
-    </table>
+                    <a href="{{next.get_absolute_url}}" id="next">Next »</a>
+                </li>
+            {% endif %}
+      </ul>
+    </nav>
+    </div>
 {% endblock %}
