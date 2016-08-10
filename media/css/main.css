@@ -1116,6 +1116,7 @@ float: left;
 
 #show_quiz_results h3 {
     margin: 0;
+    text-transform: none;
 }
 
 .moretoggle {

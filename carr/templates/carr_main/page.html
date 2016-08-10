@@ -38,11 +38,13 @@
     <div class="content-nav">
     <nav>
         <ul class="pager">
-            {% if previous %}
-                <li class="previous">
+            <li class="previous">
+                {% if previous %}
                     <a href="{{previous.get_absolute_url}}" id="previous">« Previous</a>
-                </li>
-            {% endif %}
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            </li>
             <li>
                 <div class="page-numbers">
                 {% spaceless %}

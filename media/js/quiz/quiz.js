@@ -352,6 +352,7 @@ function show_score(fresh_answers) {
 
     freeze_buttons();
     maybeEnableNext();
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
 function loadStateError(err) {
@@ -461,8 +462,7 @@ function retakeQuiz() {
                  'erase your answers.'))  {
         return;
     }
-    hideElement('show_quiz_results');
-
+    setStyle(document.body, {'cursor': 'progress'});
     kill_this_quiz();
     window.location.reload();
 }

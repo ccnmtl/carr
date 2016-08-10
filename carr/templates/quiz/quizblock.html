@@ -14,11 +14,14 @@
 <!-- Once sorted, the questions will go here:.-->
 
 <div id ="show_quiz_results" class="alert alert-success" role="alert">
-    <h3>
-        You  <span id="initially">initially&nbsp;</span>scored <span id="quiz_score">x</span> out of a possible <span id="quiz_max_score">y</span>.
-    </h3>
+    <div class="pull-left">
+        Your <span id="initially">initial </span>score was <span id="quiz_score">x</span> / <span id="quiz_max_score">y</span>.
+    </div>
+    <div id="retake_quiz_div" class="pull-right">
+        <a onMouseUp="retakeQuiz()" class="btn btn-primary pull-right">Retake Quiz</a>
+    </div>
+    <div class="clearfix"></div>
 </div>
-
 
 {{ block.description|markdown }}
 
@@ -60,9 +63,4 @@
 
 <div id ="show_score" class="text-center">
     <a onMouseUp="showScore()" id="show_score_link" class="btn btn-primary">Submit Your Responses</a>
-</div>
-
-
-<div id="retake_quiz_div">
-    <a onMouseUp="retakeQuiz()" >Retake Quiz</a>
 </div>
