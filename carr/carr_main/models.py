@@ -1,11 +1,8 @@
 from django.conf import settings
 from django.db import models
 import json
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.sites.models import Site
-from pagetree.models import PageBlock, Section, SectionChildren
-from pageblocks.models import PullQuoteBlock
-from django import forms
+from pagetree.models import Section, SectionChildren
 from django.db.models.signals import post_save
 from django.core.cache import cache
 from django.contrib.auth.models import User, Group
@@ -198,79 +195,3 @@ def find_or_add_site_section(**kwargs):
         new_site_section.save()
 
 post_save.connect(find_or_add_site_section, Section)
-
-
-class FlashVideoBlock(models.Model):
-    pageblocks = GenericRelation(PageBlock)
-    file_url = models.CharField(max_length=512)
-    image_url = models.CharField(max_length=512)
-    width = models.IntegerField()
-    height = models.IntegerField()
-
-    template_file = "carr_main/flashvideoblock.html"
-    display_name = "Flash Video (using JW Player)"
-
-    def pageblock(self):
-        return self.pageblocks.all()[0]
-
-    def __unicode__(self):
-        return unicode(self.pageblock())
-
-    def edit_form(self):
-        class EditForm(forms.Form):
-            file_url = forms.CharField(initial=self.file_url)
-            image_url = forms.CharField(initial=self.image_url)
-            width = forms.IntegerField(initial=self.width)
-            height = forms.IntegerField(initial=self.height)
-        return EditForm()
-
-    @classmethod
-    def add_form(self):
-        class AddForm(forms.Form):
-            file_url = forms.CharField()
-            image_url = forms.CharField()
-            width = forms.IntegerField()
-            height = forms.IntegerField()
-        return AddForm()
-
-    @classmethod
-    def create(self, request):
-        return FlashVideoBlock.objects.create(
-            file_url=request.POST.get('file_url', ''),
-            image_url=request.POST.get(
-                'image_url',
-                ''),
-            width=request.POST.get(
-                'width',
-                ''),
-            height=request.POST.get('height', ''))
-
-    def edit(self, vals, files):
-        self.file_url = vals.get('file_url', '')
-        self.image_url = vals.get('image_url', '')
-        self.width = vals.get('width', '')
-        self.height = vals.get('height', '')
-        self.save()
-
-
-class PullQuoteBlock_2 (PullQuoteBlock):
-    template_file = "admin/pageblocks/pullquoteblock_2.html"
-    display_name = "Pull Quote Type 2"
-
-    @classmethod
-    def create(self, request):
-        return (
-            PullQuoteBlock_2.objects.create(body=request.POST.get('body', ''))
-        )
-
-
-class PullQuoteBlock_3 (PullQuoteBlock):
-    template_file = "admin/pageblocks/pullquoteblock_3.html"
-
-    display_name = "Pull Quote Type 3"
-
-    @classmethod
-    def create(self, request):
-        return (
-            PullQuoteBlock_3.objects.create(body=request.POST.get('body', ''))
-        )
