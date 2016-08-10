@@ -2,8 +2,6 @@ from django.contrib.sites.models import Site
 from django.test import TestCase, Client
 from pagetree.models import SectionChildren
 
-from carr.carr_main.models import get_previous_site_section, \
-    get_next_site_section
 from carr.carr_main.tests.factories import HierarchyFactory, \
     SiteStateFactory, SiteSectionFactory, SiteFactory
 from carr.carr_main.views import _unlocked, _construct_menu
@@ -168,8 +166,10 @@ class TestHierarchyNavigation(TestCase):
             self.assertEquals(sibs[2].sitesection, self.section3)
 
             self.assertEquals(
-                get_previous_site_section(self.section2), self.section1)
+                self.section2.sitesection.get_previous_site_section(),
+                self.section1)
             self.assertEquals(
-                get_next_site_section(self.section1), self.section2)
-            self.assertIsNone(get_next_site_section(self.section3))
-            self.assertIsNone(get_previous_site_section(self.section1))
+                self.section1.sitesection.get_next_site_section(),
+                self.section2)
+            self.assertIsNone(self.section3.get_next_site_section())
+            self.assertIsNone(self.section1.get_previous_site_section())

@@ -129,7 +129,7 @@ class SiteState(models.Model):
 
     def save_last_location(self, path, section):
         if len([a for a in Site.objects.all()
-                if a not in section_site(section.id).sites.all()]) > 0:
+                if a not in section.sitesection.sites.all()]) > 0:
             return
         self.state_object[str(section.id)] = section.label
         self.last_location = path
@@ -144,13 +144,19 @@ class SiteSection(Section):
     def __unicode__(self):
         return self.label
 
+    @classmethod
+    def in_site(cls, x):
+        # settings.SITE_ID is set dynamically in carr.SiteIdMiddleware
+        # the SiteSections are weeded out as ssw or dental based on the site id
+        return x.sitesection.sites.filter(id=settings.SITE_ID).exists()
+
     def site_section_nav(self, traversal_function):
         """ traverse the tree until you can return a page that visible
         on the current site"""
         x = self
         while traversal_function(x):
             x = traversal_function(x).sitesection
-            if in_site(x):
+            if self.in_site(x):
                 return x
         return None
 
@@ -159,27 +165,6 @@ class SiteSection(Section):
 
     def get_previous_site_section(self):
         return self.site_section_nav(lambda x: x.get_previous_leaf())
-
-
-def section_site(x):
-    return SiteSection.objects.get(section_ptr=x)
-
-
-def get_previous_site_section(x):
-    return x.sitesection.get_previous_site_section()
-
-
-def get_next_site_section(x):
-    return x.sitesection.get_next_site_section()
-
-
-Section.sites = lambda x: section_site(x).sites.all()
-
-
-def in_site(x):
-    # settings.SITE_ID is set dynamically in carr.SiteIdMiddleware
-    # the SiteSections are weeded out as ssw or dental based on the site id
-    return x.sitesection.sites.filter(id=settings.SITE_ID).exists()
 
 
 def new_get_children(self):

@@ -19,9 +19,7 @@ from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
     training_is_complete, can_see_scores, scores_student
 from carr.utils import filter_users_by_affiliation, get_students
 
-from .models import (
-    SiteState, user_type, get_previous_site_section,
-    get_next_site_section)
+from .models import SiteState, user_type
 
 
 def context_processor(request):
@@ -66,8 +64,8 @@ def page(request, path):
         return HttpResponseRedirect(section.get_absolute_url())
 
     # the previous node is the last leaf, if one exists.
-    prev = get_previous_site_section(section)
-    next = get_next_site_section(section)
+    prev = section.sitesection.get_previous_site_section()
+    next = section.sitesection.get_next_site_section()
 
     # Is this section unlocked now?
     can_access = _unlocked(section, request.user, prev, ss)
