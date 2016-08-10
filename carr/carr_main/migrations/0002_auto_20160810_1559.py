@@ -15,14 +15,6 @@ class Migration(migrations.Migration):
         migrations.DeleteModel(
             name='FlashVideoBlock',
         ),
-        migrations.RemoveField(
-            model_name='pullquoteblock_2',
-            name='pullquoteblock_ptr',
-        ),
-        migrations.RemoveField(
-            model_name='pullquoteblock_3',
-            name='pullquoteblock_ptr',
-        ),
         migrations.DeleteModel(
             name='PullQuoteBlock_2',
         ),
