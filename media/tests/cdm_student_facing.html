@@ -476,6 +476,11 @@
     <td></td>
 </tr>
 <tr>
+    <td>verifyTextPresent</td>
+    <td>Page 2 of 11</td>
+    <td></td>
+</tr>
+<tr>
     <td>click</td>
     <td>//div[@id='analyze_action_criteria']/div[2]/p[2]/input</td>
     <td></td>
@@ -531,63 +536,268 @@
     <td></td>
 </tr>
 <tr>
+    <td>click</td>
+    <td>//div[@id='next_steps']/div[4]</td>
+    <td></td>
+</tr>
+<!--OK now view the blank report-->
+<tr>
     <td>verifyTextPresent</td>
-    <td>Page 4 of 6</td>
+    <td>Page 5 of 11</td>
     <td></td>
 </tr>
 <tr>
     <td>click</td>
-    <td>//div[@id='next_steps']/div[3]</td>
+    <td>css=#complete_report_overview &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[6]</td>
+    <td>Last name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First Name</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[7]</td>
+    <td>M</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[8]</td>
+    <td>12</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[63]</td>
+    <td>(212) 123-4567</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_top_of_form &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[66]</td>
+    <td>x</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[76]</td>
+    <td>x</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[80]</td>
+    <td>x</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_middle_of_form &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[118]</td>
+    <td>x</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[113]</td>
+    <td>x</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>css=input.ldss_form_input.name_1</td>
+    <td>my name</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>css=input.ldss_form_input.address_1</td>
+    <td>Ampers.: &amp; Apos.: ' Less: &lt; Greater: &gt;</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[123]</td>
+    <td>12</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[124]</td>
+    <td>10</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>xpath=(//input[@value=''])[125]</td>
+    <td>2012</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_bottom_of_form &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_overview &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_nice_work &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_expert &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<!-- fill out form -->
+<tr>
+    <td>clickAndWait</td>
+    <td>next</td>
+    <td></td>
+</tr>
+<!--Go back and re-navigate to the page.-->
+<tr>
+    <td>clickAndWait</td>
+    <td>id=previous</td>
     <td></td>
 </tr>
 <tr>
     <td>verifyTextPresent</td>
-    <td>Page 5 of 6</td>
-    <td></td>
-</tr>
-<tr>
-    <td>waitForVisible</td>
-    <td>complete_report</td>
-    <td></td>
-</tr>
-<tr>
-    <td>waitForVisible</td>
-    <td>form_pre_field_346_415</td>
-    <td></td>
-</tr>
-<tr>
-    <td>verifyVisible</td>
-    <td>form_pre_field_346_415</td>
-    <td></td>
-</tr>
-<tr>
-    <td>getEval</td>
-    <td>this.browserbot.getCurrentWindow().document.getElementById('form_pre_field_346_395').innerHTML = 'Line 4 blah blah blah'</td>
-    <td></td>
-</tr>
-<tr>
-    <td>getEval</td>
-    <td>this.browserbot.getCurrentWindow().document.getElementById('form_pre_field_346_415').innerHTML = 'Line 5 blah blah'</td>
-    <td></td>
-</tr>
-<tr>
-    <td>fireEvent</td>
-    <td>show_expert_form</td>
-    <td>click</td>
-</tr>
-<tr>
-    <td>waitForNotVisible</td>
-    <td>form_pre_field_346_415</td>
+    <td>Page 11 of 11</td>
     <td></td>
 </tr>
 <tr>
     <td>click</td>
-    <td>//div[@id='complete_report']/div[3]</td>
+    <td>css=#case_summary &gt; div.purple_button.taking_action_prev_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_expert &gt; div.purple_button.taking_action_prev_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_nice_work &gt; div.purple_button.taking_action_prev_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_bottom_of_form &gt; div.purple_button.taking_action_prev_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_middle_of_form &gt; div.purple_button.taking_action_prev_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_top_of_form &gt; div.purple_button.taking_action_prev_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_overview &gt; div.purple_button.taking_action_prev_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#next_steps &gt; div.purple_button.taking_action_prev_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#choose_action &gt; div.purple_button.taking_action_prev_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=div.purple_button.taking_action_prev_button</td>
     <td></td>
 </tr>
 <tr>
     <td>verifyTextPresent</td>
-    <td>running into a doorknob is not likely</td>
+    <td>Page 1 of 11</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>//div[@id='review_case_history']/div[3]</td>
+    <td></td>
+</tr>
+<tr>
+    <td>verifyTextPresent</td>
+    <td>Page 2 of 11</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>//div[@id='analyze_action_criteria']/div[4]</td>
+    <td></td>
+</tr>
+<tr>
+    <td>verifyTextPresent</td>
+    <td>Page 3 of 11</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>//div[@id='choose_action']/div[4]</td>
+    <td></td>
+</tr>
+<tr>
+    <td>verifyTextPresent</td>
+    <td>Page 4 of 11</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>//div[@id='next_steps']/div[4]</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_overview &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_top_of_form &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_middle_of_form &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_bottom_of_form &gt; div.purple_button.taking_action_next_button</td>
+    <td></td>
+</tr>
+<tr>
+    <td>verifyTextPresent</td>
+    <td>Page 9 of 11</td>
+    <td></td>
+</tr>
+<!--Assert that the text is still there.-->
+<tr>
+    <td>verifyTextPresent</td>
+    <td></td>
+    <td>(212) 123-4567</td>
+</tr>
+<tr>
+    <td>pause</td>
+    <td>5000</td>
+    <td></td>
+</tr>
+<!--POST TEST-->
+<tr>
+    <td>click</td>
+    <td>css=#complete_report_nice_work &gt; div.purple_button.taking_action_next_button</td>
     <td></td>
 </tr>
 <tr>
@@ -595,7 +805,6 @@
     <td>next</td>
     <td></td>
 </tr>
-<!--POST TEST-->
 <tr>
     <td>verifyTextPresent</td>
     <td>Please answer the following questions</td>
@@ -876,7 +1085,7 @@
 <!--Final quiz with perfect score is now submitted.-->
 <tr>
     <td>verifyTextPresent</td>
-    <td>10 out of a possible 10.</td>
+    <td>10 / 10.</td>
     <td></td>
 </tr>
 <tr>
