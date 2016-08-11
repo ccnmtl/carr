@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from django.contrib.sites.models import Site
 import factory
-from pagetree.models import Hierarchy, Section
+from pagetree.models import Hierarchy, Section, SectionChildren
 
 from carr.carr_main.models import SiteState, SiteSection
 
@@ -54,3 +54,8 @@ class SectionFactory(factory.DjangoModelFactory):
     label = "test section"
     slug = "test"
     hierarchy = factory.SubFactory(HierarchyFactory)
+
+
+class SectionChildrenFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = SectionChildren

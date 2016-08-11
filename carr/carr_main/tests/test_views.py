@@ -110,37 +110,66 @@ class TestViews(TestCase):
         self.assertFalse(_unlocked(section2, site.user, section1, site))
         self.assertFalse(_unlocked(section3, site.user, section2, site))
 
-    def test_construct_menu(self):
+
+class TestHierarchyNavigation(TestCase):
+
+    def setUp(self):
         h = HierarchyFactory()
-        root = h.get_root()
-        site = SiteFactory()
+        self.root = h.get_root()
+        self.site = SiteFactory()
 
-        section1 = SiteSectionFactory(hierarchy=h)
-        section1.sites.add(site)
-        SectionChildren.objects.create(
-            parent=root, child=section1, ordinality=1)
+        self.section1 = SiteSectionFactory(hierarchy=h)
+        self.section1.sites.add(self.site)
+        SectionChildren.objects.create(parent=self.root, child=self.section1)
 
-        section2 = SiteSectionFactory(hierarchy=h)
-        section2.sites.add(site)
-        SectionChildren.objects.create(
-            parent=root, child=section2, ordinality=2)
+        self.section2 = SiteSectionFactory(hierarchy=h)
+        self.section2.sites.add(self.site)
+        SectionChildren.objects.create(parent=self.root, child=self.section2)
 
-        section3 = SiteSectionFactory(hierarchy=h)
-        section3.sites.add(site)
-        SectionChildren.objects.create(
-            parent=root, child=section3, ordinality=3)
+        self.section3 = SiteSectionFactory(hierarchy=h)
+        self.section3.sites.add(self.site)
+        SectionChildren.objects.create(parent=self.root, child=self.section3)
 
-        with self.settings(SITE_ID=site.id):
-            ss = SiteStateFactory()
-            menu = _construct_menu(site, ss.user, root, section3, ss)
+        self.section4 = SiteSectionFactory(hierarchy=h)
+        SectionChildren.objects.create(parent=self.root, child=self.section4)
+
+        self.ss = SiteStateFactory()
+
+    def test_construct_menu(self):
+        with self.settings(SITE_ID=self.site.id):
+            menu = _construct_menu(
+                self.ss.user, self.root, self.section3, self.ss)
             self.assertEquals(len(menu), 3)
 
-            self.assertEquals(menu[0]['section'].label, section1.label)
+            self.assertEquals(menu[0]['section'].label, self.section1.label)
             self.assertTrue(menu[0]['accessible'])
 
-            self.assertEquals(menu[1]['section'].label, section2.label)
+            self.assertEquals(menu[1]['section'].label, self.section2.label)
             self.assertFalse(menu[1]['accessible'])
 
-            self.assertEquals(menu[2]['section'].label, section3.label)
+            self.assertEquals(menu[2]['section'].label, self.section3.label)
             self.assertFalse(menu[2]['accessible'])
             self.assertTrue(menu[2]['selected'])
+
+    def test_hierarchy_navigation(self):
+        with self.settings(SITE_ID=self.site.id):
+            kids = self.root.get_children()
+            self.assertEquals(len(kids), 3)
+            self.assertEquals(kids[0].sitesection, self.section1)
+            self.assertEquals(kids[1].sitesection, self.section2)
+            self.assertEquals(kids[2].sitesection, self.section3)
+
+            sibs = self.section1.get_siblings()
+            self.assertEquals(len(sibs), 3)
+            self.assertEquals(sibs[0].sitesection, self.section1)
+            self.assertEquals(sibs[1].sitesection, self.section2)
+            self.assertEquals(sibs[2].sitesection, self.section3)
+
+            self.assertEquals(
+                self.section2.sitesection.get_previous_site_section(),
+                self.section1)
+            self.assertEquals(
+                self.section1.sitesection.get_next_site_section(),
+                self.section2)
+            self.assertIsNone(self.section3.get_next_site_section())
+            self.assertIsNone(self.section1.get_previous_site_section())

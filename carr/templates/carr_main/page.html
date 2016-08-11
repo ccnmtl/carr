@@ -4,14 +4,14 @@
 
 {% block sidebarleft %}
     {% with "selected" as style_class %}
-        {% with leftnav as menu %}
+    {% with leftnav as menu %}
         {% if leftnav|length %}
             <h4>Sections</h4>
                 <ul>
                     {% include "carr_main/level_menu.html" %}
                 </ul>
         {% endif %}
-        {% endwith %}
+    {% endwith %}
     {% endwith %}
 {% endblock %}
 

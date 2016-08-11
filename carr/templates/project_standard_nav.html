@@ -1,11 +1,9 @@
 {% load carr_main_template_tags %}
 <ul id="standardnav">
-
-  <li><a href="/">Training</a></li>
   <li><a href="/background/about/">About</a></li>
   <li><a href="/background/credits/">Credits</a></li>
   <li><a href="/background/contact/">Contact</a></li>
-  
+
   {% if user.is_authenticated %}
       {% user_type user as ut %}
       {% if ut == "student" %}
@@ -13,8 +11,8 @@
       {% else %}
           <li><a href="/scores/">Scores</a></li>
       {% endif %}
-{%endif %}
-    
+  {%endif %}
+
 {%if user.is_staff %}
   <li><a href="{{STATIC_URL}}selenium/TestRunner.html?test=..%2Ftests%2FTestSuite.html">Tests</a></li>
   <li><a href="/add_classes/">Add Course</a></li>
@@ -26,4 +24,3 @@
    <li><a href="/accounts/login/?next=/welcome/">Login</a></li>
 {% endif %}
 </ul>
-

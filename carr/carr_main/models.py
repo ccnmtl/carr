@@ -1,11 +1,8 @@
 from django.conf import settings
 from django.db import models
 import json
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.sites.models import Site
-from pagetree.models import PageBlock, Section, SectionChildren
-from pageblocks.models import PullQuoteBlock
-from django import forms
+from pagetree.models import Section, SectionChildren
 from django.db.models.signals import post_save
 from django.core.cache import cache
 from django.contrib.auth.models import User, Group
@@ -118,8 +115,7 @@ class SiteState(models.Model):
             self.state_object = {}
 
     def get_has_visited(self, section):
-        has_visited = str(section.id) in self.state_object
-        return has_visited
+        return str(section.id) in self.state_object
 
     def set_has_visited(self, sections):
         for s in sections:
@@ -130,7 +126,7 @@ class SiteState(models.Model):
 
     def save_last_location(self, path, section):
         if len([a for a in Site.objects.all()
-                if a not in section_site(section.id).sites.all()]) > 0:
+                if a not in section.sitesection.sites.all()]) > 0:
             return
         self.state_object[str(section.id)] = section.label
         self.last_location = path
@@ -145,13 +141,19 @@ class SiteSection(Section):
     def __unicode__(self):
         return self.label
 
+    @classmethod
+    def in_site(cls, x):
+        # settings.SITE_ID is set dynamically in carr.SiteIdMiddleware
+        # the SiteSections are weeded out as ssw or dental based on the site id
+        return x.sitesection.sites.filter(id=settings.SITE_ID).exists()
+
     def site_section_nav(self, traversal_function):
         """ traverse the tree until you can return a page that visible
         on the current site"""
         x = self
         while traversal_function(x):
-            x = section_site(traversal_function(x).id)
-            if settings.SITE_ID in [s.id for s in x.sites.all()]:
+            x = traversal_function(x).sitesection
+            if self.in_site(x):
                 return x
         return None
 
@@ -162,39 +164,21 @@ class SiteSection(Section):
         return self.site_section_nav(lambda x: x.get_previous_leaf())
 
 
-def section_site(x):
-    return SiteSection.objects.get(section_ptr=x)
-
-
-def get_previous_site_section(x):
-    return section_site(x).get_previous_site_section()
-
-
-def get_next_site_section(x):
-    return section_site(x).get_next_site_section()
-
-
-Section.sites = lambda x: section_site(x).sites.all()
-
-
-def in_site(x):
-    # settings.SITE_ID is set dynamically in carr.SiteIdMiddleware
-    # the SiteSections are weeded out as ssw or dental based on the site id
-    return settings.SITE_ID in [s.id for s in x.sites()]
-
-
 def new_get_children(self):
+    qs = SectionChildren.objects.filter(
+        parent=self, child__sitesection__sites__id=settings.SITE_ID)
     return (
-        [sc.child for sc in SectionChildren.objects.filter(
-            parent=self).order_by("ordinality") if in_site(sc.child)]
+        [sc.child for sc in qs.select_related('child').order_by("ordinality")]
     )
 Section.get_children = new_get_children
 
 
 def new_get_siblings(self):
+    qs = SectionChildren.objects.filter(
+        parent=self.get_parent(),
+        child__sitesection__sites__id=settings.SITE_ID)
     return (
-        [sc.child for sc in SectionChildren.objects.filter(
-            parent=self.get_parent()) if in_site(sc.child)]
+        [sc.child for sc in qs.select_related('child').order_by("ordinality")]
     )
 Section.get_siblings = new_get_siblings
 
@@ -211,79 +195,3 @@ def find_or_add_site_section(**kwargs):
         new_site_section.save()
 
 post_save.connect(find_or_add_site_section, Section)
-
-
-class FlashVideoBlock(models.Model):
-    pageblocks = GenericRelation(PageBlock)
-    file_url = models.CharField(max_length=512)
-    image_url = models.CharField(max_length=512)
-    width = models.IntegerField()
-    height = models.IntegerField()
-
-    template_file = "carr_main/flashvideoblock.html"
-    display_name = "Flash Video (using JW Player)"
-
-    def pageblock(self):
-        return self.pageblocks.all()[0]
-
-    def __unicode__(self):
-        return unicode(self.pageblock())
-
-    def edit_form(self):
-        class EditForm(forms.Form):
-            file_url = forms.CharField(initial=self.file_url)
-            image_url = forms.CharField(initial=self.image_url)
-            width = forms.IntegerField(initial=self.width)
-            height = forms.IntegerField(initial=self.height)
-        return EditForm()
-
-    @classmethod
-    def add_form(self):
-        class AddForm(forms.Form):
-            file_url = forms.CharField()
-            image_url = forms.CharField()
-            width = forms.IntegerField()
-            height = forms.IntegerField()
-        return AddForm()
-
-    @classmethod
-    def create(self, request):
-        return FlashVideoBlock.objects.create(
-            file_url=request.POST.get('file_url', ''),
-            image_url=request.POST.get(
-                'image_url',
-                ''),
-            width=request.POST.get(
-                'width',
-                ''),
-            height=request.POST.get('height', ''))
-
-    def edit(self, vals, files):
-        self.file_url = vals.get('file_url', '')
-        self.image_url = vals.get('image_url', '')
-        self.width = vals.get('width', '')
-        self.height = vals.get('height', '')
-        self.save()
-
-
-class PullQuoteBlock_2 (PullQuoteBlock):
-    template_file = "admin/pageblocks/pullquoteblock_2.html"
-    display_name = "Pull Quote Type 2"
-
-    @classmethod
-    def create(self, request):
-        return (
-            PullQuoteBlock_2.objects.create(body=request.POST.get('body', ''))
-        )
-
-
-class PullQuoteBlock_3 (PullQuoteBlock):
-    template_file = "admin/pageblocks/pullquoteblock_3.html"
-
-    display_name = "Pull Quote Type 3"
-
-    @classmethod
-    def create(self, request):
-        return (
-            PullQuoteBlock_3.objects.create(body=request.POST.get('body', ''))
-        )
