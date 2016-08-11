@@ -54,12 +54,12 @@ def page(request, path):
     h = Hierarchy.get_hierarchy('main')
     current_root = h.get_section_from_path(path)
     section = h.get_first_leaf(current_root)
-    ancestors = section.get_ancestors()
     ss = SiteState.objects.get_or_create(user=request.user)[0]
     current_site = get_current_site(request)
 
     # Skip to the first leaf, make sure to mark these sections as visited
     if (current_root != section):
+        ancestors = section.get_ancestors()
         ss.set_has_visited(ancestors)
         return HttpResponseRedirect(section.get_absolute_url())
 
@@ -71,25 +71,19 @@ def page(request, path):
     can_access = _unlocked(section, request.user, prev, ss)
     if can_access:
         # just to avoid drama, only save last location if the section
-        # is available on both sites.  import pdb pdb.set_trace()
+        # is available on both sites.
         ss.save_last_location(request.path, section)
-
-    module = None
-    if not section.is_root:
-        module = ancestors[1]
-
-    # construct the subnav up here. it's too heavy on the client side
-    subnav = _construct_menu(request.user, module, section, ss)
 
     # construct the left nav up here too.
     depth = section.depth()
-    parent = section
     if depth == 3:
         parent = section.get_parent()
     elif depth == 4:
         parent = section.get_parent().get_parent()
     elif depth == 5:
         parent = section.get_parent().get_parent().get_parent()
+    else:
+        parent = section
 
     leftnav = _construct_menu(request.user, parent, section, ss)
 
@@ -99,11 +93,8 @@ def page(request, path):
     return render(request, 'carr_main/page.html',
                   dict(section=section,
                        accessible=can_access,
-                       module=module,
-                       root=ancestors[0],
                        previous=prev,
                        next=next,
-                       subnav=subnav,
                        depth=depth,
                        site_domain=current_site.domain,
                        leftnav=leftnav))
