@@ -8,107 +8,102 @@
 
 <div id="hidden_js_info">
 
-	<div id="case_name">
-		{{block.case.name}}
-	</div>
-	
+    <div id="case_name">
+        {{block.case.name}}
+    </div>
 </div>
 
 <div id="case_info_div">
 
-	<div id="bruise_recon_photo_container">
-		<img class="bruise_recon_img" src="{% media_url %}{{block.case.image}}" />
-	</div>
-	
-	<div id="bruise_recon_history_container">
-		<h5>
-			Case History
-		</h5>
-		{{block.case.case_history}} 
-	</div>
-	
+    <div id="bruise_recon_photo_container">
+        <img class="bruise_recon_img" src="{% media_url %}{{block.case.image}}" />
+    </div>
+
+    <div id="bruise_recon_history_container">
+        <h5>
+            Case History
+        </h5>
+        {{block.case.case_history}} 
+    </div>
+
 </div>
 
 <div id="questions_div">
+    <div id="your_answer_was" style="display: none" class="alert"></div>
 
-	<h4>
-		Question: 
-	</h4>
-	
-	<p>
-		Is this likely to be a case of child abuse? 
-	</p>
-	
-	<div class="buttons_div">
-		<div class="answer_button purple_button" id="answer_yes">
-			Yes 
-		</div>
-		<div class="answer_button purple_button" id="answer_no">
-			No 
-		</div>
-	</div>
-	
-	<br />
-	
-	<p>
-		What factor(s) led you to this decision? 
-	</p>
-	
-	<div class="factors_div">
-		<!--
-		{{block.case.factors_for_decision}} 
-		-->
-		<div class="bruise_recon_checkbox_div purple_button" id="patterns">
-			Patterns 
-		</div>
-		<div class="bruise_recon_checkbox_div purple_button" id="severity">
-			Severity 
-		</div>
-		<div class="bruise_recon_checkbox_div purple_button" id="body location">
-			Body Location 
-		</div>
-		<div class="bruise_recon_checkbox_div purple_button" id="explanation">
+    <div class="casetitle">
+        Question 1 
+    </div>
+    <p>
+        Is this likely to be a case of child abuse? 
+    </p>
+    <div class="buttons_div">
+        <div class="answer_button btn btn-default" id="answer_yes">
+            Yes 
+        </div>
+        <div class="answer_button btn btn-default" id="answer_no">
+            No 
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <br /><br /> 
+
+    <div class="casetitle">
+        Question 2 
+    </div>
+    <p>
+        What factor(s) led you to this decision? 
+    </p>
+
+    <div class="factors_div">
+        <div class="bruise_recon_checkbox_div btn btn-default" id="patterns">
+            Patterns 
+        </div>
+        <div class="bruise_recon_checkbox_div btn btn-default" id="severity">
+            Severity 
+        </div>
+        <div class="bruise_recon_checkbox_div btn btn-default" id="body location">
+            Body Location 
+        </div>
+        <div class="bruise_recon_checkbox_div btn btn-default" id="explanation">
             Explanation
-		</div>
-	</div>
-	
-	<div id="submit_div">
-		Answer Questions
-	</div>
-	
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div id="submit_div" class="text-center">
+        <div class="btn btn-primary">
+            Answer Questions
+        </div>
+    </div>
 </div>
 
 <div id="feedback_div">
+    <br /><br />
+    <div id="correct_answer">
+        <h4>Correct Answer:</h4> 
 
-	<div id="your_answer_was"></div>
-	
-	<div id="correct_answer">
-		<h4>Correct Answer:</h4> 
-		
-		<p>
-		Is this a case of abuse? <em>{{block.case.correct_answer}}</em>. 
-		</p>
-		
-		<div id="correct_factors">
-			<p>
-			What factor(s) led to this decision? <em>{{block.case.factors_for_decision}}</em>. 
-			</p>
-			
-		</div>
-		
-	</div>
-	
-	
-	<div class="explanation">
-	
-		<h4>
-		Explanation:
-		</h4>
-		
-		<p>
-		{{block.case.explanation}} 
-		</p>
-		</div>
-	
-	
+        <p>
+        Is this a case of abuse? <em>{{block.case.correct_answer}}</em>. 
+        </p>
+
+        <div id="correct_factors">
+            <p>
+            What factor(s) led to this decision? <em>{{block.case.factors_for_decision}}</em>. 
+            </p>
+
+        </div>
+    </div>
+
+    <div class="explanation">
+
+        <h4>
+        Explanation:
+        </h4>
+
+        <p>
+        {{block.case.explanation}} 
+        </p>
+        </div>
 </div>

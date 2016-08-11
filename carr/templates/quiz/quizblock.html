@@ -13,10 +13,15 @@
 
 <!-- Once sorted, the questions will go here:.-->
 
-<div id ="show_quiz_results">
-You  <span id="initially">initially&nbsp;</span>scored <span id="quiz_score">x</span> out of a possible <span id="quiz_max_score">y</span>.
+<div id ="show_quiz_results" class="alert alert-success" role="alert">
+    <div class="pull-left">
+        Your <span id="initially">initial </span>score was <span id="quiz_score">x</span> / <span id="quiz_max_score">y</span>.
+    </div>
+    <div id="retake_quiz_div" class="pull-right">
+        <a onMouseUp="retakeQuiz()" class="btn btn-primary pull-right">Retake Quiz</a>
+    </div>
+    <div class="clearfix"></div>
 </div>
-
 
 {{ block.description|markdown }}
 
@@ -29,41 +34,33 @@ You  <span id="initially">initially&nbsp;</span>scored <span id="quiz_score">x</
 <div class="cases really" id = "case_{{question.id}}" >
      {{question.intro_text|markdown}}
 
-     <div class="casetitle"> Question <span class = "question_order">x</span>
-     <!-- (id "case_{{question.id}}" ) -->
-     :</div>
-     
+     <div class="casetitle"> Question <span class = "question_order">x</span></div>
+
      <div class="casecontent">
            <div class="casequestion">
                  {{question.text|markdown}}
                  <form id="form-{{question.id}}" method="post">
                        <ol type="A">
-	                     {% for answer in question.answer_set.all %}
+                         {% for answer in question.answer_set.all %}
                           <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" right_answer="{{answer.correct}}"/>{{answer.label}}</li>
-                          
-	                     {% endfor %}
+
+                         {% endfor %}
                       </ol>
                  </form>
            </div>
 
            <div class="casesanswerdisplay">
-              <div id="{{question.id}}_answer" class="answer" >
-                 <p>{% if question.correct_answer_letter %}<b>The
-                 correct answer is
-                 {{question.correct_answer_letter}}: 
-                 {{question.correct_answer_value}}</b>{% endif %} {{question.explanation|markdown}}</p>
-                 <p>
-                 </p>
+              <div id="{{question.id}}_answer" class="well answer" style="display: none;">
+                    {% if question.correct_answer_letter %}
+                        <b> The correct answer is {{question.correct_answer_letter}}:</b> {{question.correct_answer_value}}
+                    {% endif %}
+                    <p>{{question.explanation|markdown}}</p>
               </div>
            </div>
      </div>
 </div> 
 {% endfor %}
-<div id ="show_score">
-    <a onMouseUp="showScore()" id="show_score_link">Submit Your Responses</a>
-</div>
 
-
-<div id ="retake_quiz_div">
-    <a onMouseUp="retakeQuiz()" >Retake Quiz</a>
+<div id ="show_score" class="text-center">
+    <a onMouseUp="showScore()" id="show_score_link" class="btn btn-primary">Submit Your Responses</a>
 </div>

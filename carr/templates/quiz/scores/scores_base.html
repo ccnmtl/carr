@@ -22,13 +22,15 @@
     <img src ="{{STATIC_URL}}img/logo_cussw.gif"/>
 </div>
 {%endblock%}
+
 {% block pagetitle %}{% endblock %}
+
 {% block content %}
     <ul class="breadcrumb">
         {% block scores_breadcrumbs %}
         {% endblock scores_breadcrumbs %}
     </ul>
-    <div class="jumbotron subhead ">
+    <div class="subhead ">
         <h1>
             {% block scores_title %}Scores title{%endblock %}
         </h1>

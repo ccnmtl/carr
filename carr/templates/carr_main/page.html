@@ -3,21 +3,20 @@
 {% block title %}{{section.label}}{% endblock %}
 
 {% block sidebarleft %}
-   {% with "selected" as style_class %}
-      {% with leftnav as menu %}
-         {% if leftnav|length %}		  
-				<h4>Sections</h4>
-		   <ul>
-			   {% include "carr_main/level_menu.html" %}
-			</ul>
-			{% endif %}
-			
-		{% endwith %}
-	{% endwith %}
+    {% with "selected" as style_class %}
+        {% with leftnav as menu %}
+        {% if leftnav|length %}
+            <h4>Sections</h4>
+                <ul>
+                    {% include "carr_main/level_menu.html" %}
+                </ul>
+        {% endif %}
+        {% endwith %}
+    {% endwith %}
 {% endblock %}
 
 {% block subnav %}
-    {% if request.user.is_superuser %}      
+    {% if request.user.is_superuser %}
         <li>
             <a href="/edit{{section.get_absolute_url}}">Edit Page</a>
         </li>
@@ -28,36 +27,49 @@
    {% if not accessible %}
       This page is not currently accessible. Please complete your current section before moving onto a new section.
    {% else %}
-		<h2>{{ section.label }}</h2>
-		{% for block in section.pageblock_set.all %}
-			{{ block.render }}
-		{% endfor %}
-   {% endif %}		
+        <h2>{{ section.label }}</h2>
+        {% for block in section.pageblock_set.all %}
+            {{ block.render }}
+        {% endfor %}
+   {% endif %}
 {% endblock %}
 
 {% block contentnav %}
-<table>
-<tr>
-<td>
-  {% if previous %}
-     <a href="{{previous.get_absolute_url}}" id="previous">« {{previous.label}}</a>
-  {% endif %}</td><td width="100%" align="center>
-  <div id="page_numbering">
-  {% ifequal depth 4 %}
-     {% with section.get_siblings as siblings %}
-        {% with section.get_parent as parent %}
-		     {% for sibling in siblings %}
-		        {% ifequal sibling section %}
-		           {{parent.label}} | Page {{forloop.counter}} of {{siblings|length}}
-		        {% endifequal %}
-		     {% endfor %}
-		  {% endwith %}
-	  {% endwith %} 
-  {% endifequal %}
-  	  </div></td><td>
-  {% if next %}
-     <!-- added to allow javascript access to the menu links. hack for the js activities enabling/disabling of links -->
-     <input type="hidden" id="next_section_slug" name="next_section_slug" value="{{next.slug}}"/>
-     <a href="{{next.get_absolute_url}}" id="next">{{next.label}} »</a>
-  {% endif %}</td></tr></table>
+    <div class="content-nav">
+    <nav>
+        <ul class="pager">
+            <li class="previous">
+                {% if previous %}
+                    <a href="{{previous.get_absolute_url}}" id="previous">« Previous</a>
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            </li>
+            <li>
+                <div class="page-numbers">
+                {% spaceless %}
+                {% ifequal depth 4 %}
+                    {% with section.get_siblings as siblings %}
+                    {% with section.get_parent as parent %}
+                         {% for sibling in siblings %}
+                            {% ifequal sibling section %}
+                               {{parent.label}} | Page {{forloop.counter}} of {{siblings|length}}
+                            {% endifequal %}
+                         {% endfor %}
+                    {% endwith %}
+                    {% endwith %} 
+                {% endifequal %}
+                {% endspaceless %}
+                </div>
+            </li>
+            {% if next %}
+                <li class="next">
+                    <!-- added to allow javascript access to the menu links. hack for the js activities enabling/disabling of links -->
+                    <input type="hidden" id="next_section_slug" name="next_section_slug" value="{{next.slug}}"/>
+                    <a href="{{next.get_absolute_url}}" id="next">Next »</a>
+                </li>
+            {% endif %}
+      </ul>
+    </nav>
+    </div>
 {% endblock %}

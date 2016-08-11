@@ -33,6 +33,7 @@ INSTALLED_APPS += [  # noqa
     'sorl.thumbnail',
     'courseaffils',
     'pagetimer',
+    'bootstrap3'
 ]
 
 PROJECT_APPS = [

@@ -2,63 +2,45 @@
 
 {% block content %}
 
-{% if form.errors %}
+<div class="loginbox">
+    <h2>Choose a login option...</h2>
+    <div class="content">
+    
+    <form method="get" action="{{ CAS_BASE }}cas/login">
+    <input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/caslogin/?next={{ next }}" />
+    <p>If you have a Columbia University Network ID (UNI)...</p>
+    <input class="regbutton" type="submit" value="LOG IN" />
+    </form>
 
-<p>Your user name and password didn't match. Please try again.</p>
-
+    <p class="smalltxt"><a href="http://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a></p>
+    <!-- End UNI LOG IN -->
+    
+    <hr class="seperator" />
+    
+{% if form.errors%}
+    <p class="errornote"><span><b>ERROR:</b> Invalid username or password.</span> Please try again. Note that both username and password are case-sensitive.</p>
 {% endif %}
 
-	<div style="float:right; width:30%; margin: 0px 0px 120px 30px;">
-	
-		<fieldset style="background-color: #eee;">
-		
-		<legend style="background-color: #ccc; font-weight: bold;">Log In</legend>
+    <p>If you have a guest account...</p>
+<form method="post" action="." name="login_local">
 
+{% csrf_token %}
 
-	<div>
-		
-		<form method="get" action="{{ CAS_BASE }}cas/login">
-		<input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/caslogin/?next={{ next }}" />
-		
-		<p style="font-weight: bold;">Columbia Users:</p>
-		
-		<input type="submit" value="Log In with Columbia UNI" />
-		</form>
-		
-		
-	</div>
-	
-	<hr size="1" />
-	
-	<div>
-	
-		
-		<p style="font-weight: bold;">All Other Users:</p>
-		
-		
-		<form method="post" action=".">
+    <div class="fieldwrapper">
+        <label for="id_username">Username:</label>
+        {{ form.username }}
+    </div><!-- fieldwrapper -->
 
-		<div>
-		
-		<div><label for="id_username">User Name:</label></div>
-		<div>{{ form.username }}</div>
-		
-		</div>
-		
-		<div>
-		
-		<div><label for="id_password">Password:</label></div>
-		<div>{{ form.password }} </div>
-		
-		</div>
+    <div class="fieldwrapper">
+        <label for="id_password">Password:</label>
+        {{ form.password }}
+    </div><!-- fieldwrapper -->
 
-		<input type="submit" value="Log In" />
-		<input type="hidden" name="next" value="{{ next }}" />
-		</form>
-		
-	</div>
-	
-		</fieldset>
+<input class="regbutton" type="submit" value="LOG IN" />
+<input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}/{% endif %}" />
+</form>
+    </div><!-- content -->
+</div><!-- loginbox -->
 
 </div>
 
