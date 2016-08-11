@@ -2,6 +2,7 @@
 # Django settings for carr project.
 import os.path
 import re
+import sys
 from datetime import timedelta
 
 from ccnmtlsettings.shared import common
@@ -15,6 +16,14 @@ CACHES = {
         'LOCATION': 'carr',
     }
 }
+if 'test' in sys.argv or 'jenkins' in sys.argv:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+            'LOCATION': 'carr',
+        }
+    }
+
 
 MIDDLEWARE_CLASSES += [  # noqa
     'courseaffils.middleware.CourseManagerMiddleware',
