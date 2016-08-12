@@ -13,7 +13,7 @@
       {% endif %}
   {%endif %}
 
-{%if user.is_staff %}
+{%if user.is_staff or user.username == 'student1' %}
   <li><a href="{{STATIC_URL}}selenium/TestRunner.html?test=..%2Ftests%2FTestSuite.html">Tests</a></li>
   <li><a href="/add_classes/">Add Course</a></li>
 {% endif %}
