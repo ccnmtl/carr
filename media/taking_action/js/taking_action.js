@@ -105,7 +105,7 @@ function deprecated_ldss_form_fields_to_save() {
     return results;
 }
 
-function saveState() {
+function saveState(nextStep) {
     if (typeof student_response !== 'undefined') {
         return;
     }
@@ -119,18 +119,22 @@ function saveState() {
 
     doc.current_step = current_step;
 
-    var xmlhttp;
-    if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    xmlhttp.open('POST', url, false);
-    xmlhttp.setRequestHeader('Content-type',
-            'application/x-www-form-urlencoded');
-    xmlhttp.send(queryString({
-        'json': JSON.stringify(doc, null)
-    }));
+    addElementClass(document.body, 'busy');
+    var deferred = MochiKit.Async.doXHR(
+        url,
+        {'method': 'POST',
+         'sendContent': queryString({'json': JSON.stringify(doc, null)}),
+         'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    deferred.addCallback(function() {
+        removeElementClass(document.body, 'busy');
+        load_step(nextStep);
+    });
+    deferred.addErrback(function() {
+        removeElementClass(document.body, 'busy');
+        alert('An error occurred while saving your results. ' +
+              'Please refresh the page and try again.');
+    });
 }
 
 function set_up_all_form_fields() {
@@ -294,7 +298,7 @@ function set_up_nav(array_of_steps, step_number) {
     var next_button = findChildElements($(step_name),
         ['.taking_action_next_button'])[0];
     if (next_button !== undefined) {
-        connect(next_button, 'onclick', partial(load_step, next_step));
+        connect(next_button, 'onclick', partial(saveState, next_step));
     }
 }
 
@@ -380,5 +384,3 @@ function init_taking_action() {
         }
     };
 }
-
-MochiKit.Signal.connect(window, 'onbeforeunload', saveState);
