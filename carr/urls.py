@@ -80,6 +80,8 @@ urlpatterns = [
 
     url(r'^background/(?P<content_to_show>\w+)/$', main_views.background),
 
+    url(r'^_impersonate/', include('impersonate.urls')),
+
     url(r'^pagetimer/', include('pagetimer.urls')),
     url(r'^pagetree/', include('pagetree.urls')),
 
