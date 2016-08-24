@@ -8,6 +8,10 @@ body {
     color: #000;
 }
 
+.busy, .busy * {
+  cursor: wait;
+}
+
 /* ########## Standard elements ########## */
 
 input[type=checkbox], input[type=radio] {

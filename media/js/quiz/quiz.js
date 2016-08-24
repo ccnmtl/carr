@@ -251,11 +251,6 @@ function debug(string) {
     }
 }
 
-// default behavior, called from the show score button when the user first submits the quiz.
-function showScore() {
-    show_score(true);
-}
-
 function show_score(fresh_answers) {
     // all visible answers:
     var all_answers = $$('#sorted_questions_div input.question');
@@ -351,8 +346,6 @@ function show_score(fresh_answers) {
     }
 
     freeze_buttons();
-    maybeEnableNext();
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
 function loadStateError(err) {
@@ -388,10 +381,24 @@ function collect_question_info() {
     return question_info;
 }
 
+function onSaveStateComplete() {
+    removeElementClass(document.body, 'busy');
+    maybeEnableNext();
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+}
+
+function onSaveStateFailed() {
+    removeElementClass(document.body, 'busy');
+    alert('An error occurred while saving your results. ' +
+          'Please refresh the page and try again.');
+}
+
 function saveState() {
     if (typeof student_response !== 'undefined') {
         return;
     }
+
+    show_score(true);
 
     var what_to_send = all_quizzes_info;
     var url = '/activity/quiz/save/';
@@ -445,16 +452,15 @@ function saveState() {
         }
     }
 
-    var xmlhttp;
-    if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    xmlhttp.open('POST', url, false);
-    xmlhttp.setRequestHeader('Content-type',
-                             'application/x-www-form-urlencoded');
-    xmlhttp.send(queryString({'json': serializeJSON(what_to_send)}));
+    addElementClass(document.body, 'busy');
+    var deferred = MochiKit.Async.doXHR(
+        url,
+        {'method': 'POST',
+         'sendContent': queryString({'json': serializeJSON(what_to_send)}),
+         'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    deferred.addCallback(onSaveStateComplete);
+    deferred.addErrback(onSaveStateFailed);
 }
 
 function retakeQuiz() {
@@ -476,4 +482,3 @@ function kill_this_quiz()  {
 }
 
 MochiKit.Signal.connect(window, 'onload', loadState);
-MochiKit.Signal.connect(window, 'onbeforeunload', saveState);
