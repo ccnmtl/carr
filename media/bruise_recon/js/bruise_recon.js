@@ -128,7 +128,7 @@ function loadState() {
     connect('explanation', 'onclick', partial(like_checkbox, 'button_selected',
             'bruise_recon_checkbox_div', 'explanation'));
 
-    connect('submit_div', 'onclick', show_answer);
+    connect('submit_div', 'onclick', saveState);
 
     maybeEnableNext();
 
@@ -232,15 +232,27 @@ function show_answer() {
     showElement('your_answer_was');
     showElement('feedback_div');
     lock_down_answer_buttons();
-    maybeEnableNext();
 }
 
 MochiKit.Signal.connect(window, 'onload', loadState);
+
+function onSaveStateComplete() {
+    removeElementClass(document.body, 'busy');
+    maybeEnableNext();
+}
+
+function onSaveStateFailed() {
+    removeElementClass(document.body, 'busy');
+    alert('An error occurred while saving your results. ' +
+          'Please refresh the page and try again.');
+}
 
 function saveState() {
     if (typeof student_response !== 'undefined') {
         return;
     }
+
+    show_answer();
 
     var case_name = $('case_name').innerHTML.trim();
 
@@ -282,18 +294,14 @@ function saveState() {
     var what_to_send = {};
     what_to_send[case_name] = doc;
 
-    var xmlhttp;
-    if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    xmlhttp.open('POST', url, false);
-    xmlhttp.setRequestHeader('Content-type',
-            'application/x-www-form-urlencoded');
-    xmlhttp.send(queryString({
-        'json': JSON.stringify(what_to_send, null)
-    }));
+    addElementClass(document.body, 'busy');
+    var deferred = MochiKit.Async.doXHR(
+        url,
+        {'method': 'POST',
+         'sendContent': queryString({'json': serializeJSON(what_to_send)}),
+         'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    deferred.addCallback(onSaveStateComplete);
+    deferred.addErrback(onSaveStateFailed);
 }
 
-MochiKit.Signal.connect(window, 'onbeforeunload', saveState);
