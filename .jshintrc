@@ -11,6 +11,7 @@
 				"$$",
 				"ActiveXObject",
 				"addElementClass",
+				"removeElementClass",
 				"alert",
         "confirm",
 				"DIV",

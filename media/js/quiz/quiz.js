@@ -7,7 +7,6 @@ var all_quizzes_info = {};
 var post_test = window.location.href.match(/post_test/) !== null;
 var pre_test = window.location.href.match(/pretest/) !== null;
 
-var kill_state_flag = false;
 var kill_this_quiz_flag = false;
 var hide_retake = false;
 
@@ -116,7 +115,7 @@ function loadStateSuccess(doc) {
             the_answers = this_quiz.question;
         }
         show_previous_answers_to_quiz(the_answers);
-        show_score(false);
+        show_score();
         freeze_buttons();
     } else {
         order = calculate_order();
@@ -251,12 +250,7 @@ function debug(string) {
     }
 }
 
-// default behavior, called from the show score button when the user first submits the quiz.
-function showScore() {
-    show_score(true);
-}
-
-function show_score(fresh_answers) {
+function show_score() {
     // all visible answers:
     var all_answers = $$('#sorted_questions_div input.question');
     var quiz_key =  'quiz_' + $('quiz_id').value;
@@ -268,17 +262,6 @@ function show_score(fresh_answers) {
 
     var number_of_questions_to_answer = $$('#sorted_questions_div .cases')
         .length;
-
-    // If the user just took the quiz, do basic_validation before scoring.
-    if (fresh_answers) {
-        if (chosen_answers.length < number_of_questions_to_answer) {
-            alert('Please answer all the questions.');
-            return;
-        }
-        if (!confirm('Are you done?')) {
-            return;
-        }
-    }
 
     // show all the correct answers:
     map(showElement, $$('.answer'));
@@ -351,8 +334,6 @@ function show_score(fresh_answers) {
     }
 
     freeze_buttons();
-    maybeEnableNext();
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
 function loadStateError(err) {
@@ -388,7 +369,19 @@ function collect_question_info() {
     return question_info;
 }
 
-function saveState() {
+function onSaveStateComplete() {
+    removeElementClass(document.body, 'busy');
+    maybeEnableNext();
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+}
+
+function onSaveStateFailed() {
+    removeElementClass(document.body, 'busy');
+    alert('An error occurred while saving your results. ' +
+          'Please refresh the page and try again.');
+}
+
+function saveState(validate) {
     if (typeof student_response !== 'undefined') {
         return;
     }
@@ -404,6 +397,18 @@ function saveState() {
     var number_of_questions_to_answer = $$('#sorted_questions_div .cases')
         .length;
 
+    if (validate) {
+        if (chosen_answers.length < number_of_questions_to_answer) {
+            alert('Please answer all the questions.');
+            return;
+        }
+        if (!confirm('Are you done?')) {
+            return;
+        }
+
+        show_score();
+    }
+
     // don't delete initial score:
     var initial_score_found = null;
 
@@ -411,11 +416,6 @@ function saveState() {
        all_quizzes_info [quiz_key] !== undefined &&
        all_quizzes_info [quiz_key][initialScoreKey] !== undefined) {
         initial_score_found = all_quizzes_info [quiz_key][initialScoreKey];
-    }
-
-    if (chosen_answers.length < number_of_questions_to_answer) {
-        // only saving state if all the questions are answered.
-        return;
     }
 
     if (show_initial_score(all_quizzes_info [quiz_key], quiz_key)) {
@@ -445,16 +445,15 @@ function saveState() {
         }
     }
 
-    var xmlhttp;
-    if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    xmlhttp.open('POST', url, false);
-    xmlhttp.setRequestHeader('Content-type',
-                             'application/x-www-form-urlencoded');
-    xmlhttp.send(queryString({'json': serializeJSON(what_to_send)}));
+    addElementClass(document.body, 'busy');
+    var deferred = MochiKit.Async.doXHR(
+        url,
+        {'method': 'POST',
+         'sendContent': queryString({'json': serializeJSON(what_to_send)}),
+         'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    deferred.addCallback(onSaveStateComplete);
+    deferred.addErrback(onSaveStateFailed);
 }
 
 function retakeQuiz() {
@@ -462,18 +461,11 @@ function retakeQuiz() {
                  'erase your answers.'))  {
         return;
     }
-    setStyle(document.body, {'cursor': 'progress'});
-    kill_this_quiz();
+    kill_this_quiz_flag = true;
+    saveState(false);
+
+    addElementClass(document.body, 'busy');
     window.location.reload();
 }
 
-function kill_state()  {
-    kill_state_flag = true;
-}
-
-function kill_this_quiz()  {
-    kill_this_quiz_flag = true;
-}
-
 MochiKit.Signal.connect(window, 'onload', loadState);
-MochiKit.Signal.connect(window, 'onbeforeunload', saveState);
