@@ -156,41 +156,41 @@ div.ldss_form_bottom {
 
 input.ldss_form_input {
     position: absolute; /* but relative to the div that i'm in. */
-    min-width: 0px;
-    min-height: 0px;
     font-size: .7em !important;
-    height: 14px !important;
+    height: 18px !important;
     font-family: Courier New, monospace;
     color: blue;
     text-transform:uppercase;
+    line-height: normal;
+    border-radius: 0px;
 }
 
 /* top of form */
 .ldss_form_top input.top_1 {
     top: 21px !important;
-    left:424px !important;
+    left: 426px !important;
     width:78px !important;
 }
 .ldss_form_top input.top_2 {
     top: 21px !important;
-    left:514px !important;
-    width:78px !important;
+    left: 516px !important;
+    width: 78px !important;
 }
 .ldss_form_top input.top_3 {
     top: 21px !important;
-    left:600px !important;
+    left: 602px !important;
     width:78px !important;
 }
 
 /* second line */
 .ldss_form_top input.top_4 {
     top: 59px !important;
-    left:514px !important;
-    width:78px !important;
+    left:516px !important;
+    width: 78px !important;
 }
 .ldss_form_top input.top_5 {
     top: 59px !important;
-    left:600px !important;
+    left: 602px !important;
     width:78px !important;
 }
 
@@ -274,6 +274,7 @@ input.ldss_form_input {
 
 .ldss_form_top input.phone_column {
     left: 600px !important;
+    width: 125px;
 }
 
 
@@ -294,40 +295,38 @@ input.ldss_form_input {
 
 
 .ldss_form_middle input.line_1 {
-    top: 35px !important;
+    top: 36px !important;
 }
 .ldss_form_middle input.line_2 {
-    top: 56px !important;
+    top: 57px !important;
 }
 .ldss_form_middle input.line_3 {
-    top: 80px !important;
+    top: 81px !important;
 }
 
 .ldss_form_middle input.line_4 {
-    top: 102px !important;
+    top: 103px !important;
 }
 
 .ldss_form_middle input.line_5 {
-    top: 126px !important;
+    top: 127px !important;
 }
 
 .ldss_form_middle input.line_6 {
-    top: 147px !important;
+    top: 148px !important;
 }
 
 .ldss_form_middle input.line_7 {
-    top: 168px !important;
+    top: 169px !important;
 }
 
-
 .ldss_form_middle input.line_8 {
-    top: 190px !important;
+    top: 191px !important;
 }
 
 /*CAUTION -- override */
 .ldss_form_middle input.column_3.line_8 {
     left: 463px !important;
-    height: 12px !important;
 }
 
 .ldss_form_middle input.reasons_for_suspicion_1 {
@@ -346,59 +345,57 @@ input.ldss_form_input {
     left: 500px !important;
     top: 227px !important;
     width: 50px !important;
-    height: 10px !important;
+    height: 14px !important;
 }
 .ldss_form_middle input.day {
     left: 500px !important;
-    top: 242px !important;
+    top: 243px !important;
     width: 50px !important;
-    height: 10px !important;
+    height: 14px !important;
 }
 .ldss_form_middle input.year {
     left: 500px !important;
-    top: 257px !important;
+    top: 259px !important;
     width: 50px !important;
-    height: 10px !important;
+    height: 14px !important;
 }
 
-
 .ldss_form_middle input.hour {
-    left: 500px !important;
-    top: 257px !important;
-    width: 50px !important;
-    height: 10px !important;
+    left: 566px !important;
+    top: 272px !important;
+    width: 18px !important;
 }
 
 .ldss_form_middle input.minute {
-    left: 500px !important;
-    top: 257px !important;
-    width: 50px !important;
-    height: 10px !important;
+    left: 591px !important;
+    top: 272px !important;
+    width: 18px !important;
 }
 
 .ldss_form_middle input.am {
     left: 613px !important;
     top: 277px !important;
-    width: 6px !important;
-    height: 6px !important;
+    width: 10px !important;
+    height: 10px !important;
 }
 .ldss_form_middle input.pm {
     left: 649px !important;
     top: 277px !important;
-    width: 6px !important;
-    height: 6px !important;
+    width: 10px !important;
+    height: 10px !important;
 }
 .ldss_form_middle input.requests_finding_yes {
     left: 610px !important;
     top: 292px !important;
-    width: 10px !important;
-    height: 10px !important;
+    width: 13px !important;
+    height: 14px !important;
 }
+
 .ldss_form_middle input.requests_finding_no {
     left:689px !important;
     top: 292px !important;
-    width: 10px !important;
-    height: 10px !important;
+    width: 13px !important;
+    height: 14px !important;
 }
 
 
@@ -408,25 +405,22 @@ input.ldss_form_input {
     left:6px !important;
     top: 34px !important;
     width: 222px !important;
-    height: 10px!important;
+
 }
 .ldss_form_bottom input.phone_1 {
     left:235px !important;
     top: 34px !important;
     width: 96px !important;
-    height: 10px!important;
 }
 .ldss_form_bottom input.address_1 {
     left:6px !important;
     top: 64px !important;
     width: 325px !important;
-    height: 10px!important;
 }
 .ldss_form_bottom input.institution_1 {
     left:6px !important;
     top: 93px !important;
     width: 325px !important;
-    height: 10px!important;
 }
 
 
@@ -434,25 +428,21 @@ input.ldss_form_input {
     left:342px !important;
     top: 34px !important;
     width: 265px !important;
-    height: 10px!important;
 }
 .ldss_form_bottom input.phone_2 {
     left:615px !important;
     top: 34px !important;
     width: 126px !important;
-    height: 8px!important;
 }
 .ldss_form_bottom input.address_2 {
     left:342px !important;
     top: 64px !important;
     width: 398px !important;
-    height: 10px!important;
 }
 .ldss_form_bottom input.institution_2 {
     left:342px !important;
     top: 93px !important;
     width: 398px !important;
-    height: 10px!important;
 }
 
 /* Relationship checkboxes. */
