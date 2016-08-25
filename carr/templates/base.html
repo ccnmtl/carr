@@ -22,27 +22,32 @@
     <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
     {% block css %}{% endblock %}
 
-<script src="//cdn.ravenjs.com/1.2.0/native/raven.min.js"></script>
-<script>
-Raven.config('https://5cb80a9ffed64ac6a00161653ea7bec1@sentry.ccnmtl.columbia.edu/5', {
-    whitelistUrls: [/\.ccnmtl\.columbia\.edu/]
-}).install();
-{% if not request.user.is_anonymous %}
-Raven.setUserContext({
-    email: '{{request.user.email}}',
-    id: '{{request.user.username}}'
-});
-{% else %}
-Raven.setUserContext({
-    email: 'none',
-    id: 'anonymous'
-});
-{% endif %}
-</script>
+    {% if not debug %}
+        <script src="//cdn.ravenjs.com/1.2.0/native/raven.min.js"></script>
+        <script>
+        Raven.config('https://5cb80a9ffed64ac6a00161653ea7bec1@sentry.ccnmtl.columbia.edu/5', {
+            whitelistUrls: [/\.ccnmtl\.columbia\.edu/]
+        }).install();
+        {% if not request.user.is_anonymous %}
+        Raven.setUserContext({
+            email: '{{request.user.email}}',
+            id: '{{request.user.username}}'
+        });
+        {% else %}
+        Raven.setUserContext({
+            email: 'none',
+            id: 'anonymous'
+        });
+        {% endif %}
+        </script>
+    {% endif %}
   {% pagetimer %}
+
     {% block js %}{% endblock %}
+
     {% block feeds %}{% endblock %}
 </head>
+
     <body class="two_columns_left {% block widthtype %}fluid{% endblock %}">
 {% comment %}
 ###### FOR WIDTH TYPE--
