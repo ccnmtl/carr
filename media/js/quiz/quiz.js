@@ -373,6 +373,10 @@ function onSaveStateComplete() {
     removeElementClass(document.body, 'busy');
     maybeEnableNext();
     document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+    if (kill_this_quiz_flag) {
+        window.location.reload();
+    }
 }
 
 function onSaveStateFailed() {
@@ -463,9 +467,6 @@ function retakeQuiz() {
     }
     kill_this_quiz_flag = true;
     saveState(false);
-
-    addElementClass(document.body, 'busy');
-    window.location.reload();
 }
 
 MochiKit.Signal.connect(window, 'onload', loadState);
