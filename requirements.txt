@@ -33,7 +33,7 @@ djangowind==0.15.0
 sorl==3.1
 pagetree==0.6.2
 django-pageblocks==0.5.16
-djangohelpers==0.18.1
+djangohelpers==0.18.2
 django-statsd-mozilla==0.3.16
 django-jenkins==0.19.0
 django-smoketest==1.0.0
