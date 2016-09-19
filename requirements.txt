@@ -58,4 +58,4 @@ django-pagetimer==0.2.0
 django-smtp-ssl==1.0
 
 ccnmtlsettings==0.3.0
-django-bootstrap3==7.0.1
+django-bootstrap3==7.1.0
