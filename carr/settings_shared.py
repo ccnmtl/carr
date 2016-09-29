@@ -94,8 +94,8 @@ PAGEBLOCKS = ['pageblocks.HTMLBlock',
 
 SITE_ID = 1
 
-TEMPLATE_CONTEXT_PROCESSORS += [  # noqa
+TEMPLATES[0]['OPTIONS']['context_processors'].append(  # noqa
     'carr.carr_main.views.context_processor',
-]
+)
 
 PAGETIMER_MAX_RETENTION_INTERVAL = timedelta(days=60)
