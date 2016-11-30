@@ -28,4 +28,5 @@ class ActivityStateAdmin(admin.ModelAdmin):
     list_display = ['user', 'submitted', 'json']
     search_fields = ['user__username']
 
+
 admin.site.register(ActivityState, ActivityStateAdmin)
