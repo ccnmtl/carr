@@ -7,4 +7,5 @@ class ActivityStateAdmin(admin.ModelAdmin):
     list_display = ['user', 'json']
     search_fields = ['user__username']
 
+
 admin.site.register(ActivityState, ActivityStateAdmin)

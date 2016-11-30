@@ -170,6 +170,8 @@ def new_get_children(self):
     return (
         [sc.child for sc in qs.select_related('child').order_by("ordinality")]
     )
+
+
 Section.get_children = new_get_children
 
 
@@ -180,6 +182,8 @@ def new_get_siblings(self):
     return (
         [sc.child for sc in qs.select_related('child').order_by("ordinality")]
     )
+
+
 Section.get_siblings = new_get_siblings
 
 
@@ -193,5 +197,6 @@ def find_or_add_site_section(**kwargs):
         # pages are visible on all sites by default:
         new_site_section.sites = Site.objects.all()
         new_site_section.save()
+
 
 post_save.connect(find_or_add_site_section, Section)

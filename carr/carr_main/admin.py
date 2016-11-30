@@ -30,6 +30,7 @@ class SectionAdmin(admin.ModelAdmin):
         PageBlockInline,
     ]
 
+
 admin.site.unregister(Section)
 admin.site.register(SiteSection, SectionAdmin)
 
@@ -37,5 +38,6 @@ admin.site.register(SiteSection, SectionAdmin)
 class SiteStateAdmin(admin.ModelAdmin):
     list_display = ['user', 'last_location']
     search_fields = ['user__username']
+
 
 admin.site.register(SiteState, SiteStateAdmin)

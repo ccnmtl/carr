@@ -34,6 +34,7 @@ def year_range():
     next_year = datetime.datetime.now().year + 2
     return range(2010, next_year)
 
+
 semester_map = {1: 'spring', 2: 'summer', 3: 'fall'}
 inv_semester_map = dict((v, k) for k, v in semester_map.iteritems())
 
