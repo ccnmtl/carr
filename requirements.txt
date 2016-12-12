@@ -41,7 +41,7 @@ raven==5.32.0
 Faker==0.7.3
 factory_boy==2.7.0
 django-waffle==0.11.1
-django-markwhat==1.5
+django-markwhat==1.5.1
 django-impersonate==1.0.1
 django-ga-context==0.1.0
 django-debug-toolbar==1.6
