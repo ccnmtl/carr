@@ -25,7 +25,7 @@
     {% if not debug %}
         <script src="https://cdn.ravenjs.com/3.8.1/raven.min.js"></script>
         <script>
-        Raven.config('https://5cb80a9ffed64ac6a00161653ea7bec1@sentry.ccnmtl.columbia.edu/5', {
+        Raven.config('https://bea76ad7e8124bc0ab1b4354fd9db56f@sentry.io/101595', {
             whitelistUrls: [/\.ccnmtl\.columbia\.edu/]
         }).install();
         {% if not request.user.is_anonymous %}
