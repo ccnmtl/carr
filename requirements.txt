@@ -22,7 +22,7 @@ pylint==1.6.5
 pyasn1==0.2.3
 pyOpenSSL==16.2.0
 ndg-httpsclient==0.4.2
-sqlparse==0.2.2
+sqlparse==0.2.3
 six==1.10.0
 contextlib2==0.5.4
 rcssmin==1.0.6
