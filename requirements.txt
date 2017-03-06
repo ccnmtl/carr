@@ -22,7 +22,7 @@ pylint==1.6.5
 pyasn1==0.2.3
 pyOpenSSL==16.2.0
 ndg-httpsclient==0.4.2
-sqlparse==0.2.2
+sqlparse==0.2.3
 six==1.10.0
 contextlib2==0.5.4
 rcssmin==1.0.6
@@ -45,8 +45,10 @@ django-waffle==0.11.1
 django-markwhat==1.5.1
 django-impersonate==1.1
 django-ga-context==0.1.0
-django-debug-toolbar==1.6
+
+django-debug-toolbar==1.7
 gunicorn==19.7.0
+
 django-appconf==1.0.2
 django-compressor==2.1.1
 django-stagingcontext==0.1.0
