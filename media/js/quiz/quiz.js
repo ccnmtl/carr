@@ -245,9 +245,7 @@ function cheat()  {
 }
 
 function debug(string) {
-    if (true) {
-        log('DEBUG ' + string);
-    }
+    log('DEBUG ' + string);
 }
 
 function show_score() {
