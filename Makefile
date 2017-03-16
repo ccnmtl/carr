@@ -1,5 +1,5 @@
 APP=carr
-JS_FILES=media/js/quiz/ media/taking_action/js media/bruise_recon/js media/js/dragdropreorder.js media/js/hs.js media/js/widget.js
+JS_FILES=media/js/quiz/ media/taking_action/js media/bruise_recon/js media/js/dragdropreorder.js media/js/hs.js
 MAX_COMPLEXITY=7
 
 all: jenkins
