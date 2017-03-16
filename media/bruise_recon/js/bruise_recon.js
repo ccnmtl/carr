@@ -1,3 +1,4 @@
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "numeric" }]*/
 /* global hasElementClass: true, addElementClass: true, connect: true */
 /* global student_response: true, partial: true, removeElementClass: true */
 /* global toggleElementClass: true, disconnectAll: true */
@@ -91,7 +92,7 @@ function loadStateSuccess(doc) {
     maybeEnableNext();
 }
 
-function loadStateError(err) {
+function loadStateError() {
     // @todo: Find a spot to display an error or decide just to fail gracefully
     // $('errorMsg').innerHTML = 'An error occurred loading your state (' + err
     // + '). Please start again.'

@@ -8,6 +8,7 @@
 /* global observation_checkbox_connect: true */
 /* global criteria_checkbox_connect: true */
 /* global other_observations_textfield_connect: true */
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "like_checkbox|show_answer|deprecated_ldss_form_fields_to_save" }]*/
 
 var current_step;
 var step_to_show_first;
@@ -49,7 +50,7 @@ function loadStateSuccess(doc) {
     load_step(current_step);
 }
 
-function loadStateError(err) {
+function loadStateError() {
     // @todo: Find a spot to display an error or decide just to fail gracefully
     // $('errorMsg').innerHTML = 'An error occurred loading your state (' + err
     // + '). Please start again.'
