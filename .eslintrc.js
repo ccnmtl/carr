@@ -4,6 +4,32 @@ module.exports = {
         "jquery": true
     },
     "extends": "eslint:recommended",
+    "globals": {
+        "$$": true,
+        "addElementClass": true,
+        "DIV": true,
+        "filter": true,
+        "findValue": true,
+        "forEach": true,
+        "getElementsByTagAndClassName": true,
+        "getNodeAttribute": true,
+        "hideElement": true,
+        "list": true,
+        "loadJSONDoc": true,
+        "log": true,
+        "logDebug": true,
+        "map": true,
+        "MochiKit": true,
+        "range": true,
+        "removeElementClass": true,
+        "serializeJSON": true,
+        "setDisplayForElement": true,
+        "setStyle": true,
+        "swapDOM": true,
+        "showElement": true,
+        "queryString": true,
+        "zip": true
+    },
     "rules": {
         "indent": [
             "error",
