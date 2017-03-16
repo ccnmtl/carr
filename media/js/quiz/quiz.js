@@ -1,3 +1,6 @@
+/*eslint no-unused-vars: ["error", {
+  "varsIgnorePattern": "is_cdm|cheat|number_of_questions_to_answer|retakeQuiz" }]*/
+
 function randomly() {
     return 0.5 - Math.random();
 }
@@ -245,9 +248,7 @@ function cheat()  {
 }
 
 function debug(string) {
-    if (true) {
-        log('DEBUG ' + string);
-    }
+    log('DEBUG ' + string);
 }
 
 function show_score() {
@@ -336,7 +337,7 @@ function show_score() {
     freeze_buttons();
 }
 
-function loadStateError(err) {
+function loadStateError() {
     debug('loadStateError');
     // @todo: Find a spot to display an error or decide just to fail gracefully
 }
@@ -452,9 +453,10 @@ function saveState(validate) {
     addElementClass(document.body, 'busy');
     var deferred = MochiKit.Async.doXHR(
         url,
-        {'method': 'POST',
-         'sendContent': queryString({'json': serializeJSON(what_to_send)}),
-         'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
+        {
+            'method': 'POST',
+            'sendContent': queryString({'json': serializeJSON(what_to_send)}),
+            'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
         });
     deferred.addCallback(onSaveStateComplete);
     deferred.addErrback(onSaveStateFailed);

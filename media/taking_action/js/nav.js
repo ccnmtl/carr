@@ -1,3 +1,5 @@
+/*eslint no-unused-vars: ["error", {
+  "varsIgnorePattern": "steps|game_state|nav_ready|first_round_action_css_classes|second_round_action_css_classes|observation_checkbox_connect|criteria_checkbox_connect|other_observations_textfield_connect" }]*/
 /* global partial: true, connect: true, hasElementClass: true */
 
 //////////////////
