@@ -122,9 +122,10 @@ function saveState(nextStep) {
     addElementClass(document.body, 'busy');
     var deferred = MochiKit.Async.doXHR(
         url,
-        {'method': 'POST',
-         'sendContent': queryString({'json': JSON.stringify(doc, null)}),
-         'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
+        {
+            'method': 'POST',
+            'sendContent': queryString({'json': JSON.stringify(doc, null)}),
+            'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
         });
     deferred.addCallback(function() {
         removeElementClass(document.body, 'busy');

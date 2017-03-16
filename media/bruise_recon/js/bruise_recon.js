@@ -297,9 +297,10 @@ function saveState() {
     addElementClass(document.body, 'busy');
     var deferred = MochiKit.Async.doXHR(
         url,
-        {'method': 'POST',
-         'sendContent': queryString({'json': serializeJSON(what_to_send)}),
-         'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
+        {
+            'method': 'POST',
+            'sendContent': queryString({'json': serializeJSON(what_to_send)}),
+            'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
         });
     deferred.addCallback(onSaveStateComplete);
     deferred.addErrback(onSaveStateFailed);
