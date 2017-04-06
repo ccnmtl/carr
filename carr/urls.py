@@ -88,9 +88,16 @@ urlpatterns = [
     # analytics:
     url(r'^_stats/', TemplateView.as_view(template_name="stats.html")),
     url('^smoketest/', include('smoketest.urls')),
-    url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve',
+    url(r'^uploads/(?P<path>.*)$', django.views.static.serve,
         {'document_root': settings.MEDIA_ROOT}),
     # very important that this stays last and in this order
     url(r'^edit/(?P<path>.*)$', main_views.edit_page),
     url(r'^(?P<path>.*)$', main_views.page),
 ]
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]
