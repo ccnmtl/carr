@@ -1,5 +1,5 @@
 --index-url https://pypi.ccnmtl.columbia.edu/
-Django==1.9.13
+Django==1.10.6
 Markdown==2.6.8
 pyenchant==1.6.7
 uuid==1.30
@@ -32,7 +32,7 @@ ipaddress==1.0.18
 django-courseaffils==2.1.5
 djangowind==0.16.1
 sorl==3.1
-pagetree==0.6.2
+pagetree==0.6.3
 django-pageblocks==0.5.16
 djangohelpers==0.18.2
 django-statsd-mozilla==0.3.16
