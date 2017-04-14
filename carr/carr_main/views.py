@@ -8,7 +8,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http.response import HttpResponseNotFound
 from django.shortcuts import render
-from django.template import RequestContext, Context, loader
+from django.template import Context, loader
 from pagetree.helpers import get_hierarchy, get_section_from_path, get_module
 from pagetree.models import Hierarchy
 
@@ -44,9 +44,7 @@ def background(request, content_to_show):
         'credits': 'credits.html',
         'contact': 'contact.html',
     }[content_to_show]
-    t = loader.get_template('carr_main/background/%s' % file_name)
-    c = RequestContext(request, {})
-    return HttpResponse(t.render(c))
+    return render(request, 'carr_main/background/%s' % file_name, {})
 
 
 @login_required
