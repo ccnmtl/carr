@@ -41,7 +41,7 @@ django-statsd-mozilla==0.3.16
 django-jenkins==0.110.0
 django-smoketest==1.0.0
 raven==6.0.0
-Faker==0.7.11
+Faker==0.7.12
 factory_boy==2.8.1
 django-waffle==0.11.1
 django-markwhat==1.5.1
