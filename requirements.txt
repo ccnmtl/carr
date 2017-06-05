@@ -1,5 +1,5 @@
 --index-url https://pypi.ccnmtl.columbia.edu/
-Django==1.11.1
+Django==1.11.2
 Markdown==2.6.8
 pyenchant==1.6.7
 uuid==1.30
@@ -36,12 +36,15 @@ djangowind==1.0.0
 sorl==3.1
 pagetree==0.6.4
 django-pageblocks==0.5.16
-djangohelpers==0.18.2
+djangohelpers==0.19
 django-statsd-mozilla==0.3.16
 django-jenkins==0.110.0
 django-smoketest==1.0.0
+
 raven==6.1.0
-Faker==0.7.12
+
+Faker==0.7.15
+
 factory_boy==2.8.1
 django-waffle==0.11.1
 django-markwhat==1.5.1
@@ -54,7 +57,7 @@ gunicorn==19.7.1
 django-appconf==1.0.2
 django-compressor==2.1.1
 django-stagingcontext==0.1.0
-boto==2.46.1
+boto==2.47.0
 python-dateutil==2.6.0
 django-storages==1.5.2
 django-cacheds3storage==0.1.2
