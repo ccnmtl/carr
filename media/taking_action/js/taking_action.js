@@ -310,7 +310,7 @@ function connect_action(c) {
 
 function action_button_clicked(c) {
     var which_class = which_of_these_css_classes(c.src(),
-            first_round_action_css_classes);
+        first_round_action_css_classes);
 
     if (which_class === 'first_round_action_1') {
         showElement(
@@ -333,7 +333,7 @@ function connect_action_round_2(c) {
 
 function action_button_clicked_round_2(c) {
     var which_class = which_of_these_css_classes(c.src(),
-            second_round_action_css_classes);
+        second_round_action_css_classes);
     if (which_class === 'second_round_action_1') {
         showElement($$('.action_explanation.second_round_action_1')[0]);
     } else if (which_class === 'second_round_action_2') {

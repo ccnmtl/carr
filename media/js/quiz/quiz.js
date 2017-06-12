@@ -61,16 +61,16 @@ function show_previous_answers_to_quiz(quiz_info) {
         return parseInt(a.id.split('_')[1]);
     }, $$('.cases.really'));
     var question_ids_as_needed = map(parseInt, map(itemgetter('id'),
-                                                   quiz_info));
+        quiz_info));
     var order = map(function(a) {
         return findValue(question_ids_as_loaded, a);
     }, question_ids_as_needed);
     forEach(quiz_info,
-            function(question) {
-                if ($(question.id + '_' + question.answer)) {
-                    $(question.id + '_' + question.answer).checked = true;
-                }
-            });
+        function(question) {
+            if ($(question.id + '_' + question.answer)) {
+                $(question.id + '_' + question.answer).checked = true;
+            }
+        });
     reorder_questions(order);
 }
 
@@ -210,7 +210,7 @@ function reorder_questions(order) {
 
     //create placeholders for the sorted questions
     $('sorted_questions').appendChild(DIV({id: 'sorted_questions_div'},
-                                          map(DIV, nums)));
+        map(DIV, nums)));
 
     var existing_case_divs = $$('.cases.really');
 
@@ -358,15 +358,15 @@ function loadState() {
 function collect_question_info() {
     var question_info = [];
     forEach(getElementsByTagAndClassName('*', 'question'),
-            function(question) {
-                if (question.checked) {
-                    var a = question.id.split('_');
-                    var q = {};
-                    q.id = a[0];
-                    q.answer = a[1];
-                    question_info.push(q);
-                }
-            });
+        function(question) {
+            if (question.checked) {
+                var a = question.id.split('_');
+                var q = {};
+                q.id = a[0];
+                q.answer = a[1];
+                question_info.push(q);
+            }
+        });
     return question_info;
 }
 

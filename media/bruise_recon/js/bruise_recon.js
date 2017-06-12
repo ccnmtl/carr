@@ -32,9 +32,9 @@ function disable_all_sidenav_items_after_current_one() {
     var all_sidenav_items = $$('#sidebar_left ul li');
     var selected_sidenav_item = $$('#sidebar_left ul li.selected')[0];
     all_sidenav_items
-            .slice(all_sidenav_items.indexOf(selected_sidenav_item) + 1);
+        .slice(all_sidenav_items.indexOf(selected_sidenav_item) + 1);
     var sidenav_items_to_disable = all_sidenav_items.slice(all_sidenav_items
-            .indexOf(selected_sidenav_item) + 1);
+        .indexOf(selected_sidenav_item) + 1);
     forEach(sidenav_items_to_disable, disable_sidenav_item);
 }
 
@@ -115,19 +115,19 @@ function loadState() {
 
     // yes/no behaves like a set of radio buttons
     connect('answer_yes', 'onclick', partial(like_radio, 'button_selected',
-            'answer_button', 'answer_yes'));
+        'answer_button', 'answer_yes'));
     connect('answer_no', 'onclick', partial(like_radio, 'button_selected',
-            'answer_button', 'answer_no'));
+        'answer_button', 'answer_no'));
 
     // factors behaves like a set of checkboxes.
     connect('patterns', 'onclick', partial(like_checkbox, 'button_selected',
-            'bruise_recon_checkbox_div', 'patterns'));
+        'bruise_recon_checkbox_div', 'patterns'));
     connect('severity', 'onclick', partial(like_checkbox, 'button_selected',
-            'bruise_recon_checkbox_div', 'severity'));
+        'bruise_recon_checkbox_div', 'severity'));
     connect('body location', 'onclick', partial(like_checkbox,
-            'button_selected', 'bruise_recon_checkbox_div', 'body location'));
+        'button_selected', 'bruise_recon_checkbox_div', 'body location'));
     connect('explanation', 'onclick', partial(like_checkbox, 'button_selected',
-            'bruise_recon_checkbox_div', 'explanation'));
+        'bruise_recon_checkbox_div', 'explanation'));
 
     connect('submit_div', 'onclick', saveState);
 
