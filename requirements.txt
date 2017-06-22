@@ -58,7 +58,7 @@ django-compressor==2.1.1
 django-stagingcontext==0.1.0
 boto==2.47.0
 python-dateutil==2.6.0
-django-storages==1.5.2
+django-storages==1.6.1
 django-cacheds3storage==0.1.2
 python-memcached==1.58
 django-pagetimer==0.2.0
