@@ -44,7 +44,7 @@ raven==6.1.0
 
 Faker==0.7.18
 
-factory_boy==2.8.1
+factory_boy==2.9.0
 django-waffle==0.12.0
 django-markwhat==1.5.1
 django-impersonate==1.1
