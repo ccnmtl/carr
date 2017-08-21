@@ -12,3 +12,4 @@ reports/
 node_modules
 uploads
 .settings
+package-lock.json
