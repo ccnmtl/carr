@@ -1,5 +1,6 @@
 /*eslint no-unused-vars: ["error", {
   "varsIgnorePattern": "is_cdm|cheat|number_of_questions_to_answer|retakeQuiz" }]*/
+/* global student_quiz: true */
 
 function randomly() {
     return 0.5 - Math.random();
