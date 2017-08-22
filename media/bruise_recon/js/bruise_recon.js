@@ -113,6 +113,7 @@ function loadState() {
 
     hide_answer();
 
+    /* eslint-disable scanjs-rules/call_connect */
     // yes/no behaves like a set of radio buttons
     connect('answer_yes', 'onclick', partial(like_radio, 'button_selected',
         'answer_button', 'answer_yes'));
@@ -130,6 +131,7 @@ function loadState() {
         'bruise_recon_checkbox_div', 'explanation'));
 
     connect('submit_div', 'onclick', saveState);
+    /* eslint-enable scanjs-rules/call_connect */
 
     maybeEnableNext();
 
@@ -235,6 +237,7 @@ function show_answer() {
     lock_down_answer_buttons();
 }
 
+// eslint-disable-next-line scanjs-rules/call_connect
 MochiKit.Signal.connect(window, 'onload', loadState);
 
 function onSaveStateComplete() {
