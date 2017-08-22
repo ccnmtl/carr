@@ -234,9 +234,11 @@ function reorder_questions(order) {
     }, $$('#sorted_questions_div div.cases'));
 
     // number the questions according to their new position:
+    /* eslint-disable no-unsafe-innerhtml/no-unsafe-innerhtml */
     map(function f(a) {
         a[0].innerHTML = a[1] + 1;
     }, zip($$('#sorted_questions_div .question_order'), nums));
+    /* eslint-enable no-unsafe-innerhtml/no-unsafe-innerhtml */
 }
 
 function cheat()  {
@@ -286,11 +288,13 @@ function show_score() {
         addElementClass(a.parentNode, 'correct_answer');
     });
 
+    /* eslint-disable no-unsafe-innerhtml/no-unsafe-innerhtml */
     if (max_score > 1) {
         $('quiz_score').innerHTML = actual_score;
         $('quiz_max_score').innerHTML = max_score;
         showElement('show_quiz_results');
     }
+    /* eslint-enable no-unsafe-innerhtml/no-unsafe-innerhtml */
 
     //store the first score; for diagnostic tests that might be taken several times:
     if (typeof(all_quizzes_info[quiz_key]) === 'undefined') {
@@ -472,4 +476,6 @@ function retakeQuiz() {
     saveState(false);
 }
 
+// eslint-disable-next-line scanjs-rules/call_connect
 MochiKit.Signal.connect(window, 'onload', loadState);
+
