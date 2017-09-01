@@ -36,7 +36,7 @@ requirements/src/sorl-3.1.tar.gz
 pagetree==0.6.4
 django-pageblocks==0.5.16 # pyup: <1.0.0
 djangohelpers==0.19
-django-statsd-mozilla==0.3.16
+django-statsd-mozilla==0.4.0
 django-jenkins==0.110.0
 django-smoketest==1.1.0
 
