@@ -22,6 +22,7 @@ from pagetree.models import PageBlock
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.carr_main.models import students_in_class, users_by_uni, user_type
+from carr.quiz.models import Answer
 from carr.utils import get_students, filter_users_by_affiliation
 from models import Quiz, Question, ActivityState
 
@@ -280,8 +281,9 @@ def score_on_all_quizzes(the_student):
     for a in json_stream.values():
         try:
             score.extend(a['question'])
-        except:
+        except KeyError:
             pass  # eh.
+
     # don't deal with questions that have since been removed from quiz.
     results = [{
         'question': int(a['id']),
@@ -312,13 +314,12 @@ def load_state_json(the_student):
 
     try:
         return json.loads(state.json)
-    except:
+    except ValueError:
         return None
 
 
 def set_pre_test(json_stream, result):
-    if json_stream['quiz_2'][
-            'initial_score']['quiz_score'] is not None:
+    if json_stream['quiz_2']['initial_score']['quiz_score'] is not None:
         result['pre_test'] = True
     return result
 
@@ -340,13 +341,13 @@ def pre_and_post_test_results(the_student):
     # initial test:
     try:
         result = set_pre_test(json_stream, result)
-    except:
+    except KeyError:
         return result
 
     # final test:
     try:
         result = set_post_test(json_stream, result)
-    except:
+    except KeyError:
         pass
     return result
 
@@ -465,8 +466,9 @@ def all_answers_for_quizzes(the_student):
     for a in json.loads(state.json).values():
         try:
             score.extend(a['question'])
-        except:
-            pass  # eh.
+        except KeyError:
+            pass
+
     quiz_keys_to_consider = [
         a for a in score if int(a['id']) in quiz_key.keys()]
     return results_for_quiz_keys(quiz_keys_to_consider, answer_key)
@@ -528,10 +530,10 @@ def question_and_quiz_keys():
 
         for question in questions:
             try:
-                answer_key[
-                    question.id] = question.answer_set.get(correct=True).id
+                answer_key[question.id] = \
+                    question.answer_set.get(correct=True).id
                 quiz_key[question.id] = question.quiz.id
-            except:
+            except (KeyError, Answer.DoesNotExist):
                 pass
 
         cache.set("quiz_key", quiz_key, 60 * 60)
