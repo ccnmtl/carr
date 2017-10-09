@@ -1,17 +1,17 @@
 import os.path
 
 from django.conf import settings
-from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.auth.views import logout
-from django.views.generic import RedirectView
-from django.views.generic import TemplateView
-import django.views.static
 
 import carr.carr_main.views as main_views
 from carr.quiz.scores import PostTestAnalysisView
 import carr.quiz.scores as scores_views
 import carr.quiz.views as quiz_views
+from django.conf.urls import include, url
+from django.contrib.auth.views import logout
+from django.views.generic import RedirectView
+from django.views.generic import TemplateView
+import django.views.static
 
 
 admin.autodiscover()
@@ -50,7 +50,8 @@ urlpatterns = [
         scores_views.classes_by_semester),
 
     # a student wants to see his or her own scores:
-    url(r'^scores/student/$', scores_views.scores_student),
+    url(r'^scores/student/$',
+        scores_views.scores_student, name='student-scores'),
 
     # a list of students for each class
     url((r'^scores/socialwork/course/(?P<c1>\w+)/(?P<c2>\w+)/'
@@ -85,11 +86,14 @@ urlpatterns = [
     url(r'^pagetimer/', include('pagetimer.urls')),
     url(r'^pagetree/', include('pagetree.urls')),
 
+    url(r'^lti/', include('lti_provider.urls')),
+
     # analytics:
     url(r'^_stats/', TemplateView.as_view(template_name="stats.html")),
     url('^smoketest/', include('smoketest.urls')),
     url(r'^uploads/(?P<path>.*)$', django.views.static.serve,
         {'document_root': settings.MEDIA_ROOT}),
+
     # very important that this stays last and in this order
     url(r'^edit/(?P<path>.*)$', main_views.edit_page),
     url(r'^(?P<path>.*)$', main_views.page),

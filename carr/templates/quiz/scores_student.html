@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load quiz_template_tags %}
+{% load lti_utils %}
+
 {% block sidebarleft %}
     <ul>
         <li>
@@ -11,111 +13,111 @@
 
     <table class="scorestable" cellspacing="0" summary="scores table">
 
-	<tr>
-		<th>Activity</th>
-		<th>Score</th>
-		<th>Link</th>
-	</tr>
-	
+    <tr>
+        <th>Activity</th>
+        <th>Score</th>
+        <th>Link</th>
+    </tr>
+    
     </ul>
-	<tr>
-		<td>
-			Pre-Test
-		</td>
-		<td>
+    <tr>
+        <td>
+            Pre-Test
+        </td>
+        <td>
 
-			{% get_scores for 'pre-test' in scores as score %}
-					  {% if score %}
-			{{score.score}} / {{score.answer_count}}
-		        {%endif%}
-		</td>
-		<td>{% if score %}
-			<a href = "/carr/Introduction/pretest/" >Go </a>
-		     {%endif%}
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Activity: Abuse vs. Accident?
-		</td>
-		<td>
-		    {%if score_on_bruise_recon != None%}
-			    {{score_on_bruise_recon}} / 3
-			{%else %}
-			    NOSCORE?
-			{%endif%}
-		</td>
-		<td>
-		{%if score_on_bruise_recon != None%}
-			<a href = "/carr/recognizing_abuse/abuse_or_accident_activity" >Go </a>
-		{%endif%}
-		</td>
-	</tr>
-	
-	
-	{% if "ssw" in site.domain%}
-	            <tr>
-		            <td>
-			            Case 1
-		            </td>
-		            <td>
-			            {% get_scores for 'Case 1' in scores as score %}
-			            {% if score %}
-			              {{score.score}} / {{score.answer_count}}
-			            {%endif%}
-		              
-		            </td>
-		            <td>
-			            {% if score %}
-			              <a href = "/carr/recognizing_abuse/cases_activity/case_1/" >Go </a>
-			            {%endif%}
-		            </td>
-	            </tr>
-	            <tr>
-		            <td>
-			            Case 2
-		            </td>
-		            <td>
+            {% get_scores for 'pre-test' in scores as score %}
+                      {% if score %}
+            {{score.score}} / {{score.answer_count}}
+                {%endif%}
+        </td>
+        <td>{% if score %}
+            <a href = "/carr/Introduction/pretest/" >Go </a>
+             {%endif%}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Activity: Abuse vs. Accident?
+        </td>
+        <td>
+            {%if score_on_bruise_recon != None%}
+                {{score_on_bruise_recon}} / 3
+            {%else %}
+                NOSCORE?
+            {%endif%}
+        </td>
+        <td>
+        {%if score_on_bruise_recon != None%}
+            <a href = "/carr/recognizing_abuse/abuse_or_accident_activity" >Go </a>
+        {%endif%}
+        </td>
+    </tr>
+    
+    
+    {% if "ssw" in site.domain%}
+                <tr>
+                    <td>
+                        Case 1
+                    </td>
+                    <td>
+                        {% get_scores for 'Case 1' in scores as score %}
+                        {% if score %}
+                          {{score.score}} / {{score.answer_count}}
+                        {%endif%}
+                      
+                    </td>
+                    <td>
+                        {% if score %}
+                          <a href = "/carr/recognizing_abuse/cases_activity/case_1/" >Go </a>
+                        {%endif%}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Case 2
+                    </td>
+                    <td>
                   {% get_scores for 'Case 2' in scores as score %}
                   {% if score %}                        
                         {{score.score}} / {{score.answer_count}}
                   {%endif%}
-		            </td>
-		            <td>
+                    </td>
+                    <td>
                   {% if score %}                        
-			            <a href = "/carr/recognizing_abuse/cases_activity/case_2/" >Go </a>
+                        <a href = "/carr/recognizing_abuse/cases_activity/case_2/" >Go </a>
                   {%endif%}
-		            </td>
-	            </tr>
-	            <tr>
-		            <td>
-			            Case 3
-		            </td>
-		            <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Case 3
+                    </td>
+                    <td>
                         {% get_scores for 'Case 3' in scores as score %}
                         
                   {% if score %}                        
                         {{score.score}} / {{score.answer_count}}
                   {%endif%}
-		            </td>
-		            <td>
+                    </td>
+                    <td>
                   {% if score %}                  
-			            <a href = "/carr/recognizing_abuse/cases_activity/case_3/" >Go </a>
+                        <a href = "/carr/recognizing_abuse/cases_activity/case_3/" >Go </a>
                   {%endif%}
-		            </td>
-	            </tr>
-	{%else %}
-	
-	
-	
-	{%endif%}
-	
-	
-	<tr>
-		<td>
-			Activity: Taking Action
-		</td>
-		<td>
+                    </td>
+                </tr>
+    {%else %}
+    
+    
+    
+    {%endif%}
+    
+    
+    <tr>
+        <td>
+            Activity: Taking Action
+        </td>
+        <td>
       {%ifequal score_on_taking_action 'completed_form' %}
        Completed activity and filled out form
       {%endifequal%}
@@ -125,21 +127,21 @@
       {%ifequal score_on_taking_action 'no_data' %}
         Did not complete activity
       {%endifequal%}
-		</td>
-		<td>
-		    {%ifequal score_on_taking_action 'completed_form' %}
-			  <a href = "/activity/taking_action/student/{{user.id}}/" >Go </a>
-			{%endifequal%}
-		</td>
-	</tr>
+        </td>
+        <td>
+            {%ifequal score_on_taking_action 'completed_form' %}
+              <a href = "/activity/taking_action/student/{{user.id}}/" >Go </a>
+            {%endifequal%}
+        </td>
+    </tr>
 
 
-	<tr>
-		<td>
-			Post-Test
-		</td>
-		<td>
-		
+    <tr>
+        <td>
+            Post-Test
+        </td>
+        <td>
+        
             {% get_scores for 'post-test' in scores as score %}
             {%if score%}
                         {% if score.initial_score.quiz_score %}
@@ -160,51 +162,59 @@
                         {%endif %}
                     {% endfor %}
                   {%endif%}
-                  
             {%endif%}
-            
-            
-            
-
-            
-		</td>
-		<td>
-               {%if score%}
-			          {%if score.all_correct and score.all_correct == "t" %}
-                   <a href = "/carr/conclusion/post_test/">Go</a>
-                {% else %}
-                   <a href = "/carr/conclusion/post_test/">Retake</a>
-                {%endif %}
-		      {%endif%}
-		</td>
-	</tr>
-
-	
-</table>
-
-<table class = "scorestable">
-	<tr>
-	   <th>
-    	    Status of entire CARE training module:
-	   </th>
-	</tr>
-	<tr>
-	    <td>
-            <h2>&nbsp;&nbsp;{%if training_complete%}Complete{%else%}Incomplete{%endif%}</h2>
+        </td>
+        <td>
+           {%if score%}
+                  {%if score.all_correct and score.all_correct == "t" %}
+               <a href = "/carr/conclusion/post_test/">Go</a>
+            {% else %}
+               <a href = "/carr/conclusion/post_test/">Retake</a>
+            {%endif %}
+          {%endif%}
         </td>
     </tr>
+</table>
+
+<table class="scorestable scoresstatus">
     <tr>
-	    <td>
-            {%if training_complete%}You have successfully completed the training.{%else%}To complete the training, you must:
-            <ul>
-                <li>Complete the Pre-Test </li>
-                <li>Complete the "Abuse vs. Accident" activity</li>
-                <li>Complete all 3 cases</li>
-                <li>Complete the "Taking Action" activity</li>
-                <li>Complete the Post-Test.</li>
-                <li>Answer all questions correctly on the Post-Test. (You are allowed as many tries as you need.)</li>
-            </ul>
-             {%endif%}
+       <th>
+            Status
+       </th>
+    </tr>
+    <tr>
+        <td>
+            {% if training_complete %}
+                <h2>Complete</h2>
+                <div>You have successfully completed the training.</div>
+                <p>
+                    {% lti_session request as lti %}
+                    {% if lti %}
+                        <hr />
+                        <h2>Submit Your Score</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum dignissim ante non tincidunt. Nulla est nisl, cursus id enim eget, fermentum facilisis turpis. </p>
+                        {% get_scores for 'post-test' in scores as score %}
+                        <form action="{% url "lti-post-grade" %}" method="post">
+                            <input type="hidden" name="next" value="{% url "student-scores" %}" />
+                            {% if score.all_correct and score.all_correct == "t" %}
+                                <input type="hidden" name="score" value="1" />
+                            {% endif %}
+                            <button type="submit" class="btn btn-lg btn-primary btn-lti">Submit Now</button>
+                        </form>
+                    {% endif %}
+                </p>
+            {% else %}
+                <h2>Incomplete</h2>
+                <p>To complete the training, you must:</p>
+                <ul>
+                    <li>Complete the Pre-Test </li>
+                    <li>Complete the "Abuse vs. Accident" activity</li>
+                    <li>Complete all 3 cases</li>
+                    <li>Complete the "Taking Action" activity</li>
+                    <li>Complete the Post-Test.</li>
+                    <li>Answer all questions correctly on the Post-Test. (You are allowed as many tries as you need.)</li>
+                </ul>
+            {% endif %}
         </td>
     </tr>
 </table>

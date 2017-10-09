@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load lti_utils %}
 
 {% block title %}{{section.label}}{% endblock %}
 
@@ -20,6 +21,13 @@
         <li>
             <a href="/edit{{section.get_absolute_url}}">Edit Page</a>
         </li>
+    {% else %}
+        {% lti_session request as lti %}
+        {% if lti %}
+        <li>
+            <a href="https://courseworks2.columbia.edu">Return to Canvas</a>
+        </li>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
@@ -31,7 +39,17 @@
         {% for block in section.pageblock_set.all %}
             {{ block.render }}
         {% endfor %}
-   {% endif %}
+        
+        {% if not next %}
+            {% lti_session request as lti %}
+            {% if lti %}
+                <hr />
+                <h2>Your Score</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum dignissim ante non tincidunt. Nulla est nisl, cursus id enim eget, fermentum facilisis turpis. </p>
+                <a class="btn btn-lg btn-primary btn-lti" href="{% url "student-scores" %}">View &amp; Submit Score</a>
+            {% endif %}
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block contentnav %}
