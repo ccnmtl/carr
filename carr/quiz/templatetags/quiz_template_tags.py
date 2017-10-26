@@ -16,7 +16,7 @@ class GetScores(TemplateTagNode):
                 [o for o in obj if o['quiz']
                     .label().lower() == quiz_label.lower()][0]
             )
-        except:
+        except (KeyError, IndexError):
             return None
 
 
