@@ -93,5 +93,5 @@ def score_on_taking_action(the_student):
                 return 'clicked_through'
         else:
             return 'no_data'
-    except:
+    except (AttributeError, ValueError, IndexError):
         return 'no_data'

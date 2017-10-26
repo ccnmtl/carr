@@ -231,7 +231,7 @@ def get_student_info(students):
 def get_quiz_score(quiz, json_stream, results):
     try:
         raw_quiz_info = json_stream['quiz_%d' % quiz.id]
-    except:
+    except (KeyError):
         raw_quiz_info = {}
     answer_count = len(
         [a for a in results if a['quiz_number'] == quiz.id])

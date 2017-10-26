@@ -93,5 +93,5 @@ def score_on_bruise_recon(the_student):
             return sum(bruise_recon_score_info.values())
         else:
             return None
-    except:
+    except (AttributeError, ValueError, KeyError, IndexError):
         return None
