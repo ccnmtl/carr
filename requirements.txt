@@ -42,7 +42,7 @@ django-smoketest==1.1.0
 
 raven==6.3.0
 
-text-unidecode==1.0
+text-unidecode==1.1
 Faker==0.8.6
 
 factory_boy==2.9.2
