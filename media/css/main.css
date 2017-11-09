@@ -1352,3 +1352,17 @@ body.login #content
 .errornote span {
     color: #c00;
 }
+
+.btn-lti {
+    background-color: #673692;
+    color: white !important;
+}
+
+
+.btn-lti:hover, .btn-lti:focus {
+    background-color: #ae79dd;
+}
+
+.scoresstatus td {
+    padding: 15px !important;
+}

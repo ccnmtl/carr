@@ -1,4 +1,5 @@
 # flake8: noqa
+
 # Django settings for carr project.
 import os.path
 import re
@@ -42,7 +43,8 @@ INSTALLED_APPS += [  # noqa
     'sorl.thumbnail',
     'courseaffils',
     'pagetimer',
-    'bootstrap3'
+    'bootstrap3',
+    'lti_provider'
 ]
 
 PROJECT_APPS = [
@@ -99,3 +101,26 @@ TEMPLATES[0]['OPTIONS']['context_processors'].append(  # noqa
 )
 
 PAGETIMER_MAX_RETENTION_INTERVAL = timedelta(days=60)
+
+AUTHENTICATION_BACKENDS = [
+  'django.contrib.auth.backends.ModelBackend',
+  'lti_provider.auth.LTIBackend',
+  'djangowind.auth.SAMLAuthBackend'
+]
+
+LTI_TOOL_CONFIGURATION = {
+    'title': 'Child Abuse Reporting Education',
+    'description': 'An online resource to teach students how to recognize'
+    'the symptoms of child abuse and how to report abuse when acting in their'
+    'professional capacities.',
+    'launch_url': 'lti/',
+    'embed_url': '',
+    'embed_icon_url': '',
+    'embed_tool_id': '',
+    'landing_url': '{}://{}/',
+    'course_aware': False,
+    'navigation': False,
+    'new_tab': True,
+    'frame_width': 1024,
+    'frame_height': 1024
+}
