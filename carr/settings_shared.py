@@ -79,7 +79,7 @@ COURSEAFFILS_EXEMPT_PATHS = ANONYMOUS_PATHS
 COURSEAFFIL_AUTO_MAP_GROUPS = ['demo']
 
 DEFAULT_SOCIALWORK_FACULTY_UNIS = [
-    'amo1', 'dls3', 'vc2162', 'jkt4'
+    'amo1', 'dls3', 'vc2162', 'jkt4', 'hh2537', 'mj52'
 ]
 
 # Pageblocks/Pagetree settings
