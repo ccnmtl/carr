@@ -1,0 +1,45 @@
+{% load static bootstrap3 %}
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" media="screen" />
+    <style>
+        #standardnav_container {
+            display: block;
+            float: left;
+            margin: 0;
+            width: 100%;
+            padding: 0;
+            background-color: #383838;
+            margin-bottom: 10px;
+        }
+        .carr-container {
+            margin-top: 20px;
+            font-size: medium;
+            border: 1px solid #673692;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+        }
+        a.btn-launch, a.btn-launch:visited {
+            background-color: #ae79dd;
+            border-color: #673692;
+        }
+        a.btn-launch:hover, a.btn-launch:active {
+            background-color: #673692;
+            border-color: #673692;
+        }
+    </style>
+</head>
+<body class="lti-landing-page>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3" style="margin-top: 20px">
+                <div class="carr-container">
+                    <div><img src='{% static "img/logo_project.jpg" %}' alt="CARE logo" /></div>
+                    <a class="btn btn-primary btn-lg btn-launch" href="{{landing_url}}" target="_blank">Launch Module</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
