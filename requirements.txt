@@ -27,7 +27,7 @@ six==1.11.0
 contextlib2==0.5.5
 rcssmin==1.0.6
 rjsmin==1.0.12
-ipaddress==1.0.18
+ipaddress==1.0.19
 pytz==2017.3
 
 django-courseaffils==2.1.15
