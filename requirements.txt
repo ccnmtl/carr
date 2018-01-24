@@ -3,7 +3,7 @@ Markdown==2.6.11
 pyenchant==2.0.0
 uuid==1.30
 psycopg2==2.7.3.2
-olefile==0.44
+olefile==0.45
 Pillow==5.0.0
 statsd==3.2.2
 coverage==4.4.2
