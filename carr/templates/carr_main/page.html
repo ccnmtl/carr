@@ -39,13 +39,12 @@
         {% for block in section.pageblock_set.all %}
             {{ block.render }}
         {% endfor %}
-        
+
         {% if not next %}
             {% lti_session request as lti %}
             {% if lti %}
                 <hr />
                 <h2>Your Score</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum dignissim ante non tincidunt. Nulla est nisl, cursus id enim eget, fermentum facilisis turpis. </p>
                 <a class="btn btn-lg btn-primary btn-lti" href="{% url "student-scores" %}">View &amp; Submit Score</a>
             {% endif %}
         {% endif %}

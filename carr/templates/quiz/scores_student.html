@@ -19,7 +19,7 @@
         <th>Score</th>
         <th>Link</th>
     </tr>
-    
+
     </ul>
     <tr>
         <td>
@@ -193,7 +193,7 @@
                     {% if lti %}
                         <hr />
                         <h2>Submit Your Score</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum dignissim ante non tincidunt. Nulla est nisl, cursus id enim eget, fermentum facilisis turpis. </p>
+                        <p>Click the <b>Submit Now</b> button to submit your scores to Courseworks. Your score will be visible in the gradebook.</p>
                         {% get_scores for 'post-test' in scores as score %}
                         <form action="{% url "lti-post-grade" %}" method="post">
                             <input type="hidden" name="next" value="{% url "student-scores" %}" />
