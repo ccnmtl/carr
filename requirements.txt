@@ -1,4 +1,4 @@
-Django==1.11.10 # pyup: <2.0
+Django==1.11.11 # pyup: <2.0
 Markdown==2.6.11
 pyenchant==2.0.0
 uuid==1.30
