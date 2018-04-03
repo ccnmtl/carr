@@ -4,7 +4,7 @@ pyenchant==2.0.0
 uuid==1.30
 psycopg2==2.7.4
 olefile==0.45.1
-Pillow==5.0.0
+Pillow==5.1.0
 statsd==3.2.2
 coverage==4.5.1
 ldap3==2.4.1
