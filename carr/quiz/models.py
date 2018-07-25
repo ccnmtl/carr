@@ -116,6 +116,9 @@ class Question(models.Model):
     explanation = models.TextField(blank=True)
     intro_text = models.TextField(blank=True)
 
+    required = models.BooleanField(default=False)
+    optional = models.BooleanField(default=False)
+
     class Meta:
         ordering = ('quiz', 'ordinality')
 
