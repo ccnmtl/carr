@@ -8,7 +8,8 @@
 /* global observation_checkbox_connect: true */
 /* global criteria_checkbox_connect: true */
 /* global other_observations_textfield_connect: true */
-/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "like_checkbox|show_answer|deprecated_ldss_form_fields_to_save" }]*/
+/* exported like_checkbox, show_answer */
+/* exported deprecated_ldss_form_fields_to_save */
 
 var current_step;
 var step_to_show_first;
