@@ -1,6 +1,9 @@
-/*eslint no-unused-vars: ["error", {
-  "varsIgnorePattern": "steps|game_state|nav_ready|first_round_action_css_classes|second_round_action_css_classes|observation_checkbox_connect|criteria_checkbox_connect|other_observations_textfield_connect" }]*/
 /* global partial: true, connect: true, hasElementClass: true */
+/* exported steps, game_state, nav_ready, observation_1, observation_2 */
+/* exported observation_css_classes, criteria_css_classes */
+/* exported first_round_action_css_classes, second_round_action_css_classes */
+/* exported observation_checkbox_connect, criteria_checkbox_connect */
+/* exported other_observations_textfield_connect */
 
 //////////////////
 //////////////////
@@ -63,8 +66,10 @@ function criteria_checkbox_clicked(e) {
 }
 
 // these functions form a mini-library that allows you to do the following:
-// give matching css classes e.g. observation_css_classes to a set of checkboxes that reoccur several times
-// on the page. whenever the user checks one of the set, the corresponding ones anywhere will be checked too.
+// give matching css classes e.g. observation_css_classes to a
+// set of checkboxes that reoccur several times
+// on the page. whenever the user checks one of the set, the
+// corresponding ones anywhere will be checked too.
 
 function set_checked(checkedness, box) {
     box.checked = checkedness;

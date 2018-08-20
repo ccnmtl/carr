@@ -1,5 +1,6 @@
 /*eslint no-unused-vars: ["error", {
-  "varsIgnorePattern": "is_cdm|cheat|number_of_questions_to_answer|retakeQuiz" }]*/
+  "varsIgnorePattern":
+  "is_cdm|cheat|number_of_questions_to_answer|retakeQuiz" }]*/
 /* global student_quiz: true */
 
 function randomly() {
@@ -172,9 +173,11 @@ function calculate_order() {
             40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
 
         var how_many_randomly_picked_questions;
-        // How many of the questions that *might* be on the quiz should we add to the ones that *will* be?
+        // How many of the questions that *might* be on the quiz
+        // should we add to the ones that *will* be?
         if (is_ssw) {
-            // last-minute change: the dental school professor wants to remove the randomly-picked questions:
+            // last-minute change: the dental school professor wants
+            // to remove the randomly-picked questions:
             how_many_randomly_picked_questions = 10;
         } else {
             how_many_randomly_picked_questions = 0;
@@ -182,8 +185,10 @@ function calculate_order() {
         // shuffle the randomly picked questions:
         randomly_picked_questions.sort(randomly);
 
-        // ok, pick a certain number out of the urn-- assign length in order to pick.
-        randomly_picked_questions.length = how_many_randomly_picked_questions;
+        // ok, pick a certain number out of the urn --
+        // assign length in order to pick.
+        randomly_picked_questions.length =
+            how_many_randomly_picked_questions;
 
         var final_list_of_questions = required_questions.concat(
             randomly_picked_questions);
@@ -228,7 +233,8 @@ function reorder_questions(order) {
         swapDOM(a[0], a[1]);
     }, zip(destination_divs, source_divs));
 
-    // show the resulting sorted divs, leaving the un-chosen ones hidden as per the CSS file.
+    // show the resulting sorted divs, leaving the un-chosen
+    // ones hidden as per the CSS file.
     map(function f(a) {
         setStyle(a, {'display': 'block'});
     }, $$('#sorted_questions_div div.cases'));
@@ -277,7 +283,8 @@ function show_score() {
 
     if (actual_score === max_score) {
         hide_retake = true;
-        // used in the final quiz to determine whether you can advance to the next page.
+        // used in the final quiz to determine whether
+        // you can advance to the next page.
     }
 
     var make_these_green = filter(function f(a) {
@@ -296,11 +303,13 @@ function show_score() {
     }
     /* eslint-enable no-unsafe-innerhtml/no-unsafe-innerhtml */
 
-    //store the first score; for diagnostic tests that might be taken several times:
+    // store the first score; for diagnostic tests that
+    // might be taken several times:
     if (typeof(all_quizzes_info[quiz_key]) === 'undefined') {
         all_quizzes_info [quiz_key] = {};
     }
-    if (typeof(all_quizzes_info[quiz_key][initialScoreKey]) === 'undefined') {
+    if (typeof(all_quizzes_info[quiz_key][initialScoreKey])
+            === 'undefined') {
         logDebug('Initial score not found; saving:');
         all_quizzes_info [quiz_key][initialScoreKey] = {
             'quiz_score': actual_score,
@@ -328,15 +337,17 @@ function show_score() {
     }
     var submitTimeKey = 'submit_time';
     /// adding this:
-    if (typeof(all_quizzes_info [quiz_key][submitTimeKey]) === 'undefined') {
+    if (typeof(all_quizzes_info [quiz_key][submitTimeKey])
+            === 'undefined') {
         all_quizzes_info [quiz_key][submitTimeKey] = [Date()];
     } else {
         all_quizzes_info [quiz_key][submitTimeKey].push(Date());
     }
 
     if (post_test && (!hide_retake)) {
-        alert('You must score 100% on the post-test to receive credit ' +
-              'for this training. Please click "Retake Quiz" and try again. ');
+        alert(
+            'You must score 100% on the post-test to receive credit ' +
+            'for this training. Please click "Retake Quiz" and try again. ');
     }
 
     freeze_buttons();
@@ -344,13 +355,14 @@ function show_score() {
 
 function loadStateError() {
     debug('loadStateError');
-    // @todo: Find a spot to display an error or decide just to fail gracefully
+    // @todo: Find a spot to display an error or decide
+    // just to fail gracefully
 }
 
 function loadState() {
     debug('loadState');
     if (typeof student_quiz !== 'undefined') {
-        hide_retake = true; // no reason for a faculty member to be interested in the "retake quiz" link.
+        hide_retake = true; // do not show to faculty
         loadStateSuccess(student_quiz);
         return;
     }
@@ -435,13 +447,13 @@ function saveState(validate) {
         // keep everything as is and save.
     } else {
         if (kill_this_quiz_flag) {
-            logDebug('Do save the initial results, but delete all question ' +
-                     'and answer info.');
+            logDebug('Do save the initial results, but delete all ' +
+                     'question and answer info.');
             delete what_to_send[quiz_key].question;
         } else {
             if (what_to_send [quiz_key] !== undefined) {
-                logDebug('Deleting all info for quiz, so it can be replaced ' +
-                         'with the quiz you just took.');
+                logDebug('Deleting all info for quiz, so it can be ' +
+                         'replaced with the quiz you just took.');
                 delete what_to_send[quiz_key].question;
             } else {
                 logDebug('No info found on this quiz.');
@@ -449,7 +461,8 @@ function saveState(validate) {
             }
             if (initial_score_found !== null) {
                 logDebug('Found an initial score, so preserving it.');
-                what_to_send  [quiz_key][initialScoreKey] = initial_score_found;
+                what_to_send[quiz_key][initialScoreKey] =
+                    initial_score_found;
             }
             what_to_send[quiz_key].question = collect_question_info();
         }
@@ -460,7 +473,8 @@ function saveState(validate) {
         url,
         {
             'method': 'POST',
-            'sendContent': queryString({'json': serializeJSON(what_to_send)}),
+            'sendContent': queryString({
+                'json': serializeJSON(what_to_send)}),
             'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
         });
     deferred.addCallback(onSaveStateComplete);
@@ -468,8 +482,8 @@ function saveState(validate) {
 }
 
 function retakeQuiz() {
-    if (!confirm('Are you sure you want to start the quiz again? This will ' +
-                 'erase your answers.'))  {
+    if (!confirm('Are you sure you want to start the quiz again? ' +
+                 'This will erase your answers.'))  {
         return;
     }
     kill_this_quiz_flag = true;
