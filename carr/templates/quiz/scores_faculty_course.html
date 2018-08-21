@@ -51,28 +51,30 @@
                 {%with st.score_on_bruise_recon as a%} 
                    {%if a %}
                         {{a}} / 3
-	                    {% if "cdm" in site_domain%}
-		                      ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
-		                        <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
-		                        <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
-		                {%else %}
-		                      ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
-		                        <a href="/activity/bruise_recon/studentcase/5/user/{{st.student.id}}/">2</a>
-		                        <a href="/activity/bruise_recon/studentcase/6/user/{{st.student.id}}/">3</a>) 
-		                {%endif%}
+                        {% if IS_SOCIALWORK %}
+                            ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
+                                <a href="/activity/bruise_recon/studentcase/5/user/{{st.student.id}}/">2</a>
+                                <a href="/activity/bruise_recon/studentcase/6/user/{{st.student.id}}/">3</a>) 
+                        {% else %}
+                              ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
+                                <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
+                                <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
+                        {%endif%}
                   {%else%}
                             {%if a == 0 %}
                                 {{a}} / 3
-                                {% if "cdm" in site_domain%}
-	                                  ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
-	                                    <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
-	                                    <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
-	                            {%else %}
-	                                  ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
-	                                    <a href="/activity/bruise_recon/studentcase/5/user/{{st.student.id}}/">2</a>
-	                                    <a href="/activity/bruise_recon/studentcase/6/user/{{st.student.id}}/">3</a>) 
-	                            {%endif%}
-                            {%else %}Incomplete{%endif%}
+                                {% if IS_SOCIALWORK %}
+                                      ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
+                                        <a href="/activity/bruise_recon/studentcase/5/user/{{st.student.id}}/">2</a>
+                                        <a href="/activity/bruise_recon/studentcase/6/user/{{st.student.id}}/">3</a>) 
+                                {% else %}
+                                      ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
+                                        <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
+                                        <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
+                                {% endif%}
+                            {% else %}
+                                Incomplete
+                            {% endif %}
                     {%endif%}
                 {%endwith%}
             </td>
@@ -101,16 +103,15 @@
                 {%endif %}
             </td>
             <td>
-            
-	            {%ifequal st.score_on_taking_action 'completed_form' %}
-	              <a href ="/activity/taking_action/student/{{st.student.id}}/">Completed activity and filled out form</a>
-		          {%endifequal%}
+                {%ifequal st.score_on_taking_action 'completed_form' %}
+                  <a href ="/activity/taking_action/student/{{st.student.id}}/">Completed activity and filled out form</a>
+                  {%endifequal%}
               {%ifequal st.score_on_taking_action 'clicked_through' %}
-	              Complete
-		          {%endifequal%}
+                  Complete
+                  {%endifequal%}
               {%ifequal st.score_on_taking_action 'no_data' %}
-	              Incomplete
-		          {%endifequal%}
+                  Incomplete
+                  {%endifequal%}
             </td>
             <td>
                 {% get_scores for 'post-test' in st.scores as score %}
@@ -141,31 +142,31 @@
                     Incomplete
                 {%endif %}
             </td>
-            
+
         </tr>
         {%endfor %}
         <tr>
           <td colspan = "12">
-          
-			<p>
-			Students in courses: 
-			</p>
-			
-			<ul>
-			
-			<li>
-			<b>prior to 2011</b> may have "n/a" appear on their scores. 
-			</li>
-			
-			<li>
-			<b>from 2011 onward</b> should not have "n/a" appear on their scores.    
-			</li>
-			
-			</ul>
-			
-			<p>
-			If you have a student with "n/a" as a score somewhere, please contact <a href="mailto:ccnmtl-care@columbia.edu">ccnmtl-care@columbia.edu</a> for more information about what that means.
-			</p>
+
+            <p>
+            Students in courses: 
+            </p>
+
+            <ul>
+
+            <li>
+            <b>prior to 2011</b> may have "n/a" appear on their scores. 
+            </li>
+
+            <li>
+            <b>from 2011 onward</b> should not have "n/a" appear on their scores.    
+            </li>
+
+            </ul>
+
+            <p>
+            If you have a student with "n/a" as a score somewhere, please contact <a href="mailto:ccnmtl-care@columbia.edu">ccnmtl-care@columbia.edu</a> for more information about what that means.
+            </p>
 
           </td>
         </td>

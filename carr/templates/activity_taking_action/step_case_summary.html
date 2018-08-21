@@ -1,17 +1,43 @@
 <div class="activity_step" id="{{the_step_name}}">
-	<h5>
-		Case Summary 
-	</h5>
-	<p>
-		{% if "cdm" in block.site.domain%} A mother brings her 3 year old son to your clinic for a check-up. During the exam, you notice a laceration on the child's lip, and fractured lower incisors. Upon questioning the mother, she tells you that the child hurt himself accidentally when he ran into a doorknob four days ago. You notice that the child is too short to have sustained the injury on a doorknob. Furthermore, running into a doorknob is not likely to cause a lip laceration, and most mouth injuries impact the upper, not the lower teeth. The child is too young to tell you what happened, and the mother's story is not reasonable. Although the child does not appear to be in imminent danger, you cannot rule out that he has not been abused. You call the SCR to file a report and within the next 2 days, you complete and submit the LDSS-2221A. If the SCR determines that the child may be in an abusive home, the local authorities will be contacted. Your job as a mandated reporter is complete. {%endif%}
-{% if "ssw" in block.site.domain%}
-    {% include "activity_taking_action/snippets/case_history_text.html" %}
-    <br/><br/>
-    You notice that the child is caught in a bitter divorce, and her father may be resorting to dishonest and manipulative tactics in order to win custody of his daughter. The girl doesn't say much, but she doesn't disagree with what her father is alleging.<br/><br/>
-    Although the child does not appear to be in imminent danger, you cannot rule out that the mother's boyfriend is a danger to the child. You call the State Central Register (SCR) to file a report and within the next 2 days (48 hours), you must complete and submit the LDSS-2221A. If the SCR determines that the child may be in an abusive home, the local authorities will be contacted. Your job as a mandated reporter is complete.<br/><br/>
-    You are interested in the case and would like to follow-up. A week after calling CPS and submitting the LDSS-2221A, you request the findings of this investigation. Once SCR confirms your identity, you learn that investigation has not been completed, you are informed that the report is "under investigation." The next time you inquire about the report, you learn that it is "unfounded."
-{%endif%} 
-	</p>
+    <h5>Case Summary</h5>
+    <p>
+        {% if not IS_SOCIALWORK %}
+        A mother brings her 3 year old son to your
+        clinic for a check-up. During the exam, you notice a laceration on the
+        child's lip, and fractured lower incisors. Upon questioning the mother,
+        she tells you that the chil hurt himself accidentally when he ran into a
+        doorknob four days ago. You notice that the child is too short to have
+        sustained the injury on a doorknob. Furthermore, running into a doorknob
+        is not likely to cause a lip laceration, and most mouth injuries impact
+        the upper, not the lower teeth. The child is too young to tell you what
+        happened, and the mother's story is not reasonable. Although the child
+        does not appear to be in imminent danger, you cannot rule out that he
+        has not been abused. You call the SCR to file a report and within the
+        next 2 days, you complete and submit the LDSS-2221A. If the SCR
+        determines that the child may be in an abusive home, the local
+        authorities will be contacted. Your job as a mandated reporter is
+        complete.
+        {% else %}
+        {% include "activity_taking_action/snippets/case_history_text.html" %} <br />
+        <br /> You notice that the child is caught in a bitter divorce, and her
+        father may be resorting to dishonest and manipulative tactics in order
+        to win custody of his daughter. The girl doesn't say much, but she
+        doesn't disagree with what her father is alleging.<br />
+        <br /> Although the child does not appear to be in imminent danger, you
+        cannot rule out that the mother's boyfriend is a danger to the child.
+        You call the State Central Register (SCR) to file a report and within
+        the next 2 days (48 hours), you must complete and submit the LDSS-2221A.
+        If the SCR determines that the child may be in an abusive home, the
+        local authorities will be contacted. Your job as a mandated reporter is
+        complete.<br />
+        <br /> You are interested in the case and would like to follow-up. A
+        week after calling CPS and submitting the LDSS-2221A, you request the
+        findings of this investigation. Once SCR confirms your identity, you
+        learn that investigation has not been completed, you are informed that
+        the report is "under investigation." The next time you inquire about the
+        report, you learn that it is "unfounded."
+        {%endif%}
+    </p>
     <div class="purple_button taking_action_prev_button">Back</div>
-	<div class ="taking_action_pagenumber">Page 11 of 11</div>
+    <div class="taking_action_pagenumber">Page 11 of 11</div>
 </div>

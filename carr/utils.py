@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
 
 
 def state_json(state_class, user):
@@ -30,3 +31,7 @@ def filter_users_by_affiliation(affiliation, the_users):
         return the_users.filter(groups__name__regex=regex)
     else:
         return the_users.exclude(groups__name__regex=regex)
+
+
+def is_socialwork(request):
+    return get_current_site(request).id == settings.SITE_SOCIAL_WORK

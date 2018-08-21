@@ -1,14 +1,18 @@
 <div class="activity_step" id="{{the_step_name}}">
 		<p>
-		Read the case study below, then check the boxes that correspond to your observations about the case. Enter any additional information in the text box. Then click the "Next" button.
+		Read the case study below, then check the boxes that correspond to your observations about the case.
+        Enter any additional information in the text box. Then click the "Next" button.
 		</p>
 	<div class="half-page">
 		<p class="half-page_heading">
 			Case History
 		</p>
 		<div id="review_case_history_copy">
-			{% if "cdm" in block.site.domain%} A mother brings her 3 year old son to your clinic for a check-up. During the exam, you notice a laceration on the child's lip, and fractured lower incisors. Upon questioning the mother, she tells you that the child hurt himself accidentally when he ran into a doorknob four days ago. {%endif%}
-			{% if "ssw" in block.site.domain%} 
+			{% if not IS_SOCIALWORK %}
+                A mother brings her 3 year old son to your clinic for a check-up. During the exam, you notice
+                a laceration on the child's lip, and fractured lower incisors. Upon questioning the mother,
+                she tells you that the child hurt himself accidentally when he ran into a doorknob four days ago.
+            {% else %}
                 {% include "activity_taking_action/snippets/case_history_text.html" %}
 			{%endif%}
 		</div>

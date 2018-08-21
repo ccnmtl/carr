@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load lti_utils %}
+{% load render %}
 
 {% block title %}{{section.label}}{% endblock %}
 
@@ -37,7 +38,7 @@
    {% else %}
         <h2>{{ section.label }}</h2>
         {% for block in section.pageblock_set.all %}
-            {{ block.render }}
+            {% render block %}
         {% endfor %}
 
         {% if not next %}

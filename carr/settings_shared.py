@@ -95,6 +95,8 @@ PAGEBLOCKS = ['pageblocks.HTMLBlock',
               ]
 
 SITE_ID = 1
+SITE_DENTAL = 1
+SITE_SOCIAL_WORK = 2
 
 TEMPLATES[0]['OPTIONS']['context_processors'].append(  # noqa
     'carr.carr_main.views.context_processor',

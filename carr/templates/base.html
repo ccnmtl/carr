@@ -10,12 +10,12 @@
     {% compress css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" media="screen" />
     {% endcompress %}
-    {% if "cdm" in site_domain %}
+    {% if IS_SOCIALWORK %}
+        <link rel="stylesheet" href="{{STATIC_URL}}css/ssw.css" media="screen" />
+    {% else %}
         <link rel="stylesheet" href="{{STATIC_URL}}css/cdm.css" media="screen" />
     {% endif %}
-    {% if "ssw" in site_domain %}
-        <link rel="stylesheet" href="{{STATIC_URL}}css/ssw.css" media="screen" />
-    {% endif %}
+
     <!--[if IE 6]>
     <link rel="stylesheet" href="{{STATIC_URL}}css/main_ie6_2coll.css" media="screen" />
     <![endif]-->
@@ -89,17 +89,17 @@ gtag('config', '{{GA_TAG}}', { 'anonymize_ip': true });
         <!-- CCNMTL title/logo -->
         <a id="logo_ccnmtl" href="http://ccnmtl.columbia.edu" target="_blank" title="Columbia Center for New Media Teaching and Learning">
             <img src="{{STATIC_URL}}img/logo_ccnmtl.png" alt="CCNMTL Logo" />
-        </a>        
-        {% if "cdm" in site_domain %}
+        </a>
+        {% if IS_SOCIALWORK %}
+        <a id="logo_school" href="http://socialwork.columbia.edu" target="_blank" title="Columbia University School of Social Work">
+            <img src="{{STATIC_URL}}img/logo_cussw.gif" alt="CUSSW Logo" />
+        </a>
+        {% else %}
             <a id="logo_school" href="http://dental.columbia.edu" target="_blank" title="Columbia University College of Dental Medicine">
                 <img src="{{STATIC_URL}}img/logo_dental.png"  alt="CDM Logo" />
             </a>
-        {% else %}{% if "ssw" in site_domain %}
-            <a id="logo_school" href="http://socialwork.columbia.edu" target="_blank" title="Columbia University School of Social Work">
-                <img src="{{STATIC_URL}}img/logo_cussw.gif" alt="CUSSW Logo" />
-            </a>        
-        {% endif %}{% endif %}
-    </div>    
+        {% endif %}
+    </div>
 {% endblock %}
 
 <!-- ###### Don't touch this ###### -->
@@ -144,6 +144,11 @@ gtag('config', '{{GA_TAG}}', { 'anonymize_ip': true });
     </div><!-- id="footer" -->
 {% endblock %}
 
+<script>
+    const CARE = {
+        isSocialWork: {% if IS_SOCIALWORK %}true{% else %}false{% endif %}
+    }
+</script>
 
 </div><!-- id="container" -->
 </body>
