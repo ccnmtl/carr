@@ -4,7 +4,7 @@ pyenchant==2.0.0
 psycopg2==2.7.5
 olefile==0.45.1
 Pillow==5.2.0
-statsd==3.2.2
+statsd==3.3.0
 coverage==4.5.1
 ldap3==2.5.1
 mccabe==0.6.1
