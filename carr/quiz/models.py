@@ -12,6 +12,7 @@ class Quiz(models.Model):
     description = models.TextField(blank=True)
     rhetorical = models.BooleanField(default=False)
     template_file = "quiz/quizblock.html"
+    js_template_file = "quiz/quizblock_js.html"
 
     display_name = "Quiz"
 
@@ -98,6 +99,14 @@ class Quiz(models.Model):
 
     def questions(self):
         return self.question_set.all().prefetch_related('answer_set')
+
+    def required_questions(self):
+        return self.question_set.filter(
+            required=True).order_by('id').prefetch_related('answer_set')
+
+    def optional_questions(self):
+        return self.question_set.filter(
+            optional=True).order_by('id').prefetch_related('answer_set')
 
 
 class Question(models.Model):

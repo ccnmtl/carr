@@ -1,7 +1,8 @@
 /*eslint no-unused-vars: ["error", {
   "varsIgnorePattern":
   "cheat|number_of_questions_to_answer|retakeQuiz" }]*/
-/* global student_quiz: true, CARE: true */
+/* global student_quiz: true, CARE: true, required_questions: true */
+/* global optional_questions: true */
 
 function randomly() {
     return 0.5 - Math.random();
@@ -154,52 +155,34 @@ function thaw_buttons() {
 function calculate_order() {
     // Returns a list of database ID's of questions
     // in the order this quiz should display them.
+    // required_questions & optional_questions are rendered
+    // via the quiz block
 
     if (post_test) {
-        // Show some required questions, and some questions
-        // picked at random out of a hat, in a random order.
-        // These questions *will* be on the quiz regardless of
-        // the order the questions are presented in:
-        var required_questions = [13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
-
-        // Questions that *might* be on the quiz:
-        var randomly_picked_questions = [
-            23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
-            40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52];
-
-        var how_many_randomly_picked_questions;
-        // How many of the questions that *might* be on the quiz
-        // should we add to the ones that *will* be?
         if (CARE.isSocialWork) {
-            // last-minute change: the dental school professor wants
-            // to remove the randomly-picked questions:
-            how_many_randomly_picked_questions = 10;
-        } else {
-            how_many_randomly_picked_questions = 0;
+            // SSW adds 10 random questions to the required questions
+
+            // shuffle the randomly picked questions:
+            optional_questions.sort(randomly);
+
+            // ok, pick a certain number out of the urn --
+            // assign length in order to pick.
+            optional_questions.length = 10;
+
+            required_questions = required_questions.concat(
+                optional_questions);
         }
-        // shuffle the randomly picked questions:
-        randomly_picked_questions.sort(randomly);
-
-        // ok, pick a certain number out of the urn --
-        // assign length in order to pick.
-        randomly_picked_questions.length =
-            how_many_randomly_picked_questions;
-
-        var final_list_of_questions = required_questions.concat(
-            randomly_picked_questions);
 
         // reshuffle all questions together:
-        final_list_of_questions.sort(randomly);
+        required_questions.sort(randomly);
 
         var question_ids_as_loaded = map(function(a) {
             return parseInt(a.id.split('_')[1]);
         },  $$('.cases.really'));
 
-        var question_ids_as_needed = final_list_of_questions;
-
         var order = map(function(a) {
             return findValue(question_ids_as_loaded, a);
-        }, question_ids_as_needed);
+        }, required_questions);
         return order;
     } else {
         return list(range($$('.cases.really').length)).sort(randomly);
