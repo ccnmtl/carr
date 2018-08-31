@@ -14,7 +14,7 @@
     <div>
         <h1>Student Scores</h1>
         <br />
-        {% if "ssw" in site_domain %}
+        {% if IS_SOCIALWORK %}
             <p>To find a student's scores, click one of the buttons below.</p>
             <p><a class="btn btn-primary btn-large" color="white"  href = "/scores/socialwork/uni/">Search by UNI</a>
 
@@ -24,14 +24,14 @@
 
         <p>Click the button below to download a table of all students' scores. This operation may take a few minutes.</p>
         <p>
-        {% if "ssw" in site_domain %}
+        {% if IS_SOCIAL_WORK %}
             <a class="btn btn-primary btn-large" color="white" href = "/stats/ssw/" target="_blank">All SSW Scores <i class="icon-download-alt icon-white"></i></a>
-        {% else %}{% if "cdm" in site_domain %}
+        {% else %}
             <a class="btn btn-primary btn-large" color="white" href = "/stats/dental/" target="_blank">All Dental Scores <i class="icon-download-alt icon-white"></i></a>
-        {% endif %}{% endif %}
+        {% endif %}
         </p>
 
-        {% if "ssw" in site_domain %}
+        {% if IS_SOCIALWORK %}
             <br />
             <p>Download a question by question analysis of the post-test.</p>
             <form method="post" action="/scores/socialwork/analysis/">

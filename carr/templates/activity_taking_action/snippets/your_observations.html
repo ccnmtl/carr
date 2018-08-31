@@ -1,7 +1,7 @@
 <p class="half-page_heading">
 	Your Observations 
 </p>
-{% if "cdm" in block.site.domain%} 
+{% if not IS_SOCIALWORK %} 
     <p>
 	    <input type="checkbox" class="{{the_step_name}} checkbox observation observation_1" />
 	    The child's injuries are consistent with the history of reported trauma. 
@@ -18,7 +18,7 @@
 	    <input type="checkbox" class="{{the_step_name}} checkbox observation observation_4" />
 	    The lower teeth are injured. 
     </p>
-{%endif%} {% if "ssw" in block.site.domain%} 
+{% else %}
     <p>
 	    <input type="checkbox" class="{{the_step_name}} checkbox observation observation_1" />
 	    The girl is caught in a bitter divorce and custody battle. 

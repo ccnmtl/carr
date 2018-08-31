@@ -1,4 +1,4 @@
-{% if "cdm" in block.site.domain%} 
+{% if not IS_SOCIALWORK %} 
         <div>
 	        <div class="{{the_step_name}} action_button first_round_action first_round_action_1">
 		        Do Nothing 
@@ -23,7 +23,7 @@
 		        This is the wrong answer because the child is not in imminent danger.
 	        </p>
         </div>
-{%endif%}{% if "ssw" in block.site.domain%} 
+{% else %} 
         <div>
 	        <div class="{{the_step_name}} action_button first_round_action first_round_action_1">
 		        Do Nothing 
@@ -48,7 +48,7 @@
 		        This is the wrong answer because the child is not in imminent danger. 
 	        </p>
         </div>
-    {% if "cdm" in block.site.domain%} 
+    {% if not IS_SOCIALWORK %} 
             <div>
 	            <div class="{{the_step_name}} action_button first_round_action first_round_action_4 correct_choice correct_choice">
 		            Perform clinical and radioactive dental examinations to review the extent of the injury. 
@@ -58,4 +58,4 @@
                 </p>
             </div>
     {%endif%}
-{%endif%} 
+{%endif%}

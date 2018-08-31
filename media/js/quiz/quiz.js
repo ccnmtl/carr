@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: ["error", {
   "varsIgnorePattern":
-  "is_cdm|cheat|number_of_questions_to_answer|retakeQuiz" }]*/
-/* global student_quiz: true */
+  "cheat|number_of_questions_to_answer|retakeQuiz" }]*/
+/* global student_quiz: true, CARE: true */
 
 function randomly() {
     return 0.5 - Math.random();
@@ -154,11 +154,6 @@ function thaw_buttons() {
 function calculate_order() {
     // Returns a list of database ID's of questions
     // in the order this quiz should display them.
-    var my_url = location.href;
-    var is_ssw = (my_url.match(/ssw/) !== null) ||
-        (my_url.match(/64757/) !== null);
-    var is_cdm = (my_url.match(/cdm/) !== null) ||
-        (my_url.match(/64756/) !== null);
 
     if (post_test) {
         // Show some required questions, and some questions
@@ -175,7 +170,7 @@ function calculate_order() {
         var how_many_randomly_picked_questions;
         // How many of the questions that *might* be on the quiz
         // should we add to the ones that *will* be?
-        if (is_ssw) {
+        if (CARE.isSocialWork) {
             // last-minute change: the dental school professor wants
             // to remove the randomly-picked questions:
             how_many_randomly_picked_questions = 10;

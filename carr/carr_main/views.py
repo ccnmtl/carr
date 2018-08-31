@@ -17,13 +17,17 @@ from carr.activity_taking_action.models import score_on_taking_action
 from carr.quiz.models import Question
 from carr.quiz.scores import score_on_all_quizzes, all_answers_for_quizzes, \
     training_is_complete, can_see_scores, scores_student
-from carr.utils import filter_users_by_affiliation, get_students
+from carr.utils import (
+    filter_users_by_affiliation, get_students, is_socialwork)
 
-from .models import SiteState, user_type
+from carr.carr_main.models import SiteState, user_type
 
 
 def context_processor(request):
-    return dict(MEDIA_URL=settings.MEDIA_URL)
+    d = dict(
+        MEDIA_URL=settings.MEDIA_URL,
+        IS_SOCIALWORK=is_socialwork(request))
+    return d
 
 
 @user_passes_test(can_see_scores)
@@ -53,7 +57,6 @@ def page(request, path):
     current_root = h.get_section_from_path(path)
     section = h.get_first_leaf(current_root)
     ss = SiteState.objects.get_or_create(user=request.user)[0]
-    current_site = get_current_site(request)
 
     # Skip to the first leaf, make sure to mark these sections as visited
     if (current_root != section):
@@ -94,7 +97,6 @@ def page(request, path):
                        previous=prev,
                        next=next,
                        depth=depth,
-                       site_domain=current_site.domain,
                        leftnav=leftnav))
 
 
@@ -226,7 +228,7 @@ def selenium(request, task):
         [a.delete() for a in test_user.quiz_user.all()]
 
         try:
-            SiteState.objects.get(user=test_user).delete()
+            SiteState.objects.filter(user=test_user).delete()
         except SiteState.DoesNotExist:
             pass
 
@@ -244,7 +246,7 @@ def stats(request, task):
     """
     Two tables with one row per student. This will get very large/slow
     and is only really intended to be run infrequently. We will cache
-    it once a day or two once it stabilizes..
+    it once a day or two once it stabilizes.
 
     """
     if task not in ['ssw', 'dental']:

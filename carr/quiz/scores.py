@@ -57,11 +57,9 @@ def access_list(request):
 
 @user_passes_test(can_see_scores)
 def scores_index(request):
-    current_site = get_current_site(request)
     return render(request, 'quiz/scores/scores_index.html', {
         'full_page_results_block': True,
         'hide_scores_help_text': True,
-        'site_domain': current_site.domain
     })
 
 
