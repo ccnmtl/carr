@@ -15,7 +15,8 @@ class AnswerInline (admin.TabularInline):
 
 class QuestionAdmin(admin.ModelAdmin):
     search_fields = ['value']
-    list_display = ['text', 'quiz', 'ordinality']
+    list_display = ['id', 'quiz', 'ordinality',
+                    'optional', 'required', 'text']
     inlines = [AnswerInline]
 
 

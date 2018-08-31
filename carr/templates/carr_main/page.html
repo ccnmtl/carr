@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load lti_utils %}
 {% load render %}
+{% load carr_main_template_tags %}
 
 {% block title %}{{section.label}}{% endblock %}
 
@@ -90,4 +91,10 @@
       </ul>
     </nav>
     </div>
+{% endblock %}
+
+{% block js %}
+    {% for block in section.pageblock_set.all %}
+        {% renderjs block %}
+    {% endfor %}
 {% endblock %}

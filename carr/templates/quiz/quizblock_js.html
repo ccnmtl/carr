@@ -1,0 +1,15 @@
+
+<script type="text/javascript">
+
+// Show some required questions, and some questions
+// picked at random out of a hat, in a random order.
+// These questions *will* be on the quiz regardless of
+// the order the questions are presented in:
+var required_questions = [
+{% for question in block.required_questions %}{{question.id}}{% if not forloop.last %}, {% endif %}{% endfor %}
+];
+
+var optional_questions = [
+{% for question in block.optional_questions %}{{question.id}}{% if not forloop.last %}, {% endif %}{% endfor %}
+];
+</script>
