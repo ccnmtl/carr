@@ -5,12 +5,14 @@ from django.contrib.contenttypes.fields import GenericRelation
 from pagetree.models import PageBlock
 from django import forms
 from django.contrib.sites.models import Site
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 
 
 class Case(models.Model):
     name = models.CharField(max_length=25)
 
 
+@python_2_unicode_compatible
 class Block(models.Model):
     pageblocks = GenericRelation(
         PageBlock,
@@ -45,8 +47,8 @@ class Block(models.Model):
     def pageblock(self):
         return self.pageblocks.all()[0]
 
-    def __unicode__(self):
-        return unicode(self.pageblock())
+    def __str__(self):
+        return smart_text(self.pageblock())
 
     def needs_submit(self):
         return False

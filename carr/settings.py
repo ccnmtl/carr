@@ -1,7 +1,7 @@
 # flake8: noqa
-from settings_shared import *
+from carr.settings_shared import *
 
 try:
-    from local_settings import *
+    from carr.local_settings import *
 except ImportError:
     pass

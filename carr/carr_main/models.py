@@ -6,10 +6,11 @@ from pagetree.models import Section, SectionChildren
 from django.db.models.signals import post_save
 from django.core.cache import cache
 from django.contrib.auth.models import User, Group
+from django.utils.encoding import python_2_unicode_compatible
 
 import re
 
-course_re = '.*t(\d).y(\d{4}).s(\w{3}).c(\w)(\d{4}).(\w{4}).(\w{2}).*'
+course_re = r'.*t(\d).y(\d{4}).s(\w{3}).c(\w)(\d{4}).(\w{4}).(\w{2}).*'
 
 
 def user_sort_key(student):
@@ -134,11 +135,12 @@ class SiteState(models.Model):
         self.save()
 
 
+@python_2_unicode_compatible
 class SiteSection(Section):
 
     sites = models.ManyToManyField(Site)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.label
 
     @classmethod

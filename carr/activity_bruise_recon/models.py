@@ -5,8 +5,10 @@ from django.contrib.contenttypes.fields import GenericRelation
 from pagetree.models import PageBlock
 from django import forms
 from django.contrib.sites.models import Site
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 
 
+@python_2_unicode_compatible
 class Case(models.Model):
     name = models.CharField(max_length=25)
     image = models.ImageField(
@@ -20,7 +22,7 @@ class Case(models.Model):
     explanation = models.TextField()
     factors_for_decision = models.TextField()
 
-    def __unicode__(self):
+    def __str__(self):
         return (
             "%s: \"%s[...]%s\"" % (
                 self.name,
@@ -29,6 +31,7 @@ class Case(models.Model):
         )
 
 
+@python_2_unicode_compatible
 class Block(models.Model):
     pageblocks = GenericRelation(
         PageBlock,
@@ -44,8 +47,8 @@ class Block(models.Model):
     def site(self):
         return Site.objects.get_current()
 
-    def __unicode__(self):
-        return unicode(self.pageblock())
+    def __str__(self):
+        return smart_text(self.pageblock())
 
     def needs_submit(self):
         return False
@@ -88,7 +91,7 @@ def score_on_bruise_recon(the_student):
             bruise_recon_score_info = dict(
                 [(a.strip(), b['score'])
                  for a, b
-                 in recon_json.iteritems()
+                 in recon_json.items()
                  if a.strip() != '' and 'score' in b])
             return sum(bruise_recon_score_info.values())
         else:

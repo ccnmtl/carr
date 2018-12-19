@@ -4,7 +4,7 @@ from carr.activity_bruise_recon.models import score_on_bruise_recon
 
 
 class TestCaseCase(TestCase):
-    def test_unicode(self):
+    def test_str(self):
         c = CaseFactory()
         self.assertEqual(str(c), "test: \"[...]\"")
 

@@ -5,8 +5,10 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django import forms
 from datetime import datetime
 from django.core.urlresolvers import reverse
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 
 
+@python_2_unicode_compatible
 class Quiz(models.Model):
     pageblocks = GenericRelation(PageBlock)
     description = models.TextField(blank=True)
@@ -19,8 +21,8 @@ class Quiz(models.Model):
     def pageblock(self):
         return self.pageblocks.all()[0]
 
-    def __unicode__(self):
-        return unicode(self.pageblock())
+    def __str__(self):
+        return smart_text(self.pageblock())
 
     def label(self):
         return self.pageblock().label
@@ -109,6 +111,7 @@ class Quiz(models.Model):
             optional=True).order_by('id').prefetch_related('answer_set')
 
 
+@python_2_unicode_compatible
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz)
     text = models.TextField()
@@ -131,9 +134,9 @@ class Question(models.Model):
     class Meta:
         ordering = ('quiz', 'ordinality')
 
-    def __unicode__(self):
+    def __str__(self):
         return (
-            unicode(
+            smart_text(
                 self.quiz.pageblock()
             ) + (
                 ": %d " %
@@ -181,6 +184,7 @@ class Question(models.Model):
         return self.text[0:36]
 
 
+@python_2_unicode_compatible
 class Answer(models.Model):
     question = models.ForeignKey(Question)
     ordinality = models.IntegerField(default=1)
@@ -191,7 +195,7 @@ class Answer(models.Model):
     class Meta:
         ordering = ('question', 'ordinality')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.label
 
     def letter(self):
@@ -204,16 +208,17 @@ class Submission(models.Model):
     submitted = models.DateTimeField(default=datetime.now)
 
 
+@python_2_unicode_compatible
 class Response(models.Model):
     question = models.ForeignKey(Question)
     submission = models.ForeignKey(Submission)
     value = models.TextField(blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return (
             "response to %s by %s at %s" % (
-                unicode(self.question),
-                unicode(self.user),
+                smart_text(self.question),
+                smart_text(self.user),
                 self.submitted)
         )
 

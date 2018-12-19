@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from carr.quiz.models import ActivityState
-from models import Quiz, Question, Answer
+from carr.quiz.models import ActivityState, Quiz, Question, Answer
 
 
 class AnswerAdmin(admin.ModelAdmin):
