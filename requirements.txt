@@ -19,7 +19,7 @@ logilab-astng==0.24.3
 editdistance==0.5.2
 pylint==1.9.4 # pyup: <2.0.0
 pyasn1==0.4.5
-pyOpenSSL==18.0.0
+pyOpenSSL==19.0.0
 ndg-httpsclient==0.5.1
 sqlparse==0.2.4
 six==1.12.0
