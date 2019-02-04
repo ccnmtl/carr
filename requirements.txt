@@ -10,7 +10,7 @@ ldap3==2.5.2
 mccabe==0.6.1
 pyflakes==2.1.0
 pep8==1.7.1
-pycodestyle==2.4.0
+pycodestyle==2.5.0
 configparser==3.7.1
 enum34==1.1.6; python_version < '3.4'
 flake8==3.6.0
