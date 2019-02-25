@@ -108,8 +108,6 @@ function loadStateSuccess(doc) {
     var test_already_taken = (this_quiz && this_quiz.question &&
                               this_quiz.question.length > 0);
 
-    logDebug('test already taken is ' + test_already_taken);
-
     var order;
     if (test_already_taken) {
         var the_answers;
@@ -142,7 +140,6 @@ function loadStateSuccess(doc) {
 }
 
 function freeze_buttons() {
-    logDebug('freezing buttons');
     forEach($$('input.question'), function(i) {
         i.disabled = true;
     });
@@ -234,10 +231,6 @@ function cheat()  {
     });
 }
 
-function debug(string) {
-    log('DEBUG ' + string);
-}
-
 function show_score() {
     // all visible answers:
     var all_answers = $$('#sorted_questions_div input.question');
@@ -288,7 +281,7 @@ function show_score() {
     }
     if (typeof(all_quizzes_info[quiz_key][initialScoreKey])
             === 'undefined') {
-        logDebug('Initial score not found; saving:');
+        // Initial score not found; saving:
         all_quizzes_info [quiz_key][initialScoreKey] = {
             'quiz_score': actual_score,
             'quiz_max_score': max_score,
@@ -332,13 +325,11 @@ function show_score() {
 }
 
 function loadStateError() {
-    debug('loadStateError');
     // @todo: Find a spot to display an error or decide
     // just to fail gracefully
 }
 
 function loadState() {
-    debug('loadState');
     if (typeof student_quiz !== 'undefined') {
         hide_retake = true; // do not show to faculty
         loadStateSuccess(student_quiz);
@@ -425,20 +416,19 @@ function saveState(validate) {
         // keep everything as is and save.
     } else {
         if (kill_this_quiz_flag) {
-            logDebug('Do save the initial results, but delete all ' +
-                     'question and answer info.');
+            // Save initial results, but delete all question and answer info
             delete what_to_send[quiz_key].question;
         } else {
             if (what_to_send [quiz_key] !== undefined) {
-                logDebug('Deleting all info for quiz, so it can be ' +
-                         'replaced with the quiz you just took.');
+                // Deleting all info for quiz, so it can be
+                // replaced with the quiz you just took.
                 delete what_to_send[quiz_key].question;
             } else {
-                logDebug('No info found on this quiz.');
+                // No info found on this quiz.
                 what_to_send[quiz_key] = {};
             }
             if (initial_score_found !== null) {
-                logDebug('Found an initial score, so preserving it.');
+                // Found an initial score, so preserving it.
                 what_to_send[quiz_key][initialScoreKey] =
                     initial_score_found;
             }
