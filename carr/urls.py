@@ -83,7 +83,6 @@ urlpatterns = [
 
     url(r'^_impersonate/', include('impersonate.urls')),
 
-    url(r'^pagetimer/', include('pagetimer.urls')),
     url(r'^pagetree/', include('pagetree.urls')),
 
     url(r'^lti/', include('lti_provider.urls')),
