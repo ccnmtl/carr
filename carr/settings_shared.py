@@ -42,7 +42,6 @@ INSTALLED_APPS += [  # noqa
     'carr.quiz',
     'sorl.thumbnail',
     'courseaffils',
-    'pagetimer',
     'bootstrap3',
     'lti_provider'
 ]
@@ -101,8 +100,6 @@ SITE_SOCIAL_WORK = 2
 TEMPLATES[0]['OPTIONS']['context_processors'].append(  # noqa
     'carr.carr_main.views.context_processor',
 )
-
-PAGETIMER_MAX_RETENTION_INTERVAL = timedelta(days=60)
 
 AUTHENTICATION_BACKENDS = [
   'django.contrib.auth.backends.ModelBackend',
