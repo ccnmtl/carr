@@ -21,7 +21,7 @@ pylint==1.9.4 # pyup: <2.0.0
 pyasn1==0.4.5
 pyOpenSSL==19.0.0
 ndg-httpsclient==0.5.1
-sqlparse==0.2.4
+sqlparse==0.3.0
 six==1.12.0
 contextlib2==0.5.5
 rcssmin==1.0.6
