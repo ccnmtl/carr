@@ -6,7 +6,7 @@ olefile==0.46
 Pillow==5.4.1
 statsd==3.3.0
 coverage==4.5.3
-ldap3==2.5.2
+ldap3==2.6
 mccabe==0.6.1
 pyflakes==2.1.1
 pep8==1.7.1
