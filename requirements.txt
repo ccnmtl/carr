@@ -54,7 +54,7 @@ django-debug-toolbar==1.11
 gunicorn==19.9.0
 
 django-appconf==1.0.3
-django-compressor==2.2
+django-compressor==2.3
 django-stagingcontext==0.1.0
 boto==2.49.0
 python-dateutil==2.8.0
