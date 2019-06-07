@@ -73,7 +73,7 @@ stevedore>=1.20.0 # Apache-2.0
 bandit==1.6.0
 
 nameparser==1.0.3
-httplib2==0.12.3
+httplib2==0.13.0
 oauth==1.0.1
 oauth2==1.9.0.post1
 oauthlib==3.0.1
