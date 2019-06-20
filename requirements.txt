@@ -60,7 +60,7 @@ boto==2.49.0
 python-dateutil==2.8.0
 django-storages==1.7.1
 
-django-cacheds3storage==0.1.2
+django-cacheds3storage==0.2.1
 python-memcached==1.59
 django-smtp-ssl==1.0
 
