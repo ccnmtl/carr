@@ -1,5 +1,5 @@
 /* global steps: true, game_state: true, nav_ready: true */
-/* global removeElementClass: true, connect: true, keys: true */
+/* global connect: true, keys: true */
 /* global disconnectAll: true, setNodeAttribute: true, array_of_steps: true */
 /* global findChildElements: true, partial: true */
 /* global which_of_these_css_classes: true */

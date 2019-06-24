@@ -1,6 +1,6 @@
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "numeric" }]*/
-/* global hasElementClass: true, addElementClass: true, connect: true */
-/* global student_response: true, partial: true, removeElementClass: true */
+/* global hasElementClass: true, connect: true */
+/* global student_response: true, partial: true */
 /* global toggleElementClass: true, disconnectAll: true */
 
 function validate() {
