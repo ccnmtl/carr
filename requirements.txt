@@ -60,7 +60,7 @@ futures==3.2.0; python_version < '3'
 urllib3==1.25
 s3transfer==0.2.1
 jmespath==0.9.4
-botocore==1.12.182
+botocore==1.12.193
 boto3==1.9.180
 python-dateutil==2.8.0
 django-storages==1.7.1
