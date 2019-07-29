@@ -60,7 +60,7 @@ futures==3.3.0; python_version < '3'
 urllib3==1.25.3
 s3transfer==0.2.1
 jmespath==0.9.4
-botocore==1.12.193
+botocore==1.12.198
 
 boto3==1.9.194
 
