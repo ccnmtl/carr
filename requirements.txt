@@ -88,6 +88,6 @@ pylti>=0.1.3
 
 django-lti-provider==0.3.3
 
-typing==3.7.4
+typing==3.7.4.1; python_version < '3.5'
 functools32==3.2.3-2
 entrypoints==0.3
