@@ -8,7 +8,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http.response import HttpResponseNotFound
 from django.shortcuts import render
-from django.template import Context, loader
+from django.template import loader
 from pagetree.helpers import get_hierarchy, get_section_from_path, get_module
 from pagetree.models import Hierarchy
 
@@ -291,8 +291,7 @@ def stats(request, task):
                   questions_in_order=questions_in_order,
                   site=site)
 
-    c = Context(result)
-    response.write(t.render(c))
+    response.write(t.render(result))
     return response
 
 
