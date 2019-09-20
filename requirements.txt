@@ -57,7 +57,7 @@ django-appconf==1.0.3
 django-compressor==2.3
 django-stagingcontext==0.1.0
 futures==3.3.0; python_version < '3'
-urllib3==1.25.4
+urllib3==1.25.5
 s3transfer==0.2.1
 jmespath==0.9.4
 
