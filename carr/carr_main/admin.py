@@ -1,9 +1,7 @@
 from django.contrib import admin
-from pagetree.models import SectionChildren, PageBlock
+from pagetree.models import Section, SectionChildren, PageBlock
 
-from carr.carr_main.models import SiteState
-from models import Section
-from models import SiteSection
+from carr.carr_main.models import SiteState, SiteSection
 
 
 class SectionChildrenInline(admin.StackedInline):

@@ -126,12 +126,12 @@ def extract_section_keys(the_string):
             'term_character',
             'section']
     components = [
-        '\d\d\d\d',    # year
-        '\d',       # term number
-        '[A-Z]{4}',  # department
-        '\d\d\d.',  # course_string
-        '[A-Z]',    # term_character
-        '\w\w\w',   # section
+        r'\d\d\d\d',    # year
+        r'\d',       # term number
+        r'[A-Z]{4}',  # department
+        r'\d\d\d.',  # course_string
+        r'[A-Z]',    # term_character
+        r'\w\w\w',   # section
     ]
     what_to_match = ''.join('(' + c + ')' for c in components)
     matches = re.findall(what_to_match, the_string)
@@ -336,7 +336,7 @@ def generate_user_stats(the_users, site, affiliation, questions_in_order):
         the_stats[u.username]['answers_in_order'] = []
         for question_id_string, question in questions_in_order:
             found = False
-            for question_id, correct_incorrect in all_answers.iteritems():
+            for question_id, correct_incorrect in all_answers.items():
                 if question_id_string == str(question_id):
                     the_stats[u.username]['answers_in_order'].append(
                         correct_incorrect)

@@ -10,8 +10,8 @@ from pagetree.helpers import get_hierarchy
 
 from carr.carr_main.models import user_type
 from carr.utils import state_json
-from models import Quiz, Question, Answer, ActivityState
-from scores import scores_student
+from carr.quiz.models import Quiz, Question, Answer, ActivityState
+from carr.quiz.scores import scores_student
 
 
 @login_required

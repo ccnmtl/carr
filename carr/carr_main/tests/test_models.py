@@ -57,7 +57,7 @@ class SiteStateTest(TestCase):
 
 class SiteSectionTest(TestCase):
 
-    def test_unicode(self):
+    def test_str(self):
         s = SiteSectionFactory()
         self.assertEqual(str(s), s.label)
 

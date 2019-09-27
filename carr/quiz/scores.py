@@ -22,9 +22,8 @@ from pagetree.models import PageBlock
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 from carr.activity_taking_action.models import score_on_taking_action
 from carr.carr_main.models import students_in_class, users_by_uni, user_type
-from carr.quiz.models import Answer
+from carr.quiz.models import Answer, Quiz, Question, ActivityState
 from carr.utils import get_students, filter_users_by_affiliation
-from models import Quiz, Question, ActivityState
 
 
 def can_see_scores(u):
@@ -37,7 +36,7 @@ def year_range():
 
 
 semester_map = {1: 'spring', 2: 'summer', 3: 'fall'}
-inv_semester_map = dict((v, k) for k, v in semester_map.iteritems())
+inv_semester_map = dict((v, k) for k, v in semester_map.items())
 
 
 @user_passes_test(can_see_scores)
@@ -77,16 +76,9 @@ def semesters_by_year(request, year):
     })
 
 
-def courses_sort_key(x, y):
-    tmp = cmp(x['course_label'], y['course_label'])
-    if tmp != 0:
-        return tmp
-    else:
-        return cmp(x['course_section'], y['course_section'])
-
-
 def sort_courses(courses):
-    return sorted(courses, courses_sort_key)
+    return sorted(courses,
+                  key=lambda c: (c['course_label'], c['course_section']))
 
 
 def push_time(timelist):
@@ -354,8 +346,8 @@ def find_care_classes(affils):
     """If we can find users in our DB with ST affils for a course,
     AND users with FC affils, we consider that course a CARE course."""
 
-    course_match_string = ('t(\d).y(\d{4}).s(\w{3}).c(\w)'
-                           '(\d{4}).(\w{4}).(\w{2})')
+    course_match_string = (r't(\d).y(\d{4}).s(\w{3}).c(\w)'
+                           r'(\d{4}).(\w{4}).(\w{2})')
     tmp = [re.match(course_match_string, c.name) for c in affils]
     course_matches, results, checked = [x for x in tmp if x], [], []
     f_lookup = "t%s.y%s.s%s.c%s%s.%s.fc"

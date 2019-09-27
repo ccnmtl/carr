@@ -23,7 +23,7 @@
 
 {% block scores_filter %}
     <ul class="nav nav-list">
-            {% for id, label in semester_map.iteritems %}
+            {% for id, label in semester_map.items %}
               <li class="nav-header">
                  <a href = "/scores/socialwork/year/{{year}}/semester/{{label}}/">{{label}} {{year}}</a>
               </li>

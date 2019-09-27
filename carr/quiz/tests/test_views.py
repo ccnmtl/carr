@@ -75,9 +75,8 @@ class TestQuizViews(TestCase):
 
         # are you sure view
         response = delete_question(request, self.question1.id)
-        self.assertEquals(response.status_code, 200)
         self.assertEquals(self.quiz.question_set.count(), 2)
-        self.assertTrue('Are you sure' in response.content)
+        self.assertContains(response, 'Are you sure')
 
         # delete
         request = RequestFactory().post('/')
@@ -93,9 +92,8 @@ class TestQuizViews(TestCase):
 
         # are you sure view
         response = delete_answer(request, self.correct.id)
-        self.assertEquals(response.status_code, 200)
         self.assertEquals(self.question1.answer_set.count(), 2)
-        self.assertTrue('Are you sure' in response.content)
+        self.assertContains(response, 'Are you sure')
 
         # delete
         request = RequestFactory().post('/')
@@ -162,15 +160,13 @@ class TestQuizViews(TestCase):
         request = RequestFactory().get('/')
         request.user = UserFactory(is_staff=True)
         response = edit_question(request, self.question2.id)
-        self.assertEquals(response.status_code, 200)
-        self.assertTrue('Question 2' in response.content)
+        self.assertTrue(response, 'Question 2')
 
     def test_edit_answer(self):
         request = RequestFactory().get('/')
         request.user = UserFactory(is_staff=True)
         response = edit_answer(request, self.incorrect.id)
-        self.assertEquals(response.status_code, 200)
-        self.assertTrue('Answer 2' in response.content)
+        self.assertContains(response, 'Answer 2')
 
     def test_add_answer_to_question(self):
         data = {u'explanation': [u'the explanation'],
@@ -190,9 +186,7 @@ class TestQuizViews(TestCase):
 
         self.client.login(username=u.username, password='test')
         response = self.client.get('/activity/quiz/load/')
-        self.assertEquals(response.status_code, 200)
-
-        self.assertEquals(response.content, state.json)
+        self.assertContains(response, state.json)
 
     def test_save_state_created(self):
         # when no state exists
