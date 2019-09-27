@@ -26,10 +26,6 @@ from carr.quiz.models import Answer, Quiz, Question, ActivityState
 from carr.utils import get_students, filter_users_by_affiliation
 
 
-def cmp(a, b):
-    return (a > b) - (a < b)
-
-
 def can_see_scores(u):
     return (u.is_authenticated() and user_type(u) in ('faculty', 'admin'))
 
@@ -80,16 +76,9 @@ def semesters_by_year(request, year):
     })
 
 
-def courses_sort_key(x, y):
-    tmp = cmp(x['course_label'], y['course_label'])
-    if tmp != 0:
-        return tmp
-    else:
-        return cmp(x['course_section'], y['course_section'])
-
-
 def sort_courses(courses):
-    return sorted(courses, courses_sort_key)
+    return sorted(courses,
+                  key=lambda c: (c['course_label'], c['course_section']))
 
 
 def push_time(timelist):

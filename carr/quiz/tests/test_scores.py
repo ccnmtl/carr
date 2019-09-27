@@ -25,11 +25,20 @@ class TestFunctions(unittest.TestCase):
         self.assertTrue(len(year_range()) > 0)
 
     def test_sort_courses(self):
-        courses = [dict(course_label='a', course_section='a'),
-                   dict(course_label='b', course_section='b'),
-                   dict(course_label='b', course_section='c')]
-        results = sort_courses(courses)
-        self.assertEqual(courses, results)
+        unsorted_courses = [
+            dict(course_label='b', course_section='c'),
+            dict(course_label='b', course_section='b'),
+            dict(course_label='a', course_section='a')
+        ]
+
+        sorted_courses = [
+            dict(course_label='a', course_section='a'),
+            dict(course_label='b', course_section='b'),
+            dict(course_label='b', course_section='c')
+        ]
+
+        results = sort_courses(unsorted_courses)
+        self.assertEqual(sorted_courses, results)
 
     def test_pushtime(self):
         t = []
@@ -119,8 +128,7 @@ class TestViews(TestCase):
 
     def test_access_list(self):
         r = self.c.get("/scores/access/")
-        self.assertEqual(r.status_code, 200)
-        self.assertTrue("FACULTY" in r.content)
+        self.assertContains(r, "FACULTY")
 
 
 class TestPostTestAnalysisView(TestCase):
@@ -229,5 +237,4 @@ class TestPostTestAnalysisView(TestCase):
 
         url = reverse('post-test-analysis')
         response = self.client.post(url)
-        self.assertEquals(response.status_code, 200)
-        self.assertTrue('q1,foo,50.0' in response.content)
+        self.assertContains(response, 'q1,foo,50.0')
