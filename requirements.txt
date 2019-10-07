@@ -28,7 +28,7 @@ contextlib2==0.6.0
 rcssmin==1.0.6
 rjsmin==1.1.0
 ipaddress==1.0.22
-pytz==2019.2
+pytz==2019.3
 
 django-courseaffils==2.2.1
 djangowind==1.2.2
