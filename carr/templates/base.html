@@ -26,7 +26,10 @@
         <script src="https://cdn.ravenjs.com/3.8.1/raven.min.js"></script>
         <script>
         Raven.config('https://bea76ad7e8124bc0ab1b4354fd9db56f@sentry.io/101595', {
-            whitelistUrls: [/\.ccnmtl\.columbia\.edu/]
+            whitelistUrls: [
+                /\.ctl\.columbia\.edu/,
+                /\.ccnmtl\.columbia\.edu/
+            ]
         }).install();
         {% if not request.user.is_anonymous %}
         Raven.setUserContext({
@@ -85,9 +88,9 @@ gtag('config', '{{GA_TAG}}', { 'anonymize_ip': true });
         <a href="/" title="Child Abuse Reporting Education">
             <img src="{{STATIC_URL}}img/logo_project.jpg" alt="CARE Logo" />
         </a>
-        <!-- CCNMTL title/logo -->
-        <a id="logo_ccnmtl" href="http://ccnmtl.columbia.edu" target="_blank" title="Columbia Center for New Media Teaching and Learning">
-            <img src="{{STATIC_URL}}img/logo_ccnmtl.png" alt="CCNMTL Logo" />
+        <!-- CTL title/logo -->
+        <a id="logo_ctl" href="https://ctl.columbia.edu" target="_blank" title="Columbia Center for New Media Teaching and Learning">
+            <img src="{{STATIC_URL}}img/logo-ctl.png" width="240" height="44.4" alt="CTL Logo" />
         </a>
         {% if IS_SOCIALWORK %}
         <a id="logo_school" href="http://socialwork.columbia.edu" target="_blank" title="Columbia University School of Social Work">
