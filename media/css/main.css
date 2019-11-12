@@ -213,11 +213,11 @@ img, img a
     
 }
 
-#logo_ccnmtl {
+#logo_ctl {
     clear: both;    
     display: block;
     float: right;
-    margin-top: 15px;
+    margin-top: 32px;
     margin-left: 10px;
 }
 
@@ -227,7 +227,10 @@ img, img a
     margin-top: 20px;
 }
 
-#logo_ccnmtl img,
+#logo_ctl img {
+    height: 44.4px;
+}
+
 #logo_school img {
     height: 60px;
 }
@@ -568,42 +571,6 @@ img, img a
 {
     color: #69c;
     text-decoration: none;
-}
-
-#sidebarlogo
-{
-    margin-bottom: 2em;
-    padding: 0;
-    border: 0;
-    font-size: 92%;
-    line-height: 130%;
-}
-
-#sidebarlogo #logo_ccnmtl
-{
-    display: block;
-    width: 146px;
-    height: 33px;
-    overflow: hidden;
-    margin: auto;
-    padding: 0;
-    border: 0;
-    background: transparent url('../img/logo_ccnmtl_sidebar.gif') left top no-repeat;
-}
-
-#sidebarlogo #logo_ccnmtl a
-{
-    display: block;
-    width: 145px;
-    height: 33px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
-
-#sidebarlogo #logo_ccnmtl span
-{
-    display: none;
 }
 
 /* ---- Content block elements ---------- */
