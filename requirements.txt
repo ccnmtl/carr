@@ -57,7 +57,7 @@ gunicorn==20.0.3
 django-appconf==1.0.3
 django-compressor==2.3
 django-stagingcontext==0.1.0
-certifi==2019.9.11  # sentry-sdk
+certifi==2019.11.28  # sentry-sdk
 urllib3==1.25.7  # sentry-sdk
 s3transfer==0.2.1
 jmespath==0.9.4
