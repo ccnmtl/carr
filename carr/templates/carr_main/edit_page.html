@@ -65,11 +65,11 @@ var saveOrderOfPageBlocks = function() {
 {% for block in section.pageblock_set.all %}
 <div class="block-edit draggable" id="pageblock-{{block.id}}">
 {% if block.label %}<h3>{{block.label}}</h3>{% endif %}
-<form action="{% url 'delete-pageblock' block.id %}" method="post">
+<form action="{% url 'delete-pageblock' block.id %}" method="post">{% csrf_token %}
 <input type="submit" value="delete block {{block.ordinality}}" />
 </form>
 <form action="{% url 'edit-pageblock' block.id %}" method="post"
-{% if block.edit_form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+{% if block.edit_form.is_multipart %}enctype="multipart/form-data"{% endif %}>{% csrf_token %}
 <table width="100%">
 {{ block.default_edit_form.as_table }}
 {% with block.edit_form as ef %}
@@ -98,7 +98,7 @@ var saveOrderOfPageBlocks = function() {
 {% endfor %}
 </ul>
 
-<form action="{% url 'add-child-section' section.id %}" method="post">
+<form action="{% url 'add-child-section' section.id %}" method="post">{% csrf_token %}
 <table>
 {{ section.add_child_section_form.as_table }}
 </table>
@@ -114,7 +114,7 @@ var saveOrderOfPageBlocks = function() {
 {% if blocktype.add_form.is_multipart %}
 enctype="multipart/form-data"
 {% endif %}
-method="post">
+method="post">{% csrf_token %}
 <fieldset>
   <legend>add {{ blocktype.display_name }}</legend>
 <input type="hidden" name="blocktype" value="{{blocktype.display_name}}"/>
@@ -133,11 +133,11 @@ method="post">
 
 <div id="edit-page" class="tabbertab" title="edit section" />
 
-<form action="{% url 'delete-section' section.id %}" method="post">
+<form action="{% url 'delete-section' section.id %}" method="post">{% csrf_token %}
 <input type="submit" value="delete this page" />
 </form>
 
-<form action="{% url 'edit-section' section.id %}" method="post">
+<form action="{% url 'edit-section' section.id %}" method="post">{% csrf_token %}
 <fieldset><legend>Edit Page</legend>
 <table>
 {{ section.edit_form.as_table }}

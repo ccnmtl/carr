@@ -38,7 +38,7 @@
 	    <ul class="errorlist">{% for error in adminform.form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
 	{% endif %}
 
-   <form action="{% url 'add-childsection' parent.id %}" method="post">
+   <form action="{% url 'add-childsection' parent.id %}" method="post">{% csrf_token %}
 	
 	   <fieldset class="module aligned">
 			<table>

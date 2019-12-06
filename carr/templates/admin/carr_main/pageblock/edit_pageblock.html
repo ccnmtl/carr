@@ -46,7 +46,7 @@ MochiKit.Signal.connect(window, "onload", refreshUnderlyingPage)
 <div id="content-main">
    <p id='edit_error' class="errornote" style='display: none'></p>
    <form id='pageblock_edit_form' action="{% url 'edit-pageblock' pageblock.id %}" method="post"
-     {% if pageblock.edit_form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+     {% if pageblock.edit_form.is_multipart %}enctype="multipart/form-data"{% endif %}>{% csrf_token %}
      <table width="100%">
         {{ pageblock.default_edit_form.as_table }}
         {% with pageblock.edit_form as ef %}

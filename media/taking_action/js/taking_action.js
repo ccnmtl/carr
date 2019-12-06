@@ -124,12 +124,16 @@ function saveState(nextStep) {
     doc.current_step = current_step;
 
     addElementClass(document.body, 'busy');
+    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    var elt = getElement('csrf-token');
+    var token = getNodeAttribute(elt, 'content');
+    headers['X-CSRFToken'] = token;
     var deferred = MochiKit.Async.doXHR(
         url,
         {
             'method': 'POST',
             'sendContent': queryString({'json': JSON.stringify(doc, null)}),
-            'headers': {'Content-Type': 'application/x-www-form-urlencoded'}
+            'headers': headers
         });
     deferred.addCallback(function() {
         removeElementClass(document.body, 'busy');

@@ -37,7 +37,7 @@
      <div class="casecontent">
            <div class="casequestion">
                  {{question.text|markdown}}
-                 <form id="form-{{question.id}}" method="post">
+                 <form id="form-{{question.id}}" method="post">{% csrf_token %}
                        <ol type="A">
                          {% for answer in question.answer_set.all %}
                           <li><input class="question" id="{{question.id}}_{{answer.id}}" name="question{{question.id}}" value="{{answer.label}}" type="radio" right_answer="{{answer.correct}}"/>{{answer.label}}</li>
