@@ -195,7 +195,7 @@
                         <h2>Submit Your Score</h2>
                         <p>Click the <b>Submit Now</b> button to submit your scores to Courseworks. Your score will be visible in the gradebook.</p>
                         {% get_scores for 'post-test' in scores as score %}
-                        <form action="{% url "lti-post-grade" %}" method="post">
+                        <form action="{% url "lti-post-grade" %}" method="post">{% csrf_token %}
                             <input type="hidden" name="next" value="{% url "student-scores" %}" />
                             {% if score.all_correct and score.all_correct == "t" %}
                                 <input type="hidden" name="score" value="1" />

@@ -34,7 +34,7 @@
         {% if IS_SOCIALWORK %}
             <br />
             <p>Download a question by question analysis of the post-test.</p>
-            <form method="post" action="/scores/socialwork/analysis/">
+            <form method="post" action="/scores/socialwork/analysis/">{% csrf_token %}
                 <button class="btn btn-primary btn-large" color="white" type="submit">
                     Post-test Analysis <i class="icon-download-alt icon-white"></i>
                 </button>

@@ -26,11 +26,12 @@ if 'test' in sys.argv or 'jenkins' in sys.argv:
     }
 
 
-MIDDLEWARE_CLASSES += [  # noqa
+MIDDLEWARE += [  # noqa
     'courseaffils.middleware.CourseManagerMiddleware',
     'carr.someutils.AuthRequirementMiddleware',
     'djangohelpers.middleware.HttpDeleteMiddleware',
     'carr.middleware.SiteIdMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware'
 ]
 
 INSTALLED_APPS += [  # noqa

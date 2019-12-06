@@ -93,7 +93,7 @@ var saveOrderOfPageBlocks = function() {
   </ul>
 {% endif %}{% endif %}
 {% endblock %}
-<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.module_name }}_form">{% block form_top %}{% endblock %}
+<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.module_name }}_form">{% csrf_token %}{% block form_top %}{% endblock %}
 
 {% if adminform.form.instance.is_root %}
 <div style="margin-bottom: 5px"><i>The Root node represents the top of the hierarchy. The node's attributes cannot be edited. The node cannot be deleted.</i></div>  

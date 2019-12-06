@@ -31,7 +31,7 @@
     {% endif  %}
 
     {%if not student %}
-    <form action ="/scores/socialwork/uni/" method="post" class="well form-search">
+    <form action ="/scores/socialwork/uni/" method="post" class="well form-search">{% csrf_token %}
       <div class="input-append">
                Student UNI:  <input class="span3 search-query" id="appendedInputButton" size="16" type="text" name ="uni" value="{{uni}}"></input><button class="btn" type="submit">Search</button>
       </div>
