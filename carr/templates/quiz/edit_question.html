@@ -39,7 +39,7 @@ Answer {{ answer.ordinality }}:
 {% endfor %}
 </ul>
 
-<form action="add_answer/" method="post">
+<form action="add_answer/" method="post">{% csrf_token %}
 <table width="100%">
 {{ question.add_answer_form.as_table}}
 </table>

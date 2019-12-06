@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.utils.http import urlquote
 from django.http import HttpResponseRedirect
+from django.utils.deprecation import MiddlewareMixin
 
 
 def match_path(path, config_string):
@@ -16,7 +17,7 @@ def match_path(path, config_string):
     return False
 
 
-class AuthRequirementMiddleware(object):
+class AuthRequirementMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         path = urlquote(request.get_full_path())

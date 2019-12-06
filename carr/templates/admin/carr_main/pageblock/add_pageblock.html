@@ -71,7 +71,7 @@ Type: <select id="blocktype" name="blocktype" onchange="showForm(this)">
 				{% if blocktype.add_form.is_multipart %}
 				   enctype="multipart/form-data"
 				{% endif %}
-				method="post">
+				method="post">{% csrf_token %}
 				<fieldset class="module">
 					<input type="hidden" name="blocktype" value="{{blocktype.display_name}}"/>
 					<table width="100%">

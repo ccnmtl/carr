@@ -37,7 +37,8 @@ module.exports = {
         "swapDOM": true,
         "zip": true,
         "getNodeAttribute": true,
-        "log": true
+        "log": true,
+        "getElement": true
     },
     "rules": {
         "indent": [
