@@ -36,7 +36,7 @@ pagetree==0.7.1
 django-pageblocks==0.5.17 # pyup: <1.0.0
 requirements/src/djangohelpers-0.22-py2.py3-none-any.whl
 django-statsd-mozilla==0.4.0
-django-jenkins==0.110.0
+
 django-smoketest==1.1.0
 
 raven==6.10.0
@@ -72,7 +72,7 @@ django-cacheds3storage==0.2.1
 python-memcached==1.59
 django-smtp-ssl==1.0
 
-ccnmtlsettings==1.7.0
+ccnmtlsettings==1.8.0
 django-bootstrap3==11.1.0 # pyup: <12
 
 pbr==5.4.4
