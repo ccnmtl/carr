@@ -3,7 +3,7 @@ Markdown==2.6.11 # pyup: < 3
 pyenchant==3.0.1
 psycopg2==2.8.4
 olefile==0.46
-Pillow==7.0.0
+Pillow==7.1.1
 statsd==3.3.0
 coverage==5.0.4
 ldap3==2.6 # pyup: <2.6.1
