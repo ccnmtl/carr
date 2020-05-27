@@ -39,7 +39,7 @@ django-pageblocks>=0.5.17,<1.0.0
 requirements/src/djangohelpers-0.22-py2.py3-none-any.whl
 django-statsd-mozilla==0.4.0
 
-django-smoketest==1.1.0
+django-smoketest==1.1.2
 
 raven==6.10.0
 sentry-sdk==0.14.4
