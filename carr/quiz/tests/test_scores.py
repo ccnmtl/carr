@@ -2,7 +2,7 @@ from json import dumps
 import unittest
 
 from django.contrib.auth.models import Group
-from django.core.urlresolvers import reverse
+from django.urls.base import reverse
 from django.test import TestCase, Client
 
 from carr.carr_main.tests.factories import UserFactory, GroupFactory, \

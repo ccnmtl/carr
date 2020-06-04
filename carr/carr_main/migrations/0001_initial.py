@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PullQuoteBlock_2',
             fields=[
-                ('pullquoteblock_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='pageblocks.PullQuoteBlock')),
+                ('pullquoteblock_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='pageblocks.PullQuoteBlock', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PullQuoteBlock_3',
             fields=[
-                ('pullquoteblock_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='pageblocks.PullQuoteBlock')),
+                ('pullquoteblock_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='pageblocks.PullQuoteBlock', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SiteSection',
             fields=[
-                ('section_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='pagetree.Section')),
+                ('section_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='pagetree.Section', on_delete=models.CASCADE)),
                 ('sites', models.ManyToManyField(to='sites.Site')),
             ],
             options={
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('last_location', models.CharField(max_length=255)),
                 ('visited', models.TextField()),
-                ('user', models.ForeignKey(related_name='application_user', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='application_user', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },

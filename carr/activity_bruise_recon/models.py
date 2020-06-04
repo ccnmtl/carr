@@ -79,7 +79,8 @@ class Block(models.Model):
 
 
 class ActivityState (models.Model):
-    user = models.ForeignKey(User, related_name="bruise_recon_user")
+    user = models.ForeignKey(
+        User, related_name="bruise_recon_user", on_delete=models.CASCADE)
     json = models.TextField(blank=True)
 
 

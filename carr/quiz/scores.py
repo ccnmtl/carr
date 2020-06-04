@@ -27,7 +27,7 @@ from carr.utils import get_students, filter_users_by_affiliation
 
 
 def can_see_scores(u):
-    return (u.is_authenticated() and user_type(u) in ('faculty', 'admin'))
+    return (u.is_authenticated and user_type(u) in ('faculty', 'admin'))
 
 
 def year_range():
@@ -151,7 +151,7 @@ def student_lookup_by_uni_form(request):
     })
 
 
-@user_passes_test(lambda u: u.is_authenticated())
+@user_passes_test(lambda u: u.is_authenticated)
 def scores_student(request):
     try:
         if user_type(request.user) == 'student':

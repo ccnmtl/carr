@@ -1,7 +1,8 @@
 from django.test import TestCase, RequestFactory
 from carr.activity_bruise_recon.views import (
     LoadStateView, SaveStateView, StudentView)
-from .factories import UserFactory, BlockFactory
+from carr.activity_bruise_recon.tests.factories import (
+    UserFactory, BlockFactory)
 
 
 class LoadStateTest(TestCase):

@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('json', models.TextField(blank=True)),
                 ('submitted', models.DateTimeField(default=datetime.datetime.now)),
-                ('user', models.ForeignKey(related_name='quiz_user', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='quiz_user', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('value', models.TextField(blank=True)),
-                ('question', models.ForeignKey(to='quiz.Question')),
+                ('question', models.ForeignKey(to='quiz.Question', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -82,8 +82,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('submitted', models.DateTimeField(default=datetime.datetime.now)),
-                ('quiz', models.ForeignKey(to='quiz.Quiz')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('quiz', models.ForeignKey(to='quiz.Quiz', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -92,19 +92,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='response',
             name='submission',
-            field=models.ForeignKey(to='quiz.Submission'),
+            field=models.ForeignKey(to='quiz.Submission', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='question',
             name='quiz',
-            field=models.ForeignKey(to='quiz.Quiz'),
+            field=models.ForeignKey(to='quiz.Quiz', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='answer',
             name='question',
-            field=models.ForeignKey(to='quiz.Question'),
+            field=models.ForeignKey(to='quiz.Question', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

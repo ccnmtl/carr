@@ -21,7 +21,7 @@ class AuthRequirementMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         path = urlquote(request.get_full_path())
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return None
 
         if match_path(path, 'ANONYMOUS_PATHS'):

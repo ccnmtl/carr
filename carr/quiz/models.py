@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from django import forms
 from datetime import datetime
-from django.core.urlresolvers import reverse
+from django.urls.base import reverse
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 
 
@@ -113,7 +113,7 @@ class Quiz(models.Model):
 
 @python_2_unicode_compatible
 class Question(models.Model):
-    quiz = models.ForeignKey(Quiz)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     text = models.TextField()
     question_type = models.CharField(max_length=256,
                                      choices=(
@@ -186,7 +186,7 @@ class Question(models.Model):
 
 @python_2_unicode_compatible
 class Answer(models.Model):
-    question = models.ForeignKey(Question)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     ordinality = models.IntegerField(default=1)
     value = models.CharField(max_length=256, blank=True)
     label = models.TextField(blank=True)
@@ -203,15 +203,15 @@ class Answer(models.Model):
 
 
 class Submission(models.Model):
-    quiz = models.ForeignKey(Quiz)
-    user = models.ForeignKey(User)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     submitted = models.DateTimeField(default=datetime.now)
 
 
 @python_2_unicode_compatible
 class Response(models.Model):
-    question = models.ForeignKey(Question)
-    submission = models.ForeignKey(Submission)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
     value = models.TextField(blank=True)
 
     def __str__(self):
@@ -224,6 +224,7 @@ class Response(models.Model):
 
 
 class ActivityState(models.Model):
-    user = models.ForeignKey(User, related_name="quiz_user")
+    user = models.ForeignKey(
+        User, related_name="quiz_user", on_delete=models.CASCADE)
     json = models.TextField(blank=True)
     submitted = models.DateTimeField(default=datetime.now)
