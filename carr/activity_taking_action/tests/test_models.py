@@ -1,5 +1,6 @@
 from django.test import TestCase
-from .factories import CaseFactory, BlockFactory, ActivityStateFactory
+from carr.activity_taking_action.tests.factories import (
+    CaseFactory, BlockFactory, ActivityStateFactory)
 from carr.activity_taking_action.models import score_on_taking_action
 
 

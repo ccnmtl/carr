@@ -1,14 +1,12 @@
 from json import dumps, loads
-
-from django.core.urlresolvers import reverse
-from django.test import TestCase
-from django.test.client import RequestFactory
-
+from django.urls.base import reverse
 from carr.carr_main.tests.factories import UserFactory, HierarchyFactory
 from carr.quiz.models import Quiz, Question, Answer, ActivityState
 from carr.quiz.views import studentquiz, edit_quiz, delete_question, \
     delete_answer, reorder_answers, reorder_questions, add_question_to_quiz, \
     edit_question, edit_answer, add_answer_to_question
+from django.test import TestCase
+from django.test.client import RequestFactory
 
 
 class TestQuizViews(TestCase):

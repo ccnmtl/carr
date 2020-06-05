@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('json', models.TextField(blank=True)),
-                ('user', models.ForeignKey(related_name='bruise_recon_user', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='bruise_recon_user', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },

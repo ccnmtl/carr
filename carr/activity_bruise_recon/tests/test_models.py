@@ -1,5 +1,6 @@
 from django.test import TestCase
-from .factories import CaseFactory, BlockFactory, ActivityStateFactory
+from carr.activity_bruise_recon.tests.factories import (
+    CaseFactory, BlockFactory, ActivityStateFactory)
 from carr.activity_bruise_recon.models import score_on_bruise_recon
 
 

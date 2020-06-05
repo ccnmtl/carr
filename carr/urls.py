@@ -8,7 +8,6 @@ from carr.quiz.scores import PostTestAnalysisView
 import carr.quiz.scores as scores_views
 import carr.quiz.views as quiz_views
 from django.conf.urls import include, url
-from django.contrib.auth.views import logout
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 import django.views.static
@@ -17,13 +16,17 @@ import django.views.static
 admin.autodiscover()
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
 
+auth_urls = url(r'^accounts/', include('django.contrib.auth.urls'))
+if hasattr(settings, 'CAS_BASE'):
+    auth_urls = url(r'^accounts/', include('djangowind.urls'))
+
 urlpatterns = [
+    auth_urls,
     url(r'^welcome/$', RedirectView.as_view(url='/carr')),
     url(r'^crossdomain.xml$', django.views.static.serve,
         {'document_root': os.path.abspath(os.path.dirname(__file__)),
          'path': 'crossdomain.xml'}),
     url(r'^$', main_views.index),
-    url(r'^logout/$', logout, {'template_name': 'logged_out.html'}),
     url(r'^activity/bruise_recon/',
         include('carr.activity_bruise_recon.urls')),
     url(r'^activity/taking_action/',
@@ -72,8 +75,7 @@ urlpatterns = [
 
     # this includes all the quiz stuff, including old urls.
     url(r'^activity/quiz/', include('carr.quiz.urls')),
-    url('^accounts/', include('djangowind.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
 
     url(r'^selenium/(?P<task>\w+)/$', main_views.selenium),
 

@@ -102,7 +102,8 @@ def users_by_uni(uni_string):
 
 
 class SiteState(models.Model):
-    user = models.ForeignKey(User, related_name="application_user")
+    user = models.ForeignKey(
+        User, related_name="application_user", on_delete=models.CASCADE)
     last_location = models.CharField(max_length=255)
 
     visited = models.TextField()
@@ -197,7 +198,7 @@ def find_or_add_site_section(**kwargs):
         new_site_section.__dict__.update(new_section.__dict__)
 
         # pages are visible on all sites by default:
-        new_site_section.sites = Site.objects.all()
+        new_site_section.sites.set(Site.objects.all())
         new_site_section.save()
 
 

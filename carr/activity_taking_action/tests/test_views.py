@@ -1,7 +1,7 @@
 from django.test import TestCase, RequestFactory
 from carr.activity_taking_action.views import (
     LoadStateView, SaveStateView, StudentView)
-from .factories import UserFactory
+from carr.activity_taking_action.tests.factories import UserFactory
 
 
 class LoadStateTest(TestCase):
