@@ -47,7 +47,7 @@ Faker==4.1.0
 factory_boy==2.12.0
 django-waffle==0.20.0
 django-markwhat==1.6.2
-django-impersonate==1.5
+django-impersonate==1.5.1
 django-ga-context==0.1.0
 
 django-debug-toolbar==2.2
