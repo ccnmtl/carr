@@ -73,7 +73,7 @@ pylibmc==1.6.1; sys_platform == 'linux'
 django-smtp-ssl==1.0
 
 ccnmtlsettings==1.8.3
-django-bootstrap3==14.0.0
+django-bootstrap3==14.1.0
 
 pbr==5.4.5
 pyyaml==5.3.1
