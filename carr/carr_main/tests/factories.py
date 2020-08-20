@@ -6,21 +6,21 @@ from pagetree.models import Hierarchy, Section, SectionChildren
 from carr.carr_main.models import SiteState, SiteSection
 
 
-class UserFactory(factory.DjangoModelFactory):
+class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
     username = factory.Sequence(lambda n: "user%d" % n)
     password = factory.PostGenerationMethodCall('set_password', 'test')
 
 
-class GroupFactory(factory.DjangoModelFactory):
+class GroupFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Group
     name = factory.Sequence(
         lambda n: 't1.y2010.s001.cf1000.scnc.st.course:%d.columbia.edu' % n)
 
 
-class SiteStateFactory(factory.DjangoModelFactory):
+class SiteStateFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SiteState
     user = factory.SubFactory(UserFactory)
@@ -28,19 +28,19 @@ class SiteStateFactory(factory.DjangoModelFactory):
     visited = "{}"
 
 
-class SiteFactory(factory.DjangoModelFactory):
+class SiteFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Site
 
 
-class HierarchyFactory(factory.DjangoModelFactory):
+class HierarchyFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Hierarchy
     name = "main"
     base_url = "/"
 
 
-class SiteSectionFactory(factory.DjangoModelFactory):
+class SiteSectionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SiteSection
     label = factory.Sequence(lambda n: "test section %d" % n)
@@ -48,7 +48,7 @@ class SiteSectionFactory(factory.DjangoModelFactory):
     hierarchy = factory.SubFactory(HierarchyFactory)
 
 
-class SectionFactory(factory.DjangoModelFactory):
+class SectionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Section
     label = "test section"
@@ -56,6 +56,6 @@ class SectionFactory(factory.DjangoModelFactory):
     hierarchy = factory.SubFactory(HierarchyFactory)
 
 
-class SectionChildrenFactory(factory.DjangoModelFactory):
+class SectionChildrenFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SectionChildren
