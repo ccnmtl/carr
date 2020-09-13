@@ -5,7 +5,7 @@ psycopg2==2.8.6
 olefile==0.46
 Pillow==7.2.0
 statsd==3.3.0
-coverage==5.2.1
+coverage==5.3
 ldap3==2.8.1
 mccabe==0.6.1
 pyflakes==2.2.0
