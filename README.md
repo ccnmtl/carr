@@ -1,1 +1,2 @@
-[![Build Status](https://travis-ci.org/ccnmtl/carr.svg?branch=master)](https://travis-ci.org/ccnmtl/carr)
+[![Actions Status](https://github.com/ccnmtl/carr/workflows/build-and-test/badge.svg)](https://github.com/ccnmtl/carr/actions)
+
