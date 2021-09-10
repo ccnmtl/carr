@@ -22,7 +22,7 @@ editdistance==0.5.3
 
 pylint==2.10.2
 pyasn1==0.4.8
-sqlparse==0.4.1
+sqlparse==0.4.2
 six==1.16.0
 contextlib2==21.6.0
 rcssmin==1.0.6
