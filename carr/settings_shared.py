@@ -122,5 +122,6 @@ LTI_TOOL_CONFIGURATION = {
     'navigation': False,
     'new_tab': True,
     'frame_width': 1024,
-    'frame_height': 1024
+    'frame_height': 1024,
+    'allow_ta_access': False
 }
