@@ -82,9 +82,7 @@ function show_answer() {
     maybeEnableNext();
 }
 
-/* eslint-disable scanjs-rules/call_connect */
 MochiKit.Signal.connect(window, 'onload', loadState);
-/* eslint-enable scanjs-rules/call_connect */
 
 function new_ldss_form_fields_to_save() {
     var results = {};
@@ -166,10 +164,8 @@ function set_up_all_form_fields() {
 }
 
 function nice_work_set_up_toggle() {
-    /* eslint-disable scanjs-rules/call_connect */
     connect('print_version_on', 'onclick', set_print_version_on);
     connect('print_version_off', 'onclick', set_print_version_off);
-    /* eslint-enable scanjs-rules/call_connect */
     set_print_version_off();
 }
 
@@ -248,7 +244,6 @@ function set_up_form_field(field) {
 }
 
 function reporting_form_editable_textfield_connect(f) {
-    // eslint-disable-next-line scanjs-rules/call_connect
     connect(f, 'onchange', reporting_form_editable_textfield_changed);
 }
 
@@ -304,20 +299,17 @@ function set_up_nav(array_of_steps, step_number) {
     var prev_button = findChildElements($(step_name),
         ['.taking_action_prev_button'])[0];
     if (prev_button !== undefined) {
-        // eslint-disable-next-line scanjs-rules/call_connect
         connect(prev_button, 'onclick', partial(load_step, prev_step));
     }
 
     var next_button = findChildElements($(step_name),
         ['.taking_action_next_button'])[0];
     if (next_button !== undefined) {
-        // eslint-disable-next-line scanjs-rules/call_connect
         connect(next_button, 'onclick', partial(saveState, next_step));
     }
 }
 
 function connect_action(c) {
-    // eslint-disable-next-line scanjs-rules/call_connect
     connect(c, 'onclick', action_button_clicked);
 }
 
@@ -341,7 +333,6 @@ function action_button_clicked(c) {
 }
 
 function connect_action_round_2(c) {
-    // eslint-disable-next-line scanjs-rules/call_connect
     connect(c, 'onclick', action_button_clicked_round_2);
 }
 

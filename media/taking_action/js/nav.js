@@ -34,17 +34,14 @@ var second_round_action_css_classes = [
 //////////////////
 
 function observation_checkbox_connect(c) {
-    // eslint-disable-next-line scanjs-rules/call_connect
     connect(c, 'onclick', observation_checkbox_clicked);
 }
 
 function criteria_checkbox_connect(c) {
-    // eslint-disable-next-line scanjs-rules/call_connect
     connect(c, 'onclick', criteria_checkbox_clicked);
 }
 
 function other_observations_textfield_connect(f) {
-    // eslint-disable-next-line scanjs-rules/call_connect
     connect(f, 'onchange', textfield_changed);
 }
 
