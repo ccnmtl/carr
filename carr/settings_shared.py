@@ -78,6 +78,8 @@ NON_ANONYMOUS_PATHS = COURSEAFFILS_PATHS
 COURSEAFFILS_EXEMPT_PATHS = ANONYMOUS_PATHS
 COURSEAFFIL_AUTO_MAP_GROUPS = ['demo']
 
+DEFAULT_SOCIALWORK_FACULTY_UNI = []
+
 # Pageblocks/Pagetree settings
 PAGEBLOCKS = ['pageblocks.HTMLBlock',
               'pageblocks.PullQuoteBlock',
