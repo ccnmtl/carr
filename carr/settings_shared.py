@@ -60,7 +60,7 @@ THUMBNAIL_SUBDIR = "thumbs"
 # url prefixes for paths that can be accessed by anonymous
 # users. we need to allow anonymous access to the login
 # page, and to static resources.
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 ANONYMOUS_PATHS = ('/accounts/',
                    '/site_media/',
                    '/admin/',

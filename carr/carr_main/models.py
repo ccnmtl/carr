@@ -6,7 +6,7 @@ from pagetree.models import Section, SectionChildren
 from django.db.models.signals import post_save
 from django.core.cache import cache
 from django.contrib.auth.models import User, Group
-from django.utils.encoding import python_2_unicode_compatible
+
 
 import re
 
@@ -136,7 +136,6 @@ class SiteState(models.Model):
         self.save()
 
 
-@python_2_unicode_compatible
 class SiteSection(Section):
 
     sites = models.ManyToManyField(Site)

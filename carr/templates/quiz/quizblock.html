@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <script type="text/javascript" src="{% static 'js/mochikit/MochiKit/MochiKit.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/mochikit/MochiKit/Visual.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/json2.js' %}"></script>
@@ -57,7 +57,7 @@
            </div>
            {% endwith %}
      </div>
-</div> 
+</div>
 {% endfor %}
 
 <div id ="show_score" class="text-center">

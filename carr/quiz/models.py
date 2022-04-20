@@ -5,10 +5,9 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django import forms
 from datetime import datetime
 from django.urls.base import reverse
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text
 
 
-@python_2_unicode_compatible
 class Quiz(models.Model):
     pageblocks = GenericRelation(PageBlock)
     description = models.TextField(blank=True)
@@ -111,7 +110,6 @@ class Quiz(models.Model):
             optional=True).order_by('id').prefetch_related('answer_set')
 
 
-@python_2_unicode_compatible
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     text = models.TextField()
@@ -184,7 +182,6 @@ class Question(models.Model):
         return self.text[0:36]
 
 
-@python_2_unicode_compatible
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     ordinality = models.IntegerField(default=1)
@@ -208,7 +205,6 @@ class Submission(models.Model):
     submitted = models.DateTimeField(default=datetime.now)
 
 
-@python_2_unicode_compatible
 class Response(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
