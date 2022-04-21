@@ -5,10 +5,9 @@ from django.contrib.contenttypes.fields import GenericRelation
 from pagetree.models import PageBlock
 from django import forms
 from django.contrib.sites.models import Site
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text
 
 
-@python_2_unicode_compatible
 class Case(models.Model):
     name = models.CharField(max_length=25)
     image = models.ImageField(
@@ -31,7 +30,6 @@ class Case(models.Model):
         )
 
 
-@python_2_unicode_compatible
 class Block(models.Model):
     pageblocks = GenericRelation(
         PageBlock,
