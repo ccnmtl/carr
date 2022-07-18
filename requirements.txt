@@ -1,6 +1,6 @@
 Django>=3.2.14,<4
 asgiref==3.5.0
-Markdown==3.3.4
+Markdown==3.4.1
 pyenchant==3.2.2
 psycopg2<2.9
 olefile==0.46
