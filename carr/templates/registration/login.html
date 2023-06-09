@@ -6,7 +6,7 @@
     <h2>Choose a login option...</h2>
     <div class="content">
     
-    <form method="get" action="{{ CAS_BASE }}cas/login">
+    <form method="get" action="/cas/login">
     <input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/caslogin/?next={{ next }}" />
     <p>If you have a Columbia University Network ID (UNI)...</p>
     <input class="regbutton" type="submit" value="LOG IN" />

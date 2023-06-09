@@ -28,6 +28,7 @@ if 'test' in sys.argv or 'jenkins' in sys.argv:
 
 MIDDLEWARE += [  # noqa
     'courseaffils.middleware.CourseManagerMiddleware',
+    'django_cas_ng.middleware.CASMiddleware',
     'carr.someutils.AuthRequirementMiddleware',
     'djangohelpers.middleware.HttpDeleteMiddleware',
     'carr.middleware.SiteIdMiddleware',
@@ -44,8 +45,11 @@ INSTALLED_APPS += [  # noqa
     'sorl.thumbnail',
     'courseaffils',
     'bootstrap3',
+    'django_cas_ng',
     'lti_provider'
 ]
+
+INSTALLED_APPS.remove('djangowind')
 
 PROJECT_APPS = [
     'carr.carr_main',
@@ -96,14 +100,16 @@ SITE_ID = 1
 SITE_DENTAL = 1
 SITE_SOCIAL_WORK = 2
 
+TEMPLATES[0]['OPTIONS']['context_processors'].remove(  # noqa
+    'djangowind.context.context_processor')
 TEMPLATES[0]['OPTIONS']['context_processors'].append(  # noqa
     'carr.carr_main.views.context_processor',
 )
 
 AUTHENTICATION_BACKENDS = [
-  'django.contrib.auth.backends.ModelBackend',
-  'lti_provider.auth.LTIBackend',
-  'djangowind.auth.SAMLAuthBackend'
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas_ng.backends.CASBackend',
+    'lti_provider.auth.LTIBackend',
 ]
 
 LTI_TOOL_CONFIGURATION = {
