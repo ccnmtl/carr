@@ -41,7 +41,6 @@ INSTALLED_APPS += [  # noqa
     'pagetree',
     'carr.carr_main',
     'carr.quiz',
-    'sorl.thumbnail',
     'courseaffils',
     'bootstrap3',
     'lti_provider'
