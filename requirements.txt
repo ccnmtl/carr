@@ -2,7 +2,7 @@ Django>=3.2.14,<4
 asgiref==3.7.1
 Markdown==3.4.1
 pyenchant==3.2.2
-psycopg2==2.9.3
+psycopg2==2.9.6
 olefile==0.46
 Pillow==9.5.0
 statsd==4.0.1
