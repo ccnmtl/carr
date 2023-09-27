@@ -11,17 +11,17 @@ from django.conf.urls import include, url
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 import django.views.static
+from django_cas_ng import views as cas_views
 
 
 admin.autodiscover()
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
 
-auth_urls = url(r'^accounts/', include('django.contrib.auth.urls'))
-if hasattr(settings, 'CAS_BASE'):
-    auth_urls = url(r'^accounts/', include('djangowind.urls'))
-
 urlpatterns = [
-    auth_urls,
+
+    url('accounts/', include('django.contrib.auth.urls')),
+    url('cas/login', cas_views.LoginView.as_view(), name='cas_ng_login'),
+    url('cas/logout', cas_views.LogoutView.as_view(), name='cas_ng_logout'),
     url(r'^welcome/$', RedirectView.as_view(url='/carr')),
     url(r'^crossdomain.xml$', django.views.static.serve,
         {'document_root': os.path.abspath(os.path.dirname(__file__)),
