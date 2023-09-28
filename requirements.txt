@@ -35,7 +35,7 @@ django-courseaffils==2.4.0
 
 lxml==4.9.2
 idna==3.4  # requests
-charset-normalizer==3.1.0
+charset-normalizer==3.2.0
 requests==2.31.0
 
 python-cas==1.6.0
