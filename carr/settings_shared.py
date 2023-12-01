@@ -6,10 +6,10 @@ import re
 import sys
 from datetime import timedelta
 
-from ccnmtlsettings.shared import common
+from ctlsettings.shared import common
 project = 'carr'
 base = os.path.dirname(__file__)
-locals().update(common(project=project, base=base))
+locals().update(common(project=project, base=base,))
 
 CACHES = {
     'default': {
@@ -32,27 +32,12 @@ MIDDLEWARE += [  # noqa
     'carr.someutils.AuthRequirementMiddleware',
     'djangohelpers.middleware.HttpDeleteMiddleware',
     'carr.middleware.SiteIdMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware'
+    'django.middleware.csrf.CsrfViewMiddleware',
 ]
-
-CAS_SERVER_URL = 'https://cas.columbia.edu/cas/'
-CAS_VERSION = '3'
-CAS_ADMIN_REDIRECT = False
-CAS_MAP_AFFILIATIONS = True
-
-# Translate CUIT's CAS user attributes to the Django user model.
-# https://cuit.columbia.edu/content/cas-3-ticket-validation-response
-CAS_APPLY_ATTRIBUTES_TO_USER = True
-CAS_RENAME_ATTRIBUTES = {
-    'givenName': 'first_name',
-    'lastName': 'last_name',
-    'mail': 'email',
-}
 
 INSTALLED_APPS += [  # noqa
     'carr.activity_bruise_recon',
     'carr.activity_taking_action',
-    'django_cas_ng',
     'pageblocks',
     'pagetree',
     'carr.carr_main',
@@ -60,9 +45,9 @@ INSTALLED_APPS += [  # noqa
     'sorl.thumbnail',
     'courseaffils',
     'bootstrap3',
-    'lti_provider'
+    'lti_provider',
+    'django_markwhat',
 ]
-INSTALLED_APPS.remove('djangowind')
 
 PROJECT_APPS = [
     'carr.carr_main',
@@ -112,9 +97,6 @@ PAGEBLOCKS = ['pageblocks.HTMLBlock',
 SITE_ID = 1
 SITE_DENTAL = 1
 SITE_SOCIAL_WORK = 2
-
-TEMPLATES[0]['OPTIONS']['context_processors'].remove(  # noqa
-    'djangowind.context.context_processor')
 
 TEMPLATES[0]['OPTIONS']['context_processors'].append(  # noqa
     'carr.carr_main.views.context_processor',
