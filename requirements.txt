@@ -3,7 +3,7 @@ asgiref==3.7.1
 Markdown==3.5
 pyenchant==3.2.2
 psycopg2==2.9.6
-olefile==0.46
+olefile==0.47
 Pillow==10.1.0
 statsd==4.0.1
 coverage==7.3.0
