@@ -79,7 +79,7 @@ django-storages==1.14.2
 pylibmc==1.6.3; sys_platform == 'linux'
 django-smtp-ssl==1.0
 
-ctlsettings==0.2.0
+ctlsettings==0.3.0
 django-bootstrap3==23.4
 
 pbr==6.0.0
