@@ -4,7 +4,7 @@
 <script type="text/javascript" src="{% static 'js/json2.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/quiz/quiz.js' %}"></script>
 
-{% load markup %}
+{% load markdownify %}
 
 <input type="hidden" id="question_count" value="{{block.question_set.all|length}}"/>
 
@@ -23,20 +23,20 @@
     <div class="clearfix"></div>
 </div>
 
-{{ block.description|markdown }}
+{{ block.description|markdownify }}
 
 <span id="sorted_questions">
 </span>
 
 {% for question in block.questions %}
 <div class="cases really" id = "case_{{question.id}}" >
-     {{question.intro_text|markdown}}
+     {{question.intro_text|markdownify}}
 
      <div class="casetitle"> Question <span class = "question_order">x</span></div>
 
      <div class="casecontent">
            <div class="casequestion">
-                 {{question.text|markdown}}
+                 {{question.text|markdownify}}
                  <form id="form-{{question.id}}" method="post">{% csrf_token %}
                        <ol type="A">
                          {% for answer in question.answer_set.all %}
@@ -52,7 +52,7 @@
                     {% if correct_answer %}
                         <b> The correct answer is {{correct_answer.letter}}:</b> {{correct_answer.value}}
                     {% endif %}
-                    <p>{{question.explanation|markdown}}</p>
+                    <p>{{question.explanation|markdownify}}</p>
               </div>
            </div>
            {% endwith %}
