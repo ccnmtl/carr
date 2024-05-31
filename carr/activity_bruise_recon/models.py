@@ -5,7 +5,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from pagetree.models import PageBlock
 from django import forms
 from django.contrib.sites.models import Site
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 
 class Case(models.Model):
@@ -46,7 +46,7 @@ class Block(models.Model):
         return Site.objects.get_current()
 
     def __str__(self):
-        return smart_text(self.pageblock())
+        return smart_str(self.pageblock())
 
     def needs_submit(self):
         return False

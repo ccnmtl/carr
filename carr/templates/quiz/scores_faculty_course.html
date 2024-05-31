@@ -103,15 +103,15 @@
                 {%endif %}
             </td>
             <td>
-                {%ifequal st.score_on_taking_action 'completed_form' %}
+                {%if st.score_on_taking_action == 'completed_form' %}
                   <a href ="/activity/taking_action/student/{{st.student.id}}/">Completed activity and filled out form</a>
-                  {%endifequal%}
-              {%ifequal st.score_on_taking_action 'clicked_through' %}
+                  {%endif%}
+              {%if st.score_on_taking_action == 'clicked_through' %}
                   Complete
-                  {%endifequal%}
-              {%ifequal st.score_on_taking_action 'no_data' %}
+                  {%endif%}
+              {%if st.score_on_taking_action == 'no_data' %}
                   Incomplete
-                  {%endifequal%}
+                  {%endif%}
             </td>
             <td>
                 {% get_scores for 'post-test' in st.scores as score %}

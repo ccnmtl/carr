@@ -40,13 +40,13 @@ Note that all the carriage returns in this file are inside Django template comme
 *****TAKING ACTION:*****
 ************************
 
-    {%endcomment %}"{%ifequal row.taking_action 'completed_form' %}Completed activity & filled out form{%endifequal%}{%comment %}
+    {%endcomment %}"{%if row.taking_action == 'completed_form' %}Completed activity & filled out form{%endif%}{%comment %}
 
 
-    {%endcomment %}{%ifequal row.taking_action 'clicked_through' %}Completed activity{%endifequal%}{%comment %}
+    {%endcomment %}{%if row.taking_action == 'clicked_through' %}Completed activity{%endif%}{%comment %}
 
 
-    {%endcomment %}{%ifequal row.taking_action 'no_data' %}Did not complete activity{%endifequal%}",{%comment %}
+    {%endcomment %}{%if row.taking_action == 'no_data' %}Did not complete activity{%endif%}",{%comment %}
 
 
 ****************************
