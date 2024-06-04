@@ -119,20 +119,20 @@
             Activity: Taking Action
         </td>
         <td>
-      {%ifequal score_on_taking_action 'completed_form' %}
+      {%if score_on_taking_action == 'completed_form' %}
        Completed activity and filled out form
-      {%endifequal%}
-      {%ifequal score_on_taking_action 'clicked_through' %}
+      {%endif%}
+      {%if score_on_taking_action == 'clicked_through' %}
        Completed activity but did not fill out form
-      {%endifequal%}
-      {%ifequal score_on_taking_action 'no_data' %}
+      {%endif%}
+      {%if score_on_taking_action == 'no_data' %}
         Did not complete activity
-      {%endifequal%}
+      {%endif%}
         </td>
         <td>
-            {%ifequal score_on_taking_action 'completed_form' %}
+            {%if score_on_taking_action == 'completed_form' %}
               <a href = "/activity/taking_action/student/{{user.id}}/" >Go </a>
-            {%endifequal%}
+            {%endif%}
         </td>
     </tr>
 

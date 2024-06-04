@@ -26,11 +26,11 @@
 		   <ul>
 		   {% for s in root.get_descendents %}
 					<li class="menu">
-					   {% ifnotequal s.id section.id %}
+					   {%if s.id != section.id %}
 					      <a href="../sitesection/{{s.id}}/">{{s.label}}</a>
 					   {%else%}
 					      <b>{{s.label}}</b>
-					   {% endifnotequal %}
+					   {% endif %}
                             {%for site in s.sites%}
                                       {%if not IS_SOCIALWORK %}<span style="color:purple">cdm</span>{% endif%}		
                                       {%if IS_SOCIALWORK %}<span style="color:red">ssw</span>{% endif%}			   

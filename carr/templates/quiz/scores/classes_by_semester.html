@@ -33,7 +33,7 @@
 {% block scores_filter %}
     <ul class="nav nav-list">
             {% for id, label in semester_map.items %}
-              <li class="nav-header {%ifequal label semester %}active{%endifequal%}" >
+              <li class="nav-header {%if label == semester %}active{%endif%}" >
                  <a href = "/scores/socialwork/year/{{year}}/semester/{{label}}/">{{label}} {{year}}</a>
               </li>
             {% endfor %}
