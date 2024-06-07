@@ -46,8 +46,7 @@ INSTALLED_APPS += [  # noqa
     'courseaffils',
     'bootstrap3',
     'lti_provider',
-    'markdownify',
-    'djangohelpers',
+    'django_markwhat',
 ]
 
 PROJECT_APPS = [

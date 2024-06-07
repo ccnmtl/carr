@@ -15,15 +15,15 @@ class TestUtils(TestCase):
         u = UserFactory()
 
         # no state
-        self.assertEqual(state_json(ActivityState, u), '{}')
+        self.assertEquals(state_json(ActivityState, u), '{}')
 
         # empty state
         state = ActivityState.objects.create(user=u, json='')
-        self.assertEqual(state_json(ActivityState, u), '{}')
+        self.assertEquals(state_json(ActivityState, u), '{}')
 
         state.json = dumps(some_state)
         state.save()
-        self.assertEqual(state_json(ActivityState, u), state.json)
+        self.assertEquals(state_json(ActivityState, u), state.json)
 
     def test_get_and_filter_students(self):
         with self.settings(DEFAULT_SOCIALWORK_FACULTY_UNIS=['ssw_faculty']):
@@ -39,14 +39,14 @@ class TestUtils(TestCase):
             UserFactory().groups.add(GroupFactory(name='a.fc.b'))  # faculty
 
             students = get_students()
-            self.assertEqual(students.count(), 2)
-            self.assertEqual(students[0], dental_student)
-            self.assertEqual(students[1], ssw_student)
+            self.assertEquals(students.count(), 2)
+            self.assertEquals(students[0], dental_student)
+            self.assertEquals(students[1], ssw_student)
 
             qs = filter_users_by_affiliation('dental', students)
-            self.assertEqual(qs.count(), 1)
-            self.assertEqual(qs.first(), dental_student)
+            self.assertEquals(qs.count(), 1)
+            self.assertEquals(qs.first(), dental_student)
 
             qs = filter_users_by_affiliation('ssw', students)
-            self.assertEqual(qs.count(), 1)
-            self.assertEqual(qs.first(), ssw_student)
+            self.assertEquals(qs.count(), 1)
+            self.assertEquals(qs.first(), ssw_student)

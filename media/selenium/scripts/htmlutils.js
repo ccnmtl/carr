@@ -753,7 +753,7 @@ Assert.equals = function() {
                 "' but was '" + args.actual + "'");
 };
 
-Assert.assertEqual = Assert.equals;
+Assert.assertEquals = Assert.equals;
 
 /*
 * Assert.matches(comment?, pattern, actual)
