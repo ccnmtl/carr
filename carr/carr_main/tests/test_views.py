@@ -139,36 +139,36 @@ class TestHierarchyNavigation(TestCase):
         with self.settings(SITE_ID=self.site.id):
             menu = _construct_menu(
                 self.ss.user, self.root, self.section3, self.ss)
-            self.assertEqual(len(menu), 3)
+            self.assertEquals(len(menu), 3)
 
-            self.assertEqual(menu[0]['section'].label, self.section1.label)
+            self.assertEquals(menu[0]['section'].label, self.section1.label)
             self.assertTrue(menu[0]['accessible'])
 
-            self.assertEqual(menu[1]['section'].label, self.section2.label)
+            self.assertEquals(menu[1]['section'].label, self.section2.label)
             self.assertFalse(menu[1]['accessible'])
 
-            self.assertEqual(menu[2]['section'].label, self.section3.label)
+            self.assertEquals(menu[2]['section'].label, self.section3.label)
             self.assertFalse(menu[2]['accessible'])
             self.assertTrue(menu[2]['selected'])
 
     def test_hierarchy_navigation(self):
         with self.settings(SITE_ID=self.site.id):
             kids = self.root.get_children()
-            self.assertEqual(len(kids), 3)
-            self.assertEqual(kids[0].sitesection, self.section1)
-            self.assertEqual(kids[1].sitesection, self.section2)
-            self.assertEqual(kids[2].sitesection, self.section3)
+            self.assertEquals(len(kids), 3)
+            self.assertEquals(kids[0].sitesection, self.section1)
+            self.assertEquals(kids[1].sitesection, self.section2)
+            self.assertEquals(kids[2].sitesection, self.section3)
 
             sibs = self.section1.get_siblings()
-            self.assertEqual(len(sibs), 3)
-            self.assertEqual(sibs[0].sitesection, self.section1)
-            self.assertEqual(sibs[1].sitesection, self.section2)
-            self.assertEqual(sibs[2].sitesection, self.section3)
+            self.assertEquals(len(sibs), 3)
+            self.assertEquals(sibs[0].sitesection, self.section1)
+            self.assertEquals(sibs[1].sitesection, self.section2)
+            self.assertEquals(sibs[2].sitesection, self.section3)
 
-            self.assertEqual(
+            self.assertEquals(
                 self.section2.sitesection.get_previous_site_section(),
                 self.section1)
-            self.assertEqual(
+            self.assertEquals(
                 self.section1.sitesection.get_next_site_section(),
                 self.section2)
             self.assertIsNone(self.section3.get_next_site_section())
