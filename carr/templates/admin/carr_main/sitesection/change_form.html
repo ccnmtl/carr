@@ -75,11 +75,11 @@ var saveOrderOfPageBlocks = function() {
 		     <a href="/admin/carr_main/sitesection/">Site Hierarchy </a> &rsaquo;
 		     
 		     {% for section in adminform.form.instance.get_ancestors %}
-		        {% if section.label == adminform.form.instance.label %}
+		        {% ifequal section.label adminform.form.instance.label %}
 		           {{section.label}}
 		        {% else %}
 			         <a href="/admin/carr_main/sitesection/{{section.id}}/">{{section.label}}</a> &rsaquo;
-			     {% endif %}
+			     {% endifequal %}
 		     {% endfor %}
 		</div>
 	{% endif %}

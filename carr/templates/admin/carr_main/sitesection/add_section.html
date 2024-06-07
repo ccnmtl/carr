@@ -20,9 +20,9 @@
       
      {% for section in parent.get_ancestors %}
         {{section.label}}
-        {%if section.label != parent.label %}
+        {% ifnotequal section.label parent.label %}
            &rsaquo;
-        {% endif %}
+        {% endifnotequal %}
      {% endfor %}
 </div>
 {% endif %}{% endblock %}

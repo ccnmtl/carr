@@ -1,23 +1,23 @@
 {%spaceless %}
     
     
-    {%if st.score_on_taking_action == 'completed_form' %}
+    {%ifequal st.score_on_taking_action 'completed_form' %}
           <span class="label label-success">ok</span>
           
           <a class="tiny_btn btn"  
         href ="/activity/taking_action/student/{{st.student.id}}/">»</a>
-      {%endif%}
+      {%endifequal%}
       
       
-    {%if st.score_on_taking_action == 'clicked_through' %}
+    {%ifequal st.score_on_taking_action 'clicked_through' %}
           <span class="label label-success">ok</span>
-    {%endif%}
+    {%endifequal%}
     
     
     
-    {%if st.score_on_taking_action == 'no_data' %}
+    {%ifequal st.score_on_taking_action 'no_data' %}
           <span class="label label-warning">inc.</span>
-    {%endif%}
+    {%endifequal%}
 
 
 

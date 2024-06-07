@@ -64,7 +64,7 @@ class TestQuizViews(TestCase):
         request.user = UserFactory(is_staff=True)
 
         response = edit_quiz(request, self.quiz.id)
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
     def test_delete_question(self):
         staff = UserFactory(is_staff=True)
@@ -73,15 +73,15 @@ class TestQuizViews(TestCase):
 
         # are you sure view
         response = delete_question(request, self.question1.id)
-        self.assertEqual(self.quiz.question_set.count(), 2)
+        self.assertEquals(self.quiz.question_set.count(), 2)
         self.assertContains(response, 'Are you sure')
 
         # delete
         request = RequestFactory().post('/')
         request.user = staff
         response = delete_question(request, self.question1.id)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.quiz.question_set.count(), 1)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(self.quiz.question_set.count(), 1)
 
     def test_delete_answer(self):
         staff = UserFactory(is_staff=True)
@@ -90,23 +90,23 @@ class TestQuizViews(TestCase):
 
         # are you sure view
         response = delete_answer(request, self.correct.id)
-        self.assertEqual(self.question1.answer_set.count(), 2)
+        self.assertEquals(self.question1.answer_set.count(), 2)
         self.assertContains(response, 'Are you sure')
 
         # delete
         request = RequestFactory().post('/')
         request.user = staff
         response = delete_answer(request, self.correct.id)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.question1.answer_set.count(), 1)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(self.question1.answer_set.count(), 1)
 
     def test_reorder_answers(self):
         url = reverse('reorder-answer', args=[self.question1.id])
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 403)
+        self.assertEquals(response.status_code, 403)
 
-        self.assertEqual(self.correct.ordinality, 1)
-        self.assertEqual(self.incorrect.ordinality, 2)
+        self.assertEquals(self.correct.ordinality, 1)
+        self.assertEquals(self.incorrect.ordinality, 2)
 
         url = '/?answer_0={}&answer_1={}'.format(
             self.incorrect.id, self.correct.id)
@@ -114,20 +114,20 @@ class TestQuizViews(TestCase):
         request.user = UserFactory(is_staff=True)
 
         response = reorder_answers(request, self.question1.id)
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
         self.correct.refresh_from_db()
-        self.assertEqual(self.correct.ordinality, 2)
+        self.assertEquals(self.correct.ordinality, 2)
         self.incorrect.refresh_from_db()
-        self.assertEqual(self.incorrect.ordinality, 1)
+        self.assertEquals(self.incorrect.ordinality, 1)
 
     def test_reorder_questions(self):
         url = reverse('reorder-questions', args=[self.quiz.id])
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 403)
+        self.assertEquals(response.status_code, 403)
 
-        self.assertEqual(self.question1.ordinality, 1)
-        self.assertEqual(self.question2.ordinality, 2)
+        self.assertEquals(self.question1.ordinality, 1)
+        self.assertEquals(self.question2.ordinality, 2)
 
         url = '/?question_0={}&question_1={}'.format(
             self.question2.id, self.question1.id)
@@ -135,12 +135,12 @@ class TestQuizViews(TestCase):
         request.user = UserFactory(is_staff=True)
 
         response = reorder_questions(request, self.quiz.id)
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
         self.question1.refresh_from_db()
-        self.assertEqual(self.question1.ordinality, 2)
+        self.assertEquals(self.question1.ordinality, 2)
         self.question2.refresh_from_db()
-        self.assertEqual(self.question2.ordinality, 1)
+        self.assertEquals(self.question2.ordinality, 1)
 
     def test_add_question_to_quiz(self):
         data = {u'text': [u'the text'],
@@ -151,8 +151,8 @@ class TestQuizViews(TestCase):
         request.user = UserFactory(is_staff=True)
         response = add_question_to_quiz(request, self.quiz.id)
 
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.quiz.question_set.count(), 3)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(self.quiz.question_set.count(), 3)
 
     def test_edit_question(self):
         request = RequestFactory().get('/')
@@ -174,8 +174,8 @@ class TestQuizViews(TestCase):
         request.user = UserFactory(is_staff=True)
         response = add_answer_to_question(request, self.question1.id)
 
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.question1.answer_set.count(), 3)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(self.question1.answer_set.count(), 3)
 
     def test_load_state(self):
         u = UserFactory()
@@ -194,12 +194,12 @@ class TestQuizViews(TestCase):
 
         data = {'json': dumps(self.json_state)}
         response = self.client.post('/activity/quiz/save/', data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
-        self.assertEqual(loads(response.content)['success'], 1)
+        self.assertEquals(loads(response.content)['success'], 1)
 
         n = ActivityState.objects.filter(user=u, json=data['json']).count()
-        self.assertEqual(n, 1)
+        self.assertEquals(n, 1)
 
     def test_save_state_updated(self):
         # when no state exists
@@ -209,7 +209,7 @@ class TestQuizViews(TestCase):
 
         data = {'json': '{}'}
         response = self.client.post('/activity/quiz/save/', data)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(loads(response.content)['success'], 1)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(loads(response.content)['success'], 1)
         n = ActivityState.objects.filter(user=u, json='{}').count()
-        self.assertEqual(n, 1)
+        self.assertEquals(n, 1)

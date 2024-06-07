@@ -93,23 +93,23 @@
    <td>
        {% classes_i_take row.user_object as cit %}
   {% for c in cit %}
-    {%if c.4 == '6010'%}
+    {%ifequal c.4 '6010'%}
       {{c.0}}
-    {%endif%}
+    {%endifequal%}
   {%endfor %}
    </td>
   <td>
   {%for c in cit %}
-    {%if c.4 == '6010'%}
+    {%ifequal c.4 '6010'%}
       {{c.1}} 
-    {%endif%}
+    {%endifequal%}
   {%endfor %}
    </td>
   <td>
   {%for c in cit %}
-    {%if c.4 == '6010'%}
+    {%ifequal c.4 '6010'%}
       {{c.2}}
-    {%endif%}
+    {%endifequal%}
   {%endfor %}
    </td>
 
@@ -123,15 +123,15 @@
   </td>
 
   <td>
-      {%if row.taking_action == 'completed_form' %}
+      {%ifequal row.taking_action 'completed_form' %}
           Completed activity & filled out form
-      {%endif%}
-      {%if row.taking_action == 'clicked_through' %}
+      {%endifequal%}
+      {%ifequal row.taking_action 'clicked_through' %}
           Completed activity
-      {%endif%}
-      {%if row.taking_action == 'no_data' %}
+      {%endifequal%}
+      {%ifequal row.taking_action 'no_data' %}
           Did not complete activity
-      {%endif%}
+      {%endifequal%}
    </td>
 
   <td>

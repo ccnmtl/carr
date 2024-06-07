@@ -34,9 +34,9 @@ MochiKit.Signal.connect(window, "onload", refreshUnderlyingPage)
       
      {% for s in section.get_ancestors %}
         {{s.label}}
-        {%if s.label != section.label %}
+        {% ifnotequal s.label section.label %}
            &rsaquo;
-        {% endif %}
+        {% endifnotequal %}
      {% endfor %}
 </div>
 {% endblock %}

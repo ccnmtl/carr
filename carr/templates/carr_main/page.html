@@ -67,17 +67,17 @@
             <li>
                 <div class="page-numbers">
                 {% spaceless %}
-                {% if depth == 4 %}
+                {% ifequal depth 4 %}
                     {% with section.get_siblings as siblings %}
                     {% with section.get_parent as parent %}
                          {% for sibling in siblings %}
-                            {% if sibling == section %}
+                            {% ifequal sibling section %}
                                {{parent.label}} | Page {{forloop.counter}} of {{siblings|length}}
-                            {% endif %}
+                            {% endifequal %}
                          {% endfor %}
                     {% endwith %}
                     {% endwith %} 
-                {% endif %}
+                {% endifequal %}
                 {% endspaceless %}
                 </div>
             </li>

@@ -2,7 +2,7 @@
 
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from urllib.parse import quote
+from django.utils.http import urlquote
 from django.http import HttpResponseRedirect
 from django.utils.deprecation import MiddlewareMixin
 
@@ -20,7 +20,7 @@ def match_path(path, config_string):
 class AuthRequirementMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
-        path = quote(request.get_full_path())
+        path = urlquote(request.get_full_path())
         if request.user.is_authenticated:
             return None
 
