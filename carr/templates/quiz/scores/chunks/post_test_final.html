@@ -1,14 +1,14 @@
-{%if score.all_correct and score.all_correct == "t" %}
+{% if score.all_correct and score.all_correct == "t" %}
    
-    {%if score.submit_time %}
+    {% if score.submit_time %}
         {% for stamp in score.submit_time %}
-            {%if forloop.last %}
+            {% if forloop.last %}
                 <span class="label label-success"  title = '( {{stamp|date:"m/d/Y P"}} )'>  {{stamp|date:"M d 'y"}}</span>
-            {%endif %}
+            {%e ndif %}
         {% endfor %}
-    {%else %}    
+    {% else %}
          <span class="label label-success" >ok</span>
-    {%endif%}
+    {% endif %}
 {% else %}
     <span class="label label-warning">inc.</span>
-{%endif %}
+{% endif %}

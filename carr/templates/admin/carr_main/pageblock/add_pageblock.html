@@ -46,9 +46,9 @@ MochiKit.Signal.connect(window, "onload", selectPageBlock)
       
      {% for s in section.get_ancestors %}
         {{s.label}}
-        {% ifnotequal s.label section.label %}
+        {% if s.label != section.label %}
            &rsaquo;
-        {% endifnotequal %}
+        {% endif %}
      {% endfor %}
 </div>
 {% endblock %}
@@ -67,7 +67,7 @@ Type: <select id="blocktype" name="blocktype" onchange="showForm(this)">
 <br /><br />
 {% for blocktype in section.available_pageblocks %}
 	{% if blocktype %}
-			<form action="{% url 'add-pageblock' section.id %}" id="form_{{blocktype.display_name|slugify}}" {% ifnotequal forloop.counter 1 %}style="display: none" {% endifnotequal %}
+			<form action="{% url 'add-pageblock' section.id %}" id="form_{{blocktype.display_name|slugify}}" {% if forloop.counter != 1 %}style="display: none" {% endif %}
 				{% if blocktype.add_form.is_multipart %}
 				   enctype="multipart/form-data"
 				{% endif %}

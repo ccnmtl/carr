@@ -3,9 +3,9 @@ from pagetree.models import PageBlock
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from django import forms
-from datetime import datetime
+from django.utils import timezone
 from django.urls.base import reverse
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 
 class Quiz(models.Model):
@@ -21,7 +21,7 @@ class Quiz(models.Model):
         return self.pageblocks.all()[0]
 
     def __str__(self):
-        return smart_text(self.pageblock())
+        return smart_str(self.pageblock())
 
     def label(self):
         return self.pageblock().label
@@ -134,7 +134,7 @@ class Question(models.Model):
 
     def __str__(self):
         return (
-            smart_text(
+            smart_str(
                 self.quiz.pageblock()
             ) + (
                 ": %d " %
@@ -202,7 +202,7 @@ class Answer(models.Model):
 class Submission(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    submitted = models.DateTimeField(default=datetime.now)
+    submitted = models.DateTimeField(default=timezone.now)
 
 
 class Response(models.Model):
@@ -213,8 +213,8 @@ class Response(models.Model):
     def __str__(self):
         return (
             "response to %s by %s at %s" % (
-                smart_text(self.question),
-                smart_text(self.user),
+                smart_str(self.question),
+                smart_str(self.user),
                 self.submitted)
         )
 
@@ -223,4 +223,4 @@ class ActivityState(models.Model):
     user = models.ForeignKey(
         User, related_name="quiz_user", on_delete=models.CASCADE)
     json = models.TextField(blank=True)
-    submitted = models.DateTimeField(default=datetime.now)
+    submitted = models.DateTimeField(default=timezone.now)

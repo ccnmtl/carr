@@ -179,27 +179,27 @@ class TestPostTestAnalysisView(TestCase):
         # not logged in
         url = reverse('post-test-analysis')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
 
         # accessing as student
         student = UserFactory()
         self.client.login(username=student.username, password='test')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
 
         # using get
         faculty = UserFactory(is_staff=True)
         self.client.login(username=faculty.username, password='test')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 405)
+        self.assertEqual(response.status_code, 405)
 
     def test_get_posttest(self):
-        self.assertEquals(PostTestAnalysisView().get_posttest(), self.quiz)
+        self.assertEqual(PostTestAnalysisView().get_posttest(), self.quiz)
 
     def test_correct_answer(self):
         view = PostTestAnalysisView()
-        self.assertEquals(view.correct_answer_id(self.question1),
-                          str(self.correct.id))
+        self.assertEqual(view.correct_answer_id(self.question1),
+                         str(self.correct.id))
 
     def test_initialize(self):
         view = PostTestAnalysisView()
@@ -207,9 +207,9 @@ class TestPostTestAnalysisView(TestCase):
 
         key = str(self.question1.id)
         self.assertTrue(key in results)
-        self.assertEquals(results[key]['id'], self.question1.id)
-        self.assertEquals(results[key]['text'], 'foo')
-        self.assertEquals(results[key]['answer'], str(self.correct.id))
+        self.assertEqual(results[key]['id'], self.question1.id)
+        self.assertEqual(results[key]['text'], 'foo')
+        self.assertEqual(results[key]['answer'], str(self.correct.id))
 
     def test_analyze(self):
         u = UserFactory()
@@ -223,8 +223,8 @@ class TestPostTestAnalysisView(TestCase):
         results = view.analyze(self.quiz, results)
 
         key = str(self.question1.id)
-        self.assertEquals(results[key]['responses'], 1)
-        self.assertEquals(results[key]['correct'], 0)
+        self.assertEqual(results[key]['responses'], 1)
+        self.assertEqual(results[key]['correct'], 0)
 
     def test_post(self):
         ActivityState.objects.create(user=UserFactory(),
