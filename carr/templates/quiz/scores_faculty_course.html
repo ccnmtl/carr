@@ -45,11 +45,11 @@
                     <a href ="/activity/quiz/studentquiz/2/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
-                {%endif %}
+                {% endif %}
             </td>
             <td>
-                {%with st.score_on_bruise_recon as a%} 
-                   {%if a %}
+                {% with st.score_on_bruise_recon as a %}
+                   {% if a %}
                         {{a}} / 3
                         {% if IS_SOCIALWORK %}
                             ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
@@ -59,9 +59,9 @@
                               ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
                                 <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
                                 <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
-                        {%endif%}
-                  {%else%}
-                            {%if a == 0 %}
+                        {% endif %}
+                  {% else %}
+                            {% if a == 0 %}
                                 {{a}} / 3
                                 {% if IS_SOCIALWORK %}
                                       ( <a href="/activity/bruise_recon/studentcase/4/user/{{st.student.id}}/">1</a>
@@ -71,12 +71,12 @@
                                       ( <a href="/activity/bruise_recon/studentcase/1/user/{{st.student.id}}/">1</a>
                                         <a href="/activity/bruise_recon/studentcase/2/user/{{st.student.id}}/">2</a>
                                         <a href="/activity/bruise_recon/studentcase/3/user/{{st.student.id}}/">3</a>)
-                                {% endif%}
+                                {% endif %}
                             {% else %}
                                 Incomplete
                             {% endif %}
-                    {%endif%}
-                {%endwith%}
+                    {% endif %}
+                {% endwith %}
             </td>
             <td>
             {% get_scores for 'Case 1' in st.scores as score %}
@@ -84,7 +84,7 @@
                     <a href ="/activity/quiz/studentquiz/6/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
-                {%endif %}
+                {% endif %}
             </td>
             <td>
             {% get_scores for 'Case 2' in st.scores as score %}
@@ -92,7 +92,7 @@
                     <a href ="/activity/quiz/studentquiz/7/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
-                {%endif %}
+                {% endif %}
             </td>
             <td>
             {% get_scores for 'Case 3' in st.scores as score %}
@@ -100,18 +100,18 @@
                    <a href ="/activity/quiz/studentquiz/8/user/{{st.student.id}}/">{{score.score}} / {{score.answer_count}}</a>
                 {% else %}
                     n/a
-                {%endif %}
+                {% endif %}
             </td>
             <td>
-                {%ifequal st.score_on_taking_action 'completed_form' %}
+                {% if st.score_on_taking_action == 'completed_form' %}
                   <a href ="/activity/taking_action/student/{{st.student.id}}/">Completed activity and filled out form</a>
-                  {%endifequal%}
-              {%ifequal st.score_on_taking_action 'clicked_through' %}
+                {% endif %}
+                {% if st.score_on_taking_action == 'clicked_through' %}
                   Complete
-                  {%endifequal%}
-              {%ifequal st.score_on_taking_action 'no_data' %}
+                {% endif %}
+                {% if st.score_on_taking_action == 'no_data' %}
                   Incomplete
-                  {%endifequal%}
+                {% endif %}
             </td>
             <td>
                 {% get_scores for 'post-test' in st.scores as score %}
@@ -119,32 +119,32 @@
                     <a href ="/activity/quiz/studentquiz/3/user/{{st.student.id}}/">{{score.initial_score.quiz_score}} /  {{score.initial_score.quiz_max_score}}</a>
                 {% else %}
                     n/a
-                {%endif %}
+                {% endif %}
             </td>
             <td>
-                {%if score.all_correct and score.all_correct == "t" %}
+                {% if score.all_correct and score.all_correct == "t" %}
                     Complete
-                  {%if score.submit_time %}
+                  {% if score.submit_time %}
                     {% for stamp in score.submit_time %}
-                        {%if forloop.last %}
+                        {% if forloop.last %}
                             ( {{stamp|date:"m/d/Y P"}} )
-                        {%endif %}
+                        {% endif %}
                     {% endfor %}
-                  {%endif%}
+                  {% endif%}
                 {% else %}
                     Incomplete
-                {%endif %}
+                {% endif %}
             </td>
             <td>
-                {%if st.training_complete%}
+                {% if st.training_complete%}
                     Complete
                 {% else %}
                     Incomplete
-                {%endif %}
+                {% endif %}
             </td>
 
         </tr>
-        {%endfor %}
+        {% endfor %}
         <tr>
           <td colspan = "12">
 
@@ -171,8 +171,8 @@
           </td>
         </td>
         </table>
-{%else%}
+{% else %}
     You don't appear to be teaching any courses this semester.
-{%endif%}
+{% endif%}
   
-{%endblock%}
+{% endblock %}

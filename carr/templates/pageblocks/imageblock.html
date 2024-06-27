@@ -1,6 +1,6 @@
 {% load carr_main_template_tags %}
-{% load markup %}
+{% load markdownify %}
 <img alt="{{block.alt}}" src="{% media_url %}{{block.image.name}}" />
 <div class="caption">
-{{block.caption|markdown}}
+{{block.caption|markdownify}}
 </div>
