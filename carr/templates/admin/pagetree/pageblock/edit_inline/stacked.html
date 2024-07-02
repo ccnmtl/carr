@@ -38,9 +38,9 @@ function dismissPageBlockPopup(window)
       
       <table width="100%">
 			{% for block in section.pageblock_set.all %}
-			   {% ifequal forloop.counter 1 %}
+			   {% if forloop.counter == 1 %}
 	            <tr style="border-bottom-width: 2px; border-bottom-color: #aaa; border-bottom-style: solid;"><td><h3>Page Title</h3><td><h3>{{section.label}}</h3></td><td></td></tr>
-	         {% endifequal %}
+	         {% endif %}
 			   <tr id="pageblock-{{block.id}}" class="draggable {% cycle 'admin_block_view_row1' 'admin_block_view_row2' %}">
 	            <td width="15%">
 	              <h3 onmouseover="this.style.cursor='move'">{{block.content_type.name|title}}

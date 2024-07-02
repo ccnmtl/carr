@@ -26,11 +26,11 @@
 		   <ul>
 		   {% for s in root.get_descendents %}
 					<li class="menu">
-					   {% ifnotequal s.id section.id %}
+					   {% if s.id != section.id %}
 					      <a href="../section/{{s.id}}">{{s.label}}</a>
 					   {%else%}
 					      <b>{{s.label}}</b>
-					   {% endifnotequal %}
+					   {% endif %}
 
 						{% with s.get_children as has_children %}
 							{% if has_children %}<ul>{% endif %}
