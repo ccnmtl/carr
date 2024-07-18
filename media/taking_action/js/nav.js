@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* global partial: true, connect: true, hasElementClass: true */
 /* exported steps, game_state, nav_ready, observation_1, observation_2 */
 /* exported observation_css_classes, criteria_css_classes */

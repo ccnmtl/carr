@@ -71,6 +71,7 @@ function loadState() {
     maybeEnableNext();
 }
 
+// eslint-disable-next-line no-unused-vars
 function like_checkbox(selected_class, all_button_class, the_element) {
     map(function(a) {
         removeElementClass(a, selected_class);
@@ -78,6 +79,7 @@ function like_checkbox(selected_class, all_button_class, the_element) {
     addElementClass($(the_element), selected_class);
 }
 
+// eslint-disable-next-line no-unused-vars
 function show_answer() {
     maybeEnableNext();
 }
@@ -95,6 +97,7 @@ function new_ldss_form_fields_to_save() {
     return results;
 }
 
+// eslint-disable-next-line no-unused-vars
 function deprecated_ldss_form_fields_to_save() {
     var results = {};
     var filled_out_fields = filter(function(a) {
