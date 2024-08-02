@@ -30,21 +30,21 @@
                 {% include "quiz/scores/chunks/initial_quiz_score.html" %}  
                 </td>
             <td>
-                {%with st.score_on_bruise_recon as a%} 
+                {% with st.score_on_bruise_recon as a %} 
                     {% include "quiz/scores/chunks/a_or_a_score.html" %}
-                {%endwith%}
+                {% endwith %}
             </td>
             <td>
                 {% get_scores for 'Case 1' in st.scores as score %}
-                {% with 6 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{%endwith %}         
+                {% with 6 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{% endwith %}         
             </td>
             <td>
                 {% get_scores for 'Case 2' in st.scores as score %}
-                {% with 7 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{%endwith %}
+                {% with 7 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{% endwith %}
             </td>
             <td>
                 {% get_scores for 'Case 3' in st.scores as score %}
-                {% with 8 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{%endwith %}
+                {% with 8 as quiz_id %}{% include "quiz/scores/chunks/quiz_score.html" %}{% endwith %}
             </td>
             <td>
                 {% include "quiz/scores/chunks/taking_action_score.html" %}
@@ -57,14 +57,14 @@
                 {% include "quiz/scores/chunks/post_test_final.html" %}
             </td>
             <td>
-                {%if st.training_complete%}
+                {% if st.training_complete %}
                    <span class="label label-success">Y</span>
                 {% else %}
                     <span class="label label-important">N</span>
                 {%endif %}
             </td>
         </tr>
-    {%endfor %}
+    {% endfor %}
 </table>
 <div class = "well">
     <button type="button" class="close" data-dismiss="alert">×</button>
