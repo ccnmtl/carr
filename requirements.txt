@@ -77,7 +77,8 @@ python-dateutil==2.9.0
 django-storages==1.14.3
 
 # memcached
-pylibmc==1.6.3; sys_platform == 'linux'
+pylibmc==1.6.3;sys_platform == "linux" and python_version<"3.9"
+requirements/src/pylibmc-1.7.0.dev0-cp312-cp312-linux_x86_64.whl;sys_platform == "linux" and python_version>="3.12"
 django-smtp-ssl==1.0
 
 ctlsettings==0.3.2
