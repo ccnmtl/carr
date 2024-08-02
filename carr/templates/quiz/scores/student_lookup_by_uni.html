@@ -11,15 +11,15 @@
 {% endblock scores_breadcrumbs %}
 
 {% block scores_title %}
-    {%if student %}UNI Search Results for "{{uni}}"{%else %}Search by UNI{%endif %}
-{%endblock %}
+    {% if student %}UNI Search Results for "{{uni}}"{% else %}Search by UNI{% endif %}
+{% endblock %}
 
 {% block scores_help_text %}
-    {%if not student %}
+    {% if not student %}
      To search for a student's scores, enter his/her UNI into the box below and then click on "Search."
-    {%else %}
+    {% else %}
         {{student_info|length}} student{{student_info|pluralize:" was found,s were found"}}. Students who have not logged into CARE might not be displayed in these search results.
-    {%endif %}
+    {% endif %}
 {% endblock %}
 
 
@@ -30,16 +30,16 @@
         </div>  
     {% endif  %}
 
-    {%if not student %}
+    {% if not student %}
     <form action ="/scores/socialwork/uni/" method="post" class="well form-search">{% csrf_token %}
       <div class="input-append">
                Student UNI:  <input class="span3 search-query" id="appendedInputButton" size="16" type="text" name ="uni" value="{{uni}}"></input><button class="btn" type="submit">Search</button>
       </div>
     </form>
-    {%endif %}
+    {% endif %}
 
         
-     {%if student %}
+     {% if student %}
         {% include "quiz/scores/score_table.html" %}
-     {%endif %}
-{%endblock%}
+     {% endif %}
+{% endblock%}
