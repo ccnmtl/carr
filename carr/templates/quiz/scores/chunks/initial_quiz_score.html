@@ -1,26 +1,26 @@
-{%spaceless %}
+{% spaceless %}
     {% with 2 as quiz_id %}
         {% if score.answer_count %}
              <span class="label label-info">{{score.score}}</span>
-                {%if score.submit_time %}
+                {% if score.submit_time %}
                     {% for stamp in score.submit_time %}
-                        {%if forloop.last %}
-                        <span class="label label-success"  title = '( {{stamp|date:"m/d/Y P"}} )'>  {{stamp|date:"M d 'y"}}</span>
-                        {%endif %}
+                        {% if forloop.last %}
+                        <span class="label label-success"  title='( {{stamp|date:"m/d/Y P"}} )'>  {{stamp|date:"M d 'y"}}</span>
+                        {% endif %}
                     {% endfor %}
-                {%endif%}
+                {% endif %}
 
              
-                {%with score.score as actual %}
-                    {%with  score.answer_count as max %}
+                {% with score.score as actual %}
+                    {% with score.answer_count as max %}
                         {% include "quiz/scores/chunks/tiny_btn.html" %}
-                    {%endwith%}
-                {%endwith%}
+                    {% endwith %}
+                {% endwith %}
         {% else %}
             <span class="label label-warning">inc.</span>
-        {%endif %}
-    {%endwith %}
-{%endspaceless %}
+        {% endif %}
+    {% endwith %}
+{% endspaceless %}
 
 
 
