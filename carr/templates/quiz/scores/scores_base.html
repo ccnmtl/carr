@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block primarynav %}{%endblock%}
+{% block primarynav %}{% endblock %}
 {% block css %}
     {% include 'quiz/scores/scores_css.html' %}
     <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" media="screen">
@@ -17,11 +17,11 @@
 {% block subnav %}
 {% endblock %}
 
-{%block newlogo%} 
+{% block newlogo %}
 <div class ="new_ssw_logo">
     <img src ="{{STATIC_URL}}img/logo_cussw.gif"/>
 </div>
-{%endblock%}
+{% endblock %}
 
 {% block pagetitle %}{% endblock %}
 
@@ -32,7 +32,7 @@
     </ul>
     <div class="subhead ">
         <h1>
-            {% block scores_title %}Scores title{%endblock %}
+            {% block scores_title %}Scores title{% endblock %}
         </h1>
    </div>
     {% if not hide_scores_help_text %}
@@ -61,7 +61,7 @@
         </div>
     {% else  %}
         {% block full_page_results %}
-        {% endblock%}
+        {% endblock %}
    {% endif %}         
 {% endblock content%}
 
