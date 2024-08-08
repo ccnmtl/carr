@@ -31,8 +31,8 @@ def user_type(u):
     elif u.groups.filter(name__contains='tlcxml').count() > 0:
         return 'admin'
     # Can view all student scores:
-    elif u.groups.filter(name__contains='.fc.').count() > 0:
-        return 'faculty'
+    # elif u.groups.filter(name__contains='.fc.').count() > 0:
+    #     return 'faculty'
     # so we can easily grant this privilege to people who are not actually
     # teaching a class:
     elif u.is_staff:

@@ -27,9 +27,10 @@ class SimpleModelTest(TestCase):
         u.groups.add(GroupFactory(name='tlcxml'))
         self.assertEqual(user_type(u), 'admin')
 
+        # test that faculty uni's can't automatically see student scores
         u = UserFactory()
         u.groups.add(GroupFactory(name='t1.y2010.s001.cf1000.scnc.fc.course'))
-        self.assertEqual(user_type(u), 'faculty')
+        self.assertEqual(user_type(u), 'student')
 
 
 class SiteStateTest(TestCase):
