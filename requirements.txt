@@ -82,7 +82,7 @@ requirements/src/pylibmc-1.7.0.dev0-cp312-cp312-linux_x86_64.whl;sys_platform ==
 django-smtp-ssl==1.0
 
 ctlsettings==0.3.3
-django-bootstrap3==24.2
+django-bootstrap3==24.3
 
 pbr==6.1.0
 pyyaml==6.0.1
