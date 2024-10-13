@@ -20,31 +20,7 @@
     <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
     {% block css %}{% endblock %}
 
-    <script
-        src="https://js.sentry-cdn.com/bea76ad7e8124bc0ab1b4354fd9db56f.min.js"
-        crossorigin="anonymous"></script>
-    <script>
-        window.sentryOnLoad = function() {
-            Sentry.init({
-                {% if STAGING_ENV %}
-                environment: 'staging'
-                {% else %}
-                environment: 'production'
-                {% endif %}
-            });
-            {% if not request.user.is_anonymous %}
-            Sentry.setUser({
-                email: '{{request.user.email}}',
-                id: '{{request.user.username}}'
-            });
-            {% else %}
-            Sentry.setUser({
-                email: 'none',
-                id: 'anonymous'
-            });
-            {% endif %}
-        };
-    </script>
+    {% include "ctlsettings/sentry_js.html" %}
 
     {% block js %}{% endblock %}
 
