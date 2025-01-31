@@ -29,7 +29,7 @@ contextlib2==21.6.0
 rcssmin==1.2.0
 rjsmin==1.2.2
 ipaddress==1.0.23
-pytz==2024.2
+pytz==2025.1
 
 django-courseaffils==2.4.0
 
