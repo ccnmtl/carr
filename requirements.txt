@@ -91,7 +91,7 @@ bandit==1.8.0
 rich==14.1.0
 
 nameparser==1.1.0
-httplib2==0.22.0
+httplib2==0.30.0
 oauth==1.0.1
 oauth2==1.9.0.post1
 oauthlib==3.3.0
