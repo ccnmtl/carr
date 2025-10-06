@@ -1,5 +1,5 @@
 Django>=4.2.13,<6
-asgiref==3.9.1
+asgiref==3.10.0
 Markdown==3.9
 pyenchant==3.3.0
 psycopg[binary]==3.2.1
