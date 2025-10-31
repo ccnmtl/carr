@@ -33,6 +33,7 @@ MIDDLEWARE += [  # noqa
     'djangohelpers.middleware.HttpDeleteMiddleware',
     'carr.middleware.SiteIdMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 INSTALLED_APPS += [  # noqa
@@ -48,6 +49,7 @@ INSTALLED_APPS += [  # noqa
     'lti_provider',
     'markdownify',
     'djangohelpers',
+    'debug_toolbar',
 ]
 
 PROJECT_APPS = [
