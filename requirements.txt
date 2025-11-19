@@ -37,7 +37,7 @@ idna==3.11  # requests
 charset-normalizer==3.4.0
 requests==2.32.4
 
-python-cas==1.6.0
+python-cas==1.7.1
 django-cas-ng==5.0.1
 
 requirements/src/sorl-3.4-py3-none-any.whl
