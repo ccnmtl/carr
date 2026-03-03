@@ -13,6 +13,7 @@
 
 var current_step;
 var step_to_show_first;
+// eslint-disable-next-line no-unassigned-vars
 var student_response;
 
 function maybeEnableNext() {
