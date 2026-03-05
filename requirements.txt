@@ -1,4 +1,4 @@
-Django>=4.2.13,<6
+Django>=4.2.13,<7
 asgiref==3.11.0
 Markdown==3.10
 pyenchant==3.3.0
