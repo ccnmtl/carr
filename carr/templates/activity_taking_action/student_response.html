@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}{% endblock %}
 {% block js %}
-<script type="text/javascript" src="{{STATIC_URL}}js/mochikit/MochiKit/MochiKit.js"></script> 
-<script type="text/javascript" src="{{STATIC_URL}}taking_action/js/nav.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}taking_action/js/taking_action.js"></script>
-<script type="text/javascript">addLoadEvent(set_up_all_form_fields);</script>
+<script crossorigin="anonymous" src="{{STATIC_URL}}js/mochikit/MochiKit/MochiKit.js"></script> 
+<script crossorigin="anonymous" src="{{STATIC_URL}}taking_action/js/nav.js"></script>
+<script crossorigin="anonymous" src="{{STATIC_URL}}taking_action/js/taking_action.js"></script>
+<script>addLoadEvent(set_up_all_form_fields);</script>
 {% endblock %}
 
 {% block css %}
