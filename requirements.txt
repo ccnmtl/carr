@@ -30,7 +30,7 @@ rjsmin==1.2.2
 ipaddress==1.0.23
 pytz==2026.3.post1
 
-django-courseaffils==2.5.0
+django-courseaffils==2.5.1
 
 lxml==6.1.0
 idna==3.19  # requests
