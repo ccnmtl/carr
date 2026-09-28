@@ -8,7 +8,7 @@ Pillow==12.3.0
 statsd==4.0.1
 ldap3==2.9.1
 mccabe==0.7.0
-pyflakes==3.4.0
+pyflakes==4.0.0
 pep8==1.7.1
 pycodestyle==2.15.0
 configparser==7.2.0
