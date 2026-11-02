@@ -19,7 +19,7 @@ flake8==7.5.0
 logilab-common==2.1.0
 editdistance==0.8.1
 
-pyasn1==0.6.4
+pyasn1==0.6.5
 sqlparse==0.6.0
 six==1.17.0
 contextlib2==21.6.0
